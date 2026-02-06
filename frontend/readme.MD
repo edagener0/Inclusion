@@ -1,1 +1,0 @@
-- Aqui fica o código relacionado com o frontend.
