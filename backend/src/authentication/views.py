@@ -109,8 +109,6 @@ class UserTokenRefreshView(APIView):
         response = Response(
             {
                 "message": "Token refreshed successfully",
-                "access": new_access,
-                "refresh": str(new_refresh)
             },
             status=status.HTTP_200_OK
         )
