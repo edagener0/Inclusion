@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'authentication.User'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -38,8 +38,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
   'DEFAULT_AUTHENTICATION_CLASSES': (
-      'users.authenticate.CustomAuthentication',
-      'rest_framework_simplejwt.authentication.JWTAuthentication',
+      'authentication.authenticate.CustomAuthentication',
   ),
 }
 
@@ -56,7 +55,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     'corsheaders',
-    'users',
+    'authentication',
 ]
 
 MIDDLEWARE = [
