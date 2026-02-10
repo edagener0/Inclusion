@@ -9,13 +9,10 @@ from rest_framework import status
 from django.middleware import csrf
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.exceptions import TokenError
-
-def get_tokens_for_user(user):
-    refresh = RefreshToken.for_user(user)
-    return {
-        "refresh": str(refresh),
-        "access": str(refresh.access_token),
-    }
+from .utils import (
+    get_tokens_for_user,
+    set_cookies_for_response,
+)
 
 class UserRegisterView(CreateAPIView):
     serializer_class = UserRegisterSerializer
@@ -37,24 +34,9 @@ class UserLoginView(APIView):
         if user.is_active:
             data = get_tokens_for_user(user)
             
-            response.set_cookie(
-                key = settings.SIMPLE_JWT["AUTH_COOKIE"],
-                value = data["access"],
-                expires = settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
-                secure = settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-                httponly = settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
-                samesite = settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"]
-            )
 
-            response.set_cookie(
-                key = settings.SIMPLE_JWT["REFRESH_COOKIE"],
-                value = data["refresh"],
-                expires = settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
-                secure = settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-                httponly = settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
-                samesite = settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
-            )
-
+            set_cookies_for_response(response, data)
+            
             csrf.get_token(request)
             
             response.data = {
@@ -127,28 +109,15 @@ class UserTokenRefreshView(APIView):
         response = Response(
             {
                 "message": "Token refreshed successfully",
-                "access": new_access,
-                "refresh": str(new_refresh)
             },
             status=status.HTTP_200_OK
         )
 
-        response.set_cookie(
-            key = settings.SIMPLE_JWT["AUTH_COOKIE"],
-            value = new_access,
-            expires = settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
-            secure = settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-            httponly = settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
-            samesite = settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
-        )
+        data = {
+            "refresh": new_refresh,
+            "access": new_access,
+        }
 
-        response.set_cookie(
-            key=settings.SIMPLE_JWT["REFRESH_COOKIE"],
-            value=new_refresh,
-            expires=settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"],
-            secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-            httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
-            samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
-        )
+        set_cookies_for_response(response, data)
 
         return response
