@@ -19,12 +19,16 @@ from drf_spectacular.utils import (
     OpenApiResponse,
 )
 
+@extend_schema(
+    description="Registers a user."
+)
 class UserRegisterView(CreateAPIView):
     serializer_class = UserRegisterSerializer
 
 class UserLoginView(APIView):
     @extend_schema(
         request = UserLoginSerializer,
+        description="Logs in a user.",
         responses={
             400: OpenApiResponse(description="Validators failed for username or password"),
             200: OpenApiResponse(description="Successfully authenticated."),
@@ -71,6 +75,7 @@ class UserLogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     @extend_schema(
+        description="Logs out a user.",
         responses={
             400: OpenApiResponse(description="Refresh token invalid or not present."),
             200: OpenApiResponse(description="Logout Successful."),
@@ -109,6 +114,7 @@ class UserLogoutView(APIView):
     
 class UserTokenRefreshView(APIView):
     @extend_schema(
+        description="Refreshes the authentication of the user.",
         responses={
             400: OpenApiResponse(description="Refresh token invalid or not present."),
             200: OpenApiResponse(description="Token generated successfully!"),
@@ -156,7 +162,7 @@ class UserMeView(APIView):
     permission_classes = [IsAuthenticated]
 
     @extend_schema(
-        description="Permite obter os dados do utilizador autenticado.",
+        description="Responds with the data of the authenticated user.",
         responses={200: UserMeSerializer},
         methods=["GET"],
     )
