@@ -167,5 +167,5 @@ class UserMeView(APIView):
         methods=["GET"],
     )
     def get(self, request):
-        serializer = UserMeSerializer(request.user)
+        serializer = UserMeSerializer(request.user, context={"request": request})
         return Response(serializer.data)
