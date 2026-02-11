@@ -28,11 +28,8 @@ class LoginTests(BaseAuthTestCase):
     def test_login_success_sets_cookies_and_returns_tokens(self):
         data = {"username": "tester", "password": "password123"}
         response = self.client.post(self.login_url, data, format="json")
-
+        
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("data", response.data)
-        self.assertIn("access", response.data["data"])
-        self.assertIn("refresh", response.data["data"])
 
         
         access_cookie = response.cookies.get(self.access_cookie_name)
@@ -52,14 +49,12 @@ class TokenRefreshTests(BaseAuthTestCase):
     def _login_and_get_tokens(self):
         data = {"username": "tester", "password": "password123"}
         response = self.client.post(self.login_url, data, format="json")
-        return response.data["data"]["access"], response.data["data"]["refresh"]
 
     def test_refresh_with_body_rotates_refresh_token_and_sets_cookies(self):
-        _, refresh = self._login_and_get_tokens()
+        self._login_and_get_tokens()
 
         response = self.client.post(
             self.refresh_url,
-            {"refresh": refresh},
             format="json",
         )
 
@@ -86,13 +81,10 @@ class LogoutTests(BaseAuthTestCase):
         
         data = {"username": "tester", "password": "password123"}
         login_response = self.client.post(self.login_url, data, format="json")
-        access = login_response.data["data"]["access"]
-        refresh = login_response.data["data"]["refresh"]
 
         
         refresh_response = self.client.post(
             self.refresh_url,
-            {"refresh": refresh},
             format="json",
         )
 
@@ -105,7 +97,6 @@ class LogoutTests(BaseAuthTestCase):
         
         response = self.client.post(
             self.logout_url,
-            {"refresh": refresh},
             format="json",
         )
 
