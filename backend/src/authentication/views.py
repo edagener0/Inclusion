@@ -163,7 +163,10 @@ class UserMeView(APIView):
 
     @extend_schema(
         description="Responds with the data of the authenticated user.",
-        responses={200: UserMeSerializer},
+        responses={
+            200: UserMeSerializer,
+            401: OpenApiResponse(description="Unauthorized. Credentials not found.")
+        },
         methods=["GET"],
     )
     def get(self, request):
