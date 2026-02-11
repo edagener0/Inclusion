@@ -1,5 +1,5 @@
 from rest_framework.generics import CreateAPIView
-from .serializers import UserRegisterSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,16 +13,38 @@ from .utils import (
     get_tokens_for_user,
     set_cookies_for_response,
 )
+from .serializers import UserMeSerializer
+from drf_spectacular.utils import (
+    extend_schema, 
+    OpenApiResponse,
+)
 
+@extend_schema(
+    description="Registers a user."
+)
 class UserRegisterView(CreateAPIView):
     serializer_class = UserRegisterSerializer
 
 class UserLoginView(APIView):
+    @extend_schema(
+        request = UserLoginSerializer,
+        description="Logs in a user.",
+        responses={
+            400: OpenApiResponse(description="Validators failed for username or password"),
+            200: OpenApiResponse(description="Successfully authenticated."),
+            404: OpenApiResponse(description="User not found.")
+        },
+        methods=["POST"],
+    )
     def post(self, request):
-        data = request.data
+        serializer = UserLoginSerializer(data=request.data)
+        
+        serializer.is_valid(raise_exception=True)
+
+        username = serializer.validated_data["username"]
+        password = serializer.validated_data["password"]
+        
         response = Response()
-        username = data.get("username", None)
-        password = data.get("password", None)
         user = authenticate(username=username, password=password)
 
         if user is None:
@@ -41,7 +63,6 @@ class UserLoginView(APIView):
             
             response.data = {
                 "message": "Login Successfully",
-                "data": data,
             }
             return response
         else:
@@ -51,11 +72,18 @@ class UserLoginView(APIView):
             )
         
 class UserLogoutView(APIView):
-
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        description="Logs out a user.",
+        responses={
+            400: OpenApiResponse(description="Refresh token invalid or not present."),
+            200: OpenApiResponse(description="Logout Successful."),
+        },
+        methods=["POST"]  
+    )
     def post(self, request):
-        refresh_token = request.data.get("refresh") or request.COOKIES.get(
+        refresh_token = request.COOKIES.get(
             settings.SIMPLE_JWT["REFRESH_COOKIE"]
         )
         
@@ -85,8 +113,16 @@ class UserLogoutView(APIView):
         return response
     
 class UserTokenRefreshView(APIView):
+    @extend_schema(
+        description="Refreshes the authentication of the user.",
+        responses={
+            400: OpenApiResponse(description="Refresh token invalid or not present."),
+            200: OpenApiResponse(description="Token generated successfully!"),
+        },
+        methods=["POST"],
+    )
     def post(self, request):
-        refresh_token = request.data.get("refresh") or request.COOKIES.get(
+        refresh_token = request.COOKIES.get(
             settings.SIMPLE_JWT["REFRESH_COOKIE"]
         )
 
@@ -121,3 +157,18 @@ class UserTokenRefreshView(APIView):
         set_cookies_for_response(response, data)
 
         return response
+
+class UserMeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        description="Responds with the data of the authenticated user.",
+        responses={
+            200: UserMeSerializer,
+            401: OpenApiResponse(description="Unauthorized. Credentials not found.")
+        },
+        methods=["GET"],
+    )
+    def get(self, request):
+        serializer = UserMeSerializer(request.user, context={"request": request})
+        return Response(serializer.data)

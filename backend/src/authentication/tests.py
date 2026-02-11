@@ -18,7 +18,7 @@ class BaseAuthTestCase(APITestCase):
         self.login_url = reverse("user-login")
         self.logout_url = reverse("user-logout")
         self.refresh_url = reverse("user-token-refresh")
-
+        self.me_url = reverse("user-me-view")
         
         self.access_cookie_name = settings.SIMPLE_JWT["AUTH_COOKIE"]
         self.refresh_cookie_name = settings.SIMPLE_JWT["REFRESH_COOKIE"]
@@ -28,11 +28,8 @@ class LoginTests(BaseAuthTestCase):
     def test_login_success_sets_cookies_and_returns_tokens(self):
         data = {"username": "tester", "password": "password123"}
         response = self.client.post(self.login_url, data, format="json")
-
+        
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("data", response.data)
-        self.assertIn("access", response.data["data"])
-        self.assertIn("refresh", response.data["data"])
 
         
         access_cookie = response.cookies.get(self.access_cookie_name)
@@ -52,14 +49,12 @@ class TokenRefreshTests(BaseAuthTestCase):
     def _login_and_get_tokens(self):
         data = {"username": "tester", "password": "password123"}
         response = self.client.post(self.login_url, data, format="json")
-        return response.data["data"]["access"], response.data["data"]["refresh"]
 
     def test_refresh_with_body_rotates_refresh_token_and_sets_cookies(self):
-        _, refresh = self._login_and_get_tokens()
+        self._login_and_get_tokens()
 
         response = self.client.post(
             self.refresh_url,
-            {"refresh": refresh},
             format="json",
         )
 
@@ -86,13 +81,10 @@ class LogoutTests(BaseAuthTestCase):
         
         data = {"username": "tester", "password": "password123"}
         login_response = self.client.post(self.login_url, data, format="json")
-        access = login_response.data["data"]["access"]
-        refresh = login_response.data["data"]["refresh"]
 
         
         refresh_response = self.client.post(
             self.refresh_url,
-            {"refresh": refresh},
             format="json",
         )
 
@@ -105,7 +97,6 @@ class LogoutTests(BaseAuthTestCase):
         
         response = self.client.post(
             self.logout_url,
-            {"refresh": refresh},
             format="json",
         )
 
@@ -130,6 +121,7 @@ class RegisterTests(BaseAuthTestCase):
     def test_register_success_creates_user(self):
         payload = {
             "username": "newuser",
+            "email": "test@gmail.com",
             "first_name": "John",
             "last_name": "Doe",
             "password": "StrongPass123!",
@@ -143,6 +135,7 @@ class RegisterTests(BaseAuthTestCase):
     def test_register_password_mismatch_fails(self):
         payload = {
             "username": "newuser2",
+            "email": "test@gmail.com",
             "first_name": "Jane",
             "last_name": "Doe",
             "password": "Pass123!",
@@ -152,3 +145,38 @@ class RegisterTests(BaseAuthTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("Passwords do not match!", str(response.data))
+
+class UserMeViewTests(BaseAuthTestCase):
+    def _login_and_set_auth_header(self):
+        data = {"username": "tester", "password": "password123"}
+        response = self.client.post(self.login_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        access_cookie = response.cookies.get(self.access_cookie_name)
+        self.assertIsNotNone(access_cookie)
+
+        access_token = access_cookie.value
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
+
+    def test_me_requires_authentication(self):
+        response = self.client.get(self.me_url, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_me_returns_userme_serializer_fields(self):
+        self._login_and_set_auth_header()
+
+        response = self.client.get(self.me_url, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        
+        self.assertIn("id", response.data)
+        self.assertIn("username", response.data)
+        self.assertIn("first_name", response.data)
+        self.assertIn("last_name", response.data)
+
+        self.assertEqual(response.data["id"], self.user.id)
+        self.assertEqual(response.data["username"], self.user.username)
+        self.assertEqual(response.data["first_name"], self.user.first_name)
+        self.assertEqual(response.data["last_name"], self.user.last_name)

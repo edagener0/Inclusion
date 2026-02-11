@@ -1,5 +1,12 @@
 # Inclusion 
 
+## Membros
+
+- edagener0: Martim Neves
+- jethroTLOU: Vadym Lemnaru
+- GuilhermeCarmo6: Guilherme Carmo
+- Monstercreft: Gabriel Vaz 
+
 ## Objetivo 
 
 - Facilitar a comunicação e disseminação de informação pelo mundo. 
