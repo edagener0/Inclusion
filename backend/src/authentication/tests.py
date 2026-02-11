@@ -130,6 +130,7 @@ class RegisterTests(BaseAuthTestCase):
     def test_register_success_creates_user(self):
         payload = {
             "username": "newuser",
+            "email": "test@gmail.com",
             "first_name": "John",
             "last_name": "Doe",
             "password": "StrongPass123!",
@@ -143,6 +144,7 @@ class RegisterTests(BaseAuthTestCase):
     def test_register_password_mismatch_fails(self):
         payload = {
             "username": "newuser2",
+            "email": "test@gmail.com",
             "first_name": "Jane",
             "last_name": "Doe",
             "password": "Pass123!",

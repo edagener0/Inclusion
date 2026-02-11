@@ -18,7 +18,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "password", "confirm_password"]
+        fields = ["username", "email", "first_name", "last_name", "password", "confirm_password"]
+        extra_kwargs = {i:{'required': True} for i in fields}
 
     def validate(self, attrs):
         if attrs["password"] != attrs["confirm_password"]:
@@ -39,4 +40,5 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserMeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "username", "first_name", "last_name")
+        fields = ("id", "username", "first_name", "last_name", "picture")
+        read_only_fields = fields
