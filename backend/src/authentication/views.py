@@ -13,6 +13,7 @@ from .utils import (
     get_tokens_for_user,
     set_cookies_for_response,
 )
+from .serializers import UserMeSerializer
 
 class UserRegisterView(CreateAPIView):
     serializer_class = UserRegisterSerializer
@@ -121,3 +122,10 @@ class UserTokenRefreshView(APIView):
         set_cookies_for_response(response, data)
 
         return response
+    
+class UserMeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserMeSerializer(request.user)
+        return Response(serializer.data)

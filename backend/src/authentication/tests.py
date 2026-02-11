@@ -18,7 +18,7 @@ class BaseAuthTestCase(APITestCase):
         self.login_url = reverse("user-login")
         self.logout_url = reverse("user-logout")
         self.refresh_url = reverse("user-token-refresh")
-
+        self.me_url = reverse("user-me-view")
         
         self.access_cookie_name = settings.SIMPLE_JWT["AUTH_COOKIE"]
         self.refresh_cookie_name = settings.SIMPLE_JWT["REFRESH_COOKIE"]
@@ -152,3 +152,38 @@ class RegisterTests(BaseAuthTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("Passwords do not match!", str(response.data))
+
+class UserMeViewTests(BaseAuthTestCase):
+    def _login_and_set_auth_header(self):
+        data = {"username": "tester", "password": "password123"}
+        response = self.client.post(self.login_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        access_cookie = response.cookies.get(self.access_cookie_name)
+        self.assertIsNotNone(access_cookie)
+
+        access_token = access_cookie.value
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
+
+    def test_me_requires_authentication(self):
+        response = self.client.get(self.me_url, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_me_returns_userme_serializer_fields(self):
+        self._login_and_set_auth_header()
+
+        response = self.client.get(self.me_url, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        
+        self.assertIn("id", response.data)
+        self.assertIn("username", response.data)
+        self.assertIn("first_name", response.data)
+        self.assertIn("last_name", response.data)
+
+        self.assertEqual(response.data["id"], self.user.id)
+        self.assertEqual(response.data["username"], self.user.username)
+        self.assertEqual(response.data["first_name"], self.user.first_name)
+        self.assertEqual(response.data["last_name"], self.user.last_name)
