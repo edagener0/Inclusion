@@ -3,35 +3,12 @@ from .models import User
 from rest_framework.validators import UniqueValidator
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-
-    password = serializers.CharField(
-        write_only=True, 
-        style = {
-            "input_type": "password"
-        },
-    )
-    confirm_password = serializers.CharField(
-        write_only=True,
-        style = {
-            "input_type": "password"
-        },
-    )
-
     class Meta:
         model = User
-        fields = ["username", "email", "first_name", "last_name", "password", "confirm_password"]
-        extra_kwargs = {i:{'required': True} for i in fields}
-
-    def validate(self, attrs):
-        if attrs["password"] != attrs["confirm_password"]:
-            raise serializers.ValidationError(
-                "Passwords do not match!"
-            )
-        
-        return attrs
+        fields = ["username", "email", "first_name", "last_name", "password"]
+        extra_kwargs = {i:{"required": True, "write_only": True} for i in fields}
     
     def create(self, validated_data):
-        validated_data.pop("confirm_password")
         password = validated_data.pop("password")
         user = User(**validated_data)
         user.set_password(password)
