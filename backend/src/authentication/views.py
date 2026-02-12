@@ -78,7 +78,8 @@ class UserLogoutView(APIView):
         description="Logs out a user.",
         responses={
             400: OpenApiResponse(description="Refresh token invalid or not present."),
-            200: OpenApiResponse(description="Logout Successful."),
+            205: OpenApiResponse(description="Logout Successful."),
+            401: OpenApiResponse(description="Not logged in.")
         },
         methods=["POST"]  
     )

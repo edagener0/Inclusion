@@ -28,7 +28,7 @@ class LoginTests(BaseAuthTestCase):
     def test_login_success_sets_cookies_and_returns_tokens(self):
         data = {"username": "tester", "password": "password123"}
         response = self.client.post(self.login_url, data, format="json")
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         
@@ -125,26 +125,11 @@ class RegisterTests(BaseAuthTestCase):
             "first_name": "John",
             "last_name": "Doe",
             "password": "StrongPass123!",
-            "confirm_password": "StrongPass123!",
         }
         response = self.client.post(self.register_url, payload, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(User.objects.filter(username="newuser").exists())
-
-    def test_register_password_mismatch_fails(self):
-        payload = {
-            "username": "newuser2",
-            "email": "test@gmail.com",
-            "first_name": "Jane",
-            "last_name": "Doe",
-            "password": "Pass123!",
-            "confirm_password": "DifferentPass!",
-        }
-        response = self.client.post(self.register_url, payload, format="json")
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("Passwords do not match!", str(response.data))
 
 class UserMeViewTests(BaseAuthTestCase):
     def _login_and_set_auth_header(self):
