@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("authentication.urls")),
+    path("users/", include("users.urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "",
