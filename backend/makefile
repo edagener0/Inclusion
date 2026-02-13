@@ -7,3 +7,6 @@ migrate:
 
 run: migrate
 	cd src && python3 manage.py runserver
+
+test: migrate
+	cd src && python3 manage.py test

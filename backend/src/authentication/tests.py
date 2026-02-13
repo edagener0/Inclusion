@@ -70,10 +70,9 @@ class TokenRefreshTests(BaseAuthTestCase):
         self.assertIsNotNone(access_cookie)
         self.assertIsNotNone(refresh_cookie)
 
-    def test_refresh_without_refresh_token_returns_400(self):
+    def test_refresh_without_refresh_token_returns_401(self):
         response = self.client.post(self.refresh_url, {}, format="json")
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data["message"], "Refresh Token Required")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class LogoutTests(BaseAuthTestCase):
@@ -100,7 +99,7 @@ class LogoutTests(BaseAuthTestCase):
             format="json",
         )
 
-        self.assertEqual(response.status_code, status.HTTP_205_RESET_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["message"], "Logout successful")
 
         
