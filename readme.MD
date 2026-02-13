@@ -2,10 +2,10 @@
 
 ## Membros
 
-- edagener0: Martim Neves
-- jethroTLOU: Vadym Lemnaru
-- GuilhermeCarmo6: Guilherme Carmo
-- Monstercreft: Gabriel Vaz 
+- edagener0: Martim Neves, a86010
+- jethroTLOU: Vadym Lemnaru, a81084
+- GuilhermeCarmo6: Guilherme Carmo, a79860
+- Monstercreft: Gabriel Vaz, a75571
 
 ## Objetivo 
 
