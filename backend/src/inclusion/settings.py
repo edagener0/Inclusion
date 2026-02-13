@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'authentication',
+    'users',
 ]
 
 SPECTACULAR_SETTINGS = {

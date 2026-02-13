@@ -49,8 +49,8 @@ class UserLoginView(APIView):
 
         if user is None:
             return Response(
-                {"message": "Invalid username or password!"}, 
-                status=status.HTTP_404_NOT_FOUND
+                {"message": "Invalid credentials!"}, 
+                status=status.HTTP_401_UNAUTHORIZED
             )
         
         if user.is_active:
