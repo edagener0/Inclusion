@@ -41,8 +41,8 @@ class LoginTests(BaseAuthTestCase):
         data = {"username": "tester", "password": "wrong-password"}
         response = self.client.post(self.login_url, data, format="json")
 
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(response.data["message"], "Invalid username or password!")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.data["message"], "Invalid credentials!")
 
 
 class TokenRefreshTests(BaseAuthTestCase):
