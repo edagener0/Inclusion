@@ -27,12 +27,12 @@ const AuthSignUpRoute = AuthSignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
   getParentRoute: () => AuthRoute,
-} as any)
+} as any).lazy(() => import('./routes/_auth/sign-up.lazy').then((d) => d.Route))
 const AuthSignInRoute = AuthSignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
   getParentRoute: () => AuthRoute,
-} as any)
+} as any).lazy(() => import('./routes/_auth/sign-in.lazy').then((d) => d.Route))
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute

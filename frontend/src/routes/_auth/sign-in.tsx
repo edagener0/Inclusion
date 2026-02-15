@@ -1,11 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-import { SignInForm } from '@/features/auth/sign-in';
+import type { CenterSpinner } from '@/shared/ui/spinner';
 
 export const Route = createFileRoute('/_auth/sign-in')({
-  component: RouteComponent,
+  pendingComponent: () => <CenterSpinner />,
 });
-
-function RouteComponent() {
-  return <SignInForm />;
-}
