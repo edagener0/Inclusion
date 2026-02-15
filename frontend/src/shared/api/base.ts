@@ -22,7 +22,7 @@ const clearAuth = () => {
 // If the refresh succeeds, the original requests are automatically retried; if it fails,
 // it clears the authentication marker from `localStorage` to signal the router to redirect the user to the login page.
 api.interceptors.response.use(
-  (response) => response,
+  response => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
     const isAuthRequest = originalRequest.url?.includes('/auth/sign-in');

@@ -7,7 +7,7 @@
   "jsxSingleQuote": false,
   "trailingComma": "all",
   "bracketSpacing": true,
-  "arrowParens": "always",
+  "arrowParens": "avoid",
   "endOfLine": "lf",
 
   "plugins": ["@trivago/prettier-plugin-sort-imports"],

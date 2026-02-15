@@ -10,7 +10,7 @@ import { Header } from '@/widgets/header';
 export const Route = createFileRoute('/_layout')({
   beforeLoad: async ({ context, location }) => {
     const publicPaths = ['/sign-in', '/sign-up'];
-    const isPublic = publicPaths.some((path) => location.pathname.startsWith(path));
+    const isPublic = publicPaths.some(path => location.pathname.startsWith(path));
 
     const { setUser } = useUserStore.getState();
 
