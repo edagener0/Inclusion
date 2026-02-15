@@ -1,9 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 
-import { useUserStore } from '../model/store';
+import { useCurrentUser } from '../model/store';
 
 export function UserAvatar() {
-  const user = useUserStore(s => s.user)!;
+  const user = useCurrentUser();
 
   return (
     <Avatar className="h-9 w-9 border">
