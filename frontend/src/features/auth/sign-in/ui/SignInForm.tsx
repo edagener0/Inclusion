@@ -2,7 +2,7 @@ import { useForm } from '@tanstack/react-form';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from '@tanstack/react-router';
 
-import { IS_AUTH_MAKRER } from '@/shared/config';
+import { IS_AUTH_MARKER } from '@/shared/config';
 import { Button } from '@/shared/ui/button';
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
@@ -16,7 +16,7 @@ export function SignInForm() {
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: () => {
-      localStorage.setItem(IS_AUTH_MAKRER, 'true');
+      localStorage.setItem(IS_AUTH_MARKER, 'true');
       navigate({ to: '/' });
     },
     onError: (error) => {
