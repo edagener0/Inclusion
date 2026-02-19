@@ -12,5 +12,3 @@ urlpatterns = [
     path("me/", UserUpdateView.as_view(), name="user-detail-update"),
     path("search/<str:name>/", UserSearchView.as_view(), name="user-search-list"),
 ]
-
-

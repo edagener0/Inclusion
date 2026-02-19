@@ -13,4 +13,3 @@ class UserDetailUpdateSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "username", "first_name", "last_name", "biography", "avatar"]
         read_only_fields = ["id", "username"]
-    

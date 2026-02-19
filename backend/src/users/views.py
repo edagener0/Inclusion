@@ -44,7 +44,7 @@ class UserListView(ListAPIView):
         request = UserDetailUpdateSerializer(partial=True),
         responses={
             200: OpenApiResponse(description="Update successful"),
-            400: OpenApiResponse(description="You may only edit your own profile")
+            400: OpenApiResponse(description="Bad Request")
         }
 )
 class UserUpdateView(UpdateAPIView):
