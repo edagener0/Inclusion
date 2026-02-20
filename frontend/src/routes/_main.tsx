@@ -7,7 +7,7 @@ import { SidebarNav } from '@/features/sidebar';
 import { APP_NAME, IS_AUTH_MARKER } from '@/shared/config';
 import { Header } from '@/widgets/header';
 
-export const Route = createFileRoute('/_layout')({
+export const Route = createFileRoute('/_main')({
   beforeLoad: async ({ context, location }) => {
     const publicPaths = ['/sign-in', '/sign-up'];
     const isPublic = publicPaths.some(path => location.pathname.startsWith(path));
