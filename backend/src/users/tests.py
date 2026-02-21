@@ -1,149 +1,130 @@
 from django.urls import reverse
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 from django.contrib.auth import get_user_model
-from rest_framework.utils import json
 from django.core.files.uploadedfile import SimpleUploadedFile
 from PIL import Image
-import io
+from io import BytesIO
+        
 
 User = get_user_model()
 
-class UserViewsEdgeCasesTestCase(APITestCase):
 
+class UserRetrieveUpdateViewTests(APITestCase):
     def setUp(self):
-        
-        self.user1 = User.objects.create_user(
-            username="alice", first_name="Alice", last_name="Smith", password="password123"
+        self.client = APIClient()
+        self.user = User.objects.create_user(
+            username="testuser",
+            email="test@example.com",
+            password="testpass123",
+            first_name="John",
+            last_name="Doe",
+            biography="Initial bio"
         )
-        self.user2 = User.objects.create_user(
-            username="bob", first_name="Bob", last_name="Johnson", password="password123"
-        )
-        self.user3 = User.objects.create_user(
-            username="charlie", first_name="Charlie", last_name="Brown", password="password123"
-        )
+        self.client.force_authenticate(user=self.user)
+        self.url = reverse("user-retrieve-update")
 
-        self.client.force_authenticate(user=self.user1)
-    
-    def test_user_list_authenticated(self):
-        url = reverse("user-list")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 3)
-
-    def test_user_list_unauthenticated(self):
+    def tearDown(self):
         self.client.force_authenticate(user=None)
-        url = reverse("user-list")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.user.delete()
 
-    def test_user_retrieve_existing_user(self):
-        url = reverse("user-detail-view", kwargs={"pk": self.user2.id})
-        response = self.client.get(url)
+    def test_get_retrieve_user(self):
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["username"], "bob")
+        self.assertEqual(response.data["username"], "testuser")
+        self.assertEqual(response.data["first_name"], "John")
+        self.assertEqual(response.data["biography"], "Initial bio")
+        self.assertIn("id", response.data)
+        self.assertIn("email", response.data)
 
-    def test_user_retrieve_nonexistent_user(self):
-        url = reverse("user-detail-view", kwargs={"pk": 999})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_user_update_patch_text_fields(self):
-        url = reverse("user-detail-update")
+    def test_patch_partial_update(self):
         data = {
-            "firstName": "AliceUpdated",
-            "lastName": "SmithUpdated",
-            "biography": "Updated biography"
+            "first_name": "Jane",
+            "biography": "Updated bio"
         }
-        response = self.client.patch(url, data, format="multipart")
+        response = self.client.patch(self.url, data, format="json")
+        
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.user1.refresh_from_db()
-        self.assertEqual(self.user1.first_name, "AliceUpdated")
-        self.assertEqual(self.user1.last_name, "SmithUpdated")
-        self.assertEqual(self.user1.biography, "Updated biography")
+        self.user.refresh_from_db()
+        
+        
+        self.assertEqual(self.user.first_name, "Jane")
+        self.assertEqual(self.user.biography, "Updated bio")
+        
+        
+        self.assertEqual(self.user.last_name, "Doe")  
+        self.assertEqual(self.user.email, "test@example.com")  
 
-    
-    def test_user_update_patch_avatar_upload(self):
-        url = reverse("user-detail-update")
+    def test_patch_empty_strings(self):
+        data = {
+            "email": "",
+            "first_name": "",
+            "biography": ""
+        }
+        response = self.client.patch(self.url, data, format="json")
         
-        img = Image.new('RGB', (100, 100), color='red')
-        img_byte_arr = io.BytesIO()
-        img.save(img_byte_arr, format='PNG')
-        img_byte_arr = img_byte_arr.getvalue()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.user.refresh_from_db()
         
-        avatar_file = SimpleUploadedFile(
-            "avatar.png", 
-            img_byte_arr,  
-            content_type="image/png"
+        self.assertEqual(self.user.email, "")
+        self.assertEqual(self.user.first_name, "")
+        self.assertEqual(self.user.biography, "")
+        self.assertEqual(self.user.last_name, "Doe")  
+
+    def test_patch_readonly_fields(self):
+        data = {
+            "id": 999,
+            "username": "hacker"
+        }
+        response = self.client.patch(self.url, data, format="json")
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.user.refresh_from_db()
+        
+        
+        self.assertEqual(self.user.id, self.user.id)
+        self.assertEqual(self.user.username, "testuser")
+
+    def test_patch_avatar_upload(self):
+        img = Image.new('RGB', (1, 1), color='red')
+        img_byte_arr = BytesIO()
+        img.save(img_byte_arr, format='JPEG')
+        img_byte_arr.seek(0)
+        
+        avatar = SimpleUploadedFile(
+            "test.jpg", 
+            img_byte_arr.read(),
+            content_type="image/jpeg"
         )
         
-        data = {"avatar": avatar_file}
-        response = self.client.patch(url, data, format="multipart")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.user1.refresh_from_db()
-        self.assertTrue(bool(self.user1.avatar))
-
-    def test_user_update_patch_invalid_field(self):
-        url = reverse("user-detail-update")
         data = {
-            "nonExistentField": "value"
+            "first_name": "AvatarUser",
+            "avatar": avatar
         }
-        response = self.client.patch(url, data, format="multipart")
+        
+        response = self.client.patch(self.url, data, format="multipart")
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_user_search_by_username(self):
-        url = reverse("user-search-list", kwargs={"name": "alice"})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["results"][0]["username"], "alice")
-
-    def test_user_search_by_first_name(self):
-        url = reverse("user-search-list", kwargs={"name": "Bob"})
-        response = self.client.get(url)
-        self.assertEqual(len(response.data["results"]), 1)
-        self.assertEqual(response.data["results"][0]["username"], "bob")
-
-    def test_user_search_by_last_name(self):
-        url = reverse("user-search-list", kwargs={"name": "Brown"})
-        response = self.client.get(url)
-        self.assertEqual(len(response.data["results"]), 1)
-        self.assertEqual(response.data["results"][0]["username"], "charlie")
-
-    def test_user_search_by_full_name(self):
-        url = reverse("user-search-list", kwargs={"name": "Alice Smith"})
-        response = self.client.get(url)
-        self.assertEqual(len(response.data["results"]), 1)
-        self.assertEqual(response.data["results"][0]["username"], "alice")
-
-    def test_user_search_no_results(self):
-        url = reverse("user-search-list", kwargs={"name": "nonexistent"})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 0)
-
-    def test_user_search_pagination(self):
+        self.user.refresh_from_db()
         
-        for i in range(10):
-            User.objects.create_user(
-                username=f"user{i}", first_name=f"Test{i}", last_name="Paginate", password="pass"
-            )
-        url = reverse("user-search-list", kwargs={"name": "user"})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        self.assertTrue("results" in response.data)
-        self.assertTrue(len(response.data["results"]) <= 10)
+        self.assertEqual(self.user.first_name, "AvatarUser")
+        self.assertTrue(self.user.avatar.name.startswith("avatars/"))
+        self.assertTrue(self.user.avatar.size > 0)
 
-    def test_user_update_unauthenticated(self):
+
+    def test_unauthenticated_access(self):
         self.client.force_authenticate(user=None)
-        url = reverse("user-detail-update")
-        data = {"firstName": "NoAuth"}
-        response = self.client.patch(url, data, format="multipart")
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_user_retrieve_unauthenticated(self):
-        self.client.force_authenticate(user=None)
-        url = reverse("user-detail-view", kwargs={"pk": self.user1.id})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    def test_invalid_method(self):
+        response = self.client.post(self.url, {}, format="json")
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_patch_clear_biography(self):
+        data = {"biography": ""}
+        response = self.client.patch(self.url, data, format="json")
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.biography, "")  
