@@ -64,6 +64,7 @@ REST_FRAMEWORK = {
     ],
 }
 
+APPEND_SLASH = False
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 500 * 1024 * 1024
 DATA_UPLOAD_MAX_MEMORY_SIZE = 500 * 1024 * 1024
@@ -85,6 +86,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'authentication',
     'users',
+    'profiles',
 ]
 
 SPECTACULAR_SETTINGS = {

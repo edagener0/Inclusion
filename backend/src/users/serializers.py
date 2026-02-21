@@ -3,13 +3,9 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class UserListSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "first_name", "last_name", "avatar"]
-
-class UserDetailUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "username", "first_name", "last_name", "biography", "avatar"]
+        fields = ["id", "username", "email", "first_name", "last_name", "biography", "avatar"]
         read_only_fields = ["id", "username"]
+
