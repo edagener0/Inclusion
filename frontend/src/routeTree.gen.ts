@@ -9,12 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as MainRouteImport } from './routes/main'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as MainUsernameRouteImport } from './routes/_main/$username'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MainRoute = MainRouteImport.update({
   id: '/main',
   path: '/main',
@@ -26,6 +33,11 @@ const LayoutRoute = LayoutRouteImport.update({
 } as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainUsernameRoute = MainUsernameRouteImport.update({
+  id: '/_main/$username',
+  path: '/$username',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
@@ -42,45 +54,62 @@ const AuthSignInRoute = AuthSignInRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof LayoutRoute
   '/main': typeof MainRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
+  '/$username': typeof MainUsernameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof LayoutRoute
   '/main': typeof MainRoute
+  '/profile': typeof ProfileRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
+  '/$username': typeof MainUsernameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
   '/_layout': typeof LayoutRoute
   '/main': typeof MainRoute
+  '/profile': typeof ProfileRoute
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
+  '/_main/$username': typeof MainUsernameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/main' | '/sign-in' | '/sign-up'
+  fullPaths: '/' | '/main' | '/profile' | '/sign-in' | '/sign-up' | '/$username'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/main' | '/sign-in' | '/sign-up'
+  to: '/' | '/main' | '/profile' | '/sign-in' | '/sign-up' | '/$username'
   id:
     | '__root__'
     | '/_auth'
     | '/_layout'
     | '/main'
+    | '/profile'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
+    | '/_main/$username'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   LayoutRoute: typeof LayoutRoute
   MainRoute: typeof MainRoute
+  ProfileRoute: typeof ProfileRoute
+  MainUsernameRoute: typeof MainUsernameRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/main': {
       id: '/main'
       path: '/main'
@@ -100,6 +129,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_main/$username': {
+      id: '/_main/$username'
+      path: '/$username'
+      fullPath: '/$username'
+      preLoaderRoute: typeof MainUsernameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/sign-up': {
@@ -135,6 +171,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   LayoutRoute: LayoutRoute,
   MainRoute: MainRoute,
+  ProfileRoute: ProfileRoute,
+  MainUsernameRoute: MainUsernameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

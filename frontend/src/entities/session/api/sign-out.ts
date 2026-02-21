@@ -4,7 +4,7 @@ import { IS_AUTH_MARKER } from '@/shared/config';
 
 export async function signOut() {
   try {
-    await api.post('/auth/logout/');
+    await api.post('/auth/logout');
   } catch (e) {
     console.error('Logout API failed', e);
   } finally {
