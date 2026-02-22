@@ -1,3 +1,4 @@
+import { useNavigate } from '@tanstack/react-router';
 import { LogOut } from 'lucide-react';
 
 import { signOut } from '@/entities/session';
@@ -14,12 +15,13 @@ import {
 
 export function UserDropDownMenu() {
   const user = useCurrentUser();
+  const navigate = useNavigate();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-          <UserAvatar />
+          <UserAvatar url={user.avatar} username={user.username} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -32,7 +34,11 @@ export function UserDropDownMenu() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => navigate({ to: `/$username`, params: { username: user.username } })}
+        >
+          Profile
+        </DropdownMenuItem>
         <DropdownMenuItem>Settings</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem

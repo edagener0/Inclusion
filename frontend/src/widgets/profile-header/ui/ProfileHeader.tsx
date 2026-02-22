@@ -1,16 +1,8 @@
-import {
-  Briefcase,
-  GraduationCap,
-  Info,
-  MapPin,
-  MessageCircle,
-  MoreHorizontal,
-} from 'lucide-react';
+import { MessageCircle, MoreHorizontal } from 'lucide-react';
 
 import { UserAvatar, useGetUserByUsername } from '@/entities/user';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';
-import { Separator } from '@/shared/ui/separator';
 
 export function ProfileHeader({ username }: { username: string }) {
   const { data: user, isLoading } = useGetUserByUsername(username);
@@ -52,24 +44,6 @@ export function ProfileHeader({ username }: { username: string }) {
               <span className="block font-semibold text-lg">85</span>
               <span className="text-muted-foreground hover:text-foreground">подписчиков</span>
             </div>
-          </div>
-        </div>
-
-        <Separator className="my-6" />
-
-        {/* Краткая информация */}
-        <div className="flex flex-wrap gap-y-3 gap-x-8 text-sm justify-center sm:justify-start">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <MapPin className="w-4 h-4" /> Город: Москва
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Briefcase className="w-4 h-4" /> Место работы: Tech Corp
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <GraduationCap className="w-4 h-4" /> Образование: МГУ '23
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground cursor-pointer hover:text-foreground transition-colors ml-auto">
-            <Info className="w-4 h-4" /> Подробнее
           </div>
         </div>
       </CardContent>

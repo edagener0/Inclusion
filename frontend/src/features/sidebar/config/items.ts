@@ -1,10 +1,10 @@
-import { Bell, Home, Mail, Search, Settings, User } from 'lucide-react';
+import { Home, Mail, Settings, UserIcon } from 'lucide-react';
 
-export const navItems = [
-  { icon: Home, label: 'Main', active: true },
-  { icon: Search, label: 'Search' },
-  { icon: Bell, label: 'Notifications' },
-  { icon: Mail, label: 'Messages' },
-  { icon: User, label: 'Profile' },
-  { icon: Settings, label: 'Settings' },
+import type { NavItem } from '../model/types';
+
+export const navItems: NavItem[] = [
+  { icon: Home, label: 'Main', path: '/' },
+  { icon: UserIcon, label: 'Profile', path: '/profile' },
+  { icon: Mail, label: 'Messages', path: '/' },
+  { icon: Settings, label: 'Settings', path: '/' },
 ];
