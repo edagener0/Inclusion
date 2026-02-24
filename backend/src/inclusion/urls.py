@@ -19,6 +19,8 @@ urlpatterns = [
     path("incs", include("incs.urls")),
     path("posts", include("posts.urls")),
     path("notes", include("notes.urls")),
+    path("stories", include("stories.urls")),
+    
 ]
 
 if settings.DEBUG:
