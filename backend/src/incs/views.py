@@ -11,7 +11,7 @@ from .models import Inc
 class IncCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = IncSerializer
-    queryset = Inc.objects.all().order_by("id")
+    queryset = Inc.objects.all().order_by("-created_at")
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)

@@ -11,7 +11,7 @@ from .models import Post
 class PostCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
-    queryset = Post.objects.all().order_by("id")
+    queryset = Post.objects.all().order_by("-created_at")
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)

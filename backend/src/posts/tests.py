@@ -59,7 +59,7 @@ class PostAPITests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         ids = [p["id"] for p in response.data["results"]]
-        self.assertEqual(ids, sorted(ids))
+        self.assertEqual(ids, sorted(ids, reverse=True))
 
     def test_retrieve_post(self):
         post = Post.objects.create(user=self.user, description="Retrieve test", file=self.valid_image)
