@@ -87,6 +87,11 @@ INSTALLED_APPS = [
     'authentication',
     'users',
     'profiles',
+    'content',
+    'incs',
+    'notes',
+    'posts',
+    'stories',
 ]
 
 SPECTACULAR_SETTINGS = {
