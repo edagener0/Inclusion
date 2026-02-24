@@ -3,7 +3,7 @@ from rest_framework.generics import (
     RetrieveDestroyAPIView
 )
 from rest_framework.permissions import IsAuthenticated
-from content.permissions import IsOwnerOrReadOnly
+from common.permissions import IsOwnerOrReadOnly
 from .serializers import IncSerializer
 from .models import Inc
 

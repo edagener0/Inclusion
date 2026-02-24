@@ -16,7 +16,8 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
-    path("incs", include("incs.urls"))
+    path("incs", include("incs.urls")),
+    path("posts", include("posts.urls")),
 ]
 
 if settings.DEBUG:

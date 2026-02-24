@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .validators import validate_avatar
+from common.models import TimeStampedModel
 
-class User(AbstractUser):
+class User(TimeStampedModel, AbstractUser):
     avatar = models.ImageField(
         upload_to= "avatars",
         default="avatars/default.webp",

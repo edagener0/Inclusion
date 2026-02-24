@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from common.models import TimeStampedModel
 
 User = get_user_model()
 
-class Content(models.Model):
+class Content(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
