@@ -1,10 +1,11 @@
 from django.urls import reverse
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from datetime import timedelta
 from notes.models import Note
+from content.models import UserLikesContent
 
 User = get_user_model()
 
@@ -26,12 +27,8 @@ class NoteAPITest(APITestCase):
         )
         self.list_url = reverse("note-create-list")
         self.detail_url = reverse(
-            "note-retrieve",
-            kwargs={"pk": self.note.pk}
-        )
-        self.delete_url = reverse(
-            "content-delete",
-            kwargs={"pk": self.note.pk}
+            "note-retrieve-destroy",
+            kwargs={"note_id": self.note.pk}
         )
 
     def test_list_notes_authenticated(self):
@@ -60,13 +57,13 @@ class NoteAPITest(APITestCase):
 
     def test_delete_note_owner(self):
         self.client.force_authenticate(self.user)
-        response = self.client.delete(self.delete_url)
+        response = self.client.delete(self.detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Note.objects.count(), 0)
 
     def test_delete_note_not_owner(self):
         self.client.force_authenticate(self.other_user)
-        response = self.client.delete(self.delete_url)
+        response = self.client.delete(self.detail_url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(Note.objects.count(), 1)
 
@@ -95,3 +92,92 @@ class NoteAPITest(APITestCase):
         response = self.client.get(self.list_url)
         contents = [note["content"] for note in response.data["results"]]
         self.assertIn("Nota do dia", contents)
+
+
+class NoteLikeViewTests(APITestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+
+        self.user = User.objects.create_user(
+            username="gabriel",
+            email="gabriel@test.com",
+            password="testpass123"
+        )
+        self.other_user = User.objects.create_user(
+            username="other",
+            email="other@test.com",
+            password="testpass123"
+        )
+
+        self.note = Note.objects.create(
+            user=self.user,
+            content="Minha nota"
+        )
+
+        self.like_url = reverse("note-like", kwargs={"note_id": self.note.pk})
+
+    def test_like_note_authenticated(self):
+        self.client.force_authenticate(user=self.other_user)
+        response = self.client.post(self.like_url)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(response.data["liked"])
+        self.assertEqual(response.data["detail"], "Liked Successfully!")
+
+        self.assertTrue(
+            UserLikesContent.objects.filter(
+                user=self.other_user,
+                content=self.note
+            ).exists()
+        )
+
+    def test_like_note_twice(self):
+        self.client.force_authenticate(user=self.other_user)
+
+        self.client.post(self.like_url)
+
+        response = self.client.post(self.like_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.data["liked"])
+        self.assertEqual(response.data["detail"], "You've already liked the content")
+        self.assertEqual(
+            UserLikesContent.objects.filter(
+                user=self.other_user,
+                content=self.note
+            ).count(),
+            1
+        )
+
+    def test_like_note_unauthenticated(self):
+        response = self.client.post(self.like_url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_unlike_note_success(self):
+        UserLikesContent.objects.create(user=self.other_user, content=self.note)
+        self.client.force_authenticate(user=self.other_user)
+
+        response = self.client.delete(self.like_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data["liked"])
+        self.assertEqual(response.data["detail"], "Unliked successfully")
+
+        self.assertFalse(
+            UserLikesContent.objects.filter(
+                user=self.other_user,
+                content=self.note
+            ).exists()
+        )
+
+    def test_unlike_note_not_liked(self):
+        self.client.force_authenticate(user=self.other_user)
+        response = self.client.delete(self.like_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data["liked"])
+        self.assertEqual(response.data["detail"], "You had not liked this content")
+
+    def test_unlike_note_unauthenticated(self):
+        response = self.client.delete(self.like_url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

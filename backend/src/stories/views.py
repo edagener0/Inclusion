@@ -1,17 +1,22 @@
 from rest_framework.generics import (
     ListCreateAPIView,
-    RetrieveAPIView
+    RetrieveDestroyAPIView
 )
 from rest_framework.permissions import IsAuthenticated
 from common.permissions import IsOwnerOrReadOnly
-from .serializers import StoriesSerializer
+from .serializers import StorySerializer
 from .models import Story
 from django.utils import timezone
 from datetime import timedelta
+from rest_framework.views import APIView
+from content.utils import (
+    create_like_for_content,
+    remove_like_from_content,
+)
 
-class StoriesCreateListView(ListCreateAPIView):
+class StoryCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = StoriesSerializer
+    serializer_class = StorySerializer
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
@@ -21,7 +26,18 @@ class StoriesCreateListView(ListCreateAPIView):
         last_24h = now - timedelta(hours=24)
         return Story.objects.filter(created_at__gte=last_24h).order_by("-created_at")
     
-class StoriesRetrieveView(RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = StoriesSerializer
+class StoryRetrieveDestroyView(RetrieveDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    serializer_class = StorySerializer
     queryset = Story.objects.all()
+    lookup_url_kwarg = "story_id"
+    lookup_field = "id"
+
+class StoryLikeView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, story_id):
+        return create_like_for_content(request, story_id)
+
+    def delete(self, request, story_id):
+        return remove_like_from_content(request, story_id)

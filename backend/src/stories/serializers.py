@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Story
 from common.serializers import ProfileFeedSerializer
 
-class StoriesSerializer(serializers.ModelSerializer):
+class StorySerializer(serializers.ModelSerializer):
     user = ProfileFeedSerializer(read_only=True)
 
     class Meta:

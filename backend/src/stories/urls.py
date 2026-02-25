@@ -1,10 +1,12 @@
 from django.urls import path
 from .views import (
-    StoriesCreateListView,
-    StoriesRetrieveView
+    StoryCreateListView,
+    StoryRetrieveDestroyView,
+    StoryLikeView,
 )
 
 urlpatterns = [
-    path("", StoriesCreateListView.as_view(), name="stories-create-list"),
-    path("/<int:pk>", StoriesRetrieveView.as_view(), name="stories-retrieve")
+    path("", StoryCreateListView.as_view(), name="story-create-list"),
+    path("/<int:story_id>", StoryRetrieveDestroyView.as_view(), name="story-retrieve-destroy"),
+    path("/<int:story_id>/like", StoryLikeView.as_view(), name="story-like"),
 ]

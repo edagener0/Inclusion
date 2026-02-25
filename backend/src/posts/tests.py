@@ -1,10 +1,11 @@
-# posts/tests.py
+
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
 from posts.models import Post
+from content.models import UserLikesContent
 
 User = get_user_model()
 
@@ -64,14 +65,14 @@ class PostAPITests(APITestCase):
     def test_retrieve_post(self):
         post = Post.objects.create(user=self.user, description="Retrieve test", file=self.valid_image)
         self.authenticate()
-        url = reverse("post-retrieve", args=[post.pk])
+        url = reverse("post-retrieve-destroy", args=[post.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_post_as_owner(self):
         post = Post.objects.create(user=self.user, description="Delete test", file=self.valid_image)
         self.authenticate()
-        url = reverse("content-delete", args=[post.pk])
+        url = reverse("post-retrieve-destroy", args=[post.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Post.objects.count(), 0)
@@ -79,7 +80,7 @@ class PostAPITests(APITestCase):
     def test_cannot_delete_post_as_non_owner(self):
         post = Post.objects.create(user=self.other_user, description="Other's post", file=self.valid_image)
         self.authenticate()
-        url = reverse("content-delete", args=[post.pk])
+        url = reverse("post-retrieve-destroy", args=[post.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(Post.objects.count(), 1)
@@ -87,6 +88,80 @@ class PostAPITests(APITestCase):
     def test_get_permissions_allow_read_to_any_authenticated_user(self):
         post = Post.objects.create(user=self.other_user, description="Public readable", file=self.valid_image)
         self.authenticate()
-        url = reverse("post-retrieve", args=[post.pk])
+        url = reverse("post-retrieve-destroy", args=[post.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class PostLikeViewTests(APITestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.other_user = User.objects.create_user(username="otheruser", password="otherpass")
+        self.post = Post.objects.create(user=self.user, description="Test post", file=None)
+
+        self.like_url = reverse("post-like", kwargs={"post_id": self.post.pk})
+
+    def test_like_post_authenticated(self):
+        self.client.force_authenticate(user=self.other_user)
+        response = self.client.post(self.like_url)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(response.data["liked"])
+        self.assertEqual(response.data["detail"], "Liked Successfully!")
+
+        self.assertTrue(
+            UserLikesContent.objects.filter(
+                user=self.other_user,
+                content=self.post
+            ).exists()
+        )
+
+    def test_like_post_twice(self):
+        self.client.force_authenticate(user=self.other_user)
+        self.client.post(self.like_url)  
+        response = self.client.post(self.like_url)  
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.data["liked"])
+        self.assertEqual(response.data["detail"], "You've already liked the content")
+        self.assertEqual(
+            UserLikesContent.objects.filter(
+                user=self.other_user,
+                content=self.post
+            ).count(),
+            1
+        )
+
+    def test_like_post_unauthenticated(self):
+        response = self.client.post(self.like_url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_unlike_post_success(self):
+        UserLikesContent.objects.create(user=self.other_user, content=self.post)
+        self.client.force_authenticate(user=self.other_user)
+
+        response = self.client.delete(self.like_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data["liked"])
+        self.assertEqual(response.data["detail"], "Unliked successfully")
+
+        self.assertFalse(
+            UserLikesContent.objects.filter(
+                user=self.other_user,
+                content=self.post
+            ).exists()
+        )
+
+    def test_unlike_post_not_liked(self):
+        self.client.force_authenticate(user=self.other_user)
+        response = self.client.delete(self.like_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data["liked"])
+        self.assertEqual(response.data["detail"], "You had not liked this content")
+
+    def test_unlike_post_unauthenticated(self):
+        response = self.client.delete(self.like_url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
