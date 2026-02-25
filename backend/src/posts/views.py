@@ -17,6 +17,6 @@ class PostCreateListView(ListCreateAPIView):
         serializer.save(user = self.request.user)
 
 class PostRetrieveView(RetrieveAPIView):
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
     queryset = Post.objects.all()
