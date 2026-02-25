@@ -11,7 +11,6 @@ from datetime import timedelta
 class NoteCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = NoteSerializer
-    queryset = Note.objects.all().order_by("-created_at")
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
@@ -21,7 +20,7 @@ class NoteCreateListView(ListCreateAPIView):
         last_24h = now - timedelta(hours=24)
         return Note.objects.filter(created_at__gte=last_24h).order_by("-created_at")
 
-class NoteRetrieveDestroyView(RetrieveAPIView):
+class NoteRetrieveView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = NoteSerializer
     queryset = Note.objects.all()

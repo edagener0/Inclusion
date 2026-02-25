@@ -21,7 +21,7 @@ class StoriesCreateListView(ListCreateAPIView):
         last_24h = now - timedelta(hours=24)
         return Story.objects.filter(created_at__gte=last_24h).order_by("-created_at")
     
-class StoriesRetrieveDestroyView(RetrieveAPIView):
+class StoriesRetrieveView(RetrieveAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = StoriesSerializer
     queryset = Story.objects.all()

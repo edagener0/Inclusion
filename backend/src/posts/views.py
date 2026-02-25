@@ -16,7 +16,7 @@ class PostCreateListView(ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
 
-class PostRetrieveDestroyView(RetrieveAPIView):
+class PostRetrieveView(RetrieveAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.all()

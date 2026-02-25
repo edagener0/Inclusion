@@ -20,7 +20,7 @@ urlpatterns = [
     path("posts", include("posts.urls")),
     path("notes", include("notes.urls")),
     path("stories", include("stories.urls")),
-    
+    path("comments", include("comments.urls")),
 ]
 
 if settings.DEBUG:
