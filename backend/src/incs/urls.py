@@ -1,10 +1,10 @@
 from django.urls import path
 from .views import (
     IncCreateListView,
-    IncRetrieveDestroyView
+    IncRetrieveView
 )
 
 urlpatterns = [
-    path("", IncCreateListView.as_view(), name="inc-create"),
-    path("/<int:pk>", IncRetrieveDestroyView.as_view(), name="inc-retrieve-destroy")
+    path("", IncCreateListView.as_view(), name="inc-create-list"),
+    path("/<int:pk>", IncRetrieveView.as_view(), name="inc-retrieve")
 ]

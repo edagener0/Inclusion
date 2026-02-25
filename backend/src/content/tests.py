@@ -37,15 +37,15 @@ class LikeContentViewTests(TestCase):
 
         
         self.content_url = reverse(
-            "like-content",
+            "content-like",
             kwargs={"content_id": self.content.id},
         )
         self.short_url = reverse(
-            "like-content",
+            "content-like",
             kwargs={"content_id": self.short_content.id},
         )
         self.long_url = reverse(
-            "like-content",
+            "content-like",
             kwargs={"content_id": self.long_content.id},
         )
 
@@ -178,3 +178,62 @@ class LikeContentViewTests(TestCase):
                 content=self.long_content,
             ).exists()
         )
+
+class ContentDestroyViewTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+        self.owner = User.objects.create_user(
+            username="owner",
+            email="owner@example.com",
+            password="password123",
+        )
+
+        self.other_user = User.objects.create_user(
+            username="other",
+            email="other@example.com",
+            password="password123",
+        )
+
+        self.content = Content.objects.create(user=self.owner)
+
+        self.url = reverse(
+            "content-delete",
+            kwargs={"pk": self.content.id},
+        )
+
+    def test_owner_can_delete_content(self):
+        self.client.force_authenticate(user=self.owner)
+
+        response = self.client.delete(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(
+            Content.objects.filter(id=self.content.id).exists()
+        )
+
+    def test_other_user_cannot_delete_content(self):
+        self.client.force_authenticate(user=self.other_user)
+
+        response = self.client.delete(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertTrue(
+            Content.objects.filter(id=self.content.id).exists()
+        )
+
+    def test_unauthenticated_user_cannot_delete(self):
+        self.client.force_authenticate(user=None)
+
+        response = self.client.delete(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_delete_nonexistent_content_returns_404(self):
+        self.client.force_authenticate(user=self.owner)
+
+        url = reverse("content-delete", kwargs={"pk": 999})
+
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

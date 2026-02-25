@@ -1,6 +1,6 @@
 from rest_framework.generics import (
     ListCreateAPIView,
-    RetrieveDestroyAPIView
+    RetrieveAPIView
 )
 from rest_framework.permissions import IsAuthenticated
 from common.permissions import IsOwnerOrReadOnly
@@ -16,7 +16,7 @@ class IncCreateListView(ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
 
-class IncRetrieveDestroyView(RetrieveDestroyAPIView):
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+class IncRetrieveView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = IncSerializer
     queryset = Inc.objects.all()

@@ -1,12 +1,12 @@
 from rest_framework.generics import (
     ListCreateAPIView,
-    RetrieveDestroyAPIView
+    RetrieveAPIView
 )
 from rest_framework.permissions import IsAuthenticated
-from common.permissions import IsOwnerOrReadOnly
 from .serializers import NoteSerializer
 from .models import Note
-
+from django.utils import timezone
+from datetime import timedelta
 
 class NoteCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
@@ -16,7 +16,12 @@ class NoteCreateListView(ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
 
-class NoteRetrieveDestroyView(RetrieveDestroyAPIView):
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    def get_queryset(self):
+        now = timezone.now()
+        last_24h = now - timedelta(hours=24)
+        return Note.objects.filter(created_at__gte=last_24h).order_by("-created_at")
+
+class NoteRetrieveDestroyView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = NoteSerializer
     queryset = Note.objects.all()

@@ -4,10 +4,10 @@ from rest_framework import status
 from django.contrib.auth import get_user_model
 from stories.models import Story
 from django.core.files.uploadedfile import SimpleUploadedFile
-
+from django.utils import timezone
+from datetime import timedelta
 
 User = get_user_model()
-
 
 def create_test_file():
     return SimpleUploadedFile(
@@ -15,7 +15,6 @@ def create_test_file():
         b"file_content",
         content_type="image/jpeg"
     )
-
 
 class StoriesAPITest(APITestCase):
 
@@ -30,14 +29,11 @@ class StoriesAPITest(APITestCase):
             email="user2@test.com",
             password="pass1234"
         )
-
-        self.list_url = reverse("stories-create")
-
+        self.list_url = reverse("stories-create-list")
 
     def test_list_requires_authentication(self):
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
 
     def test_list_stories_authenticated(self):
         self.client.force_authenticate(self.user)
@@ -46,10 +42,8 @@ class StoriesAPITest(APITestCase):
 
     def test_create_story(self):
         self.client.force_authenticate(self.user)
-
         data = {"file": create_test_file()}
         response = self.client.post(self.list_url, data, format="multipart")
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Story.objects.count(), 1)
         self.assertEqual(Story.objects.first().user, self.user)
@@ -59,10 +53,8 @@ class StoriesAPITest(APITestCase):
             user=self.user,
             file=create_test_file()
         )
-
         self.client.force_authenticate(self.user)
-        url = reverse("stories-retrieve-destroy", args=[story.id])
-
+        url = reverse("stories-retrieve", args=[story.id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -71,22 +63,44 @@ class StoriesAPITest(APITestCase):
             user=self.user,
             file=create_test_file()
         )
-
         self.client.force_authenticate(self.user)
-        url = reverse("stories-retrieve-destroy", args=[story.id])
-
+        url = reverse("content-delete", args=[story.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-
 
     def test_non_owner_cannot_delete_story(self):
         story = Story.objects.create(
             user=self.user,
             file=create_test_file()
         )
-
         self.client.force_authenticate(self.other_user)
-        url = reverse("stories-retrieve-destroy", args=[story.id])
-
+        url = reverse("content-delete", args=[story.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_list_only_stories_last_24h(self):
+        self.client.force_authenticate(self.user)
+        recent_story = Story.objects.create(
+            user=self.user,
+            file=create_test_file()
+        )
+        old_story = Story.objects.create(
+            user=self.user,
+            file=create_test_file()
+        )
+        Story.objects.filter(pk=old_story.pk).update(
+            created_at=timezone.now() - timedelta(days=2)
+        )
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        story_ids = [s["id"] for s in response.data["results"]]
+        self.assertIn(recent_story.id, story_ids)
+        self.assertNotIn(old_story.id, story_ids)
+
+    def test_create_story_is_listed_in_last_24h(self):
+        self.client.force_authenticate(self.user)
+        data = {"file": create_test_file()}
+        self.client.post(self.list_url, data, format="multipart")
+        response = self.client.get(self.list_url)
+        story_contents = [s["id"] for s in response.data["results"]]
+        self.assertTrue(len(story_contents) >= 1)

@@ -1,9 +1,12 @@
 from django.db import models
 from content.models import ShortFormContent
-from posts.validators import validate_post_file
+from common.validators import (
+    validate_media_file_size,
+    validate_media_file_extension
+)
 
 class Story(ShortFormContent):
     file = models.FileField(
         upload_to="stories/",
-        validators=[validate_post_file]
+        validators=[validate_media_file_extension, validate_media_file_size]
     )

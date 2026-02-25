@@ -5,6 +5,6 @@ from .views import (
 )
 
 urlpatterns = [
-    path("", PostCreateListView.as_view(), name="post-create"),
-    path("/<int:pk>", PostRetrieveDestroyView.as_view(), name="post-retrieve-destroy")
+    path("", PostCreateListView.as_view(), name="post-create-list"),
+    path("/<int:pk>", PostRetrieveDestroyView.as_view(), name="post-retrieve")
 ]

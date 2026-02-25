@@ -5,6 +5,6 @@ from .views import (
 )
 
 urlpatterns = [
-    path("", StoriesCreateListView.as_view(), name="stories-create"),
-    path("/<int:pk>", StoriesRetrieveDestroyView.as_view(), name="stories-retrieve-destroy")
+    path("", StoriesCreateListView.as_view(), name="stories-create-list"),
+    path("/<int:pk>", StoriesRetrieveDestroyView.as_view(), name="stories-retrieve")
 ]

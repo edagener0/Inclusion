@@ -1,6 +1,6 @@
 from rest_framework.generics import (
     ListCreateAPIView,
-    RetrieveDestroyAPIView
+    RetrieveAPIView
 )
 from rest_framework.permissions import IsAuthenticated
 from common.permissions import IsOwnerOrReadOnly
@@ -16,7 +16,7 @@ class PostCreateListView(ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
 
-class PostRetrieveDestroyView(RetrieveDestroyAPIView):
+class PostRetrieveDestroyView(RetrieveAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.all()

@@ -1,11 +1,13 @@
 from rest_framework.views import APIView
+from rest_framework.generics import DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from .models import UserLikesContent, Content
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
+from common.permissions import IsOwner
 
-class LikeContentView(APIView):
+class ContentLikeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, content_id):
@@ -40,3 +42,8 @@ class LikeContentView(APIView):
             },
             status = status.HTTP_200_OK
         )
+
+
+class ContentDestroyView(DestroyAPIView):
+    permission_classes = [IsAuthenticated, IsOwner]
+    queryset = Content.objects.all()
