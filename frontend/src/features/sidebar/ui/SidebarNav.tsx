@@ -8,22 +8,39 @@ import { navItems } from '../config/items';
 // variant={item.active ? 'secondary' : 'ghost'}
 export const SidebarNav = ({ mobile = false }: { mobile?: boolean }) => {
   return (
-    <nav className={`flex flex-col ${mobile ? 'gap-0.5 px-2' : 'gap-1'}`}>
+    <nav className={`flex flex-col ${mobile ? 'gap-1 px-2' : 'gap-1.5'}`}>
       {navItems.map((item, index) => (
-        <Button
+        <Link
           key={index}
-          asChild
-          variant="ghost"
-          className={cn(
-            'justify-start gap-4 transition-all rounded-xl w-full', // Добавил w-full на всякий случай
-            mobile ? 'h-11 text-base px-3 font-normal' : 'h-12 text-lg px-4 font-medium',
-          )}
+          {...(item.label === 'Settings'
+            ? { to: '.', search: { modal: 'user-settings' } }
+            : { to: item.path! })}
+          className="block w-full"
         >
-          <Link to={item.path}>
-            <item.icon className={mobile ? 'h-5 w-5' : 'h-6 w-6'} />
+          <Button
+            variant="ghost"
+            className={cn(
+              'group w-full justify-start gap-3 rounded-lg',
+
+              'text-muted-foreground hover:text-foreground',
+
+              'bg-transparent hover:bg-muted/50',
+
+              'transition-all duration-300 ease-out',
+
+              mobile ? 'h-10 text-sm px-3 font-normal' : 'h-10 text-base px-4 font-semibold',
+            )}
+          >
+            <item.icon
+              className={cn(
+                // Легкий микроинтеракшн иконки при наведении
+                'transition-transform duration-300 group-hover:scale-110',
+                mobile ? 'h-4 w-4' : 'h-4 w-4 mr-1',
+              )}
+            />
             {item.label}
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       ))}
     </nav>
   );

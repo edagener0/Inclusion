@@ -1,12 +1,24 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, isRedirect, redirect } from '@tanstack/react-router';
 
-import { useUserStore } from '@/entities/user';
+import { sessionQueryOptions } from '@/entities/session';
 
 export const Route = createFileRoute('/_main/profile')({
-  beforeLoad: async () => {
-    const user = useUserStore.getState().user;
-    if (!user) throw redirect({ to: '/sign-in' });
+  beforeLoad: async ({ context }) => {
+    try {
+      const user = await context.queryClient.fetchQuery(sessionQueryOptions);
 
-    throw redirect({ to: '/$username', params: { username: user!.username } });
+      if (!user) {
+        throw redirect({ to: '/sign-in' });
+      }
+
+      throw redirect({
+        to: '/$username',
+        params: { username: user.username },
+      });
+    } catch (error) {
+      if (isRedirect(error)) throw error;
+
+      throw redirect({ to: '/sign-in' });
+    }
   },
 });
