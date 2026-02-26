@@ -17,7 +17,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container mx-auto max-w-6xl flex h-16 items-center justify-between px-4">
-        <div className="flex md:w-64 shrink-0 items-center gap-2">
+        <div className="flex md:w-50 shrink-0 items-center gap-2">
           <div className="md:hidden">
             <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
               <SheetTrigger asChild>
@@ -48,7 +48,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2 md:gap-4 shrink-0">
-          <div className="relative hidden sm:block w-40 md:w-64">
+          <div className="relative hidden sm:block w-40 md:w-50">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search..."

@@ -1,8 +1,8 @@
 import { useNavigate } from '@tanstack/react-router';
 import { LogOut } from 'lucide-react';
 
-import { signOut } from '@/entities/session';
-import { UserAvatar, useCurrentUser } from '@/entities/user';
+import { ProfileAvatar } from '@/entities/profile';
+import { signOut, useStrictSession } from '@/entities/session';
 import { Button } from '@/shared/ui/button';
 import {
   DropdownMenu,
@@ -14,14 +14,14 @@ import {
 } from '@/shared/ui/dropdown-menu';
 
 export function UserDropDownMenu() {
-  const user = useCurrentUser();
+  const user = useStrictSession();
   const navigate = useNavigate();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-          <UserAvatar url={user.avatar} username={user.username} />
+          <ProfileAvatar avatar={user.avatar} username={user.username} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -39,7 +39,9 @@ export function UserDropDownMenu() {
         >
           Profile
         </DropdownMenuItem>
-        <DropdownMenuItem>Settings</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => navigate({ to: '.', search: { modal: 'user-settings' } })}>
+          Settings
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="text-red-600 focus:text-red-600"

@@ -2,24 +2,20 @@ import { Outlet, createFileRoute, isRedirect, redirect } from '@tanstack/react-r
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 import { sessionQueryOptions } from '@/entities/session';
-import { useUserStore } from '@/entities/user';
 import { SidebarNav } from '@/features/sidebar';
 import { APP_NAME, IS_AUTH_MARKER } from '@/shared/config';
 import { Header } from '@/widgets/header';
 
-export const Route = createFileRoute('/_layout')({
+export const Route = createFileRoute('/_main')({
   beforeLoad: async ({ context, location }) => {
     const publicPaths = ['/sign-in', '/sign-up'];
     const isPublic = publicPaths.some(path => location.pathname.startsWith(path));
-
-    const { setUser } = useUserStore.getState();
 
     const hasAuthMarker = localStorage.getItem(IS_AUTH_MARKER) === 'true';
     if (isPublic && !hasAuthMarker) return;
 
     try {
-      const user = await context.queryClient.ensureQueryData(sessionQueryOptions);
-      setUser(user);
+      await context.queryClient.fetchQuery(sessionQueryOptions);
 
       if (isPublic) throw redirect({ to: '/' });
     } catch (err: unknown) {
@@ -36,7 +32,7 @@ function RouteComponent() {
       <Header />
 
       <div className="container mx-auto max-w-6xl flex flex-1 items-start px-4">
-        <aside className="hidden md:flex flex-col w-64 shrink-0 sticky top-16 h-[calc(100vh-4rem)] py-6 border-r pr-4">
+        <aside className="hidden md:flex flex-col w-50 shrink-0 sticky top-16 h-[calc(100vh-4rem)] py-6 border-r pr-4">
           <SidebarNav />
 
           <div className="mt-auto border-t pt-4">
