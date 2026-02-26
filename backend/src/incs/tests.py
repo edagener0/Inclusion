@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from .models import Inc
 from content.models import UserLikesContent
+from comments.models import Comment
 
 User = get_user_model()
 
@@ -243,3 +244,62 @@ class IncLikeViewTests(APITestCase):
         response = self.client.delete(self.like_url)
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+class IncCommentsAPITests(APITestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user1 = User.objects.create_user(username="user1", password="pass")
+        self.user2 = User.objects.create_user(username="user2", password="pass")
+        self.inc = Inc.objects.create(user=self.user1, content="Test Inc Content")
+        self.url = reverse("inc-comments-create-list", kwargs={"inc_id": self.inc.pk})
+
+    def authenticate(self, user=None):
+        self.client.force_authenticate(user=user or self.user1)
+
+    def test_authentication_required_for_list_and_create(self):
+        
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        
+        response = self.client.post(self.url, {"commentary": "Unauthorized"})
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_comment_authenticated(self):
+        self.authenticate()
+        response = self.client.post(self.url, {"commentary": "My first comment"})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Comment.objects.count(), 1)
+        comment = Comment.objects.first()
+        self.assertEqual(comment.commentary, "My first comment")
+        self.assertEqual(comment.user, self.user1)
+
+    def test_create_comment_invalid_data(self):
+        self.authenticate()
+        response = self.client.post(self.url, {"commentary": ""})  
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Comment.objects.count(), 0)
+
+    def test_list_comments_authenticated(self):
+        Comment.objects.create(user=self.user1, lf_content=self.inc, commentary="First comment")
+        Comment.objects.create(user=self.user2, lf_content=self.inc, commentary="Second comment")
+
+        self.authenticate()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        texts = [c["commentary"] for c in response.data["results"]]
+        self.assertIn("First comment", texts)
+        self.assertIn("Second comment", texts)
+
+    def test_list_comments_only_for_given_inc(self):
+        other_inc = Inc.objects.create(user=self.user1, content="Other Inc")
+        Comment.objects.create(user=self.user1, lf_content=other_inc, commentary="Other Inc Comment")
+        Comment.objects.create(user=self.user1, lf_content=self.inc, commentary="This Inc Comment")
+
+        self.authenticate()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        texts = [c["commentary"] for c in response.data["results"]]
+        self.assertIn("This Inc Comment", texts)
+        self.assertNotIn("Other Inc Comment", texts)

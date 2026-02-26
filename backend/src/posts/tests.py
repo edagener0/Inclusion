@@ -6,6 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
 from posts.models import Post
 from content.models import UserLikesContent
+from comments.models import Comment
 
 User = get_user_model()
 
@@ -165,3 +166,60 @@ class PostLikeViewTests(APITestCase):
     def test_unlike_post_unauthenticated(self):
         response = self.client.delete(self.like_url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+class PostCommentsAPITests(APITestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.other_user = User.objects.create_user(username="otheruser", password="otherpass")
+        self.post = Post.objects.create(user=self.user, description="Test Post", file=None)
+        self.comments_url = reverse("post-comments-create-list", kwargs={"post_id": self.post.pk})
+
+    def authenticate(self, user=None):
+        self.client.force_authenticate(user=user or self.user)
+
+    def test_authentication_required_for_list_and_create(self):
+        res_list = self.client.get(self.comments_url)
+        self.assertEqual(res_list.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        res_create = self.client.post(self.comments_url, {"commentary": "Unauthorized comment"})
+        self.assertEqual(res_create.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_comment_authenticated(self):
+        self.authenticate()
+        response = self.client.post(self.comments_url, {"commentary": "Test comment"})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Comment.objects.count(), 1)
+        comment = Comment.objects.first()
+        self.assertEqual(comment.commentary, "Test comment")
+        self.assertEqual(comment.user, self.user)
+
+    def test_create_comment_invalid_data(self):
+        self.authenticate()
+        response = self.client.post(self.comments_url, {"commentary": ""})  
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Comment.objects.count(), 0)
+
+    def test_list_comments_authenticated(self):
+        Comment.objects.create(user=self.user, lf_content=self.post, commentary="First comment")
+        Comment.objects.create(user=self.other_user, lf_content=self.post, commentary="Second comment")
+        
+        self.authenticate()
+        response = self.client.get(self.comments_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        texts = [c["commentary"] for c in response.data["results"]]
+        self.assertIn("First comment", texts)
+        self.assertIn("Second comment", texts)
+
+    def test_list_comments_only_for_given_post(self):
+        other_post = Post.objects.create(user=self.user, description="Other Post", file=None)
+        Comment.objects.create(user=self.user, lf_content=other_post, commentary="Other post comment")
+        Comment.objects.create(user=self.user, lf_content=self.post, commentary="This post comment")
+
+        self.authenticate()
+        response = self.client.get(self.comments_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        texts = [c["commentary"] for c in response.data["results"]]
+        self.assertIn("This post comment", texts)
+        self.assertNotIn("Other post comment", texts)

@@ -11,6 +11,13 @@ from content.utils import (
     create_like_for_content,
     remove_like_from_content
 )
+from comments.serializers import CommentSerializer
+from django.shortcuts import get_object_or_404
+from comments.models import Comment
+from content.utils import (
+    create_comment_for_lf_content,
+    get_queryset_comments_for_lf_content,
+)
 
 class IncCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
@@ -36,3 +43,22 @@ class IncLikeView(APIView):
 
     def delete(self, request, inc_id):
         return remove_like_from_content(request, inc_id)
+    
+
+class IncCommentsCreateListView(ListCreateAPIView):
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def perform_create(self, serializer):
+        create_comment_for_lf_content(
+            Inc,
+            self.kwargs["inc_id"],
+            serializer,
+            self.request.user
+        )
+
+    def get_queryset(self):
+        return get_queryset_comments_for_lf_content(
+            Inc,
+            self.kwargs["inc_id"]
+        )

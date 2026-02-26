@@ -2,6 +2,7 @@ from .models import UserLikesContent, Content
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
+from comments.models import Comment
 
 def create_like_for_content(request, content_id):
     content = get_object_or_404(Content, id = content_id)
@@ -34,3 +35,11 @@ def remove_like_from_content(request, content_id):
         },
         status = status.HTTP_200_OK
     )
+
+def create_comment_for_lf_content(kclass, lf_content_id, serializer, user):
+    lf_content = get_object_or_404(kclass, pk=lf_content_id)
+    serializer.save(lf_content=lf_content, user=user)
+
+def get_queryset_comments_for_lf_content(kclass, lf_content_id):
+    lf_content = get_object_or_404(kclass, pk=lf_content_id)
+    return Comment.objects.filter(lf_content=lf_content).order_by("-created_at")
