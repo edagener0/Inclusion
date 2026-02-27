@@ -40,6 +40,11 @@ def create_comment_for_lf_content(kclass, lf_content_id, serializer, user):
     lf_content = get_object_or_404(kclass, pk=lf_content_id)
     serializer.save(lf_content=lf_content, user=user)
 
-def get_queryset_comments_for_lf_content(kclass, lf_content_id):
+def get_queryset_comments_for_lf_content(kclass, lf_content_id, user):
     lf_content = get_object_or_404(kclass, pk=lf_content_id)
-    return Comment.objects.filter(lf_content=lf_content).order_by("-created_at")
+    return (
+        Comment.objects
+        .with_likes_data(user)
+        .filter(lf_content=lf_content)
+        .order_by("-likes_count")
+    )

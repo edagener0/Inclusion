@@ -24,7 +24,13 @@ class StoryCreateListView(ListCreateAPIView):
     def get_queryset(self):
         now = timezone.now()
         last_24h = now - timedelta(hours=24)
-        return Story.objects.filter(created_at__gte=last_24h).order_by("-created_at")
+
+        return (
+            Story.objects
+            .with_likes_data(self.request.user)
+            .filter(created_at__gte=last_24h)
+            .order_by("-likes_count")
+        )
     
 class StoryRetrieveDestroyView(RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
@@ -32,6 +38,18 @@ class StoryRetrieveDestroyView(RetrieveDestroyAPIView):
     queryset = Story.objects.all()
     lookup_url_kwarg = "story_id"
     lookup_field = "id"
+
+    def get_queryset(self):
+        now = timezone.now()
+        last_24h = now - timedelta(hours=24)
+
+        return (
+            Story.objects
+            .with_likes_data(self.request.user)
+            .filter(created_at__gte=last_24h)
+            .order_by("-likes_count")
+        )
+        
 
 class StoryLikeView(APIView):
     permission_classes = [IsAuthenticated]

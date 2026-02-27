@@ -20,17 +20,28 @@ from content.utils import (
 class PostCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
-    queryset = Post.objects.all().order_by("-created_at")
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
 
+    def get_queryset(self):
+        return (
+            Post.objects
+            .with_likes_data(self.request.user)
+            .order_by("-likes_count")
+        )
+
 class PostRetrieveDestroyView(RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
-    queryset = Post.objects.all()
     lookup_url_kwarg = "post_id"
     lookup_field = "id"
+
+    def get_queryset(self):
+        return (
+            Post.objects
+            .with_likes_data(self.request.user)
+        )
 
 class PostLikeView(APIView):
     permission_classes = [IsAuthenticated]
@@ -56,5 +67,6 @@ class PostCommentsCreateListView(ListCreateAPIView):
     def get_queryset(self):
         return get_queryset_comments_for_lf_content(
             Post,
-            self.kwargs["post_id"]
+            self.kwargs["post_id"],
+            self.request.user
         )

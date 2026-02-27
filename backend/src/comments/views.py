@@ -12,9 +12,15 @@ from content.utils import (
 class CommentRetrieveDestroyView(RetrieveDestroyAPIView):
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
-    queryset = Comment.objects.all()
     lookup_url_kwarg = "comment_id"
     lookup_field = "id"
+
+    def get_queryset(self):
+        return (
+            Comment.objects
+            .with_likes_data(self.request.user)
+            .order_by("-likes_count")
+        )
 
 class CommentLikeView(APIView):
     permission_classes = [IsAuthenticated]

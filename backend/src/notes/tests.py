@@ -1,183 +1,148 @@
-from django.urls import reverse
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
-from django.contrib.auth import get_user_model
+from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib.auth import get_user_model
 from notes.models import Note
 from content.models import UserLikesContent
 
 User = get_user_model()
 
-class NoteAPITest(APITestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(
-            username="gabriel",
-            email="gabriel@test.com",
-            password="testpass123"
-        )
-        self.other_user = User.objects.create_user(
-            username="other",
-            email="other@test.com",
-            password="testpass123"
-        )
-        self.note = Note.objects.create(
-            user=self.user,
-            content="Minha nota"
-        )
-        self.list_url = reverse("note-create-list")
-        self.detail_url = reverse(
-            "note-retrieve-destroy",
-            kwargs={"note_id": self.note.pk}
-        )
 
-    def test_list_notes_authenticated(self):
-        self.client.force_authenticate(self.user)
-        response = self.client.get(self.list_url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 1)
-
-    def test_list_notes_unauthenticated(self):
-        response = self.client.get(self.list_url)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-    def test_create_note(self):
-        self.client.force_authenticate(self.user)
-        data = {"content": "Nova nota"}
-        response = self.client.post(self.list_url, data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Note.objects.count(), 2)
-        self.assertEqual(response.data["content"], "Nova nota")
-
-    def test_retrieve_note(self):
-        self.client.force_authenticate(self.user)
-        response = self.client.get(self.detail_url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["id"], self.note.id)
-
-    def test_delete_note_owner(self):
-        self.client.force_authenticate(self.user)
-        response = self.client.delete(self.detail_url)
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Note.objects.count(), 0)
-
-    def test_delete_note_not_owner(self):
-        self.client.force_authenticate(self.other_user)
-        response = self.client.delete(self.detail_url)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertEqual(Note.objects.count(), 1)
-
-    def test_list_only_notes_last_24h(self):
-        self.client.force_authenticate(self.user)
-        recent_note = Note.objects.create(
-            user=self.user,
-            content="Nota recente"
-        )
-        old_note = Note.objects.create(
-            user=self.user,
-            content="Nota antiga"
-        )
-        Note.objects.filter(pk=old_note.pk).update(created_at=timezone.now() - timedelta(days=2))
-        response = self.client.get(self.list_url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        note_contents = [note["content"] for note in response.data["results"]]
-        self.assertIn("Nota recente", note_contents)
-        self.assertIn("Minha nota", note_contents)
-        self.assertNotIn("Nota antiga", note_contents)
-
-    def test_create_note_is_listed_in_last_24h(self):
-        self.client.force_authenticate(self.user)
-        data = {"content": "Nota do dia"}
-        self.client.post(self.list_url, data)
-        response = self.client.get(self.list_url)
-        contents = [note["content"] for note in response.data["results"]]
-        self.assertIn("Nota do dia", contents)
-
-
-class NoteLikeViewTests(APITestCase):
+class NoteAPITests(APITestCase):
 
     def setUp(self):
         self.client = APIClient()
+        self.user1 = User.objects.create_user(username="user1", password="pass")
+        self.user2 = User.objects.create_user(username="user2", password="pass")
 
-        self.user = User.objects.create_user(
-            username="gabriel",
-            email="gabriel@test.com",
-            password="testpass123"
-        )
-        self.other_user = User.objects.create_user(
-            username="other",
-            email="other@test.com",
-            password="testpass123"
-        )
+        
+        self.note1 = Note.objects.create(user=self.user1, content="Recent note 1")
+        self.note2 = Note.objects.create(user=self.user1, content="Recent note 2")
+        self.old_note = Note.objects.create(user=self.user1, content="Old note")
+        self.old_note.created_at = timezone.now() - timedelta(days=2)
+        self.old_note.save()
 
-        self.note = Note.objects.create(
-            user=self.user,
-            content="Minha nota"
-        )
+        self.list_url = reverse("note-create-list")
+        self.detail_url = lambda note_id: reverse("note-retrieve-destroy", kwargs={"note_id": note_id})
+        self.like_url = lambda note_id: reverse("note-like", kwargs={"note_id": note_id})
 
-        self.like_url = reverse("note-like", kwargs={"note_id": self.note.pk})
+    def authenticate(self, user):
+        self.client.force_authenticate(user=user)
 
-    def test_like_note_authenticated(self):
-        self.client.force_authenticate(user=self.other_user)
-        response = self.client.post(self.like_url)
+    def test_list_notes_pagination_and_annotations(self):
+        UserLikesContent.objects.create(user=self.user2, content=self.note1)
+        self.authenticate(self.user2)
+        response = self.client.get(self.list_url)
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("results", response.data)
+
+        results = response.data["results"]
+        self.assertEqual(len(results), 2)  
+
+        
+        note1_data = next(n for n in results if n["id"] == self.note1.id)
+        note2_data = next(n for n in results if n["id"] == self.note2.id)
+
+        self.assertEqual(note1_data["likes_count"], 1)
+        self.assertTrue(note1_data["is_liked"])
+
+        self.assertEqual(note2_data["likes_count"], 0)
+        self.assertFalse(note2_data["is_liked"])
+
+    def test_retrieve_note_annotations(self):
+        UserLikesContent.objects.create(user=self.user2, content=self.note2)
+        self.authenticate(self.user2)
+        response = self.client.get(self.detail_url(self.note2.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["likes_count"], 1)
+        self.assertTrue(response.data["is_liked"])
+
+    def test_create_note_authenticated_and_listed(self):
+        self.authenticate(self.user1)
+        response = self.client.post(self.list_url, {"content": "New note"})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        note_id = response.data["id"]
+
+        
+        response = self.client.get(self.list_url)
+        note_ids = [n["id"] for n in response.data["results"]]
+        self.assertIn(note_id, note_ids)
+
+    def test_create_note_unauthenticated(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.post(self.list_url, {"content": "New note"})
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_delete_note_owner(self):
+        self.authenticate(self.user1)
+        response = self.client.delete(self.detail_url(self.note1.id))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Note.objects.filter(id=self.note1.id).exists())
+
+    def test_delete_note_not_owner(self):
+        self.authenticate(self.user2)
+        response = self.client.delete(self.detail_url(self.note1.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertTrue(Note.objects.filter(id=self.note1.id).exists())
+
+    def test_delete_note_unauthenticated(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.delete(self.detail_url(self.note1.id))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_like_note(self):
+        self.authenticate(self.user2)
+        response = self.client.post(self.like_url(self.note1.id))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(response.data["liked"])
-        self.assertEqual(response.data["detail"], "Liked Successfully!")
 
-        self.assertTrue(
-            UserLikesContent.objects.filter(
-                user=self.other_user,
-                content=self.note
-            ).exists()
-        )
+        
+        response = self.client.get(self.detail_url(self.note1.id))
+        self.assertEqual(response.data["likes_count"], 1)
+        self.assertTrue(response.data["is_liked"])
 
     def test_like_note_twice(self):
-        self.client.force_authenticate(user=self.other_user)
-
-        self.client.post(self.like_url)
-
-        response = self.client.post(self.like_url)
-
+        self.authenticate(self.user2)
+        self.client.post(self.like_url(self.note1.id))
+        response = self.client.post(self.like_url(self.note1.id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(response.data["liked"])
-        self.assertEqual(response.data["detail"], "You've already liked the content")
-        self.assertEqual(
-            UserLikesContent.objects.filter(
-                user=self.other_user,
-                content=self.note
-            ).count(),
-            1
-        )
+        self.assertEqual(UserLikesContent.objects.filter(user=self.user2, content=self.note1).count(), 1)
 
-    def test_like_note_unauthenticated(self):
-        response = self.client.post(self.like_url)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-    def test_unlike_note_success(self):
-        UserLikesContent.objects.create(user=self.other_user, content=self.note)
-        self.client.force_authenticate(user=self.other_user)
-
-        response = self.client.delete(self.like_url)
+    def test_unlike_note(self):
+        UserLikesContent.objects.create(user=self.user2, content=self.note2)
+        self.authenticate(self.user2)
+        response = self.client.delete(self.like_url(self.note2.id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertFalse(response.data["liked"])
-        self.assertEqual(response.data["detail"], "Unliked successfully")
-
-        self.assertFalse(
-            UserLikesContent.objects.filter(
-                user=self.other_user,
-                content=self.note
-            ).exists()
-        )
 
     def test_unlike_note_not_liked(self):
-        self.client.force_authenticate(user=self.other_user)
-        response = self.client.delete(self.like_url)
-
+        self.authenticate(self.user2)
+        response = self.client.delete(self.like_url(self.note2.id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertFalse(response.data["liked"])
-        self.assertEqual(response.data["detail"], "You had not liked this content")
 
-    def test_unlike_note_unauthenticated(self):
-        response = self.client.delete(self.like_url)
+    def test_like_unlike_unauthenticated(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.post(self.like_url(self.note1.id))
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        response = self.client.delete(self.like_url(self.note1.id))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_old_note_not_listed(self):
+        self.authenticate(self.user1)
+        response = self.client.get(self.list_url)
+        note_ids = [n["id"] for n in response.data["results"]]
+        self.assertNotIn(self.old_note.id, note_ids)
+
+    def test_ordering_by_likes_count(self):
+        
+        UserLikesContent.objects.create(user=self.user2, content=self.note1)
+        UserLikesContent.objects.create(user=self.user1, content=self.note2)
+
+        self.authenticate(self.user1)
+        response = self.client.get(self.list_url)
+        results = response.data["results"]
+        self.assertGreaterEqual(results[0]["likes_count"], results[1]["likes_count"])

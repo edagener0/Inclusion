@@ -1,10 +1,8 @@
-from rest_framework import serializers
 from .models import Story
-from common.serializers import ProfileFeedSerializer
+from content.serializers import ContentBaseSerializer
 
-class StorySerializer(serializers.ModelSerializer):
-    user = ProfileFeedSerializer(read_only=True)
+class StorySerializer(ContentBaseSerializer):
 
     class Meta:
         model = Story
-        fields = ["id", "user", "file", "created_at"]
+        fields = ["id", "user", "file", "likes_count", "is_liked", "created_at"]

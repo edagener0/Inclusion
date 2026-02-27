@@ -12,8 +12,6 @@ from content.utils import (
     remove_like_from_content
 )
 from comments.serializers import CommentSerializer
-from django.shortcuts import get_object_or_404
-from comments.models import Comment
 from content.utils import (
     create_comment_for_lf_content,
     get_queryset_comments_for_lf_content,
@@ -22,10 +20,16 @@ from content.utils import (
 class IncCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = IncSerializer
-    queryset = Inc.objects.all().order_by("-created_at")
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
+
+    def get_queryset(self):
+        return (
+            Inc.objects
+            .with_likes_data(self.request.user)
+            .order_by("-likes_count")
+        )
 
 class IncRetrieveDestroyView(RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
@@ -33,6 +37,12 @@ class IncRetrieveDestroyView(RetrieveDestroyAPIView):
     queryset = Inc.objects.all()
     lookup_url_kwarg = "inc_id"
     lookup_field = "id"
+
+    def get_queryset(self):
+        return (
+            Inc.objects
+            .with_likes_data(self.request.user)
+        )
 
 
 class IncLikeView(APIView):
@@ -60,5 +70,6 @@ class IncCommentsCreateListView(ListCreateAPIView):
     def get_queryset(self):
         return get_queryset_comments_for_lf_content(
             Inc,
-            self.kwargs["inc_id"]
+            self.kwargs["inc_id"],
+            self.request.user
         )

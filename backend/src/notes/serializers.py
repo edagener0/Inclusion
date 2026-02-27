@@ -1,10 +1,8 @@
-from rest_framework import serializers
 from .models import Note
-from common.serializers import ProfileFeedSerializer
+from content.serializers import ContentBaseSerializer
 
-class NoteSerializer(serializers.ModelSerializer):
-    user = ProfileFeedSerializer(read_only=True)
+class NoteSerializer(ContentBaseSerializer):
 
     class Meta:
         model = Note
-        fields = ["id", "user", "content", "created_at"]
+        fields = ["id", "user", "content", "likes_count", "is_liked", "created_at"]

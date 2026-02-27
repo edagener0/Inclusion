@@ -24,15 +24,22 @@ class NoteCreateListView(ListCreateAPIView):
     def get_queryset(self):
         now = timezone.now()
         last_24h = now - timedelta(hours=24)
-        return Note.objects.filter(created_at__gte=last_24h).order_by("-created_at")
+        return Note.objects.with_likes_data(self.request.user).filter(created_at__gte=last_24h).order_by("-likes_count")
 
 class NoteRetrieveDestroyView(RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = NoteSerializer
-    queryset = Note.objects.all()
     lookup_url_kwarg = "note_id"
     lookup_field = "id"
-
+    
+    def get_queryset(self):
+        now = timezone.now()
+        last_24h = now - timedelta(hours=24)
+        return (
+            Note.objects
+            .with_likes_data(self.request.user)
+            .filter(created_at__gte=last_24h)
+        )
 
 class NoteLikeView(APIView):
     permission_classes = [IsAuthenticated]
