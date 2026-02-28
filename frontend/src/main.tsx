@@ -9,10 +9,14 @@ import { QueryProvider } from './app/provider/QueryProvider';
 import './app/styles/index.css';
 import { queryClient } from './shared/api/query-client';
 
+import { ThemeProvider } from './app/provider/ThemeProvider';
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <QueryProvider>
-      <RouterProvider router={router} context={{ queryClient }} />
-    </QueryProvider>
-  </StrictMode>,
+    <ThemeProvider>
+      <QueryProvider>
+        <RouterProvider router={router} context={{ queryClient }} />
+      </QueryProvider>
+    </ThemeProvider>
+ </StrictMode>,
 );
