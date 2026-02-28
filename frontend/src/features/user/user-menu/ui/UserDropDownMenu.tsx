@@ -4,8 +4,6 @@ import { LogOut } from 'lucide-react';
 import { ProfileAvatar } from '@/entities/profile';
 import { signOut, useStrictSession } from '@/entities/session';
 import { Button } from '@/shared/ui/button';
-import { ModeToggle } from '@/shared/ui/mode-toggle';
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu';
+import { ModeToggle } from '@/shared/ui/mode-toggle';
 
 export function UserDropDownMenu() {
   const user = useStrictSession();
@@ -26,7 +25,7 @@ export function UserDropDownMenu() {
           <ProfileAvatar avatar={user.avatar} username={user.username} />
         </Button>
       </DropdownMenuTrigger>
-      <ModeToggle/>      
+      <ModeToggle />
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
