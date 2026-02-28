@@ -9,12 +9,18 @@ urlpatterns = [
     path("auth", include("authentication.urls")),
     path("users", include("users.urls")),
     path("profiles", include("profiles.urls")),
+    path("incs", include("incs.urls")),
+    path("posts", include("posts.urls")),
+    path("notes", include("notes.urls")),
+    path("stories", include("stories.urls")),
+    path("comments", include("comments.urls")),
     path("api/schema", SpectacularAPIView.as_view(), name="schema"),
     path(
         "",
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
+    
 ]
 
 if settings.DEBUG:
