@@ -94,6 +94,7 @@ INSTALLED_APPS = [
     'posts',
     'stories',
     'comments',
+    'friends',
 ]
 
 SPECTACULAR_SETTINGS = {

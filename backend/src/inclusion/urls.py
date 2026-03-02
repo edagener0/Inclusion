@@ -14,6 +14,7 @@ urlpatterns = [
     path("notes", include("notes.urls")),
     path("stories", include("stories.urls")),
     path("comments", include("comments.urls")),
+    path("friends", include("friends.urls")),
     path("api/schema", SpectacularAPIView.as_view(), name="schema"),
     path(
         "",
