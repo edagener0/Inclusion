@@ -12,7 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu';
-import { ModeToggle } from '@/shared/ui/mode-toggle';
+
+import { ModeToggle } from './mode-toggle';
 
 export function UserDropDownMenu() {
   const user = useStrictSession();
@@ -25,7 +26,6 @@ export function UserDropDownMenu() {
           <ProfileAvatar avatar={user.avatar} username={user.username} />
         </Button>
       </DropdownMenuTrigger>
-      <ModeToggle />
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
@@ -36,6 +36,9 @@ export function UserDropDownMenu() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <ModeToggle />
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => navigate({ to: `/$username`, params: { username: user.username } })}
         >
