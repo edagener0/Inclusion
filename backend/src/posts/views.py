@@ -27,8 +27,9 @@ class PostCreateListView(ListCreateAPIView):
     def get_queryset(self):
         return (
             Post.objects
+            .visible_to(self.request.user)
             .with_likes_data(self.request.user)
-            .order_by("-likes_count")
+            .order_by("-created_at")
         )
 
 class PostRetrieveDestroyView(RetrieveDestroyAPIView):
@@ -40,6 +41,7 @@ class PostRetrieveDestroyView(RetrieveDestroyAPIView):
     def get_queryset(self):
         return (
             Post.objects
+            .visible_to(self.request.user)
             .with_likes_data(self.request.user)
         )
 

@@ -6,9 +6,12 @@ from django.contrib.auth import get_user_model
 from posts.models import Post
 from content.models import UserLikesContent
 from comments.models import Comment
+from friends.models import Friend
 
 User = get_user_model()
 
+def create_test_image():
+    return SimpleUploadedFile("image.jpg", b"file_content", content_type="image/jpeg")
 
 class PostAPITests(APITestCase):
 
@@ -178,3 +181,141 @@ class PostAPITests(APITestCase):
         comment_data = response.data["results"][0]
         self.assertEqual(comment_data["likes_count"], 1)
         self.assertTrue(comment_data["is_liked"])
+
+
+class PostVisibilityAPITests(APITestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        
+        self.user = User.objects.create_user(username="user1", password="pass")
+        self.friend = User.objects.create_user(username="friend", password="pass")
+        self.non_friend = User.objects.create_user(username="nonfriend", password="pass")
+
+        
+        self.user.is_private = True
+        self.user.save()
+
+        
+        Friend.objects.create(user1=min(self.user, self.friend, key=lambda u: u.id),
+                              user2=max(self.user, self.friend, key=lambda u: u.id))
+
+        self.valid_image = create_test_image()
+
+    def authenticate(self, user):
+        self.client.force_authenticate(user=user)
+
+    def test_non_friend_cannot_view_private_post(self):
+        post = Post.objects.create(user=self.user, description="Private Post", file=self.valid_image)
+        self.authenticate(self.non_friend)
+        url = reverse("post-retrieve-destroy", args=[post.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_friend_can_view_private_post(self):
+        post = Post.objects.create(user=self.user, description="Private Post", file=self.valid_image)
+        self.authenticate(self.friend)
+        url = reverse("post-retrieve-destroy", args=[post.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["id"], post.id)
+
+    def test_owner_can_view_own_private_post(self):
+        post = Post.objects.create(user=self.user, description="Private Post", file=self.valid_image)
+        self.authenticate(self.user)
+        url = reverse("post-retrieve-destroy", args=[post.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_non_friend_cannot_like_private_post(self):
+        post = Post.objects.create(user=self.user, description="Private Post", file=self.valid_image)
+        self.authenticate(self.non_friend)
+        url = reverse("post-like", kwargs={"post_id": post.id})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_friend_can_like_private_post(self):
+        post = Post.objects.create(user=self.user, description="Private Post", file=self.valid_image)
+        self.authenticate(self.friend)
+        url = reverse("post-like", kwargs={"post_id": post.id})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(UserLikesContent.objects.filter(user=self.friend, content=post).exists())
+
+    def test_owner_can_like_own_private_post(self):
+        post = Post.objects.create(user=self.user, description="Private Post", file=self.valid_image)
+        self.authenticate(self.user)
+        url = reverse("post-like", kwargs={"post_id": post.id})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_non_friend_cannot_unlike_private_post(self):
+        post = Post.objects.create(user=self.user, description="Private Post", file=self.valid_image)
+        UserLikesContent.objects.create(user=self.non_friend, content=post)  
+        self.authenticate(self.non_friend)
+        url = reverse("post-like", kwargs={"post_id": post.id})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_friend_can_unlike_private_post(self):
+        post = Post.objects.create(user=self.user, description="Private Post", file=self.valid_image)
+        UserLikesContent.objects.create(user=self.friend, content=post)
+        self.authenticate(self.friend)
+        url = reverse("post-like", kwargs={"post_id": post.id})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(UserLikesContent.objects.filter(user=self.friend, content=post).exists())
+
+    def test_non_friend_cannot_comment_private_post(self):
+        post = Post.objects.create(user=self.user, description="Private Post", file=self.valid_image)
+        self.authenticate(self.non_friend)
+        url = reverse("post-comments-create-list", kwargs={"post_id": post.id})
+        response = self.client.post(url, {"commentary": "Hello"})
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(Comment.objects.count(), 0)
+
+    def test_friend_can_comment_private_post(self):
+        post = Post.objects.create(user=self.user, description="Private Post", file=self.valid_image)
+        self.authenticate(self.friend)
+        url = reverse("post-comments-create-list", kwargs={"post_id": post.id})
+        response = self.client.post(url, {"commentary": "Hello Friend"})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Comment.objects.count(), 1)
+        self.assertEqual(Comment.objects.first().user, self.friend)
+
+    def test_owner_can_comment_own_private_post(self):
+        post = Post.objects.create(user=self.user, description="Private Post", file=self.valid_image)
+        self.authenticate(self.user)
+        url = reverse("post-comments-create-list", kwargs={"post_id": post.id})
+        response = self.client.post(url, {"commentary": "My own comment"})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Comment.objects.count(), 1)
+    
+    def test_non_friend_can_view_public_post(self):
+        self.user.is_private = False
+        self.user.save()
+        post = Post.objects.create(user=self.user, description="Public Post", file=self.valid_image)
+        self.authenticate(self.non_friend)
+        url = reverse("post-retrieve-destroy", args=[post.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_non_friend_can_like_public_post(self):
+        self.user.is_private = False
+        self.user.save()
+        post = Post.objects.create(user=self.user, description="Public Post", file=self.valid_image)
+        self.authenticate(self.non_friend)
+        url = reverse("post-like", kwargs={"post_id": post.id})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_non_friend_can_comment_public_post(self):
+        self.user.is_private = False
+        self.user.save()
+        post = Post.objects.create(user=self.user, description="Public Post", file=self.valid_image)
+        self.authenticate(self.non_friend)
+        url = reverse("post-comments-create-list", kwargs={"post_id": post.id})
+        response = self.client.post(url, {"commentary": "Public comment"})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+

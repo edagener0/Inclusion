@@ -24,7 +24,11 @@ class NoteCreateListView(ListCreateAPIView):
     def get_queryset(self):
         now = timezone.now()
         last_24h = now - timedelta(hours=24)
-        return Note.objects.with_likes_data(self.request.user).filter(created_at__gte=last_24h).order_by("-likes_count")
+        return (Note.objects
+            .visible_to(self.request.user)
+            .with_likes_data(self.request.user)
+            .filter(created_at__gte=last_24h)
+            .order_by("-created_at"))
 
 class NoteRetrieveDestroyView(RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
@@ -37,6 +41,7 @@ class NoteRetrieveDestroyView(RetrieveDestroyAPIView):
         last_24h = now - timedelta(hours=24)
         return (
             Note.objects
+            .visible_to(self.request.user)
             .with_likes_data(self.request.user)
             .filter(created_at__gte=last_24h)
         )

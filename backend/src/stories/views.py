@@ -27,9 +27,10 @@ class StoryCreateListView(ListCreateAPIView):
 
         return (
             Story.objects
+            .visible_to(self.request.user)
             .with_likes_data(self.request.user)
             .filter(created_at__gte=last_24h)
-            .order_by("-likes_count")
+            .order_by("-created_at")
         )
     
 class StoryRetrieveDestroyView(RetrieveDestroyAPIView):
@@ -45,6 +46,7 @@ class StoryRetrieveDestroyView(RetrieveDestroyAPIView):
 
         return (
             Story.objects
+            .visible_to(self.request.user)
             .with_likes_data(self.request.user)
             .filter(created_at__gte=last_24h)
             .order_by("-likes_count")
