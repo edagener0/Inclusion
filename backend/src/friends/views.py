@@ -19,6 +19,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework import status
 from common.serializers import ProfileFeedSerializer
+from django.db.models import Q
 
 User = get_user_model()
 
@@ -112,21 +113,10 @@ class FriendRemoveView(APIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, friend_id):
-
-        friend = get_object_or_404(
-            User,
-            id = friend_id
-        )
-
-        user1, user2 = self.request.user, friend
-
-        if user1.id > user2.id:
-            user1, user2 = user2, user1
-
         friendship = get_object_or_404(
             Friend,
-            user1 = user1,
-            user2 = user2
+            Q(user1=request.user, user2_id=friend_id) |
+            Q(user2=request.user, user1_id=friend_id)
         )
 
         friendship.delete()
