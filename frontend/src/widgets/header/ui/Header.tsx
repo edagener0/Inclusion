@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Link } from '@tanstack/react-router';
 import { Menu, Search } from 'lucide-react';
-
+import { ModeToggle } from '@/features/mode-toggle';
 import { SidebarNav } from '@/features/sidebar';
 import { UserDropDownMenu } from '@/features/user/user-menu';
 import { AppLogo } from '@/shared/assets/icons/AppIcon';
@@ -56,6 +56,7 @@ export function Header() {
             />
           </div>
           <UserDropDownMenu />
+          <ModeToggle />
         </div>
       </div>
     </header>

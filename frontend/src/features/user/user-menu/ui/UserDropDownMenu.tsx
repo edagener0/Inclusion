@@ -13,8 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu';
 
-import { ModeToggle } from './mode-toggle';
-
 export function UserDropDownMenu() {
   const user = useStrictSession();
   const navigate = useNavigate();
@@ -36,9 +34,6 @@ export function UserDropDownMenu() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <ModeToggle />
-        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => navigate({ to: `/$username`, params: { username: user.username } })}
         >
