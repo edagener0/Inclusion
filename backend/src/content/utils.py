@@ -5,7 +5,7 @@ from rest_framework import status
 from comments.models import Comment
 
 def create_like_for_content(request, content_id):
-    content = get_object_or_404(Content, id = content_id)
+    content = get_object_or_404(Content.objects.visible_to(request.user), id = content_id)
         
     _, created = UserLikesContent.objects.get_or_create(
                     user = request.user,
@@ -21,7 +21,7 @@ def create_like_for_content(request, content_id):
     )
 
 def remove_like_from_content(request, content_id):
-    content = get_object_or_404(Content, id = content_id)
+    content = get_object_or_404(Content.objects.visible_to(request.user), id = content_id)
 
     deleted_count, _  = UserLikesContent.objects.filter(
             user = request.user,
@@ -37,11 +37,11 @@ def remove_like_from_content(request, content_id):
     )
 
 def create_comment_for_lf_content(kclass, lf_content_id, serializer, user):
-    lf_content = get_object_or_404(kclass, pk=lf_content_id)
+    lf_content = get_object_or_404(kclass.objects.visible_to(user), pk=lf_content_id)
     serializer.save(lf_content=lf_content, user=user)
 
 def get_queryset_comments_for_lf_content(kclass, lf_content_id, user):
-    lf_content = get_object_or_404(kclass, pk=lf_content_id)
+    lf_content = get_object_or_404(kclass.objects.visible_to(user), pk=lf_content_id)
     return (
         Comment.objects
         .with_likes_data(user)

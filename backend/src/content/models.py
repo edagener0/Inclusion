@@ -6,10 +6,19 @@ from django.db.models import (
     Count,
     Exists
 )
+from django.db.models import Q
 
 User = get_user_model()
 
 class ContentQuerySet(models.QuerySet):
+
+    def visible_to(self, user):
+        return self.filter(
+            Q(user__is_private=False) |
+            Q(user=user) |
+            Q(user__in=user.friends)
+        )
+    
     def with_likes_data(self, user):
         from content.models import UserLikesContent
 

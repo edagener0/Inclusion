@@ -7,6 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
 from datetime import timedelta
 from content.models import UserLikesContent
+from friends.models import Friend
 
 User = get_user_model()
 
@@ -127,3 +128,127 @@ class StoryLikeTests(APITestCase):
     def test_unlike_story_unauthenticated(self):
         response = self.client.delete(self.like_url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class StoryVisibilityAPITests(APITestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+
+        
+        self.user = User.objects.create_user(username="user1", password="pass")
+        self.friend = User.objects.create_user(username="friend", password="pass")
+        self.non_friend = User.objects.create_user(username="nonfriend", password="pass")
+
+        
+        self.user.is_private = True
+        self.user.save()
+
+        
+        Friend.objects.create(user1=min(self.user, self.friend, key=lambda u: u.id),
+                              user2=max(self.user, self.friend, key=lambda u: u.id))
+
+        
+        self.recent_story = Story.objects.create(user=self.user, file=test_file())
+        self.old_story = Story.objects.create(user=self.user, file=test_file())
+        self.old_story.created_at = timezone.now() - timedelta(days=2)
+        self.old_story.save()
+
+        self.list_url = reverse("story-create-list")
+        self.detail_url = lambda story_id: reverse("story-retrieve-destroy", args=[story_id])
+        self.like_url = lambda story_id: reverse("story-like", kwargs={"story_id": story_id})
+
+    def authenticate(self, user):
+        self.client.force_authenticate(user=user)
+
+    def test_non_friend_cannot_view_private_story(self):
+        self.authenticate(self.non_friend)
+        response = self.client.get(self.detail_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_friend_can_view_private_story(self):
+        self.authenticate(self.friend)
+        response = self.client.get(self.detail_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["id"], self.recent_story.id)
+
+    def test_owner_can_view_own_private_story(self):
+        self.authenticate(self.user)
+        response = self.client.get(self.detail_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_list_stories_only_last_24h_for_owner_and_friend(self):
+        self.authenticate(self.friend)
+        response = self.client.get(self.list_url)
+        story_ids = [s["id"] for s in response.data["results"]]
+        self.assertIn(self.recent_story.id, story_ids)
+        self.assertNotIn(self.old_story.id, story_ids)
+
+    def test_non_friend_cannot_list_private_stories(self):
+        self.authenticate(self.non_friend)
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.data["results"], [])
+
+    def test_non_friend_cannot_like_private_story(self):
+        self.authenticate(self.non_friend)
+        response = self.client.post(self.like_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_friend_can_like_private_story(self):
+        self.authenticate(self.friend)
+        response = self.client.post(self.like_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(UserLikesContent.objects.filter(user=self.friend, content=self.recent_story).exists())
+
+    def test_owner_can_like_own_private_story(self):
+        self.authenticate(self.user)
+        response = self.client.post(self.like_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(UserLikesContent.objects.filter(user=self.user, content=self.recent_story).exists())
+
+    def test_unlike_story_friend(self):
+        UserLikesContent.objects.create(user=self.friend, content=self.recent_story)
+        self.authenticate(self.friend)
+        response = self.client.delete(self.like_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(UserLikesContent.objects.filter(user=self.friend, content=self.recent_story).exists())
+
+    def test_unlike_story_non_friend_forbidden(self):
+        UserLikesContent.objects.create(user=self.non_friend, content=self.recent_story)
+        self.authenticate(self.non_friend)
+        response = self.client.delete(self.like_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_non_friend_can_view_public_story(self):
+        self.user.is_private = False
+        self.user.save()
+        self.authenticate(self.non_friend)
+        response = self.client.get(self.detail_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_non_friend_can_like_public_story(self):
+        self.user.is_private = False
+        self.user.save()
+        self.authenticate(self.non_friend)
+        response = self.client.post(self.like_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_story_authenticated(self):
+        self.authenticate(self.user)
+        response = self.client.post(self.list_url, {"file": test_file()}, format="multipart")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_story_unauthenticated(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.post(self.list_url, {"file": test_file()}, format="multipart")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_delete_story_owner(self):
+        self.authenticate(self.user)
+        response = self.client.delete(self.detail_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_delete_story_non_owner(self):
+        self.authenticate(self.friend)
+        response = self.client.delete(self.detail_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
