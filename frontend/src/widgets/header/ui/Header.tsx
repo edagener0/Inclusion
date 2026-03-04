@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Menu, Search } from 'lucide-react';
 
-import { ModeToggle } from '@/features/mode-toggle';
 import { SidebarNav } from '@/features/sidebar';
+import { ThemeSwitcher } from '@/features/theme-switcher';
 import { UserDropDownMenu } from '@/features/user/user-menu';
 import { AppLogo } from '@/shared/assets/icons/AppIcon';
 import { APP_NAME } from '@/shared/config';
@@ -57,7 +57,7 @@ export function Header() {
             />
           </div>
           <UserDropDownMenu />
-          <ModeToggle />
+          <ThemeSwitcher />
         </div>
       </div>
     </header>
