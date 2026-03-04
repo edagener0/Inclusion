@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { ThemeProviderContext } from '@/shared/lib/theme/theme-context';
-
 import type { Theme } from '@/shared/lib/theme/types';
 
 type ThemeProviderProps = {
