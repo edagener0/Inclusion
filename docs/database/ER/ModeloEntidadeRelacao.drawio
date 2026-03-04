@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.15 Chrome/134.0.6998.205 Electron/35.2.1 Safari/537.36" version="26.2.15">
   <diagram name="Page-1" id="aG7zif8pbxoWA_jqvkoa">
-    <mxGraphModel dx="2276" dy="1943" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1991" dy="1774" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -226,7 +226,7 @@
         <mxCell id="4KbRjZWa-bEKnotjCrH0-13" value="GroupMessages" style="shape=rhombus;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
           <mxGeometry x="1100" y="-170" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="4KbRjZWa-bEKnotjCrH0-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endArrow=none;startFill=0;" edge="1" parent="1" source="4KbRjZWa-bEKnotjCrH0-16" target="4KbRjZWa-bEKnotjCrH0-8">
+        <mxCell id="4KbRjZWa-bEKnotjCrH0-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;endArrow=none;startFill=0;" edge="1" parent="1" source="4KbRjZWa-bEKnotjCrH0-16" target="4KbRjZWa-bEKnotjCrH0-8">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="4KbRjZWa-bEKnotjCrH0-16" value="GroupParticipants" style="shape=rhombus;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
@@ -257,6 +257,15 @@
             <mxPoint x="700" y="-280" as="sourcePoint" />
             <mxPoint x="860" y="-280" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="4KbRjZWa-bEKnotjCrH0-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4KbRjZWa-bEKnotjCrH0-27" target="3gP4wU-t_2B6bauHpata-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4KbRjZWa-bEKnotjCrH0-27" value="GroupOwner" style="shape=rhombus;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="10" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="4KbRjZWa-bEKnotjCrH0-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.606;entryY=1.029;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;startFill=0;" edge="1" parent="1" source="4KbRjZWa-bEKnotjCrH0-27" target="4KbRjZWa-bEKnotjCrH0-8">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
