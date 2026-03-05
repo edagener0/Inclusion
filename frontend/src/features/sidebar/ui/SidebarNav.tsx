@@ -15,7 +15,7 @@ export const SidebarNav = ({ mobile = false }: { mobile?: boolean }) => {
           search={prev => (item.modal ? { ...prev, modal: item.modal } : prev)}
         >
           <Button
-            variant={item.modal === 'user-settings' ? 'default' : 'ghost'}
+            variant={item.modal === 'create-content' ? 'outline' : 'ghost'}
             className={cn(
               'group w-full justify-start gap-3 rounded-lg',
 

@@ -10,8 +10,10 @@ interface RouterContext {
   queryClient: QueryClient;
 }
 
-const modalEnum = z.enum(['user-settings']);
+const modalEnum = z.enum(['user-settings', 'create-content']);
 const searchSchema = z.object({ modal: modalEnum.optional() });
+
+export type ModalType = z.infer<typeof modalEnum>;
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   validateSearch: searchSchema,
