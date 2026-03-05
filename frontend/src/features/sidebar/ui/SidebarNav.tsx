@@ -5,20 +5,17 @@ import { Button } from '@/shared/ui/button';
 
 import { navItems } from '../config/items';
 
-// variant={item.active ? 'secondary' : 'ghost'}
 export const SidebarNav = ({ mobile = false }: { mobile?: boolean }) => {
   return (
     <nav className={`flex flex-col ${mobile ? 'gap-1 px-2' : 'gap-1.5'}`}>
-      {navItems.map((item, index) => (
+      {navItems.map(item => (
         <Link
-          key={index}
-          {...(item.label === 'Settings'
-            ? { to: '.', search: { modal: 'user-settings' } }
-            : { to: item.path! })}
-          className="block w-full"
+          key={item.label}
+          to={item.path ?? '.'}
+          search={prev => (item.modal ? { ...prev, modal: item.modal } : prev)}
         >
           <Button
-            variant="ghost"
+            variant={item.modal === 'user-settings' ? 'default' : 'ghost'}
             className={cn(
               'group w-full justify-start gap-3 rounded-lg',
 
@@ -33,7 +30,6 @@ export const SidebarNav = ({ mobile = false }: { mobile?: boolean }) => {
           >
             <item.icon
               className={cn(
-                // Легкий микроинтеракшн иконки при наведении
                 'transition-transform duration-300 group-hover:scale-110',
                 mobile ? 'h-4 w-4' : 'h-4 w-4 mr-1',
               )}
