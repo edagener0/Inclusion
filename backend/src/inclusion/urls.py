@@ -15,7 +15,8 @@ urlpatterns = [
     path("stories", include("stories.urls")),
     path("comments", include("comments.urls")),
     path("friends", include("friends.urls")),
-    path("api/schema", SpectacularAPIView.as_view(), name="schema"),
+    path("wordle", include("wordle.urls")),
+    path("schema", SpectacularAPIView.as_view(), name="schema"),
     path(
         "",
         SpectacularSwaggerView.as_view(url_name="schema"),

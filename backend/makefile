@@ -1,7 +1,7 @@
 install:
 	pip install -r requirements.txt
 
-migrate:
+migrate: add_all_cron
 	cd src && python3 manage.py makemigrations
 	cd src && python3 manage.py migrate
 
@@ -10,8 +10,9 @@ add_all_cron:
 
 remove_all_cron:
 	cd src && python3 manage.py crontab remove
-run: migrate add_all_cron
+	
+run: migrate 
 	cd src && python3 manage.py runserver
 
-test: migrate add_all_cron
+test: migrate
 	cd src && python3 manage.py test

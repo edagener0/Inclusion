@@ -11,7 +11,7 @@ class Word(TimeStampedModel):
         MEDIUM = "medium", "Medium"
         HARD = "hard", "Hard"
 
-    word = models.CharField(max_length=150, null=False, blank=False, unique=True)
+    text = models.CharField(max_length=150, null=False, blank=False, unique=True)
     length = models.PositiveIntegerField(null=False)
     difficulty = models.CharField(max_length=20, blank=False, null=False, choices = DifficultyChoices.choices)
 

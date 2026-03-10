@@ -5,6 +5,12 @@ WORDS_URLS = [
         "https://raw.githubusercontent.com/MrLabbrow/All-English-Words/refs/heads/main/Words.txt",
     ]
 
+def find_diff_between_words(guess: str, original: str) -> bool:
+    if len(guess) != len(original):
+        raise Exception("To be compared the strings must have the same length")
+    
+    #TODO falta implementar para encontrar as diferenças entre as duas palavras
+    
 def get_difficulty_for_word(word):
     word_len = len(word)
 
