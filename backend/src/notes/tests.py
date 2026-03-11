@@ -17,6 +17,10 @@ class NoteAPITests(APITestCase):
         self.client = APIClient()
         self.user1 = User.objects.create_user(username="user1", password="pass")
         self.user2 = User.objects.create_user(username="user2", password="pass")
+        Friend.objects.create(
+            user1=min(self.user1, self.user2, key=lambda u: u.id),
+            user2=max(self.user1, self.user2, key=lambda u: u.id),
+        )
 
         
         self.note1 = Note.objects.create(user=self.user1, content="Recent note 1")
@@ -180,6 +184,10 @@ class NoteVisibilityAPITests(APITestCase):
 
     def authenticate(self, user):
         self.client.force_authenticate(user=user)
+
+    def make_user_public(self):
+        self.user.is_private = False
+        self.user.save()
     
     def test_non_friend_cannot_view_private_note(self):
         self.authenticate(self.non_friend)
@@ -213,6 +221,13 @@ class NoteVisibilityAPITests(APITestCase):
         response = self.client.get(self.list_url)
         self.assertEqual(response.data["results"], [])
 
+    def test_non_friend_cannot_list_notes_even_if_author_is_public(self):
+        self.make_user_public()
+        self.authenticate(self.non_friend)
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["results"], [])
+
     def test_non_friend_cannot_like_private_note(self):
         self.authenticate(self.non_friend)
         response = self.client.post(self.like_url(self.recent_note1.id))
@@ -243,19 +258,39 @@ class NoteVisibilityAPITests(APITestCase):
         response = self.client.delete(self.like_url(self.recent_note1.id))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_non_friend_can_view_public_note(self):
-        self.user.is_private = False
-        self.user.save()
+    def test_non_friend_cannot_view_note_even_if_author_is_public(self):
+        self.make_user_public()
         self.authenticate(self.non_friend)
         response = self.client.get(self.detail_url(self.recent_note1.id))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_non_friend_can_like_public_note(self):
-        self.user.is_private = False
-        self.user.save()
+    def test_non_friend_cannot_like_note_even_if_author_is_public(self):
+        self.make_user_public()
         self.authenticate(self.non_friend)
         response = self.client.post(self.like_url(self.recent_note1.id))
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_non_friend_cannot_unlike_note_even_if_author_is_public(self):
+        self.make_user_public()
+        UserLikesContent.objects.create(user=self.non_friend, content=self.recent_note1)
+        self.authenticate(self.non_friend)
+        response = self.client.delete(self.like_url(self.recent_note1.id))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_friend_can_view_note_when_author_is_public(self):
+        self.make_user_public()
+        self.authenticate(self.friend)
+        response = self.client.get(self.detail_url(self.recent_note1.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["id"], self.recent_note1.id)
+
+    def test_friend_can_list_notes_when_author_is_public(self):
+        self.make_user_public()
+        self.authenticate(self.friend)
+        response = self.client.get(self.list_url)
+        note_ids = [n["id"] for n in response.data["results"]]
+        self.assertIn(self.recent_note1.id, note_ids)
+        self.assertIn(self.recent_note2.id, note_ids)
 
     def test_create_note_authenticated(self):
         self.authenticate(self.user)
