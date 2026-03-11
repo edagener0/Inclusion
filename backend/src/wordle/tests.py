@@ -189,7 +189,6 @@ from wordle.utils import reset_missed_wordle_streaks
 class WordleStreakResetTests(TestCase):
 
     def setUp(self):
-        # Create users
         self.user_played = User.objects.create(username="played_user")
         self.user_missed = User.objects.create(username="missed_user")
         
