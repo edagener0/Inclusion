@@ -12,6 +12,12 @@ User = get_user_model()
 
 class ContentQuerySet(models.QuerySet):
 
+    def visible_to_friends(self, user):
+        return self.filter(
+            Q(user=user) |
+            Q(user__in=user.friends)
+        )
+
     def visible_to(self, user):
         return self.filter(
             Q(user__is_private=False) |
