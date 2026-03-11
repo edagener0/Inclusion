@@ -21,4 +21,4 @@ run: migrate gen_wordle_4_today
 	python3 src/manage.py runserver
 
 test: migrate gen_wordle_4_today
-	python3 src/manage.py test
+	cd src && python3 manage.py test
