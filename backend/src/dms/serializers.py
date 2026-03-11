@@ -38,6 +38,8 @@ class DMConversationCreateSerializer(serializers.ModelSerializer):
 class DMConversationMessageSerializer(serializers.ModelSerializer):
     sender = UserMeSerializer(read_only=True)
     receiver = UserMeSerializer(read_only=True)
+    # Ajuda o frontend a saber se a mensagem pertence ao utilizador autenticado,
+    # por exemplo para desenhar a bolha à direita ou à esquerda.
     is_mine = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -47,4 +49,5 @@ class DMConversationMessageSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(OpenApiTypes.BOOL)
     def get_is_mine(self, obj):
+        # A mensagem é "minha" quando o remetente da DM é o utilizador da request.
         return obj.sender_id == self.context["request"].user.id

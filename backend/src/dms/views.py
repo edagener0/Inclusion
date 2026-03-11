@@ -68,19 +68,25 @@ class DMConversationMessagesView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_other_user(self):
+        # A conversa é sempre aberta contra um utilizador específico vindo da URL.
         other_user = get_object_or_404(User, id=self.kwargs["user_id"])
 
+        # Não faz sentido abrir uma DM "contigo próprio".
         if other_user.id == self.request.user.id:
             raise ValidationError("You cannot open a DM conversation with yourself.")
 
         return other_user
 
     def get_serializer_class(self):
+        # No GET devolvemos mensagens completas do chat.
+        # No POST só recebemos o conteúdo, porque o destinatário já vem da URL.
         if self.request.method == "POST":
             return DMConversationCreateSerializer
         return DMConversationMessageSerializer
 
     def get_queryset(self):
+        # O chat é o conjunto de mensagens trocadas entre o utilizador autenticado
+        # e o utilizador da URL, nos dois sentidos.
         other_user = self.get_other_user()
         return (
             DM.objects
@@ -89,10 +95,14 @@ class DMConversationMessagesView(ListCreateAPIView):
                 Q(sender=other_user, receiver=self.request.user)
             )
             .select_related("sender", "receiver")
+            # Para o ecrã de chat, a ordem natural é cronológica.
             .order_by("created_at")
         )
 
     def perform_create(self, serializer):
+        # Ao enviar uma mensagem dentro do chat:
+        # - o sender é sempre o utilizador autenticado
+        # - o receiver é sempre o utilizador da URL
         serializer.save(
             sender=self.request.user,
             receiver=self.get_other_user(),
