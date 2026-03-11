@@ -15,6 +15,7 @@ class WordleGuessResponseSerializer(serializers.Serializer):
     detail = serializers.CharField()
     correct = serializers.BooleanField()
     guesses = serializers.IntegerField()
+    diff = serializers.CharField()
 
 
 class WordleGuessErrorSerializer(serializers.Serializer):

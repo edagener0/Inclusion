@@ -2,17 +2,23 @@ install:
 	pip install -r requirements.txt
 
 migrate: add_all_cron
-	cd src && python3 manage.py makemigrations
-	cd src && python3 manage.py migrate
+	python3 src/manage.py makemigrations
+	python3 src/manage.py migrate
+
+scrape:
+	python3 src/manage.py scrape_words
+
+gen_wordle_4_today:
+	python3 src/manage.py generate_daily_wordle --days 0
 
 add_all_cron:
-	cd src && python3 manage.py crontab add
+	python3 src/manage.py crontab add
 
 remove_all_cron:
-	cd src && python3 manage.py crontab remove
+	python3 src/manage.py crontab remove
 	
-run: migrate 
-	cd src && python3 manage.py runserver
+run: migrate gen_wordle_4_today 
+	python3 src/manage.py runserver
 
-test: migrate
-	cd src && python3 manage.py test
+test: migrate gen_wordle_4_today
+	python3 src/manage.py test

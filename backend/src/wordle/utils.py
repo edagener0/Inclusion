@@ -1,16 +1,44 @@
 import requests
 from .models import Word
+from collections import Counter
 
 WORDS_URLS = [
         "https://raw.githubusercontent.com/MrLabbrow/All-English-Words/refs/heads/main/Words.txt",
     ]
 
-def find_diff_between_words(guess: str, original: str) -> bool:
-    if len(guess) != len(original):
+def find_diff_between_words(guess: str, original: str) -> str:
+    
+    n = len(guess)
+    count = Counter(original)
+
+    if n != len(original):
         raise Exception("To be compared the strings must have the same length")
     
-    #TODO falta implementar para encontrar as diferenças entre as duas palavras
+    diff = [""] * n
+
+    # + => char is in correct position
+    # - => char is not present in the word
+    # * => char is present in word but not in the right position
+
+    # find the chars in the right position
+    for i in range(n):
+        if guess[i] == original[i]:
+            diff[i] = "+"
+            count[guess[i]] -= 1
+
+    # look for the chars in wrong position or absent
+    for i in range(n):
+        if diff[i] != "":
+            continue
+
+        if count[guess[i]] > 0:
+            diff[i] = "*"
+            count[guess[i]] -= 1
+        else:
+            diff[i] = "-"
     
+    return "".join(diff)
+
 def get_difficulty_for_word(word):
     word_len = len(word)
 
@@ -52,7 +80,7 @@ def scrape_words(stdout=None):
     for i, word in enumerate(words, 1):
         batch.append(
             Word(
-                word=word,
+                text=word,
                 length=len(word),
                 difficulty=get_difficulty_for_word(word)
             )

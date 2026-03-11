@@ -12,6 +12,7 @@ from .serializers import (
     WordleGuessResponseSerializer,
     WordleGuessErrorSerializer
 )
+from .utils import find_diff_between_words
 
 
 class WordleWordView(APIView):
@@ -80,11 +81,13 @@ class WordleGuessView(APIView):
                     "detail": "You already guessed today's wordle!",
                     "correct": True,
                     "guesses": wordle_result.guesses,
+                    "diff": "+" * wordle.word.length
                 },
                 status=status.HTTP_200_OK
             )
         
         is_correct = guessed_word.lower() == wordle.word.text.lower()
+        diff = find_diff_between_words(guessed_word.lower(), wordle.word.text.lower())
 
         if is_correct:
             wordle_result.status = WordleResult.StatusChoices.SUCCESS
@@ -96,7 +99,8 @@ class WordleGuessView(APIView):
             {
                 "detail": "Your guess was " + ("correct" if is_correct else "incorrect"),
                 "correct": is_correct,
-                "guesses": wordle_result.guesses
+                "guesses": wordle_result.guesses,
+                "diff": diff,
             },
             status=status.HTTP_200_OK
         )

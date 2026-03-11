@@ -6,18 +6,27 @@ from wordle.models import Word, Wordle
 class Command(BaseCommand):
     help = "Generate daily Wordle for the next day"
 
-    def handle(self, *args, **kwargs):
-        tomorrow = timezone.now().date() + timedelta(days=1)
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--days",
+            type=int,
+            default=1,
+            help="How many days from today (default: 1 = tomorrow)",
+        )
 
-        if Wordle.objects.filter(date=tomorrow).exists():
-            self.stdout.write(self.style.WARNING("Wordle already exists for tomorrow"))
+    def handle(self, *args, **kwargs):
+        days = kwargs["days"]
+        target_date = timezone.now().date() + timedelta(days=days)
+
+        if Wordle.objects.filter(date=target_date).exists():
+            self.stdout.write(self.style.WARNING(f"Wordle already exists for {target_date}"))
             return
 
         word = Word.objects.order_by("?").first()
 
         Wordle.objects.create(
             word=word,
-            date=tomorrow
+            date=target_date
         )
 
-        self.stdout.write(self.style.SUCCESS(f"Wordle created for {tomorrow} with word: {word.word}"))
+        self.stdout.write(self.style.SUCCESS(f"Wordle created for {target_date} with word: {word.text}"))
