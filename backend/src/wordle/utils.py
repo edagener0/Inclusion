@@ -1,10 +1,16 @@
 import requests
-from .models import Word
+from .models import Word, WordleResult
 from collections import Counter
+from datetime import timedelta
+from django.utils import timezone
 
 WORDS_URLS = [
         "https://raw.githubusercontent.com/MrLabbrow/All-English-Words/refs/heads/main/Words.txt",
     ]
+
+RIGHT_PLACE_SYMBOL = "+"
+WRONG_PLACE_SYMBOL = "*"
+ABSENT_SYMBOL = "-"
 
 def find_diff_between_words(guess: str, original: str) -> str:
     
@@ -23,7 +29,7 @@ def find_diff_between_words(guess: str, original: str) -> str:
     # find the chars in the right position
     for i in range(n):
         if guess[i] == original[i]:
-            diff[i] = "+"
+            diff[i] = RIGHT_PLACE_SYMBOL
             count[guess[i]] -= 1
 
     # look for the chars in wrong position or absent
@@ -32,12 +38,29 @@ def find_diff_between_words(guess: str, original: str) -> str:
             continue
 
         if count[guess[i]] > 0:
-            diff[i] = "*"
+            diff[i] = WRONG_PLACE_SYMBOL
             count[guess[i]] -= 1
         else:
-            diff[i] = "-"
+            diff[i] = ABSENT_SYMBOL
     
     return "".join(diff)
+
+def update_user_wordle_streak(user, today_date):
+    last_success = WordleResult.objects.filter(
+        user=user, status=WordleResult.StatusChoices.SUCCESS
+    ).order_by("-wordle__date").first()
+
+    if last_success is None or last_success.wordle.date < today_date - timedelta(days=1):
+        user.current_wordle_streak = 1
+    elif last_success.wordle.date == today_date - timedelta(days=1):
+        user.current_wordle_streak += 1
+    else:
+        user.current_wordle_streak = 1
+
+    if user.current_wordle_streak > user.max_wordle_streak:
+        user.max_wordle_streak = user.current_wordle_streak
+
+    user.save(update_fields=["current_wordle_streak", "max_wordle_streak"])
 
 def get_difficulty_for_word(word):
     word_len = len(word)

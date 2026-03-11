@@ -10,10 +10,15 @@ from drf_spectacular.utils import extend_schema
 from .serializers import (
     WordleGuessSerializer,
     WordleGuessResponseSerializer,
-    WordleGuessErrorSerializer
+    WordleGuessErrorSerializer,
+    WordleLeaderboardUserSerializer
 )
-from .utils import find_diff_between_words
+from .utils import find_diff_between_words, RIGHT_PLACE_SYMBOL
+from rest_framework.generics import ListAPIView
+from django.contrib.auth import get_user_model
+from .utils import update_user_wordle_streak
 
+User = get_user_model()
 
 class WordleWordView(APIView):
     permission_classes = [IsAuthenticated]
@@ -81,7 +86,7 @@ class WordleGuessView(APIView):
                     "detail": "You already guessed today's wordle!",
                     "correct": True,
                     "guesses": wordle_result.guesses,
-                    "diff": "+" * wordle.word.length
+                    "diff": RIGHT_PLACE_SYMBOL * wordle.word.length
                 },
                 status=status.HTTP_200_OK
             )
@@ -91,6 +96,7 @@ class WordleGuessView(APIView):
 
         if is_correct:
             wordle_result.status = WordleResult.StatusChoices.SUCCESS
+            update_user_wordle_streak(request.user, wordle.date)
 
         wordle_result.guesses += 1 if not created else 0
         wordle_result.save()
@@ -104,6 +110,13 @@ class WordleGuessView(APIView):
             },
             status=status.HTTP_200_OK
         )
+
+
+class WordleLeaderboardView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = WordleLeaderboardUserSerializer
+    queryset = User.objects.order_by("-max_wordle_streak")
+        
 
 
 
