@@ -1,9 +1,9 @@
-import { Home, Mail, PlusIcon, Settings, UserIcon } from 'lucide-react';
+import { Mail, PlusIcon, ScrollTextIcon, Settings, UserIcon } from 'lucide-react';
 
 import type { NavItem } from '../model/types';
 
 export const navItems: NavItem[] = [
-  { icon: Home, label: 'Main', path: '/' },
+  { icon: ScrollTextIcon, label: 'Posts', path: '/posts' },
   { icon: UserIcon, label: 'Profile', path: '/profile' },
   { icon: Mail, label: 'Messages', path: '/messages' },
   { icon: Settings, label: 'Settings', path: '/' },
