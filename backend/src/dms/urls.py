@@ -1,10 +1,10 @@
 from django.urls import path
 from .views import (
-    DMListView,
-    DMRetrieveDestroyView
+    DMConversationMessagesView,
+    DMListCreateView,
 )
 
 urlpatterns = [
-    path("", DMListView.as_view(), name="dm-create-list"),
-    path("/<int:dm_id>", DMRetrieveDestroyView.as_view(), name="dm-retrieve-destroy")
+    path("", DMListCreateView.as_view(), name="dm-create-list"),
+    path("/<int:user_id>/messages", DMConversationMessagesView.as_view(), name="dm-conversation-messages"),
 ]

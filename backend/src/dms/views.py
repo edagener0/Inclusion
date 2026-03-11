@@ -1,45 +1,107 @@
-from django.shortcuts import render
-from rest_framework.generics import (
-    ListCreateAPIView,
-    RetrieveDestroyAPIView
-)
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from common.permissions import IsOwnerOrReadOnly
 from django.db.models import Q
-from .models import DM
-from .serializers import DMSerializer, DMCreateSerializer, DMListSerializer
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import ValidationError
+from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
-# DMListView: Listar apenas as DM que o usuario tem com outros recivers, mostrando o username do remetente e destinatário, e para criar uma nova mensagem DM, onde o remetente é o usuário autenticado
-class DMListView(ListCreateAPIView):
-    serializer_class = DMListSerializer
+from .models import DM
+from .serializers import (
+    DMConversationCreateSerializer,
+    DMConversationMessageSerializer,
+    DMCreateSerializer,
+    DMInboxSerializer,
+)
+
+User = get_user_model()
+
+
+class DMListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+
     def get_serializer_class(self):
         if self.request.method == "POST":
             return DMCreateSerializer
-        return DMListSerializer
-    
+        return DMInboxSerializer
+
     def get_queryset(self):
-        return DM.objects.filter(
-            Q(sender=self.request.user) | Q(receiver=self.request.user) #union
-        ).order_by("-created_at")
+        return (
+            DM.objects
+            # Uma conversa existe se o utilizador autenticado participou
+            # na mensagem como remetente ou destinatário.
+            .filter(Q(sender=self.request.user) | Q(receiver=self.request.user))
+            .select_related("sender", "receiver")
+            .order_by("-created_at")
+        )
+
+    def list(self, request, *args, **kwargs):
+        latest_dms = []
+        seen_user_ids = set()
+
+        # Como as DMs já vêm ordenadas da mais recente para a mais antiga,
+        # a primeira mensagem encontrada para cada utilizador é a "last message"
+        # da conversa que queremos mostrar na inbox.
+        for dm in self.get_queryset():
+            other_user_id = dm.receiver_id if dm.sender_id == request.user.id else dm.sender_id
+
+            if other_user_id in seen_user_ids:
+                continue
+
+            seen_user_ids.add(other_user_id)
+            latest_dms.append(dm)
+
+        page = self.paginate_queryset(latest_dms)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(latest_dms, many=True)
+        return Response(serializer.data)
+
+    def perform_create(self, serializer):
+        # O remetente vem sempre da sessão autenticada, não do body do pedido.
+        serializer.save(sender=self.request.user)
 
 
-
-# DMListMessageView: Listar as mensagens dentro do DM do usuário autenticado com um determinado receiver, mostrando o username do remetente e destinatário, e para criar uma nova mensagem DM, onde o remetente é o usuário autenticado
-class DMListMessageView(ListCreateAPIView):
-    serializer_class = DMSerializer
+class DMConversationMessagesView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+
+    def get_other_user(self):
+        other_user = get_object_or_404(User, id=self.kwargs["user_id"])
+
+        if other_user.id == self.request.user.id:
+            raise ValidationError("You cannot open a DM conversation with yourself.")
+
+        return other_user
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return DMConversationCreateSerializer
+        return DMConversationMessageSerializer
+
     def get_queryset(self):
-        receiver_id = self.kwargs.get("receiver_id")
-        return DM.objects.filter(
-            (Q(sender=self.request.user) & Q(receiver__id=receiver_id)) | 
-            (Q(sender__id=receiver_id) & Q(receiver=self.request.user))
-        ).order_by("-created_at")
+        other_user = self.get_other_user()
+        return (
+            DM.objects
+            .filter(
+                Q(sender=self.request.user, receiver=other_user) |
+                Q(sender=other_user, receiver=self.request.user)
+            )
+            .select_related("sender", "receiver")
+            .order_by("created_at")
+        )
+
+    def perform_create(self, serializer):
+        serializer.save(
+            sender=self.request.user,
+            receiver=self.get_other_user(),
+        )
 
 
 class DMRetrieveDestroyView(RetrieveDestroyAPIView):
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated]
     queryset = DM.objects.all()
     lookup_url_kwarg = "dm_id"
     lookup_field = "id"
+    
