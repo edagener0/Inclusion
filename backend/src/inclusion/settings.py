@@ -110,6 +110,7 @@ SPECTACULAR_SETTINGS = {
 
 CRONJOBS = [
     ('0 23 * * *', 'django.core.management.call_command', ['generate_daily_wordle']),
+    ('0 0 * * *', 'django.core.management.call_command', ['user_wordle_streaks']),
 ]
 
 MIDDLEWARE = [

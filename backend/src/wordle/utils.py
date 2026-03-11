@@ -3,6 +3,9 @@ from .models import Word, WordleResult
 from collections import Counter
 from datetime import timedelta
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 WORDS_URLS = [
         "https://raw.githubusercontent.com/MrLabbrow/All-English-Words/refs/heads/main/Words.txt",
@@ -61,6 +64,20 @@ def update_user_wordle_streak(user, today_date):
         user.max_wordle_streak = user.current_wordle_streak
 
     user.save(update_fields=["current_wordle_streak", "max_wordle_streak"])
+
+
+def reset_missed_wordle_streaks():
+    today = timezone.now().date()
+    yesterday = today - timedelta(days=1)
+
+    users_to_reset = User.objects.exclude(
+        id__in=WordleResult.objects.filter(
+            wordle__date=yesterday,
+            status=WordleResult.StatusChoices.SUCCESS
+        ).values_list("user_id", flat=True)
+    )
+
+    users_to_reset.update(current_wordle_streak=0)
 
 def get_difficulty_for_word(word):
     word_len = len(word)

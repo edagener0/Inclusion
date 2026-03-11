@@ -179,3 +179,43 @@ class LeaderboardOrderingTests(APITestCase):
         self.assertEqual(results["user1"]["current_wordle_streak"], 1)
         self.assertEqual(results["user2"]["current_wordle_streak"], 1)
         self.assertEqual(results["user3"]["current_wordle_streak"], 1)
+
+from django.test import TestCase
+from django.utils import timezone
+from datetime import timedelta
+from wordle.models import Wordle, Word, WordleResult, User
+from wordle.utils import reset_missed_wordle_streaks
+
+class WordleStreakResetTests(TestCase):
+
+    def setUp(self):
+        # Create users
+        self.user_played = User.objects.create(username="played_user")
+        self.user_missed = User.objects.create(username="missed_user")
+        
+        self.word = Word.objects.create(text="apple", length=5, difficulty="easy")
+        
+        self.yesterday = timezone.now().date() - timedelta(days=1)
+        self.wordle_yesterday = Wordle.objects.create(word=self.word, date=self.yesterday)
+        
+        WordleResult.objects.create(
+            user=self.user_played,
+            wordle=self.wordle_yesterday,
+            status=WordleResult.StatusChoices.SUCCESS,
+            guesses=1
+        )
+
+        self.user_played.current_wordle_streak = 3
+        self.user_played.save()
+        self.user_missed.current_wordle_streak = 5
+        self.user_missed.save()
+
+    def test_reset_missed_streaks(self):
+        reset_missed_wordle_streaks()
+
+        self.user_played.refresh_from_db()
+        self.user_missed.refresh_from_db()
+
+        self.assertEqual(self.user_played.current_wordle_streak, 3)
+
+        self.assertEqual(self.user_missed.current_wordle_streak, 0)
