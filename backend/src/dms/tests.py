@@ -1,9 +1,24 @@
+from unittest.mock import patch
+
+from asgiref.sync import async_to_sync, sync_to_async
+from channels.layers import get_channel_layer
+from channels.testing import WebsocketCommunicator
 from django.contrib.auth import get_user_model
+from django.test import TransactionTestCase
+from django.test.utils import override_settings
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
+from rest_framework_simplejwt.tokens import AccessToken
 
+from inclusion.asgi import application
 from .models import DM
+from .realtime import (
+    build_dm_conversation_group,
+    build_dm_user_group,
+    serialize_dm_inbox_item,
+    serialize_dm_realtime_message,
+)
 
 User = get_user_model()
 
@@ -32,11 +47,12 @@ class DMViewsTests(APITestCase):
         self.assertEqual(response.data["results"][1]["other_user"]["username"], self.user2.username)
 
     def test_create_dm_from_inbox_sets_authenticated_user_as_sender(self):
-        response = self.client.post(
-            reverse("dm-create-list"),
-            {"content": "hello inbox", "receiver": self.user2.id},
-            format="json",
-        )
+        with patch("dms.views.schedule_dm_message_broadcast") as mocked_broadcast:
+            response = self.client.post(
+                reverse("dm-create-list"),
+                {"content": "hello inbox", "receiver": self.user2.id},
+                format="json",
+            )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(
@@ -46,6 +62,9 @@ class DMViewsTests(APITestCase):
                 content="hello inbox",
             ).exists()
         )
+        mocked_broadcast.assert_called_once()
+        self.assertEqual(response.data["content"], "hello inbox")
+        self.assertTrue(response.data["is_mine"])
 
     def test_conversation_messages_view_lists_only_messages_between_two_users(self):
         first_dm = DM.objects.create(sender=self.user1, receiver=self.user2, content="first")
@@ -64,11 +83,12 @@ class DMViewsTests(APITestCase):
         self.assertFalse(response.data["results"][1]["is_mine"])
 
     def test_conversation_messages_post_uses_user_from_url_as_receiver(self):
-        response = self.client.post(
-            reverse("dm-conversation-messages", kwargs={"user_id": self.user2.id}),
-            {"content": "hello chat"},
-            format="json",
-        )
+        with patch("dms.views.schedule_dm_message_broadcast") as mocked_broadcast:
+            response = self.client.post(
+                reverse("dm-conversation-messages", kwargs={"user_id": self.user2.id}),
+                {"content": "hello chat"},
+                format="json",
+            )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(
@@ -78,6 +98,9 @@ class DMViewsTests(APITestCase):
                 content="hello chat",
             ).exists()
         )
+        mocked_broadcast.assert_called_once()
+        self.assertEqual(response.data["receiver"]["username"], self.user2.username)
+        self.assertTrue(response.data["is_mine"])
 
     def test_conversation_with_self_is_rejected(self):
         response = self.client.get(
@@ -96,3 +119,203 @@ class DMViewsTests(APITestCase):
             reverse("dm-conversation-messages", kwargs={"user_id": self.user2.id})
         )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+@override_settings(BACKEND_PUBLIC_URL="http://localhost:8000")
+class DMRealtimeHelpersTests(APITestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username="alice", password="password")
+        self.user2 = User.objects.create_user(username="bob", password="password")
+
+    def test_conversation_group_is_stable_regardless_of_user_order(self):
+        self.assertEqual(build_dm_conversation_group(3, 7), "dm_3_7")
+        self.assertEqual(build_dm_conversation_group(7, 3), "dm_3_7")
+
+    def test_realtime_payload_is_camel_case_and_contains_user_ids(self):
+        dm = DM.objects.create(sender=self.user1, receiver=self.user2, content="hello")
+
+        payload = serialize_dm_realtime_message(dm)
+
+        self.assertEqual(payload["senderId"], self.user1.id)
+        self.assertEqual(payload["receiverId"], self.user2.id)
+        self.assertIn("createdAt", payload)
+        self.assertNotIn("created_at", payload)
+        self.assertTrue(payload["sender"]["avatar"].startswith("http://localhost:8000/"))
+
+    def test_inbox_payload_uses_other_user_for_current_user(self):
+        dm = DM.objects.create(sender=self.user1, receiver=self.user2, content="hello inbox")
+
+        payload = serialize_dm_inbox_item(dm, self.user1)
+
+        self.assertEqual(payload["otherUser"]["id"], self.user2.id)
+        self.assertEqual(payload["lastMessage"], "hello inbox")
+        self.assertTrue(payload["otherUser"]["avatar"].startswith("http://localhost:8000/"))
+
+
+class DMWebSocketTests(TransactionTestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username="alice", password="password")
+        self.user2 = User.objects.create_user(username="bob", password="password")
+
+    def test_authenticated_user_receives_broadcast_for_open_conversation(self):
+        async def run_test():
+            communicator = WebsocketCommunicator(
+                application,
+                f"/ws/dms/{self.user2.id}/",
+                headers=[
+                    (b"origin", b"http://localhost:5173"),
+                    (
+                        b"cookie",
+                        f"access_token={AccessToken.for_user(self.user1)}".encode("utf-8"),
+                    ),
+                ],
+            )
+
+            connected, _ = await communicator.connect()
+            self.assertTrue(connected)
+
+            await get_channel_layer().group_send(
+                build_dm_conversation_group(self.user1.id, self.user2.id),
+                {
+                    "type": "dm.message",
+                    "message": {
+                        "id": 99,
+                        "content": "hello realtime",
+                    },
+                },
+            )
+
+            payload = await communicator.receive_json_from()
+            self.assertEqual(payload["type"], "dm.message")
+            self.assertEqual(payload["message"]["content"], "hello realtime")
+
+            await communicator.disconnect()
+
+        async_to_sync(run_test)()
+
+    def test_authenticated_user_receives_inbox_update(self):
+        async def run_test():
+            communicator = WebsocketCommunicator(
+                application,
+                "/ws/dms/inbox/",
+                headers=[
+                    (b"origin", b"http://localhost:5173"),
+                    (
+                        b"cookie",
+                        f"access_token={AccessToken.for_user(self.user1)}".encode("utf-8"),
+                    ),
+                ],
+            )
+
+            connected, _ = await communicator.connect()
+            self.assertTrue(connected)
+
+            await get_channel_layer().group_send(
+                build_dm_user_group(self.user1.id),
+                {
+                    "type": "dm.inbox",
+                    "inbox_item": {
+                        "id": 99,
+                        "lastMessage": "hello inbox realtime",
+                    },
+                },
+            )
+
+            payload = await communicator.receive_json_from()
+            self.assertEqual(payload["type"], "dm.inbox")
+            self.assertEqual(payload["inboxItem"]["lastMessage"], "hello inbox realtime")
+
+            await communicator.disconnect()
+
+        async_to_sync(run_test)()
+
+    def test_post_message_broadcasts_to_conversation_socket(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user1)
+
+        async def run_test():
+            communicator = WebsocketCommunicator(
+                application,
+                f"/ws/dms/{self.user2.id}/",
+                headers=[
+                    (b"origin", b"http://localhost:5173"),
+                    (
+                        b"cookie",
+                        f"access_token={AccessToken.for_user(self.user1)}".encode("utf-8"),
+                    ),
+                ],
+            )
+
+            connected, _ = await communicator.connect()
+            self.assertTrue(connected)
+
+            response = await sync_to_async(
+                client.post,
+                thread_sensitive=True,
+            )(
+                reverse("dm-conversation-messages", kwargs={"user_id": self.user2.id}),
+                {"content": "hello through rest"},
+                format="json",
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            payload = await communicator.receive_json_from(timeout=2)
+            self.assertEqual(payload["type"], "dm.message")
+            self.assertEqual(payload["message"]["content"], "hello through rest")
+            self.assertEqual(payload["message"]["receiverId"], self.user2.id)
+
+            await communicator.disconnect()
+
+        async_to_sync(run_test)()
+
+    def test_post_message_broadcasts_to_receiver_inbox_socket(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user1)
+
+        async def run_test():
+            communicator = WebsocketCommunicator(
+                application,
+                "/ws/dms/inbox/",
+                headers=[
+                    (b"origin", b"http://localhost:5173"),
+                    (
+                        b"cookie",
+                        f"access_token={AccessToken.for_user(self.user2)}".encode("utf-8"),
+                    ),
+                ],
+            )
+
+            connected, _ = await communicator.connect()
+            self.assertTrue(connected)
+
+            response = await sync_to_async(
+                client.post,
+                thread_sensitive=True,
+            )(
+                reverse("dm-conversation-messages", kwargs={"user_id": self.user2.id}),
+                {"content": "hello inbox after post"},
+                format="json",
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            payload = await communicator.receive_json_from(timeout=2)
+            self.assertEqual(payload["type"], "dm.inbox")
+            self.assertEqual(payload["inboxItem"]["otherUser"]["id"], self.user1.id)
+            self.assertEqual(payload["inboxItem"]["lastMessage"], "hello inbox after post")
+
+            await communicator.disconnect()
+
+        async_to_sync(run_test)()
+
+    def test_unauthenticated_user_cannot_connect(self):
+        async def run_test():
+            communicator = WebsocketCommunicator(
+                application,
+                f"/ws/dms/{self.user2.id}/",
+                headers=[(b"origin", b"http://localhost:5173")],
+            )
+
+            connected, _ = await communicator.connect()
+            self.assertFalse(connected)
+
+        async_to_sync(run_test)()

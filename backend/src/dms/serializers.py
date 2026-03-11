@@ -51,3 +51,23 @@ class DMConversationMessageSerializer(serializers.ModelSerializer):
     def get_is_mine(self, obj):
         # A mensagem é "minha" quando o remetente da DM é o utilizador da request.
         return obj.sender_id == self.context["request"].user.id
+
+
+class DMRealtimeMessageSerializer(serializers.ModelSerializer):
+    sender = UserMeSerializer(read_only=True)
+    receiver = UserMeSerializer(read_only=True)
+    sender_id = serializers.IntegerField(read_only=True)
+    receiver_id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = DM
+        fields = [
+            "id",
+            "content",
+            "sender",
+            "receiver",
+            "sender_id",
+            "receiver_id",
+            "created_at",
+        ]
+        read_only_fields = fields

@@ -1,12 +1,15 @@
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import status
 
 from .models import DM
+from .realtime import schedule_dm_message_broadcast
 from .serializers import (
     DMConversationCreateSerializer,
     DMConversationMessageSerializer,
@@ -17,8 +20,30 @@ from .serializers import (
 User = get_user_model()
 
 
-class DMListCreateView(ListCreateAPIView):
+class DMBroadcastCreateMixin:
+    response_serializer_class = DMConversationMessageSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        dm = self.perform_create(serializer)
+        response_serializer = self.response_serializer_class(
+            dm,
+            context=self.get_serializer_context(),
+        )
+        headers = self.get_success_headers(response_serializer.data)
+        return Response(response_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class DMListCreateView(DMBroadcastCreateMixin, ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        request=DMCreateSerializer,
+        responses={201: DMConversationMessageSerializer},
+    )
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
 
     def get_serializer_class(self):
         if self.request.method == "POST":
@@ -61,11 +86,20 @@ class DMListCreateView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         # O remetente vem sempre da sessão autenticada, não do body do pedido.
-        serializer.save(sender=self.request.user)
+        dm = serializer.save(sender=self.request.user)
+        schedule_dm_message_broadcast(dm)
+        return dm
 
 
-class DMConversationMessagesView(ListCreateAPIView):
+class DMConversationMessagesView(DMBroadcastCreateMixin, ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        request=DMConversationCreateSerializer,
+        responses={201: DMConversationMessageSerializer},
+    )
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
 
     def get_other_user(self):
         # A conversa é sempre aberta contra um utilizador específico vindo da URL.
@@ -103,10 +137,12 @@ class DMConversationMessagesView(ListCreateAPIView):
         # Ao enviar uma mensagem dentro do chat:
         # - o sender é sempre o utilizador autenticado
         # - o receiver é sempre o utilizador da URL
-        serializer.save(
+        dm = serializer.save(
             sender=self.request.user,
             receiver=self.get_other_user(),
         )
+        schedule_dm_message_broadcast(dm)
+        return dm
 
 
 class DMRetrieveDestroyView(RetrieveDestroyAPIView):

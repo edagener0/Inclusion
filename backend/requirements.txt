@@ -2,8 +2,11 @@ asgiref==3.11.1
 attrs==25.4.0
 certifi==2026.1.4
 charset-normalizer==3.4.4
+channels==4.3.2
+channels-redis==4.3.0
 coreapi==2.3.3
 coreschema==0.0.4
+daphne==4.2.1
 Django==5.2.11
 django-cors-headers==4.9.0
 django-filter==25.2

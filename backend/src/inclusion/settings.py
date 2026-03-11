@@ -72,6 +72,7 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 500 * 1024 * 1024
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,6 +125,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'inclusion.urls'
+ASGI_APPLICATION = 'inclusion.asgi.application'
 
 TEMPLATES = [
     {
@@ -141,6 +143,27 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'inclusion.wsgi.application'
+
+REDIS_URL = os.getenv("REDIS_URL")
+
+if REDIS_URL:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [REDIS_URL],
+            },
+        },
+    }
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer",
+        },
+    }
+
+WEBSOCKET_ALLOWED_ORIGINS = CORS_ALLOWED_ORIGINS
+BACKEND_PUBLIC_URL = os.getenv("BACKEND_PUBLIC_URL", "http://localhost:8000")
 
 
 # Database
