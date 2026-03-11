@@ -7,9 +7,8 @@ from datetime import timedelta
 from django.core.management import call_command
 from django.conf import settings
 from django.contrib.auth import get_user_model
-
-from wordle.models import Word, Wordle, WordleResult
-from wordle.utils import find_diff_between_words, get_difficulty_for_word, RIGHT_PLACE_SYMBOL
+from .models import Word, Wordle, WordleResult
+from .utils import find_diff_between_words, get_difficulty_for_word, RIGHT_PLACE_SYMBOL, reset_missed_wordle_streaks
 
 User = get_user_model()
 
@@ -179,12 +178,6 @@ class LeaderboardOrderingTests(APITestCase):
         self.assertEqual(results["user1"]["current_wordle_streak"], 1)
         self.assertEqual(results["user2"]["current_wordle_streak"], 1)
         self.assertEqual(results["user3"]["current_wordle_streak"], 1)
-
-from django.test import TestCase
-from django.utils import timezone
-from datetime import timedelta
-from wordle.models import Wordle, Word, WordleResult, User
-from wordle.utils import reset_missed_wordle_streaks
 
 class WordleStreakResetTests(TestCase):
 
