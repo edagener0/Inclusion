@@ -27,7 +27,7 @@ class StoryCreateListView(ListCreateAPIView):
 
         return (
             Story.objects
-            .visible_to(self.request.user)
+            .visible_to_friends(self.request.user)
             .with_likes_data(self.request.user)
             .filter(created_at__gte=last_24h)
             .order_by("-created_at")

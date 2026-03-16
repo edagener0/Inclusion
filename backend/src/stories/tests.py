@@ -161,7 +161,11 @@ class StoryVisibilityAPITests(APITestCase):
     def authenticate(self, user):
         self.client.force_authenticate(user=user)
 
-    def test_non_friend_cannot_view_private_story(self):
+    def make_user_public(self):
+        self.user.is_private = False
+        self.user.save()
+
+    def test_non_friend_cannot_view_private_story_detail(self):
         self.authenticate(self.non_friend)
         response = self.client.get(self.detail_url(self.recent_story.id))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -187,6 +191,13 @@ class StoryVisibilityAPITests(APITestCase):
     def test_non_friend_cannot_list_private_stories(self):
         self.authenticate(self.non_friend)
         response = self.client.get(self.list_url)
+        self.assertEqual(response.data["results"], [])
+
+    def test_non_friend_cannot_list_public_stories_in_feed(self):
+        self.make_user_public()
+        self.authenticate(self.non_friend)
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["results"], [])
 
     def test_non_friend_cannot_like_private_story(self):
@@ -219,19 +230,38 @@ class StoryVisibilityAPITests(APITestCase):
         response = self.client.delete(self.like_url(self.recent_story.id))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_non_friend_can_view_public_story(self):
-        self.user.is_private = False
-        self.user.save()
+    def test_non_friend_can_view_public_story_detail(self):
+        self.make_user_public()
         self.authenticate(self.non_friend)
         response = self.client.get(self.detail_url(self.recent_story.id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_non_friend_can_like_public_story(self):
-        self.user.is_private = False
-        self.user.save()
+    def test_non_friend_can_like_public_story_detail(self):
+        self.make_user_public()
         self.authenticate(self.non_friend)
         response = self.client.post(self.like_url(self.recent_story.id))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_non_friend_can_unlike_public_story_detail(self):
+        self.make_user_public()
+        UserLikesContent.objects.create(user=self.non_friend, content=self.recent_story)
+        self.authenticate(self.non_friend)
+        response = self.client.delete(self.like_url(self.recent_story.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(UserLikesContent.objects.filter(user=self.non_friend, content=self.recent_story).exists())
+
+    def test_friend_can_list_public_stories_in_feed(self):
+        self.make_user_public()
+        self.authenticate(self.friend)
+        response = self.client.get(self.list_url)
+        story_ids = [s["id"] for s in response.data["results"]]
+        self.assertIn(self.recent_story.id, story_ids)
+
+    def test_public_story_older_than_24h_is_not_visible_in_detail(self):
+        self.make_user_public()
+        self.authenticate(self.non_friend)
+        response = self.client.get(self.detail_url(self.old_story.id))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_create_story_authenticated(self):
         self.authenticate(self.user)
