@@ -7,6 +7,7 @@ type ProfileAvatarSize = 'sm' | 'md' | 'lg' | '2xlg' | 'profile';
 
 type ProfileAvatarProps = Pick<Profile, 'avatar' | 'username'> & {
   size?: ProfileAvatarSize;
+  className?: string;
 };
 
 const sizeClasses: Record<ProfileAvatarSize, string> = {
@@ -17,9 +18,9 @@ const sizeClasses: Record<ProfileAvatarSize, string> = {
   profile: 'h-32 w-32 md:h-40 md:w-40',
 };
 
-export function ProfileAvatar({ username, avatar, size = 'md' }: ProfileAvatarProps) {
+export function ProfileAvatar({ username, avatar, size = 'md', className }: ProfileAvatarProps) {
   return (
-    <Avatar className={cn(sizeClasses[size], 'h-9 w-9 border')}>
+    <Avatar className={cn(sizeClasses[size], 'border', className)}>
       <AvatarImage src={avatar} alt={username} />
       <AvatarFallback>{username}</AvatarFallback>
     </Avatar>
