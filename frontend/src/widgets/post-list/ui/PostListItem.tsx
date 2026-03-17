@@ -2,6 +2,7 @@ import { MoreHorizontal } from 'lucide-react';
 
 import { type Post, PostCard } from '@/entities/post';
 import { useStrictSession } from '@/entities/session';
+import { DeletePostMenuItem } from '@/features/post/delete-post';
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 
@@ -18,7 +19,9 @@ export function PostListItem({ post }: { post: Post }) {
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end"></DropdownMenuContent>
+      <DropdownMenuContent align="end">
+        <DeletePostMenuItem id={post.id} />
+      </DropdownMenuContent>
     </DropdownMenu>
   );
 

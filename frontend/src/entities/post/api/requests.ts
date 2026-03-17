@@ -24,3 +24,7 @@ export async function createPost(dto: CreatePostDTO) {
     },
   });
 }
+
+export async function deletePost(id: number) {
+  await api.delete(`/posts/${id}`);
+}
