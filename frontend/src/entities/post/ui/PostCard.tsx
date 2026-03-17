@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { Link } from '@tanstack/react-router';
 import { Heart, MessageCircle, Share2 } from 'lucide-react';
 
 import { ProfileAvatar } from '@/entities/profile';
@@ -29,9 +30,11 @@ export function PostCard({ post, actions }: Props) {
         <div className="flex flex-col min-w-0 w-full">
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-1.5">
-              <span className="font-bold text-[15px] truncate hover:underline cursor-pointer">
-                {post.user.username}
-              </span>
+              <Link to="/$username" params={{ username: post.user.username }}>
+                <span className="font-bold text-[15px] truncate hover:underline cursor-pointer">
+                  {post.user.username}
+                </span>
+              </Link>
               <span className="text-muted-foreground text-[15px]">·</span>
               <span className="text-muted-foreground text-[15px]">{timeAgo(post.createdAt)}</span>
             </div>
