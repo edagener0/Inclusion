@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { Link } from '@tanstack/react-router';
-import { Heart, MessageCircle, Share2 } from 'lucide-react';
+import { MessageCircle, Share2 } from 'lucide-react';
 
 import { ProfileAvatar } from '@/entities/profile';
 import { isVideo } from '@/shared/lib/is-video';
@@ -13,10 +13,11 @@ import { type Post } from '../model/types';
 
 type Props = {
   post: Post;
-  actions?: ReactNode;
+  actionsSlot?: ReactNode;
+  likeSlot?: ReactNode;
 };
 
-export function PostCard({ post, actions }: Props) {
+export function PostCard({ likeSlot, post, actionsSlot: actions }: Props) {
   const isMediaVideo = isVideo(post.file);
 
   return (
@@ -70,13 +71,7 @@ export function PostCard({ post, actions }: Props) {
 
       <CardFooter className="border-t py-2 flex justify-between items-center">
         <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="gap-2 text-muted-foreground hover:text-red-500"
-          >
-            <Heart className="h-4 w-4" /> {post.likesCount}
-          </Button>
+          {likeSlot}
 
           <Button
             variant="ghost"
