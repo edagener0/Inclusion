@@ -12,9 +12,14 @@ const UserSettingsModal = lazy(() =>
   })),
 );
 
+const CreatePostModal = lazy(() =>
+  import('@/features/post/create-post').then(module => ({ default: module.CreatePostModal })),
+);
+
 const MODAL_COMPONENTS: Record<ModalType, React.ComponentType> = {
   'user-settings': UserSettingsModal,
   'create-content': CreateContentSelectorModal,
+  'create-post': CreatePostModal,
 };
 
 export function ModalProvider() {

@@ -7,10 +7,15 @@ export const PostSchema = z.object({
     username: z.string(),
     avatar: z.url(),
   }),
-  file: z.file(),
-  description: z.string(),
+  file: z.url(),
+  description: z.string().nullable(),
   likesCount: z.int(),
   isLiked: z.boolean(),
-  createdAt: z.date(),
+  createdAt: z.coerce.date(),
 });
 export type Post = z.infer<typeof PostSchema>;
+
+export type CreatePostDTO = {
+  description: string;
+  file: File;
+};

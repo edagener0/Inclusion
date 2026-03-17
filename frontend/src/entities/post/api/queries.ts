@@ -2,7 +2,6 @@ import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
 import { fetchPostById, fetchPosts } from './requests';
 
-const LIMIT = 10;
 export const postQueries = {
   all: () => ['posts'] as const,
   feed: () =>
@@ -11,7 +10,7 @@ export const postQueries = {
       queryFn: ({ pageParam }) => fetchPosts(pageParam),
       initialPageParam: 1,
       getNextPageParam: (lastPage, allPages) => {
-        if (lastPage.length < LIMIT) return undefined;
+        if (!lastPage.hasNextPage) return undefined;
 
         return allPages.length + 1;
       },

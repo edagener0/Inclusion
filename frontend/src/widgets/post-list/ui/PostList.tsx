@@ -2,7 +2,9 @@ import { useEffect, useRef } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { PostCard, PostCardSkeleton, postQueries } from '@/entities/post';
+import { PostCardSkeleton, postQueries } from '@/entities/post';
+
+import { PostListItem } from './PostListItem';
 
 export function PostList() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery(
@@ -32,13 +34,13 @@ export function PostList() {
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const allPosts = data?.pages.flatMap(page => page) ?? [];
+  const allPosts = data?.pages.flatMap(page => page.data) ?? [];
 
   return (
     <div className="space-y-4">
       {isLoading
         ? Array.from({ length: 3 }).map((_, i) => <PostCardSkeleton key={i} />)
-        : allPosts.map(post => <PostCard key={post.id} post={post} />)}
+        : allPosts.map(post => <PostListItem key={post.id} post={post} />)}
 
       <div
         ref={observerTarget}
