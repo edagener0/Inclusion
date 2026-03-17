@@ -1,5 +1,6 @@
-import { MutationCache, QueryClient } from '@tanstack/react-query';
+import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import z from 'zod';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -9,9 +10,22 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
     },
   },
+  queryCache: new QueryCache({
+    onError: error => {
+      if (error instanceof z.ZodError) {
+        console.error('Invalid data structure (Zod):', error.issues);
+        toast.error('Data error', {
+          description: 'Server returned an unexpected data structure format.',
+        });
+        return;
+      }
+
+      toast.error('Error occurred', { description: error.message });
+    },
+  }),
   mutationCache: new MutationCache({
     onError: error => {
-      toast.error(`Error occurred: ${error.message}`);
+      toast.error('Error occurred', { description: error.message });
     },
   }),
 });
