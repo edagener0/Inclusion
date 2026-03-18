@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
+    'django_crontab',
     'corsheaders',
     'common',
     'authentication',
@@ -95,6 +96,7 @@ INSTALLED_APPS = [
     'stories',
     'comments',
     'friends',
+    'wordle',
 ]
 
 SPECTACULAR_SETTINGS = {
@@ -106,7 +108,10 @@ SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_REQUEST": True,
 }
 
-
+CRONJOBS = [
+    ('0 23 * * *', 'django.core.management.call_command', ['generate_daily_wordle']),
+    ('0 0 * * *', 'django.core.management.call_command', ['user_wordle_streaks']),
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -5,6 +5,7 @@ from common.models import TimeStampedModel
 from django.db.models import Q
 from friends.models import Friend
 
+
 class User(TimeStampedModel, AbstractUser):
     avatar = models.ImageField(
         upload_to= "avatars",
@@ -22,6 +23,9 @@ class User(TimeStampedModel, AbstractUser):
         "password"
     ]
 
+    current_wordle_streak = models.IntegerField(default=0, null=False)
+    max_wordle_streak = models.IntegerField(default=0, null=False)
+
     @property
     def friends(self):
         return User.objects.filter(
@@ -29,7 +33,7 @@ class User(TimeStampedModel, AbstractUser):
             Q(friends_as_user2__user1=self)
         ).distinct().order_by("created_at")
     
-    @property
+
     def is_friends_with(self, other_user):
         return Friend.objects.filter(
             Q(user1 = self, user2 = other_user) |
