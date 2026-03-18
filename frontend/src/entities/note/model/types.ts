@@ -4,7 +4,7 @@ export interface Note {
   user: {
     id: number;
     username: string;
-    avatar: string | null;
+    avatar: string;
   };
   likes_count: number;
   is_liked: boolean;

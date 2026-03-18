@@ -1,9 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
 
-import type { Note as NoteType } from '../model/types';
+import type { Note } from '../model/types';
 
 interface NoteProps {
-  note: NoteType;
+  note: Note;
 }
 
 export function NoteCard({ note }: NoteProps) {
@@ -14,13 +14,11 @@ export function NoteCard({ note }: NoteProps) {
         {note.content}
       </div>
 
-      {/* User Avatar */}
       <Avatar className="w-14 h-14 border-2 border-primary">
         <AvatarImage src={note.user.avatar || undefined} />
         <AvatarFallback>{note.user.username[0].toUpperCase()}</AvatarFallback>
       </Avatar>
 
-      {/* Username */}
       <span className="text-xs mt-1 truncate w-full text-center text-muted-foreground group-hover:text-foreground">
         {note.user.username}
       </span>

@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 
 import { NoteCard, noteQueries } from '@/entities/note';
 import { useSession } from '@/entities/session';
-import { CreateNoteForm } from '@/features/note/manage-note';
+import { NoteForm } from '@/features/note/manage-note/';
 
 export const Route = createFileRoute('/_main/messages')({
   component: MessagesLayout,
@@ -25,14 +25,10 @@ function MessagesLayout() {
       <div className="p-4 border-b">
         <h2 className="text-xl font-bold mb-4">Messages</h2>
 
-        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-          <CreateNoteForm existingNote={myNote} />
+        <div className="flex gap-4 overflow-x-auto pb-2 pt-4 scrollbar-hide">
+          <NoteForm existingNote={myNote} />
 
-          {otherNotes.length > 0 ? (
-            otherNotes.map(note => <NoteCard key={note.id} note={note} />)
-          ) : (
-            <p className="text-xs text-muted-foreground">No notes in the last 24h</p>
-          )}
+          {otherNotes.length > 0 && otherNotes.map(note => <NoteCard key={note.id} note={note} />)}
         </div>
       </div>
     </div>

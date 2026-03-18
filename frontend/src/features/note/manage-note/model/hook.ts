@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useForm } from '@tanstack/react-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -7,60 +8,57 @@ import { createNote, deleteNote, noteQueries } from '@/entities/note';
 import { type Note } from '@/entities/note';
 
 export function useNoteForm(existingNote?: Note) {
-  const [content, setContent] = useState('');
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
-  const handleOpenChange = (isOpen: boolean) => {
-    setOpen(isOpen);
-    if (isOpen) {
-      setContent(existingNote?.content || '');
-    }
-  };
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: async (newContent: string) => {
-      return createNote(newContent);
-    },
-
+  const { mutate: shareNote, isPending: isSharing } = useMutation({
+    mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: noteQueries.all() });
       setOpen(false);
-      toast.success('Nota atualizada!');
+      toast.success(existingNote ? 'Note updated!' : 'Note Shared');
     },
     onError: () => {
-      toast.error('Erro ao partilhar nota.');
+      toast.error('Error sharing the note.');
     },
   });
 
   const { mutate: removeNote, isPending: isDeleting } = useMutation({
-    mutationFn: async () => {
+    mutationFn: () => {
       if (!existingNote) throw new Error('No note to delete');
       return deleteNote(existingNote.id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: noteQueries.all() });
       setOpen(false);
-      toast.success('Nota apagada!');
+      toast.success('Note deleted!');
     },
     onError: () => {
-      toast.error('Erro ao apagar nota.');
+      toast.error('Error deleting the note.');
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!content.trim()) return;
-    mutate(content);
+  const form = useForm({
+    defaultValues: {
+      content: existingNote?.content || '',
+    },
+    onSubmit: async ({ value }) => {
+      shareNote(value.content);
+    },
+  });
+
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+    if (isOpen) {
+      form.reset();
+    }
   };
 
   return {
-    content,
-    setContent,
+    form,
     open,
-    isPending,
+    isPending: isSharing,
     isDeleting,
-    handleSubmit,
     handleOpenChange,
     removeNote,
   };
