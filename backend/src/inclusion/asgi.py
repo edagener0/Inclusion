@@ -19,13 +19,14 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'inclusion.settings')
 django_asgi_app = get_asgi_application()
 
 from authentication.websocket import JWTWebSocketAuthMiddleware
-from dms.routing import websocket_urlpatterns
+from dms.routing import websocket_urlpatterns as dm_websocket_urlpatterns
+from groups.routing import websocket_urlpatterns as group_websocket_urlpatterns
 
 application = ProtocolTypeRouter({
     "http": django_asgi_app,
     "websocket": OriginValidator(
         JWTWebSocketAuthMiddleware(
-            URLRouter(websocket_urlpatterns)
+            URLRouter(dm_websocket_urlpatterns + group_websocket_urlpatterns)
         ),
         settings.WEBSOCKET_ALLOWED_ORIGINS,
     ),

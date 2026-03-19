@@ -1,13 +1,11 @@
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from django.contrib.auth import get_user_model
 
-from .realtime import build_dm_conversation_group, build_dm_user_group
-
-User = get_user_model()
+from .models import GroupParticipants
+from .realtime import build_group_conversation_group, build_group_user_group
 
 
-class AuthenticatedDMConsumer(AsyncJsonWebsocketConsumer):
+class AuthenticatedGroupConsumer(AsyncJsonWebsocketConsumer):
     async def _get_authenticated_user(self):
         user = self.scope.get("user")
 
@@ -18,27 +16,23 @@ class AuthenticatedDMConsumer(AsyncJsonWebsocketConsumer):
         return user
 
 
-class DMConsumer(AuthenticatedDMConsumer):
+class GroupConsumer(AuthenticatedGroupConsumer):
     async def connect(self):
         user = await self._get_authenticated_user()
         if user is None:
             return
 
         try:
-            other_user_id = int(self.scope["url_route"]["kwargs"]["user_id"])
+            group_id = int(self.scope["url_route"]["kwargs"]["group_id"])
         except (KeyError, TypeError, ValueError):
             await self.close(code=4400)
             return
 
-        if other_user_id == user.id:
-            await self.close(code=4400)
+        if not await self._is_group_member(group_id, user.id):
+            await self.close(code=4403)
             return
 
-        if not await self._user_exists(other_user_id):
-            await self.close(code=4404)
-            return
-
-        self.group_name = build_dm_conversation_group(user.id, other_user_id)
+        self.group_name = build_group_conversation_group(group_id)
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
 
@@ -46,42 +40,36 @@ class DMConsumer(AuthenticatedDMConsumer):
         if hasattr(self, "group_name"):
             await self.channel_layer.group_discard(self.group_name, self.channel_name)
 
-    async def dm_message(self, event):
+    async def group_message_created(self, event):
         await self.send_json({
-            "type": "dm.message",
+            "type": "group.message.created",
             "message": event["message"],
         })
 
-    async def dm_message_created(self, event):
+    async def group_message_updated(self, event):
         await self.send_json({
-            "type": "dm.message.created",
+            "type": "group.message.updated",
             "message": event["message"],
         })
 
-    async def dm_message_updated(self, event):
+    async def group_message_deleted(self, event):
         await self.send_json({
-            "type": "dm.message.updated",
-            "message": event["message"],
-        })
-
-    async def dm_message_deleted(self, event):
-        await self.send_json({
-            "type": "dm.message.deleted",
+            "type": "group.message.deleted",
             "message": event["message"],
         })
 
     @database_sync_to_async
-    def _user_exists(self, user_id):
-        return User.objects.filter(id=user_id).exists()
+    def _is_group_member(self, group_id, user_id):
+        return GroupParticipants.objects.filter(group_id=group_id, user_id=user_id).exists()
 
 
-class DMInboxConsumer(AuthenticatedDMConsumer):
+class GroupInboxConsumer(AuthenticatedGroupConsumer):
     async def connect(self):
         user = await self._get_authenticated_user()
         if user is None:
             return
 
-        self.group_name = build_dm_user_group(user.id)
+        self.group_name = build_group_user_group(user.id)
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
 
@@ -89,20 +77,14 @@ class DMInboxConsumer(AuthenticatedDMConsumer):
         if hasattr(self, "group_name"):
             await self.channel_layer.group_discard(self.group_name, self.channel_name)
 
-    async def dm_inbox(self, event):
+    async def group_inbox_updated(self, event):
         await self.send_json({
-            "type": "dm.inbox",
-            "inboxItem": event["inbox_item"],
+            "type": "group.inbox.updated",
+            "groupItem": event["group_item"],
         })
 
-    async def dm_inbox_updated(self, event):
+    async def group_inbox_removed(self, event):
         await self.send_json({
-            "type": "dm.inbox.updated",
-            "inboxItem": event["inbox_item"],
-        })
-
-    async def dm_inbox_removed(self, event):
-        await self.send_json({
-            "type": "dm.inbox.removed",
-            "conversation": event["conversation"],
+            "type": "group.inbox.removed",
+            "groupItem": event["group_item"],
         })
