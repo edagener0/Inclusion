@@ -4,8 +4,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from comments.models import Comment
 
-def create_like_for_content(request, content_id):
-    content = get_object_or_404(Content.objects.visible_to(request.user), id = content_id)
+def create_like_for_content(request, content_id, queryset=None):
+    visible_queryset = queryset if queryset is not None else Content.objects.visible_to(request.user)
+    content = get_object_or_404(visible_queryset, id=content_id)
         
     _, created = UserLikesContent.objects.get_or_create(
                     user = request.user,
@@ -20,8 +21,9 @@ def create_like_for_content(request, content_id):
         status = status.HTTP_201_CREATED if created else status.HTTP_200_OK
     )
 
-def remove_like_from_content(request, content_id):
-    content = get_object_or_404(Content.objects.visible_to(request.user), id = content_id)
+def remove_like_from_content(request, content_id, queryset=None):
+    visible_queryset = queryset if queryset is not None else Content.objects.visible_to(request.user)
+    content = get_object_or_404(visible_queryset, id=content_id)
 
     deleted_count, _  = UserLikesContent.objects.filter(
             user = request.user,

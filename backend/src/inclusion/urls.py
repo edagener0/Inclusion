@@ -28,6 +28,8 @@ urlpatterns = [
     path("ws/groups/inbox", GroupInboxWebSocketDocView.as_view(), name="group-websocket-inbox-doc"),
     path("ws/groups/<int:group_id>", GroupConversationWebSocketDocView.as_view(), name="group-websocket-conversation-doc"),
     path("api/schema", SpectacularAPIView.as_view(), name="schema"),
+    path("wordle", include("wordle.urls")),
+    path("schema", SpectacularAPIView.as_view(), name="schema"),
     path(
         "",
         SpectacularSwaggerView.as_view(url_name="schema"),
