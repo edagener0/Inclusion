@@ -8,6 +8,17 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         fields = ["username", "email", "first_name", "last_name", "password"]
         extra_kwargs = {i:{"required": True, "write_only": True} for i in fields}
     
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError("A user with that username already exists.")
+        
+        RESTRICTED_USERNAMES = ["ADMIN", "ROOT", "SUPERUSER", "PROFILE", "MODERATOR", "STAFF"]
+
+        if value.upper() in RESTRICTED_USERNAMES:
+            raise serializers.ValidationError("This username is not allowed.")
+        
+        return value
+
     def create(self, validated_data):
         password = validated_data.pop("password")
         user = User(**validated_data)
