@@ -1,15 +1,19 @@
 import { Heart } from 'lucide-react';
 
-import type { Post } from '@/entities/post';
+import type { Comment } from '@/entities/comment';
 import { useLike } from '@/features/like-toggle';
 import { Button } from '@/shared/ui/button';
 
-export function LikeButton({ post }: { post: Post }) {
+type Props = {
+  comment: Comment;
+};
+
+export function LikeButton({ comment }: Props) {
   const { isLiked, count, isPending, toggle } = useLike({
-    initialCount: post.likesCount,
-    initialIsLiked: post.isLiked,
-    entityType: 'posts',
-    entityId: post.id,
+    initialCount: comment.likesCount,
+    initialIsLiked: comment.isLiked,
+    entityType: 'comments',
+    entityId: comment.id,
   });
 
   return (

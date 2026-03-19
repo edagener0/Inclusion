@@ -1,11 +1,16 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { Outlet, createFileRoute } from '@tanstack/react-router';
 
 import { PostList } from '@/widgets/post-list';
 
 export const Route = createFileRoute('/_main/posts')({
-  component: RouteComponent,
+  component: PostsLayout,
 });
 
-function RouteComponent() {
-  return <PostList />;
+function PostsLayout() {
+  return (
+    <div className="relative">
+      <PostList />
+      <Outlet />
+    </div>
+  );
 }

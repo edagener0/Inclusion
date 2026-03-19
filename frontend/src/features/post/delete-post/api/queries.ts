@@ -13,14 +13,14 @@ export function useDeletePostMutation() {
       await queryClient.cancelQueries({ queryKey: feedQueryKey });
       const previousFeed = queryClient.getQueryData(feedQueryKey);
 
-      queryClient.setQueryData(feedQueryKey, (oldData: any) => {
+      queryClient.setQueryData(feedQueryKey, oldData => {
         if (!oldData) return oldData;
 
         return {
           ...oldData,
-          pages: oldData.pages.map((page: any) => ({
+          pages: oldData.pages.map(page => ({
             ...page,
-            data: page.data.filter((post: any) => post.id !== deletedPostId),
+            data: page.data.filter(post => post.id !== deletedPostId),
           })),
         };
       });

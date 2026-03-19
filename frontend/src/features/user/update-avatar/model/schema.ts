@@ -10,7 +10,7 @@ export const updateAvatarSchema = z.object({
     .refine(file => file.size <= MAX_FILE_SIZE, `Max file size - 10MB.`)
     .refine(
       file => ACCEPTED_IMAGE_TYPES.includes(file.type),
-      'Supported formats .jpg, .jpeg, .png и .webp.',
+      'Supported formats .jpg, .jpeg, .png and .webp.',
     ),
 });
 

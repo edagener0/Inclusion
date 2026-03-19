@@ -3,18 +3,19 @@ import { useMutation } from '@tanstack/react-query';
 import { api } from '@/shared/api/base';
 
 interface Args {
-  endpoint: string;
+  entityType: string;
+  entityId: number;
   isLiked: boolean;
 }
 
 export function useToggleLikeMutation() {
   return useMutation({
-    mutationFn: async ({ endpoint, isLiked }: Args) => {
+    mutationFn: async ({ entityType, entityId, isLiked }: Args) => {
       if (isLiked) {
-        const response = await api.delete(endpoint);
+        const response = await api.delete(`/${entityType}/${entityId}/like`);
         return response.data;
       } else {
-        const response = await api.post(endpoint);
+        const response = await api.post(`/${entityType}/${entityId}/like`);
         return response.data;
       }
     },

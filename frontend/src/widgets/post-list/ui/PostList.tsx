@@ -14,6 +14,10 @@ export function PostList() {
   const observerTarget = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const target = observerTarget.current;
+
+    if (!target) return;
+
     const observer = new IntersectionObserver(
       entries => {
         if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
@@ -23,14 +27,10 @@ export function PostList() {
       { threshold: 1.0 },
     );
 
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
-    }
+    observer.observe(target);
 
     return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
-      }
+      observer.unobserve(target);
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 

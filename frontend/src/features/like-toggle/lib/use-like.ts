@@ -1,22 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useToggleLikeMutation } from '../api/queries';
 
 type Args = {
-  endpoint: string;
+  entityType: string;
+  entityId: number;
   initialIsLiked: boolean;
   initialCount: number;
 };
 
-export function useLike({ endpoint, initialIsLiked, initialCount }: Args) {
+export function useLike({ entityId, entityType, initialIsLiked, initialCount }: Args) {
   const [isLiked, setIsLiked] = useState(initialIsLiked);
   const [count, setCount] = useState(initialCount);
   const mutation = useToggleLikeMutation();
-
-  useEffect(() => {
-    setIsLiked(initialIsLiked);
-    setCount(initialCount);
-  }, [initialIsLiked, initialCount]);
 
   const toggle = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
@@ -26,7 +22,7 @@ export function useLike({ endpoint, initialIsLiked, initialCount }: Args) {
     setCount(isLiked ? count - 1 : count + 1);
 
     mutation.mutate(
-      { endpoint, isLiked },
+      { entityType, entityId, isLiked },
       {
         onError: () => {
           setIsLiked(isLiked);

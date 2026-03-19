@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { Link } from '@tanstack/react-router';
-import { MessageCircle, Share2 } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 import { ProfileAvatar } from '@/entities/profile';
 import { isVideo } from '@/shared/lib/is-video';
@@ -15,77 +15,86 @@ type Props = {
   post: Post;
   actionsSlot?: ReactNode;
   likeSlot?: ReactNode;
+  commentsSlot?: ReactNode;
 };
 
 export function PostCard({ likeSlot, post, actionsSlot: actions }: Props) {
   const isMediaVideo = isVideo(post.file);
 
   return (
-    <Card key={post.id}>
-      <CardHeader className="flex flex-row items-start gap-3 pb-2">
-        <ProfileAvatar
-          avatar={post.user.avatar}
-          username={post.user.username}
-          className="h-10 w-10 mt-0.5"
-        />
-        <div className="flex flex-col min-w-0 w-full">
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-1.5">
-              <Link to="/$username" params={{ username: post.user.username }}>
-                <span className="font-bold text-[15px] truncate hover:underline cursor-pointer">
-                  {post.user.username}
-                </span>
-              </Link>
-              <span className="text-muted-foreground text-[15px]">·</span>
-              <span className="text-muted-foreground text-[15px]">{timeAgo(post.createdAt)}</span>
-            </div>
-
-            <div>{actions}</div>
+    <Card
+      key={post.id}
+      className="w-full max-w-8/12 mx-auto overflow-hidden border sm:rounded-xl bg-background p-0 gap-0"
+    >
+      <CardHeader className="flex flex-row items-center justify-between px-3 pt-2 pb-2 space-y-0 border-none">
+        <div className="flex items-center gap-3">
+          <ProfileAvatar
+            avatar={post.user.avatar}
+            username={post.user.username}
+            className="h-9 w-9"
+          />
+          <div className="flex flex-col">
+            <Link to="/$username" params={{ username: post.user.username }}>
+              <span className="font-semibold text-[14px] text-foreground hover:underline cursor-pointer">
+                {post.user.username}
+              </span>
+            </Link>
+            <Link to="/posts/$id" params={{ id: String(post.id) }} resetScroll={false}>
+              <span className="text-[12px] text-muted-foreground">{timeAgo(post.createdAt)}</span>
+            </Link>
           </div>
-
-          <p className="text-[15px] leading-normal text-foreground wrap-break-word whitespace-pre-wrap">
-            {post.description}
-          </p>
         </div>
+        <div className="">{actions}</div>
       </CardHeader>
-
-      <CardContent className="pt-1">
-        <div className="overflow-hidden rounded-md bg-muted">
+      <CardContent className="p-0 border-y border-border/50">
+        <div className="relative flex w-full items-center justify-center bg-black/5 dark:bg-black/40">
           {isMediaVideo ? (
             <video
               src={post.file}
               controls
-              className="w-full max-h-125 object-contain bg-black"
+              playsInline
+              className="w-full h-auto block"
               preload="metadata"
             />
           ) : (
             <img
               src={post.file}
               alt={post.description || 'Post media'}
-              className="w-full max-h-110 object-cover"
+              className="w-full h-auto block"
               loading="lazy"
             />
           )}
         </div>
       </CardContent>
+      <CardFooter className="flex flex-col items-start p-3 pt-1 gap-1.5">
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-2 -ml-2">
+            {likeSlot}
 
-      <CardFooter className="border-t py-2 flex justify-between items-center">
-        <div className="flex items-center gap-1">
-          {likeSlot}
-
-          <Button
-            variant="ghost"
-            size="sm"
-            className="gap-2 text-muted-foreground hover:text-primary"
-          >
-            <MessageCircle className="h-4 w-4" />
-          </Button>
+            <Link to="/posts/$id" params={{ id: String(post.id) }} resetScroll={false}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 text-foreground hover:text-muted-foreground hover:bg-transparent transition-colors"
+              >
+                <MessageCircle className="h-6 w-6" strokeWidth={1.5} />
+              </Button>
+            </Link>
+          </div>
         </div>
 
-        {/* Правая часть остается сама по себе */}
-        <Button variant="ghost" size="sm" className="text-muted-foreground">
-          <Share2 className="h-4 w-4" />
-        </Button>
+        {post.description && (
+          <div className="w-full text-[14px] leading-4.5 ">
+            <Link to="/$username" params={{ username: post.user.username }}>
+              <span className="font-bold text-foreground hover:underline cursor-pointer mr-2">
+                {post.user.username}
+              </span>
+            </Link>
+            <span className="whitespace-pre-wrap wrap-break-word text-foreground/90">
+              {post.description}
+            </span>
+          </div>
+        )}
       </CardFooter>
     </Card>
   );
