@@ -13,8 +13,8 @@ import { Route as MainRouteImport } from './routes/_main'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as MainProfileRouteImport } from './routes/_main/profile'
-import { Route as MainMessagesRouteImport } from './routes/_main/messages'
 import { Route as MainPostsRouteImport } from './routes/_main/posts'
+import { Route as MainMessagesRouteImport } from './routes/_main/messages'
 import { Route as MainUsernameRouteImport } from './routes/_main/$username'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
@@ -39,12 +39,14 @@ const MainProfileRoute = MainProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => MainRoute,
 } as any)
-const MainMessagesRoute = MainMessagesRouteImport.update({
-  id: '/messages',
-  path: '/messages',
 const MainPostsRoute = MainPostsRouteImport.update({
   id: '/posts',
   path: '/posts',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainMessagesRoute = MainMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
   getParentRoute: () => MainRoute,
 } as any)
 const MainUsernameRoute = MainUsernameRouteImport.update({
@@ -79,7 +81,6 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof AuthSignUpRoute
   '/$username': typeof MainUsernameRoute
   '/messages': typeof MainMessagesRoute
-  '/posts': typeof MainPostsRoute
   '/posts': typeof MainPostsRouteWithChildren
   '/profile': typeof MainProfileRoute
   '/posts/$id': typeof MainPostsIdRoute
@@ -91,7 +92,6 @@ export interface FileRoutesByTo {
   '/sign-up': typeof AuthSignUpRoute
   '/$username': typeof MainUsernameRoute
   '/messages': typeof MainMessagesRoute
-  '/posts': typeof MainPostsRoute
   '/profile': typeof MainProfileRoute
   '/posts/$id': typeof MainPostsIdRoute
   '/posts': typeof MainPostsIndexRoute
@@ -104,7 +104,6 @@ export interface FileRoutesById {
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_main/$username': typeof MainUsernameRoute
   '/_main/messages': typeof MainMessagesRoute
-  '/_main/posts': typeof MainPostsRoute
   '/_main/posts': typeof MainPostsRouteWithChildren
   '/_main/profile': typeof MainProfileRoute
   '/_main/': typeof MainIndexRoute
@@ -119,9 +118,6 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/$username'
     | '/messages'
-    | '/profile'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/sign-up' | '/$username' | '/messages' | '/profile'
     | '/posts'
     | '/profile'
     | '/posts/$id'
@@ -132,6 +128,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/$username'
+    | '/messages'
     | '/profile'
     | '/posts/$id'
     | '/posts'
@@ -185,16 +182,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainProfileRouteImport
       parentRoute: typeof MainRoute
     }
-    '/_main/messages': {
-      id: '/_main/messages'
-      path: '/messages'
-      fullPath: '/messages'
-      preLoaderRoute: typeof MainMessagesRouteImport
     '/_main/posts': {
       id: '/_main/posts'
       path: '/posts'
       fullPath: '/posts'
       preLoaderRoute: typeof MainPostsRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/messages': {
+      id: '/_main/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MainMessagesRouteImport
       parentRoute: typeof MainRoute
     }
     '/_main/$username': {
@@ -264,7 +263,6 @@ const MainPostsRouteWithChildren = MainPostsRoute._addFileChildren(
 interface MainRouteChildren {
   MainUsernameRoute: typeof MainUsernameRoute
   MainMessagesRoute: typeof MainMessagesRoute
-  MainPostsRoute: typeof MainPostsRoute
   MainPostsRoute: typeof MainPostsRouteWithChildren
   MainProfileRoute: typeof MainProfileRoute
   MainIndexRoute: typeof MainIndexRoute
@@ -273,7 +271,6 @@ interface MainRouteChildren {
 const MainRouteChildren: MainRouteChildren = {
   MainUsernameRoute: MainUsernameRoute,
   MainMessagesRoute: MainMessagesRoute,
-  MainPostsRoute: MainPostsRoute,
   MainPostsRoute: MainPostsRouteWithChildren,
   MainProfileRoute: MainProfileRoute,
   MainIndexRoute: MainIndexRoute,
