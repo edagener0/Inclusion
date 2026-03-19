@@ -60,7 +60,7 @@ export function NoteForm({ existingNote }: CreateNoteFormProps) {
             name="content"
             children={field => (
               <Textarea
-                placeholder="Diga o que está a pensar... (máx 100 chars)"
+                placeholder="Tell me what you're thinking..."
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={e => field.handleChange(e.target.value)}

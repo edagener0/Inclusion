@@ -1,24 +1,18 @@
 import { api } from '@/shared/api/base';
+import type { PaginatedResponse } from '@/shared/api/types';
 
-import type { Note } from '../model/types';
+import { type Note, NoteSchema } from '../model/types';
 
-interface PaginatedResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
+export async function getNotes(): Promise<Note[]> {
+  const res = await api.get<PaginatedResponse<Note>>('/notes');
+  return NoteSchema.array().parse(res.data.results);
 }
 
-export const getNotes = async () => {
-  const res = await api.get<PaginatedResponse<Note>>('/notes');
-  return res.data.results;
-};
-
-export const createNote = async (content: string) => {
+export async function createNote(content: string): Promise<Note> {
   const res = await api.post<Note>('/notes', { content });
-  return res.data;
-};
+  return NoteSchema.parse(res.data);
+}
 
-export const deleteNote = async (noteId: number) => {
-  await api.delete(`/notes/${noteId}`);
-};
+export async function deleteNote(id: number) {
+  await api.delete(`/notes/${id}`);
+}
