@@ -117,7 +117,7 @@ class LogoutTests(BaseAuthTestCase):
 
 
 class RegisterTests(BaseAuthTestCase):
-    def test_register_success_creates_user(self):
+    def _register_payload(self, **overrides):
         payload = {
             "username": "newuser",
             "email": "test@gmail.com",
@@ -125,10 +125,48 @@ class RegisterTests(BaseAuthTestCase):
             "last_name": "Doe",
             "password": "StrongPass123!",
         }
+        payload.update(overrides)
+        return payload
+
+    def test_register_success_creates_user(self):
+        payload = self._register_payload()
         response = self.client.post(self.register_url, payload, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(User.objects.filter(username="newuser").exists())
+
+    def test_register_rejects_duplicate_username(self):
+        payload = self._register_payload(username="tester")
+
+        response = self.client.post(self.register_url, payload, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data["username"][0],
+            "A user with that username already exists.",
+        )
+
+    def test_register_rejects_whitespace_only_username_as_blank_field(self):
+        payload = self._register_payload(username="   ")
+
+        response = self.client.post(self.register_url, payload, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data["username"][0],
+            "This field may not be blank.",
+        )
+
+    def test_register_rejects_restricted_username_case_insensitively(self):
+        payload = self._register_payload(username="admin")
+
+        response = self.client.post(self.register_url, payload, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data["username"][0],
+            "This username is not allowed.",
+        )
 
 class UserMeViewTests(BaseAuthTestCase):
     def _login_and_set_auth_header(self):

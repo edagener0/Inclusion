@@ -20,6 +20,7 @@ from .utils import get_tokens_for_user, set_cookies_for_response
 class UserRegisterView(CreateAPIView):
     serializer_class = UserRegisterSerializer
 
+
 @extend_schema(
     tags=["Auth"],
     description="Login a user."
