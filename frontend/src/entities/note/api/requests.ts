@@ -8,9 +8,8 @@ export async function getNotes(): Promise<Note[]> {
   return NoteSchema.array().parse(res.data.results);
 }
 
-export async function createNote(content: string): Promise<Note> {
-  const res = await api.post<Note>('/notes', { content });
-  return NoteSchema.parse(res.data);
+export async function upsertNote(content: string) {
+  await api.post<Note>('/notes', { content });
 }
 
 export async function deleteNote(id: number) {

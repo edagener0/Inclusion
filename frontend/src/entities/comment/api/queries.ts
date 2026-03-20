@@ -3,7 +3,8 @@ import { infiniteQueryOptions } from '@tanstack/react-query';
 import { fetchComments } from './requests';
 
 export const commentQueries = {
-  all: (entityType: string) => ['comments', entityType] as const,
+  entityType: 'comments',
+  all: (entityType: string) => [commentQueries['entityType'], entityType] as const,
   feed: (entityType: string, entityId: number) =>
     infiniteQueryOptions({
       queryKey: [...commentQueries.all(entityType), 'feed', entityId] as const,

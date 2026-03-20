@@ -13,7 +13,7 @@ import {
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 
-import { useUpdateAvatar } from '../api/queries';
+import { useUpdateAvatar } from '../model/mutation';
 import { type UpdateAvatar, updateAvatarSchema } from '../model/schema';
 
 export function UpdateUserAvatarCard({

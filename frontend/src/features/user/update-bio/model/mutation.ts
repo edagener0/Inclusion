@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { profileQueryKeys } from '@/entities/profile';
+import { profileQueries } from '@/entities/profile';
 import { sessionQueryKey, useStrictSession } from '@/entities/session';
 
-import { updateFullName } from './requests';
+import { updateBio } from '../api/requests';
 
-export function useUpdateFullName() {
+export function useUpdateBio() {
   const client = useQueryClient();
   const user = useStrictSession();
 
   return useMutation({
-    mutationFn: updateFullName,
+    mutationFn: updateBio,
     onSuccess: () => {
       client.invalidateQueries({ queryKey: sessionQueryKey });
-      client.invalidateQueries({ queryKey: profileQueryKeys.byUsername(user.username) });
-      toast('Full name updated succesefully');
+      client.invalidateQueries({ queryKey: profileQueries.byUsername(user.username).queryKey });
+      toast.success('Biography updated succesefully');
     },
   });
 }

@@ -8,5 +8,4 @@ export const ProfileSchema = z.object({
   avatar: z.url(),
   biography: z.string().nullable(),
 });
-
 export type Profile = z.infer<typeof ProfileSchema>;

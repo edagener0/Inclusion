@@ -4,7 +4,7 @@ import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Textarea } from '@/shared/ui/textarea';
 
-import { useUpdateBio } from '../api/queries';
+import { useUpdateBio } from '../model/mutation';
 import { type UpdateBio, updateBioSchema } from '../model/schema';
 
 export function UpdateUserBioCard({ biography }: { biography: string | null }) {

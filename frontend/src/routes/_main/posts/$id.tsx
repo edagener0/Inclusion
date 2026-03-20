@@ -3,6 +3,7 @@ import { createFileRoute, useRouter } from '@tanstack/react-router';
 
 import { postQueries } from '@/entities/post';
 import { PostDetail } from '@/entities/post/ui/PostDetail';
+import { LikeButton } from '@/features/like-toggle';
 import {
   Dialog,
   DialogContent,
@@ -12,7 +13,6 @@ import {
 } from '@/shared/ui/dialog';
 import { CenterSpinner } from '@/shared/ui/spinner';
 import { CommentSection } from '@/widgets/comment-section/ui/CommentSection';
-import { LikeButton } from '@/widgets/post-list/ui/LikeButton';
 
 export const Route = createFileRoute('/_main/posts/$id')({
   component: RouteComponent,
@@ -39,11 +39,24 @@ export function RouteComponent() {
       <DialogContent className="p-0 border-none bg-transparent shadow-none gap-0 z-100 flex justify-center w-full md:w-max max-w-[100vw] sm:max-w-[calc(100vw-2rem)] h-dvh md:h-fit max-h-dvh md:max-h-[90vh] overflow-hidden">
         <DialogTitle className="hidden"></DialogTitle>
         <DialogDescription className="hidden"></DialogDescription>
-
         <PostDetail
           post={post}
-          likeSlot={<LikeButton post={post} />}
-          commentsSlot={<CommentSection entityType="posts" entityId={post.id} />}
+          likeSlot={
+            <LikeButton
+              queryKey={postQueries.feed().queryKey}
+              likesCount={post.likesCount}
+              entityId={post.id}
+              entityType={postQueries.entityType}
+              isLiked={post.isLiked}
+            />
+          }
+          commentsSlot={
+            <CommentSection
+              entityType={postQueries.entityType}
+              entityId={post.id}
+              queryKey={postQueries.feed().queryKey}
+            />
+          }
         />
       </DialogContent>
     </Dialog>

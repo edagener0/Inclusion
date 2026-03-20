@@ -1,36 +1,32 @@
-import { useState } from 'react';
+import type { QueryKey } from '@tanstack/react-query';
 
-import { useToggleLikeMutation } from '../api/queries';
+import { useToggleLikeMutation } from '../model/mutation';
 
 type Args = {
   entityType: string;
   entityId: number;
   initialIsLiked: boolean;
   initialCount: number;
+  queryKey: QueryKey;
 };
 
-export function useLike({ entityId, entityType, initialIsLiked, initialCount }: Args) {
-  const [isLiked, setIsLiked] = useState(initialIsLiked);
-  const [count, setCount] = useState(initialCount);
+export function useLike({ entityId, entityType, initialIsLiked, initialCount, queryKey }: Args) {
   const mutation = useToggleLikeMutation();
 
   const toggle = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     if (mutation.isPending) return;
 
-    setIsLiked(!isLiked);
-    setCount(isLiked ? count - 1 : count + 1);
+    const newIsLiked = !initialIsLiked;
+    const newCount = initialIsLiked ? initialCount - 1 : initialCount + 1;
 
-    mutation.mutate(
-      { entityType, entityId, isLiked },
-      {
-        onError: () => {
-          setIsLiked(isLiked);
-          setCount(count);
-        },
-      },
-    );
+    mutation.mutate({ entityType, entityId, isLiked: newIsLiked, count: newCount, queryKey });
   };
 
-  return { isLiked, count, toggle, isPending: mutation.isPending };
+  return {
+    isLiked: initialIsLiked,
+    count: initialCount,
+    toggle,
+    isPending: mutation.isPending,
+  };
 }

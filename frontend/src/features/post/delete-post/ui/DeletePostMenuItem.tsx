@@ -14,7 +14,7 @@ import {
 } from '@/shared/ui/alert-dialog';
 import { DropdownMenuItem } from '@/shared/ui/dropdown-menu';
 
-import { useDeletePostMutation } from '../api/queries';
+import { useDeletePostMutation } from '../model/mutation';
 
 export function DeletePostMenuItem({ id }: { id: number }) {
   const [isOpen, setIsOpen] = useState(false);

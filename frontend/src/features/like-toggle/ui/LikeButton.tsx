@@ -1,19 +1,31 @@
+import type { QueryKey } from '@tanstack/react-query';
 import { Heart } from 'lucide-react';
 
-import type { Comment } from '@/entities/comment';
-import { useLike } from '@/features/like-toggle';
 import { Button } from '@/shared/ui/button';
 
+import { useLike } from '../lib/use-like';
+
 type Props = {
-  comment: Comment;
+  likesCount: number;
+  isLiked: boolean;
+  entityType: string;
+  entityId: number;
+  queryKey: QueryKey;
 };
 
-export function LikeButton({ comment }: Props) {
+export function LikeButton({
+  entityId,
+  entityType,
+  likesCount: initialCount,
+  isLiked: initialIsLiked,
+  queryKey,
+}: Props) {
   const { isLiked, count, isPending, toggle } = useLike({
-    initialCount: comment.likesCount,
-    initialIsLiked: comment.isLiked,
-    entityType: 'comments',
-    entityId: comment.id,
+    entityId,
+    entityType,
+    initialCount,
+    initialIsLiked,
+    queryKey,
   });
 
   return (

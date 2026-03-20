@@ -3,6 +3,7 @@ import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 import { fetchPostById, fetchPosts } from './requests';
 
 export const postQueries = {
+  entityType: 'posts',
   all: () => ['posts'] as const,
   feed: () =>
     infiniteQueryOptions({

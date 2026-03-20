@@ -8,6 +8,7 @@ export const NoteSchema = z.object({
     username: z.string(),
     avatar: z.url(),
   }),
+  isLiked: z.boolean(),
   likesCount: z.int(),
   createdAt: z.coerce.date(),
 });

@@ -4,8 +4,8 @@ import { Link } from '@tanstack/react-router';
 import { MessageCircle } from 'lucide-react';
 
 import { ProfileAvatar } from '@/entities/profile';
-import { isVideo } from '@/shared/lib/is-video';
-import { timeAgo } from '@/shared/lib/time-ago';
+import { isVideo } from '@/shared/lib/utils/is-video';
+import { timeAgo } from '@/shared/lib/utils/time-ago';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/shared/ui/card';
 

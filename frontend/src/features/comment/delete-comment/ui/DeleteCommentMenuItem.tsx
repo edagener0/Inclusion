@@ -14,7 +14,7 @@ import {
 } from '@/shared/ui/alert-dialog';
 import { DropdownMenuItem } from '@/shared/ui/dropdown-menu';
 
-import { useDeleteCommentMutation } from '../api/queries';
+import { useDeleteCommentMutation } from '../model/mutation';
 
 type Props = {
   entityType: string;

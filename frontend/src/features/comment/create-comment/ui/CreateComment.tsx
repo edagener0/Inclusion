@@ -1,11 +1,11 @@
 import { useForm } from '@tanstack/react-form';
 import { Send } from 'lucide-react';
 
-import { cn } from '@/shared/lib/utils';
+import { cn } from '@/shared/lib/utils/utils';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 
-import { useCreateCommentMutation } from '../api/queries';
+import { useCreateCommentMutation } from '../model/mutation';
 import { type CreateComment, CreateCommentSchema } from '../model/schema';
 
 type Props = {

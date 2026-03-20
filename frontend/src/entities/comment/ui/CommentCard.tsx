@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 
 import { ProfileAvatar } from '@/entities/profile';
-import { timeAgo } from '@/shared/lib/time-ago';
+import { timeAgo } from '@/shared/lib/utils/time-ago';
 
 import type { Comment } from '../model/types';
 

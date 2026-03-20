@@ -1,13 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions } from '@tanstack/react-query';
 
-import { profileQueryKeys } from './query-keys';
 import { fetchProfileByUsername } from './requests';
 
-export const useGetProfileByUsername = (username: string) => {
-  return useQuery({
-    queryKey: profileQueryKeys.byUsername(username),
-    queryFn: () => fetchProfileByUsername(username),
-    enabled: !!username,
-    staleTime: 5 * 60 * 1000,
-  });
+export const profileQueries = {
+  all: ['profiles'] as const,
+  byUsername: (username: string) =>
+    queryOptions({
+      queryKey: [...profileQueries.all, username] as const,
+      queryFn: () => fetchProfileByUsername(username),
+      enabled: !!username,
+      staleTime: 5 * 60 * 1000,
+    }),
 };

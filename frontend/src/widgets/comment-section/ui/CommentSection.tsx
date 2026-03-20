@@ -1,21 +1,22 @@
 import { useEffect, useRef } from 'react';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 
 import { CommentCard, commentQueries } from '@/entities/comment';
 import { CreateComment } from '@/features/comment/create-comment';
-import { cn } from '@/shared/lib/utils';
+import { LikeButton } from '@/features/like-toggle';
+import { cn } from '@/shared/lib/utils/utils';
 
 import { CommentActions } from './CommentActions';
-import { LikeButton } from './LikeButton';
 
 interface CommentSectionProps {
-  entityType: 'posts';
+  entityType: string;
   entityId: number;
   className?: string;
+  queryKey: QueryKey;
 }
 
-export function CommentSection({ entityType, entityId, className }: CommentSectionProps) {
+export function CommentSection({ queryKey, entityType, entityId, className }: CommentSectionProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery(
     commentQueries.feed(entityType, entityId),
   );
@@ -57,7 +58,15 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
             <CommentCard
               key={comment.id}
               comment={comment}
-              likeSlot={<LikeButton comment={comment} />}
+              likeSlot={
+                <LikeButton
+                  entityType={entityType}
+                  entityId={entityId}
+                  isLiked={comment.isLiked}
+                  likesCount={comment.likesCount}
+                  queryKey={queryKey}
+                />
+              }
               actionSlot={
                 <CommentActions comment={comment} entityId={entityId} entityType={entityType} />
               }

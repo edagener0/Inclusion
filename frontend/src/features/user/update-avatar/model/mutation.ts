@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { profileQueryKeys } from '@/entities/profile';
+import { profileQueries } from '@/entities/profile';
 import { sessionQueryKey, useStrictSession } from '@/entities/session';
 
-import { updateAvatar } from './request';
+import { updateAvatar } from '../api/request';
 
 export function useUpdateAvatar() {
   const client = useQueryClient();
@@ -14,7 +14,7 @@ export function useUpdateAvatar() {
     mutationFn: (file: File) => updateAvatar(file),
     onSuccess: () => {
       client.invalidateQueries({ queryKey: sessionQueryKey });
-      client.invalidateQueries({ queryKey: profileQueryKeys.byUsername(user.username) });
+      client.invalidateQueries({ queryKey: profileQueries.byUsername(user.username).queryKey });
       toast('Avatar updated succesefully');
     },
   });

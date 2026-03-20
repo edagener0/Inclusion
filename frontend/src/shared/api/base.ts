@@ -1,6 +1,6 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
-import { API_URL } from '@/shared/config';
+import { API_URL, IS_AUTH_MARKER } from '@/shared/config';
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -37,7 +37,7 @@ api.interceptors.response.use(
               await axios.post(`${API_URL}/auth/refresh`, {}, { withCredentials: true });
             } catch (refreshError) {
               clearAuth();
-              localStorage.removeItem('is_auth');
+              localStorage.removeItem(IS_AUTH_MARKER);
               throw refreshError;
             } finally {
               refreshPromise = null;

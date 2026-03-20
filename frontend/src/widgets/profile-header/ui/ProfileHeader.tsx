@@ -1,13 +1,14 @@
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 
-import { ProfileAvatar, ProfileInfo, useGetProfileByUsername } from '@/entities/profile';
+import { ProfileAvatar, ProfileInfo, profileQueries } from '@/entities/profile';
 import { useStrictSession } from '@/entities/session';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';
 import { CenterSpinner } from '@/shared/ui/spinner';
 
 export function ProfileHeader({ username }: { username: string }) {
-  const { data: profile, isLoading } = useGetProfileByUsername(username);
+  const { data: profile, isLoading } = useQuery(profileQueries.byUsername(username));
   const user = useStrictSession();
   const navigate = useNavigate();
 

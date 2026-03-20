@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shared/u
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 
-import { useUpdateFullName } from '../api/queries';
+import { useUpdateFullName } from '../model/mutation';
 import { type UpdateFullName, updateFullNameSchema } from '../model/schema';
 
 export function UpdateUserFullNameCard({

@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 
 import { createPost, postQueries } from '@/entities/post';
 
-import type { CreatePost } from '../model/schema';
+import type { CreatePost } from './schema';
 
 export function useCreatePostMutation() {
   const navigate = useNavigate();

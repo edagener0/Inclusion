@@ -6,8 +6,8 @@ import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { Textarea } from '@/shared/ui/textarea';
 
-import { useCreatePostMutation } from '../api/queries';
 import { useMediaPreview } from '../lib/use-media-preview';
+import { useCreatePostMutation } from '../model/mutation';
 import { type CreatePost, createPostSchema } from '../model/schema';
 import { MediaPreviewCard } from './MediaPreviewCard';
 
