@@ -47,7 +47,7 @@ export function DeleteCommentMenuItem({ entityId, entityType, commentId }: Props
         className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
       >
         <Trash className="mr-2 h-4 w-4" />
-        <span>Delete post</span>
+        <span>Delete comment</span>
       </DropdownMenuItem>
 
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>

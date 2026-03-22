@@ -18,7 +18,6 @@ const CreatePostModal = lazy(() =>
   import('@/features/post/create-post').then(module => ({ default: module.CreatePostModal })),
 );
 
-// Возвращаем изначальный простой объект
 const MODAL_COMPONENTS: Record<ModalType, React.ComponentType> = {
   'user-settings': UserSettingsModal,
   'create-content': CreateContentSelectorModal,
