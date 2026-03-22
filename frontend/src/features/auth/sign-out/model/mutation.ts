@@ -14,6 +14,7 @@ export function useSignOutMutation() {
 
       queryClient.clear();
       localStorage.removeItem(IS_AUTH_MARKER);
+      window.location.href = '/sign-in';
     },
     onError: error => {
       console.error(error);

@@ -24,31 +24,31 @@ export const Route = createFileRoute('/_main')({
       if (!isPublic) throw redirect({ to: '/sign-in' });
     }
   },
-  component: RouteComponent,
+  component: function () {
+    return (
+      <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
+        <Header sideBarSlot={<SidebarNav mobile />} userMenuSlot={<UserDropDownMenu />} />
+
+        <div className="container mx-auto max-w-6xl flex flex-1 items-start px-4">
+          <aside className="hidden md:flex flex-col w-50 shrink-0 sticky top-16 h-[calc(100vh-4rem)] py-6 border-r pr-4">
+            <SidebarNav />
+
+            <div className="mt-auto border-t pt-4">
+              <p className="text-xs text-muted-foreground">
+                © {new Date().getFullYear()} {APP_NAME}
+              </p>
+            </div>
+          </aside>
+
+          <main className="flex-1 min-w-0 py-6 px-6">
+            <Outlet />
+          </main>
+        </div>
+
+        <TanStackRouterDevtools />
+      </div>
+    );
+  },
 });
 
-function RouteComponent() {
-  return (
-    <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
-      <Header sideBarSlot={<SidebarNav mobile />} userMenuSlot={<UserDropDownMenu />} />
-
-      <div className="container mx-auto max-w-6xl flex flex-1 items-start px-4">
-        <aside className="hidden md:flex flex-col w-50 shrink-0 sticky top-16 h-[calc(100vh-4rem)] py-6 border-r pr-4">
-          <SidebarNav />
-
-          <div className="mt-auto border-t pt-4">
-            <p className="text-xs text-muted-foreground">
-              © {new Date().getFullYear()} {APP_NAME}
-            </p>
-          </div>
-        </aside>
-
-        <main className="flex-1 min-w-0 py-6 px-6">
-          <Outlet />
-        </main>
-      </div>
-
-      <TanStackRouterDevtools />
-    </div>
-  );
-}
+function RouteComponent() {}
