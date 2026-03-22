@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import { getProfileByUsername } from './requests';
+import { fetchMe, getProfileByUsername } from './requests';
 
 export const profileQueries = {
   all: ['profiles'] as const,
@@ -10,5 +10,15 @@ export const profileQueries = {
       queryFn: () => getProfileByUsername(username),
       enabled: !!username,
       staleTime: 5 * 60 * 1000,
+    }),
+};
+
+export const userQueries = {
+  all: ['users'] as const,
+  me: () =>
+    queryOptions({
+      queryKey: [...userQueries.all, 'me'] as const,
+      queryFn: fetchMe,
+      staleTime: 6 * 60 * 1000,
     }),
 };

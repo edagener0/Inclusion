@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { useSession } from '@/entities/session';
-import { profileQueries } from '@/entities/user';
+import { userQueries } from '@/entities/user';
+import { UserPrivacyToggle } from '@/features/user/privacy-toggle';
 import { UpdateUserAvatarCard } from '@/features/user/update-avatar';
 import { UpdateUserBioCard } from '@/features/user/update-bio';
 import { UpdateUserFullNameCard } from '@/features/user/update-full-name';
@@ -11,11 +11,10 @@ import { CenterSpinner } from '@/shared/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 
 export function UserSettingsModal() {
-  const user = useSession();
-  const { data: profile, isLoading } = useQuery(profileQueries.byUsername(user.username));
+  const { data: user, isLoading } = useQuery(userQueries.me());
 
   if (isLoading) return <CenterSpinner />;
-  if (!profile) throw new Error('unreachable');
+  if (!user) throw new Error('unreachable');
 
   return (
     <RoutedDialog>
@@ -49,12 +48,13 @@ export function UserSettingsModal() {
 
           <div className="flex-1 overflow-y-auto p-6 pt-4">
             <TabsContent value="general" className="mt-0 flex flex-col gap-6">
-              <UpdateUserAvatarCard username={profile.username} currentAvatar={profile.avatar} />
+              <UpdateUserAvatarCard username={user.username} currentAvatar={user.avatar} />
+              <UserPrivacyToggle isPrivate={user.isPrivate} />
             </TabsContent>
 
             <TabsContent value="personal-information" className="mt-0 flex flex-col gap-6">
-              <UpdateUserFullNameCard firstName={profile.firstName} lastName={profile.lastName} />
-              <UpdateUserBioCard biography={profile.biography} />
+              <UpdateUserFullNameCard firstName={user.firstName} lastName={user.lastName} />
+              <UpdateUserBioCard biography={user.biography} />
             </TabsContent>
           </div>
         </Tabs>

@@ -19,5 +19,6 @@ export const userSchema = z.object({
   lastName: z.string(),
   biography: z.string().nullable(),
   avatar: z.url(),
+  isPrivate: z.boolean(),
 });
 export type User = z.infer<typeof userSchema>;
