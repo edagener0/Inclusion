@@ -5,8 +5,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shared/u
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 
-import { useUpdateFullName } from '../api/queries';
-import { type UpdateFullName, updateFullNameSchema } from '../model/schema';
+import { useUpdateFullName } from '../model/mutation';
+import { type UpdateFullName, UpdateFullNameSchema } from '../model/schema';
 
 export function UpdateUserFullNameCard({
   firstName,
@@ -19,7 +19,7 @@ export function UpdateUserFullNameCard({
 
   const form = useForm({
     defaultValues: { firstName, lastName } satisfies UpdateFullName,
-    validators: { onChange: updateFullNameSchema },
+    validators: { onChange: UpdateFullNameSchema },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value);
     },

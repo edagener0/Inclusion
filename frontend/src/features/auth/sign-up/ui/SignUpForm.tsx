@@ -1,26 +1,15 @@
 import { useForm } from '@tanstack/react-form';
-import { useMutation } from '@tanstack/react-query';
-import { Link, useNavigate } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 
 import { Button } from '@/shared/ui/button';
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
 
-import { register } from '../api/register';
-import { type SignUp, signUpSchema } from '../model/schema';
+import { useSignUpMutation } from '../model/mutation';
+import { type SignUp, SignUpSchema } from '../model/schema';
 
 export function SignUpForm() {
-  const navigate = useNavigate();
-
-  const mutation = useMutation({
-    mutationFn: register,
-    onSuccess: () => {
-      navigate({ to: '/sign-in' });
-    },
-    onError: error => {
-      console.error(error);
-    },
-  });
+  const mutation = useSignUpMutation();
 
   const form = useForm({
     defaultValues: {
@@ -32,7 +21,7 @@ export function SignUpForm() {
       username: '',
     } satisfies SignUp,
     validators: {
-      onChange: signUpSchema,
+      onChange: SignUpSchema,
     },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value);

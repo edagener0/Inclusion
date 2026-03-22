@@ -13,10 +13,13 @@ import { Route as MainRouteImport } from './routes/_main'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as MainProfileRouteImport } from './routes/_main/profile'
+import { Route as MainPostsRouteImport } from './routes/_main/posts'
 import { Route as MainMessagesRouteImport } from './routes/_main/messages'
 import { Route as MainUsernameRouteImport } from './routes/_main/$username'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
+import { Route as MainPostsIndexRouteImport } from './routes/_main/posts/index'
+import { Route as MainPostsIdRouteImport } from './routes/_main/posts/$id'
 
 const MainRoute = MainRouteImport.update({
   id: '/_main',
@@ -25,7 +28,7 @@ const MainRoute = MainRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/_auth.lazy').then((d) => d.Route))
 const MainIndexRoute = MainIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -34,6 +37,11 @@ const MainIndexRoute = MainIndexRouteImport.update({
 const MainProfileRoute = MainProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainPostsRoute = MainPostsRouteImport.update({
+  id: '/posts',
+  path: '/posts',
   getParentRoute: () => MainRoute,
 } as any)
 const MainMessagesRoute = MainMessagesRouteImport.update({
@@ -45,7 +53,9 @@ const MainUsernameRoute = MainUsernameRouteImport.update({
   id: '/$username',
   path: '/$username',
   getParentRoute: () => MainRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/_main/$username.lazy').then((d) => d.Route),
+)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
@@ -56,6 +66,18 @@ const AuthSignInRoute = AuthSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/sign-in.lazy').then((d) => d.Route))
+const MainPostsIndexRoute = MainPostsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainPostsRoute,
+} as any)
+const MainPostsIdRoute = MainPostsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => MainPostsRoute,
+} as any).lazy(() =>
+  import('./routes/_main/posts/$id.lazy').then((d) => d.Route),
+)
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
@@ -63,7 +85,10 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof AuthSignUpRoute
   '/$username': typeof MainUsernameRoute
   '/messages': typeof MainMessagesRoute
+  '/posts': typeof MainPostsRouteWithChildren
   '/profile': typeof MainProfileRoute
+  '/posts/$id': typeof MainPostsIdRoute
+  '/posts/': typeof MainPostsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
@@ -72,6 +97,8 @@ export interface FileRoutesByTo {
   '/$username': typeof MainUsernameRoute
   '/messages': typeof MainMessagesRoute
   '/profile': typeof MainProfileRoute
+  '/posts/$id': typeof MainPostsIdRoute
+  '/posts': typeof MainPostsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -81,8 +108,11 @@ export interface FileRoutesById {
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_main/$username': typeof MainUsernameRoute
   '/_main/messages': typeof MainMessagesRoute
+  '/_main/posts': typeof MainPostsRouteWithChildren
   '/_main/profile': typeof MainProfileRoute
   '/_main/': typeof MainIndexRoute
+  '/_main/posts/$id': typeof MainPostsIdRoute
+  '/_main/posts/': typeof MainPostsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -92,9 +122,20 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/$username'
     | '/messages'
+    | '/posts'
     | '/profile'
+    | '/posts/$id'
+    | '/posts/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/sign-up' | '/$username' | '/messages' | '/profile'
+  to:
+    | '/'
+    | '/sign-in'
+    | '/sign-up'
+    | '/$username'
+    | '/messages'
+    | '/profile'
+    | '/posts/$id'
+    | '/posts'
   id:
     | '__root__'
     | '/_auth'
@@ -103,8 +144,11 @@ export interface FileRouteTypes {
     | '/_auth/sign-up'
     | '/_main/$username'
     | '/_main/messages'
+    | '/_main/posts'
     | '/_main/profile'
     | '/_main/'
+    | '/_main/posts/$id'
+    | '/_main/posts/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -142,6 +186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainProfileRouteImport
       parentRoute: typeof MainRoute
     }
+    '/_main/posts': {
+      id: '/_main/posts'
+      path: '/posts'
+      fullPath: '/posts'
+      preLoaderRoute: typeof MainPostsRouteImport
+      parentRoute: typeof MainRoute
+    }
     '/_main/messages': {
       id: '/_main/messages'
       path: '/messages'
@@ -170,6 +221,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_main/posts/': {
+      id: '/_main/posts/'
+      path: '/'
+      fullPath: '/posts/'
+      preLoaderRoute: typeof MainPostsIndexRouteImport
+      parentRoute: typeof MainPostsRoute
+    }
+    '/_main/posts/$id': {
+      id: '/_main/posts/$id'
+      path: '/$id'
+      fullPath: '/posts/$id'
+      preLoaderRoute: typeof MainPostsIdRouteImport
+      parentRoute: typeof MainPostsRoute
+    }
   }
 }
 
@@ -185,9 +250,24 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface MainPostsRouteChildren {
+  MainPostsIdRoute: typeof MainPostsIdRoute
+  MainPostsIndexRoute: typeof MainPostsIndexRoute
+}
+
+const MainPostsRouteChildren: MainPostsRouteChildren = {
+  MainPostsIdRoute: MainPostsIdRoute,
+  MainPostsIndexRoute: MainPostsIndexRoute,
+}
+
+const MainPostsRouteWithChildren = MainPostsRoute._addFileChildren(
+  MainPostsRouteChildren,
+)
+
 interface MainRouteChildren {
   MainUsernameRoute: typeof MainUsernameRoute
   MainMessagesRoute: typeof MainMessagesRoute
+  MainPostsRoute: typeof MainPostsRouteWithChildren
   MainProfileRoute: typeof MainProfileRoute
   MainIndexRoute: typeof MainIndexRoute
 }
@@ -195,6 +275,7 @@ interface MainRouteChildren {
 const MainRouteChildren: MainRouteChildren = {
   MainUsernameRoute: MainUsernameRoute,
   MainMessagesRoute: MainMessagesRoute,
+  MainPostsRoute: MainPostsRouteWithChildren,
   MainProfileRoute: MainProfileRoute,
   MainIndexRoute: MainIndexRoute,
 }

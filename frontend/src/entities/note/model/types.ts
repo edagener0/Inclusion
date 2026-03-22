@@ -1,12 +1,15 @@
-export interface Note {
-  id: number;
-  content: string;
-  user: {
-    id: number;
-    username: string;
-    avatar: string;
-  };
-  likes_count: number;
-  is_liked: boolean;
-  created_at: string;
-}
+import z from 'zod';
+
+export const NoteSchema = z.object({
+  id: z.int(),
+  content: z.string(),
+  user: z.object({
+    id: z.int(),
+    username: z.string(),
+    avatar: z.url(),
+  }),
+  isLiked: z.boolean(),
+  likesCount: z.int(),
+  createdAt: z.coerce.date(),
+});
+export type Note = z.infer<typeof NoteSchema>;

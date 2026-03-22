@@ -4,15 +4,15 @@ import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Textarea } from '@/shared/ui/textarea';
 
-import { useUpdateBio } from '../api/queries';
-import { type UpdateBio, updateBioSchema } from '../model/schema';
+import { useUpdateBio } from '../model/mutation';
+import { type UpdateBio, UpdateBioSchema } from '../model/schema';
 
 export function UpdateUserBioCard({ biography }: { biography: string | null }) {
   const mutation = useUpdateBio();
 
   const form = useForm({
     defaultValues: { biography: biography ?? '' } satisfies UpdateBio,
-    validators: { onChange: updateBioSchema },
+    validators: { onChange: UpdateBioSchema },
     onSubmit: async ({ value }) => {
       if (value.biography.trim()) await mutation.mutateAsync(value.biography);
     },

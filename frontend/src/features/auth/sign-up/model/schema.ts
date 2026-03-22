@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const signUpSchema = z
+export const SignUpSchema = z
   .object({
     email: z.email('Invalid email'),
     password: z.string().min(1),
@@ -17,5 +17,4 @@ export const signUpSchema = z
     message: 'Passwords does not match.',
     path: ['confirmPassword'],
   });
-
-export type SignUp = z.infer<typeof signUpSchema>;
+export type SignUp = z.infer<typeof SignUpSchema>;

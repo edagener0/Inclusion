@@ -1,7 +1,7 @@
 import z from 'zod';
 
-export const updateBioSchema = z.object({
+export const UpdateBioSchema = z.object({
   biography: z.string(),
 });
 
-export type UpdateBio = z.infer<typeof updateBioSchema>;
+export type UpdateBio = z.infer<typeof UpdateBioSchema>;

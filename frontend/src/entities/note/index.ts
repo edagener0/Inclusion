@@ -1,4 +1,4 @@
-export * from './api/query';
-export * from './api/requests';
-export * from './model/types';
-export * from './ui/Note';
+export { noteQueries } from './api/queries';
+export { upsertNote, deleteNote, getNotes } from './api/requests';
+export { type Note } from './model/types';
+export { NoteCard } from './ui/NoteCard';
