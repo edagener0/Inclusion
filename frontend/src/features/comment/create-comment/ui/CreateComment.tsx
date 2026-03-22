@@ -1,7 +1,7 @@
 import { useForm } from '@tanstack/react-form';
 import { Send } from 'lucide-react';
 
-import { cn } from '@/shared/lib/utils/utils';
+import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 

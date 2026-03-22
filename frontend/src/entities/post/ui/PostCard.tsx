@@ -3,9 +3,7 @@ import type { ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
 import { MessageCircle } from 'lucide-react';
 
-import { ProfileAvatar } from '@/entities/profile';
-import { isVideo } from '@/shared/lib/utils/is-video';
-import { timeAgo } from '@/shared/lib/utils/time-ago';
+import { isVideo, timeAgo } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/shared/ui/card';
 
@@ -13,12 +11,12 @@ import { type Post } from '../model/types';
 
 type Props = {
   post: Post;
+  userAvatarSlot: ReactNode;
+  likeSlot: ReactNode;
   actionsSlot?: ReactNode;
-  likeSlot?: ReactNode;
-  commentsSlot?: ReactNode;
 };
 
-export function PostCard({ likeSlot, post, actionsSlot: actions }: Props) {
+export function PostCard({ userAvatarSlot, likeSlot, actionsSlot, post }: Props) {
   const isMediaVideo = isVideo(post.file);
 
   return (
@@ -28,11 +26,7 @@ export function PostCard({ likeSlot, post, actionsSlot: actions }: Props) {
     >
       <CardHeader className="flex flex-row items-center justify-between px-3 pt-2 pb-2 space-y-0 border-none">
         <div className="flex items-center gap-3">
-          <ProfileAvatar
-            avatar={post.user.avatar}
-            username={post.user.username}
-            className="h-9 w-9"
-          />
+          {userAvatarSlot}
           <div className="flex flex-col">
             <Link to="/$username" params={{ username: post.user.username }}>
               <span className="font-semibold text-[14px] text-foreground hover:underline cursor-pointer">
@@ -44,7 +38,7 @@ export function PostCard({ likeSlot, post, actionsSlot: actions }: Props) {
             </Link>
           </div>
         </div>
-        <div className="">{actions}</div>
+        <div className="">{actionsSlot}</div>
       </CardHeader>
       <CardContent className="p-0 border-y border-border/50">
         <div className="relative flex w-full items-center justify-center bg-black/5 dark:bg-black/40">

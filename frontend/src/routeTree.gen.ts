@@ -28,7 +28,7 @@ const MainRoute = MainRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/_auth.lazy').then((d) => d.Route))
 const MainIndexRoute = MainIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -53,7 +53,9 @@ const MainUsernameRoute = MainUsernameRouteImport.update({
   id: '/$username',
   path: '/$username',
   getParentRoute: () => MainRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/_main/$username.lazy').then((d) => d.Route),
+)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
@@ -73,7 +75,9 @@ const MainPostsIdRoute = MainPostsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => MainPostsRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/_main/posts/$id.lazy').then((d) => d.Route),
+)
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute

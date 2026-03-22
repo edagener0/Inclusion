@@ -3,7 +3,7 @@ import { type LucideIcon, MessageCirclePlusIcon } from 'lucide-react';
 
 type ExtractModal<T> = T extends { modal?: infer M } ? M : never;
 
-export type CreateContentItem = {
+type CreateContentItem = {
   id: string;
   label: string;
   description: string;

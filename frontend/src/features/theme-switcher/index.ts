@@ -1,1 +1,1 @@
-export { ThemeSwitcher } from './ui/ThemeSwitcher';
+export { ThemeSwitcherDropDownMenuSub } from './ui/ThemeSwitcherDropDownMenuSub';

@@ -2,8 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
 
-import { noteQueries } from '@/entities/note';
-import { upsertNote } from '@/entities/note/api/requests';
+import { noteQueries, upsertNote } from '@/entities/note';
 
 export function useUpsertNoteMutation() {
   const navigate = useNavigate();

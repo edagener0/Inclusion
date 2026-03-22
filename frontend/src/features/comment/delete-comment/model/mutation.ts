@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { type Comment, commentQueries } from '@/entities/comment';
-import { deleteComment } from '@/entities/comment/api/requests';
+import { deleteComment } from '@/entities/comment';
 
 type DeleteCommentVars = {
   commentId: number;

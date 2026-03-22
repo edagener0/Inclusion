@@ -1,15 +1,16 @@
 import { MoreHorizontal } from 'lucide-react';
 
 import { type Post, PostCard, postQueries } from '@/entities/post';
-import { useStrictSession } from '@/entities/session';
+import { useSession } from '@/entities/session';
+import { UserAvatar } from '@/entities/user';
 import { LikeButton } from '@/features/like-toggle';
 import { DeletePostMenuItem } from '@/features/post/delete-post';
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 
 export function PostListItem({ post }: { post: Post }) {
-  const currentUser = useStrictSession();
-  const isAuthor = currentUser?.id === post.user.id;
+  const user = useSession();
+  const isAuthor = user.id === post.user.id;
 
   const likeButton = (
     <LikeButton
@@ -21,7 +22,11 @@ export function PostListItem({ post }: { post: Post }) {
     />
   );
 
-  if (!isAuthor) return <PostCard post={post} likeSlot={likeButton} />;
+  const userAvatar = (
+    <UserAvatar avatar={post.user.avatar} username={post.user.username} className="h-9 w-9" />
+  );
+
+  if (!isAuthor) return <PostCard post={post} likeSlot={likeButton} userAvatarSlot={userAvatar} />;
 
   const actionSlot = (
     <DropdownMenu>
@@ -36,5 +41,12 @@ export function PostListItem({ post }: { post: Post }) {
     </DropdownMenu>
   );
 
-  return <PostCard post={post} actionsSlot={actionSlot} likeSlot={likeButton} />;
+  return (
+    <PostCard
+      post={post}
+      actionsSlot={actionSlot}
+      likeSlot={likeButton}
+      userAvatarSlot={userAvatar}
+    />
+  );
 }

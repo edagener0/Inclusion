@@ -1,18 +1,20 @@
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
 import { Link } from '@tanstack/react-router';
 import { Menu, Search } from 'lucide-react';
 
-import { SidebarNav } from '@/features/sidebar';
-import { ThemeSwitcher } from '@/features/theme-switcher';
-import { UserDropDownMenu } from '@/features/user/user-menu';
-import { AppLogo } from '@/shared/assets/icons/AppIcon';
+import { AppLogo } from '@/shared/assets';
 import { APP_NAME } from '@/shared/config';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/shared/ui/sheet';
 
-export function Header() {
+type Props = {
+  sideBarSlot: ReactNode;
+  userMenuSlot: ReactNode;
+};
+
+export function Header({ sideBarSlot, userMenuSlot }: Props) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -30,9 +32,7 @@ export function Header() {
                 side="left"
                 className="w-65 p-0 flex flex-col **:data-[slot=sheet-close]:hidden"
               >
-                <div className="flex-1 py-4">
-                  <SidebarNav mobile />
-                </div>
+                <div className="flex-1 py-4">{sideBarSlot}</div>
               </SheetContent>
             </Sheet>
           </div>
@@ -56,8 +56,7 @@ export function Header() {
               className="pl-9 rounded-full h-9 bg-muted/50 border-none focus-visible:ring-1"
             />
           </div>
-          <UserDropDownMenu />
-          <ThemeSwitcher />
+          {userMenuSlot}
         </div>
       </div>
     </header>

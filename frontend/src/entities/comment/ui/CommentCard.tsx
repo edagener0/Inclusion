@@ -1,24 +1,20 @@
 import { type ReactNode } from 'react';
 
-import { ProfileAvatar } from '@/entities/profile';
-import { timeAgo } from '@/shared/lib/utils/time-ago';
+import { timeAgo } from '@/shared/lib/utils';
 
 import type { Comment } from '../model/types';
 
 type Props = {
   comment: Comment;
-  likeSlot?: ReactNode;
+  likeSlot: ReactNode;
+  userAvatarSlot: ReactNode;
   actionSlot?: ReactNode;
 };
 
-export function CommentCard({ comment, likeSlot, actionSlot }: Props) {
+export function CommentCard({ comment, likeSlot, actionSlot, userAvatarSlot }: Props) {
   return (
     <div className="group flex gap-3 py-3 border-b border-border/50 last:border-0">
-      <ProfileAvatar
-        avatar={comment.user.avatar}
-        username={comment.user.username}
-        className="h-8 w-8 shrink-0"
-      />
+      {userAvatarSlot}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col">

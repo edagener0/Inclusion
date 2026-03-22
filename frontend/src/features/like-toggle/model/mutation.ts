@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { api } from '@/shared/api/base';
+import { api } from '@/shared/api';
 
 interface Args {
   entityType: string;

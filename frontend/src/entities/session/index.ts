@@ -1,2 +1,3 @@
-export { sessionQueryOptions, useSession, useStrictSession, sessionQueryKey } from './model/hooks';
-export { signOut } from './api/sign-out';
+export { useSession } from './model/hooks';
+export { sessionQueries } from './api/queries';
+export { signOut, signIn, signUp } from './api/requests';

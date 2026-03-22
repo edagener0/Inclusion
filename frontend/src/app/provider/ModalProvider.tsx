@@ -7,7 +7,7 @@ import type { ModalType } from '@/routes/__root';
 import { DialogSkeleton } from '@/shared/ui/dialog-skeleton';
 
 const UserSettingsModal = lazy(() =>
-  import('@/widgets/user-settings').then(module => ({
+  import('@/widgets/user/user-settings').then(module => ({
     default: module.UserSettingsModal,
   })),
 );

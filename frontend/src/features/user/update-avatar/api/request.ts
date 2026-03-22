@@ -1,4 +1,4 @@
-import { api } from '@/shared/api/base';
+import { api } from '@/shared/api';
 
 export async function updateAvatar(file: File) {
   const formData = new FormData();

@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react';
 
-import { type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { CommentCard, commentQueries } from '@/entities/comment';
+import { useSession } from '@/entities/session';
+import { UserAvatar } from '@/entities/user';
 import { CreateComment } from '@/features/comment/create-comment';
 import { LikeButton } from '@/features/like-toggle';
-import { cn } from '@/shared/lib/utils/utils';
+import { cn } from '@/shared/lib/utils';
 
 import { CommentActions } from './CommentActions';
 
@@ -13,10 +15,10 @@ interface CommentSectionProps {
   entityType: string;
   entityId: number;
   className?: string;
-  queryKey: QueryKey;
 }
 
-export function CommentSection({ queryKey, entityType, entityId, className }: CommentSectionProps) {
+export function CommentSection({ entityType, entityId, className }: CommentSectionProps) {
+  const user = useSession();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery(
     commentQueries.feed(entityType, entityId),
   );
@@ -60,15 +62,24 @@ export function CommentSection({ queryKey, entityType, entityId, className }: Co
               comment={comment}
               likeSlot={
                 <LikeButton
-                  entityType={entityType}
-                  entityId={entityId}
+                  entityType={commentQueries.entityType}
+                  entityId={comment.id}
                   isLiked={comment.isLiked}
                   likesCount={comment.likesCount}
-                  queryKey={queryKey}
+                  queryKey={commentQueries.feed(entityType, entityId).queryKey}
+                />
+              }
+              userAvatarSlot={
+                <UserAvatar
+                  avatar={comment.user.avatar}
+                  username={comment.user.username}
+                  className="h-8 w-8 shrink-0"
                 />
               }
               actionSlot={
-                <CommentActions comment={comment} entityId={entityId} entityType={entityType} />
+                comment.user.id === user.id ? (
+                  <CommentActions comment={comment} entityId={entityId} entityType={entityType} />
+                ) : null
               }
             />
           ))

@@ -1,5 +1,5 @@
-import { api } from '@/shared/api/base';
-import type { PaginatedResponse } from '@/shared/api/types';
+import { api } from '@/shared/api';
+import type { PaginatedResponse } from '@/shared/api';
 
 import { type CreatePostDTO, type Post, PostSchema } from '../model/types';
 

@@ -4,9 +4,9 @@ import { useForm } from '@tanstack/react-form';
 import { useQuery } from '@tanstack/react-query';
 
 import { NoteCard, noteQueries } from '@/entities/note';
-import { ProfileAvatar } from '@/entities/profile';
-import { useStrictSession } from '@/entities/session';
-import { cn } from '@/shared/lib/utils/utils';
+import { useSession } from '@/entities/session';
+import { UserAvatar } from '@/entities/user';
+import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import {
   Dialog,
@@ -22,7 +22,7 @@ import { type UpsertNote, emptyNote, upsertNoteSchema } from '../model/schema';
 import { useUpsertNoteMutation } from '../model/upsert-mutations';
 
 export function NoteManageDialog() {
-  const user = useStrictSession();
+  const user = useSession();
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: note } = useQuery({
@@ -56,9 +56,9 @@ export function NoteManageDialog() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <NoteCard
-          note={note ?? emptyNote(user)}
+          note={note ?? emptyNote(user.avatar, user.username)}
           avatar={
-            <ProfileAvatar className="w-16 h-16" avatar={user.avatar} username={user.username} />
+            <UserAvatar className="w-16 h-16" avatar={user.avatar} username={user.username} />
           }
         />
       </DialogTrigger>
@@ -86,7 +86,7 @@ export function NoteManageDialog() {
                   onBlur={field.handleBlur}
                   onChange={e => field.handleChange(e.target.value)}
                   className={cn(
-                    'pr-10 transition-all resize-none',
+                    'pr-10 transition-all resize-none break-all',
                     (field.state.meta.isTouched || field.state.meta.errors.length > 0) &&
                       field.state.meta.errors.length > 0 &&
                       'border-destructive focus-visible:ring-destructive',

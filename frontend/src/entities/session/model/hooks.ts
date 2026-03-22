@@ -1,24 +1,14 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
-import { fetchMe } from '../api/session';
+import { sessionQueries } from '../api/queries';
+import type { Session } from './types';
 
-export const sessionQueryKey = ['session', 'me'];
+export function useSession(): Session {
+  const { data: session } = useQuery(sessionQueries.me());
 
-export const sessionQueryOptions = queryOptions({
-  queryKey: sessionQueryKey,
-  queryFn: fetchMe,
-  retry: false,
-  staleTime: 60 * 1000,
-});
-
-export const useSession = () => useQuery(sessionQueryOptions);
-
-export const useStrictSession = () => {
-  const query = useSession();
-
-  if (!query.data) {
-    throw new Error('useStrictSession must be used within an authorized route');
+  if (!session) {
+    throw new Error('useSession must be used within an authorized route');
   }
 
-  return query.data;
-};
+  return session;
+}

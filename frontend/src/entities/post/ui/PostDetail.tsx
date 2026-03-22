@@ -2,19 +2,18 @@ import type { ReactNode } from 'react';
 
 import { Link } from '@tanstack/react-router';
 
-import { ProfileAvatar } from '@/entities/profile';
-import { isVideo } from '@/shared/lib/utils/is-video';
-import { timeAgo } from '@/shared/lib/utils/time-ago';
+import { isVideo, timeAgo } from '@/shared/lib/utils';
 
 import type { Post } from '../model/types';
 
 type Props = {
   post: Post;
+  userAvatarSlot?: ReactNode;
   likeSlot?: ReactNode;
   commentsSlot?: ReactNode;
 };
 
-export function PostDetail({ post, likeSlot, commentsSlot }: Props) {
+export function PostDetail({ userAvatarSlot, post, likeSlot, commentsSlot }: Props) {
   const isMediaVideo = isVideo(post.file);
 
   return (
@@ -40,11 +39,7 @@ export function PostDetail({ post, likeSlot, commentsSlot }: Props) {
       <div className="w-full flex-1 min-h-0 md:flex-none md:w-87.5 lg:w-100 flex flex-col bg-card md:border-l border-border md:absolute md:top-0 md:right-0 md:h-full z-10">
         <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0 relative z-20">
           <div className="flex items-center gap-3">
-            <ProfileAvatar
-              avatar={post.user.avatar}
-              username={post.user.username}
-              className="h-8 w-8"
-            />
+            {userAvatarSlot}
             <div className="flex flex-col justify-center">
               <Link
                 to="/$username"

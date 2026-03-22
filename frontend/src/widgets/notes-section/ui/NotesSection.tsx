@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { noteQueries } from '@/entities/note';
-import { useStrictSession } from '@/entities/session';
+import { useSession } from '@/entities/session';
 import { NoteManageDialog } from '@/features/note-manage';
 import { CenterSpinner } from '@/shared/ui/spinner';
 
 import { NoteFullHoverCard } from './NoteFullHoverCard';
 
 export function NotesSection() {
-  const user = useStrictSession();
+  const user = useSession();
   const { data: notes, isLoading } = useQuery({
     ...noteQueries.list(),
     select: notes => notes.filter(note => note.user.id !== user.id),

@@ -6,6 +6,6 @@ export const Route = createLazyFileRoute('/_auth/sign-up')({
   component: RouteComponent,
 });
 
-function RouteComponent() {
+export function RouteComponent() {
   return <SignUpForm />;
 }

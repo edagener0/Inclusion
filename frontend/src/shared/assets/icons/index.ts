@@ -1,1 +1,3 @@
-export { AppLogo } from './AppIcon';
+import AppLogo from './app-logo.svg?react';
+
+export { AppLogo };
