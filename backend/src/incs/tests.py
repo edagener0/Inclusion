@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from content.models import UserLikesContent
 from comments.models import Comment
-from .models import Inc
+from .models import Inc, FavoriteInc
 from friends.models import Friend
 from django.utils import timezone
 from datetime import timedelta
@@ -227,3 +227,101 @@ class IncVisibilityAPITests(APITestCase):
         self.authenticate(self.non_friend)
         response = self.client.post(self.like_url(self.inc_recent.id))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+
+class IncFavoriteAPITests(APITestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+
+        self.user = User.objects.create_user(username="user", password="pass")
+        self.owner = User.objects.create_user(username="owner", password="pass")
+        self.friend = User.objects.create_user(username="friend", password="pass")
+        self.non_friend = User.objects.create_user(username="nonfriend", password="pass")
+
+        self.owner.is_private = True
+        self.owner.save()
+
+        Friend.objects.create(
+            user1=min(self.owner, self.friend, key=lambda u: u.id),
+            user2=max(self.owner, self.friend, key=lambda u: u.id)
+        )
+
+        self.inc = Inc.objects.create(user=self.owner, content="Private Inc")
+        self.public_inc = Inc.objects.create(user=self.user, content="Public Inc")
+
+        self.favorite_url = lambda inc_id: reverse("inc-favorite-create-delete", args=[inc_id])
+        self.list_url = reverse("inc-favorite-list")
+
+    def authenticate(self, user):
+        self.client.force_authenticate(user=user)
+
+    def test_favorite_inc_success(self):
+        self.authenticate(self.friend)
+        response = self.client.post(self.favorite_url(self.inc.id))
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(response.data["favorited"])
+        self.assertTrue(FavoriteInc.objects.filter(user=self.friend, inc=self.inc).exists())
+
+    def test_favorite_inc_already_exists(self):
+        FavoriteInc.objects.create(user=self.friend, inc=self.inc)
+
+        self.authenticate(self.friend)
+        response = self.client.post(self.favorite_url(self.inc.id))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(FavoriteInc.objects.filter(user=self.friend, inc=self.inc).exists())
+
+    def test_favorite_inc_visible_to_rule_enforced(self):
+        self.authenticate(self.non_friend)
+        response = self.client.post(self.favorite_url(self.inc.id))
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_unfavorite_inc_success(self):
+        FavoriteInc.objects.create(user=self.friend, inc=self.inc)
+
+        self.authenticate(self.friend)
+        response = self.client.delete(self.favorite_url(self.inc.id))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(FavoriteInc.objects.filter(user=self.friend, inc=self.inc).exists())
+
+    def test_unfavorite_inc_not_found(self):
+        self.authenticate(self.friend)
+        response = self.client.delete(self.favorite_url(self.inc.id))
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_unfavorite_inc_visibility_enforced(self):
+        FavoriteInc.objects.create(user=self.non_friend, inc=self.inc)
+
+        self.authenticate(self.non_friend)
+        response = self.client.delete(self.favorite_url(self.inc.id))
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_favorite_list_returns_only_user_favorites(self):
+        FavoriteInc.objects.create(user=self.friend, inc=self.inc)
+        FavoriteInc.objects.create(user=self.user, inc=self.public_inc)
+
+        self.authenticate(self.friend)
+        response = self.client.get(self.list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        results = response.data["results"]
+        ids = [i["id"] for i in results]
+
+        self.assertIn(self.inc.id, ids)
+        self.assertNotIn(self.public_inc.id, ids)
+
+    def test_favorite_list_respects_visibility(self):
+        FavoriteInc.objects.create(user=self.friend, inc=self.inc)
+
+        self.authenticate(self.non_friend)
+        response = self.client.get(self.list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["results"], [])
