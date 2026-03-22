@@ -1,8 +1,8 @@
 import z from 'zod';
 
-export const updateFullNameSchema = z.object({
+export const UpdateFullNameSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
 });
 
-export type UpdateFullName = z.infer<typeof updateFullNameSchema>;
+export type UpdateFullName = z.infer<typeof UpdateFullNameSchema>;

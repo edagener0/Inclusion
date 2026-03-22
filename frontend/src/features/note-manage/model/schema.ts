@@ -2,10 +2,10 @@ import { z } from 'zod';
 
 import type { Note } from '@/entities/note';
 
-export const upsertNoteSchema = z.object({
+export const UpsertNoteSchema = z.object({
   content: z.string().min(1, 'Note cannot be empty').max(100, 'Maximum 100 characters'),
 });
-export type UpsertNote = z.infer<typeof upsertNoteSchema>;
+export type UpsertNote = z.infer<typeof UpsertNoteSchema>;
 
 export function emptyNote(avatar: string, username: string): Note {
   return {

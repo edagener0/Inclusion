@@ -8,7 +8,7 @@ import { Textarea } from '@/shared/ui/textarea';
 
 import { useMediaPreview } from '../lib/use-media-preview';
 import { useCreatePostMutation } from '../model/mutation';
-import { type CreatePost, createPostSchema } from '../model/schema';
+import { type CreatePost, CreatePostSchema } from '../model/schema';
 import { MediaPreviewCard } from './MediaPreviewCard';
 
 export function CreatePostForm() {
@@ -20,7 +20,7 @@ export function CreatePostForm() {
       description: '',
       file: null as unknown as File,
     } as CreatePost,
-    validators: { onChange: createPostSchema },
+    validators: { onChange: CreatePostSchema },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value);
     },

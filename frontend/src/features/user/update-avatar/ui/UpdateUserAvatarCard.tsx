@@ -16,7 +16,7 @@ import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 
 import { useUpdateAvatar } from '../model/mutation';
-import { type UpdateAvatar, updateAvatarSchema } from '../model/schema';
+import { type UpdateAvatar, UpdateAvatarSchema } from '../model/schema';
 
 export function UpdateUserAvatarCard({
   currentAvatar,
@@ -37,7 +37,7 @@ export function UpdateUserAvatarCard({
 
   const form = useForm({
     defaultValues: { image: null as unknown as File } satisfies UpdateAvatar,
-    validators: { onChange: updateAvatarSchema },
+    validators: { onChange: UpdateAvatarSchema },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value.image);
     },

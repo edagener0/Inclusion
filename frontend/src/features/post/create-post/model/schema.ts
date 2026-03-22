@@ -1,7 +1,7 @@
 import z from 'zod';
 
-export const createPostSchema = z.object({
+export const CreatePostSchema = z.object({
   description: z.string(),
   file: z.instanceof(File, { message: 'Media file is required.' }),
 });
-export type CreatePost = z.infer<typeof createPostSchema>;
+export type CreatePost = z.infer<typeof CreatePostSchema>;

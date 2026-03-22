@@ -11,12 +11,12 @@ interface RouterContext {
 }
 
 const modalEnum = z.enum(['user-settings', 'create-content', 'create-post']);
-const searchSchema = z.object({ modal: modalEnum.optional() });
+const SearchSchema = z.object({ modal: modalEnum.optional() });
 
 export type ModalType = z.infer<typeof modalEnum>;
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  validateSearch: searchSchema,
+  validateSearch: SearchSchema,
   component: () => (
     <>
       <Outlet />

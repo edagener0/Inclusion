@@ -1,13 +1,13 @@
 import z from 'zod';
 
-export const sessionSchema = z.object({
+export const SessionSchema = z.object({
   id: z.int(),
   username: z.string(),
   firstName: z.string(),
   lastName: z.string(),
   avatar: z.url(),
 });
-export type Session = z.infer<typeof sessionSchema>;
+export type Session = z.infer<typeof SessionSchema>;
 
 export type SignInDTO = {
   username: string;

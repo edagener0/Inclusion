@@ -1,6 +1,6 @@
 import z from 'zod';
 
-export const profileSchema = z.object({
+export const ProfileSchema = z.object({
   id: z.int(),
   username: z.string(),
   firstName: z.string(),
@@ -9,9 +9,9 @@ export const profileSchema = z.object({
   biography: z.string().nullable(),
   friendsCount: z.int(),
 });
-export type Profile = z.infer<typeof profileSchema>;
+export type Profile = z.infer<typeof ProfileSchema>;
 
-export const userSchema = z.object({
+export const UserSchema = z.object({
   id: z.int(),
   username: z.string(),
   email: z.email(),
@@ -21,4 +21,4 @@ export const userSchema = z.object({
   avatar: z.url(),
   isPrivate: z.boolean(),
 });
-export type User = z.infer<typeof userSchema>;
+export type User = z.infer<typeof UserSchema>;

@@ -18,7 +18,7 @@ import {
 import { Textarea } from '@/shared/ui/textarea';
 
 import { useDeleteNoteMutation } from '../model/delete-mutations';
-import { type UpsertNote, emptyNote, upsertNoteSchema } from '../model/schema';
+import { type UpsertNote, UpsertNoteSchema, emptyNote } from '../model/schema';
 import { useUpsertNoteMutation } from '../model/upsert-mutations';
 
 export function NoteManageDialog() {
@@ -35,7 +35,7 @@ export function NoteManageDialog() {
 
   const form = useForm({
     defaultValues: { content: note?.content ?? '' } as UpsertNote,
-    validators: { onChange: upsertNoteSchema },
+    validators: { onChange: UpsertNoteSchema },
     onSubmit: async ({ value }) => {
       await upsertMutation.mutateAsync(value.content);
       form.reset();

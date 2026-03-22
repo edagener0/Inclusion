@@ -3,7 +3,7 @@ import z from 'zod';
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
-export const updateAvatarSchema = z.object({
+export const UpdateAvatarSchema = z.object({
   image: z
     .instanceof(File, { message: 'Please, select a file' })
     .refine(file => file.size > 0, 'File can not be empty')
@@ -14,4 +14,4 @@ export const updateAvatarSchema = z.object({
     ),
 });
 
-export type UpdateAvatar = z.infer<typeof updateAvatarSchema>;
+export type UpdateAvatar = z.infer<typeof UpdateAvatarSchema>;

@@ -50,5 +50,3 @@ export const Route = createFileRoute('/_main')({
     );
   },
 });
-
-function RouteComponent() {}

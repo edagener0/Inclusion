@@ -6,7 +6,7 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/s
 import { Input } from '@/shared/ui/input';
 
 import { useSignUpMutation } from '../model/mutation';
-import { type SignUp, signUpSchema } from '../model/schema';
+import { type SignUp, SignUpSchema } from '../model/schema';
 
 export function SignUpForm() {
   const mutation = useSignUpMutation();
@@ -21,7 +21,7 @@ export function SignUpForm() {
       username: '',
     } satisfies SignUp,
     validators: {
-      onChange: signUpSchema,
+      onChange: SignUpSchema,
     },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value);
