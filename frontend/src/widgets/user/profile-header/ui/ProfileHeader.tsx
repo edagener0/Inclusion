@@ -16,14 +16,14 @@ export function ProfileHeader({ username }: { username: string }) {
   if (!profile) return null;
 
   return (
-    <Card className="overflow-hidden border-none bg-zinc-900/50 backdrop-blur-md">
+    <Card className="overflow-hidden border-none bg-zinc-100/50 dark:bg-zinc-900/50 backdrop-blur-md">
       <CardContent className="p-6 sm:p-10">
         <div className="flex flex-col sm:flex-row gap-8 items-center">
           <div className="relative">
             <UserAvatar
               username={profile.username}
               avatar={profile.avatar}
-              className="h-32 w-32 sm:h-40 sm:w-40 ring-4 ring-zinc-800 ring-offset-4 ring-offset-zinc-950"
+              className="h-32 w-32 sm:h-40 sm:w-40 ring-4 ring-white dark:ring-zinc-800 ring-offset-4 ring-offset-zinc-50 dark:ring-offset-zinc-950"
             />
           </div>
 
@@ -39,7 +39,7 @@ export function ProfileHeader({ username }: { username: string }) {
                 <Button
                   variant="secondary"
                   size="sm"
-                  className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-none"
+                  className="bg-white hover:bg-zinc-100 text-zinc-900 shadow-sm border border-zinc-200 dark:border-none dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200 dark:shadow-none"
                   onClick={() => navigate({ to: '.', search: { modal: 'user-settings' } })}
                 >
                   Settings

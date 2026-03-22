@@ -33,7 +33,7 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
         form.handleSubmit();
       }}
     >
-      <Card className="shadow-sm border-border/60">
+      <Card className="shadow-sm">
         <CardHeader>
           <CardTitle>Account Visibility</CardTitle>
           <CardDescription>
@@ -47,7 +47,7 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
             children={field => (
               <label
                 htmlFor={field.name}
-                className="group flex items-start space-x-4 rounded-lg border border-border/30 p-5 cursor-pointer transition-all hover:bg-muted/30"
+                className="group flex items-start space-x-4 rounded-lg border border-border p-4 cursor-pointer transition-colors hover:bg-muted/50"
               >
                 <Checkbox
                   id={field.name}
@@ -69,9 +69,9 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
           />
         </CardContent>
 
-        <CardFooter className="flex justify-end border-t bg-muted/20 px-6 py-4">
+        <CardFooter className="flex justify-end border-t bg-muted/50 px-6 py-4">
           <Button size="sm" type="submit" disabled={mutation.isPending}>
-            {mutation.isPending ? 'Saving...' : 'Save'}
+            {mutation.isPending ? 'Saving...' : 'Save Settings'}
           </Button>
         </CardFooter>
       </Card>

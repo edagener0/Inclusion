@@ -41,18 +41,20 @@ export function CreatePostForm() {
       className="flex flex-col flex-1 overflow-hidden"
     >
       <div className="px-6 py-2 flex flex-col gap-4 flex-1 overflow-y-auto">
-        <form.Field
-          name="description"
-          children={field => (
-            <Textarea
-              placeholder="What's new?"
-              className="resize-none h-50 overflow-y-auto border-none focus-visible:ring-0 shadow-none text-base px-2 py-2 leading-normal box-border"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={e => field.handleChange(e.target.value)}
-            />
-          )}
-        />
+        <div className="bg-background">
+          <form.Field
+            name="description"
+            children={field => (
+              <Textarea
+                placeholder="What's new?"
+                className="resize-none h-50 overflow-y-auto border-none focus-visible:ring-0 shadow-none text-base px-2 py-2 leading-normal box-border"
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={e => field.handleChange(e.target.value)}
+              />
+            )}
+          />
+        </div>
 
         {mediaPreview && mediaType && (
           <MediaPreviewCard previewUrl={mediaPreview} type={mediaType} onRemove={onRemoveMedia} />

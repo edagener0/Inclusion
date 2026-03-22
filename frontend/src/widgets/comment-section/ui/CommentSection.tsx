@@ -42,7 +42,7 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
   const allComments = data?.pages.flatMap(page => page.data) ?? [];
 
   return (
-    <section className={cn('flex flex-col ', className)}>
+    <section className={cn('flex flex-col', className)}>
       <div className="flex-none space-y-4 pb-4 border-b border-border/40">
         <h3 className="text-lg font-semibold tracking-tight">Comments</h3>
         <CreateComment entityId={entityId} entityType={entityType} />
