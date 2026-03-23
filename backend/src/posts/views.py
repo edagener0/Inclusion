@@ -1,11 +1,12 @@
 from rest_framework.generics import (
     ListCreateAPIView,
-    RetrieveDestroyAPIView
+    RetrieveDestroyAPIView,
+    ListAPIView
 )
 from rest_framework.permissions import IsAuthenticated
 from common.permissions import IsOwnerOrReadOnly
 from .serializers import PostSerializer
-from .models import Post
+from .models import Post, FavoritePost
 from rest_framework.views import APIView
 from content.utils import (
     create_like_for_content,
@@ -16,6 +17,14 @@ from content.utils import (
     create_comment_for_lf_content,
     get_queryset_comments_for_lf_content,
 )
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
+from rest_framework import status
+from content.utils import (
+    favorite_lf_content,
+    unfavorite_lf_content
+)
+
 
 class PostCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
@@ -71,4 +80,26 @@ class PostCommentsCreateListView(ListCreateAPIView):
             Post,
             self.kwargs["post_id"],
             self.request.user
+        )
+    
+class PostFavoriteToggleView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, post_id):
+        return favorite_lf_content(Post, post_id, self.request.user)
+
+    def delete(self, request, post_id):
+        return unfavorite_lf_content(Post, post_id, self.request.user)
+
+class PostFavoriteListView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        return (
+            Post.objects
+            .filter(favorited_by__user=self.request.user)
+            .visible_to(self.request.user)
+            .with_likes_data(self.request.user)
+            .order_by("-favorited_by__created_at")
         )

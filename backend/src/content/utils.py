@@ -3,6 +3,19 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from comments.models import Comment
+from incs.models import FavoriteInc, Inc
+from posts.models import FavoritePost, Post
+
+FAVORITE_CONFIG = {
+    Inc: {
+        "model": FavoriteInc,
+        "field": "inc",
+    },
+    Post: {
+        "model": FavoritePost,
+        "field": "post",
+    },
+}
 
 def create_like_for_content(request, content_id, queryset=None):
     visible_queryset = queryset if queryset is not None else Content.objects.visible_to(request.user)
@@ -49,4 +62,57 @@ def get_queryset_comments_for_lf_content(kclass, lf_content_id, user):
         .with_likes_data(user)
         .filter(lf_content=lf_content)
         .order_by("-likes_count")
+    )
+
+
+def favorite_lf_content(kclass, lf_content_id, user):
+    config = FAVORITE_CONFIG.get(kclass)
+    if not config:
+        raise Exception("Can only favorite long form content.")
+
+    lf_content = get_object_or_404(
+        kclass.objects.visible_to(user),
+        id=lf_content_id
+    )
+
+    fav_model = config["model"]
+    field_name = config["field"]
+
+    fav, created = fav_model.objects.get_or_create(
+        user=user,
+        **{field_name: lf_content}
+    )
+
+    return Response(
+        {
+            "detail": "Favorited successfully." if created else "Already favorited.",
+            "favorited": True,
+        },
+        status=status.HTTP_201_CREATED if created else status.HTTP_200_OK
+    )
+
+def unfavorite_lf_content(kclass, lf_content_id, user):
+    config = FAVORITE_CONFIG.get(kclass)
+    if not config:
+        raise Exception("Can only favorite long form content.")
+
+    lf_content = get_object_or_404(
+        kclass.objects.visible_to(user),
+        id=lf_content_id
+    )
+
+    fav_model = config["model"]
+    field_name = config["field"]
+
+    fav = get_object_or_404(
+        fav_model,
+        user=user,
+        **{field_name: lf_content}
+    )
+
+    fav.delete()
+
+    return Response(
+        {"detail": "Removed from favorites", "favorited": False},
+        status=status.HTTP_200_OK
     )
