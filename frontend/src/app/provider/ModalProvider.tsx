@@ -18,10 +18,15 @@ const CreatePostModal = lazy(() =>
   import('@/features/post/create-post').then(module => ({ default: module.CreatePostModal })),
 );
 
+const CreateIncModal = lazy(() =>
+  import('@/features/inc/create-inc').then(module => ({ default: module.CreateIncModal })),
+);
+
 const MODAL_COMPONENTS: Record<ModalType, React.ComponentType> = {
   'user-settings': UserSettingsModal,
   'create-content': CreateContentSelectorModal,
   'create-post': CreatePostModal,
+  'create-inc': CreateIncModal,
 };
 
 export function ModalProvider() {

@@ -1,5 +1,5 @@
 import type { LinkProps } from '@tanstack/react-router';
-import { type LucideIcon, MessageCirclePlusIcon } from 'lucide-react';
+import { ImagesIcon, type LucideIcon, MessageCirclePlusIcon } from 'lucide-react';
 
 type ExtractModal<T> = T extends { modal?: infer M } ? M : never;
 
@@ -11,12 +11,19 @@ type CreateContentItem = {
   modal: ExtractModal<LinkProps['search']>;
 };
 
-export const items: CreateContentItem[] = [
+export const items = [
   {
     id: 'post',
     label: 'Create a post',
     description: 'Draft a new post, upload images, and share updates with your friends.',
-    icon: MessageCirclePlusIcon,
+    icon: ImagesIcon,
     modal: 'create-post',
   },
-];
+  {
+    id: 'inc',
+    label: 'Create an inc',
+    description: 'Share a quick thought or short update with your friends.',
+    icon: MessageCirclePlusIcon,
+    modal: 'create-inc',
+  },
+] as const satisfies CreateContentItem[];
