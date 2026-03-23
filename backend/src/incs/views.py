@@ -1,13 +1,12 @@
 from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveDestroyAPIView,
-    ListAPIView
 )
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from common.permissions import IsOwnerOrReadOnly
 from .serializers import IncSerializer
-from .models import Inc, FavoriteInc
+from .models import Inc
 from content.utils import (
     create_like_for_content,
     remove_like_from_content
@@ -17,13 +16,13 @@ from content.utils import (
     create_comment_for_lf_content,
     get_queryset_comments_for_lf_content,
 )
-from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
-from rest_framework import status
 from content.utils import (
     favorite_lf_content,
     unfavorite_lf_content
 )
+from content.views import BaseFavoriteListView
+
+
 class IncCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = IncSerializer
@@ -93,15 +92,6 @@ class IncFavoriteToggleView(APIView):
         return unfavorite_lf_content(Inc, inc_id, self.request.user)
 
 
-class IncFavoriteListView(ListAPIView):
-    permission_classes = [IsAuthenticated]
+class IncFavoriteListView(BaseFavoriteListView):
+    model = Inc
     serializer_class = IncSerializer
-
-    def get_queryset(self):
-        return (
-            Inc.objects
-            .filter(favorited_by__user=self.request.user)
-            .visible_to(self.request.user)
-            .with_likes_data(self.request.user)
-            .order_by("-favorited_by__created_at")
-        )
