@@ -4,10 +4,12 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from content.models import UserLikesContent
 from comments.models import Comment
-from .models import Inc, FavoriteInc
+from .models import Inc
 from friends.models import Friend
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib.contenttypes.models import ContentType
+from content.models import Favorite
 
 User = get_user_model()
 
@@ -229,6 +231,8 @@ class IncVisibilityAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
+
+
 class IncFavoriteAPITests(APITestCase):
 
     def setUp(self):
@@ -253,6 +257,8 @@ class IncFavoriteAPITests(APITestCase):
         self.favorite_url = lambda inc_id: reverse("inc-favorite-create-delete", args=[inc_id])
         self.list_url = reverse("inc-favorite-list")
 
+        self.content_type = ContentType.objects.get_for_model(Inc)
+
     def authenticate(self, user):
         self.client.force_authenticate(user=user)
 
@@ -262,16 +268,33 @@ class IncFavoriteAPITests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(response.data["favorited"])
-        self.assertTrue(FavoriteInc.objects.filter(user=self.friend, inc=self.inc).exists())
+
+        self.assertTrue(
+            Favorite.objects.filter(
+                user=self.friend,
+                content_type=self.content_type,
+                object_id=self.inc.id
+            ).exists()
+        )
 
     def test_favorite_inc_already_exists(self):
-        FavoriteInc.objects.create(user=self.friend, inc=self.inc)
+        Favorite.objects.create(
+            user=self.friend,
+            content_type=self.content_type,
+            object_id=self.inc.id
+        )
 
         self.authenticate(self.friend)
         response = self.client.post(self.favorite_url(self.inc.id))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(FavoriteInc.objects.filter(user=self.friend, inc=self.inc).exists())
+        self.assertTrue(
+            Favorite.objects.filter(
+                user=self.friend,
+                content_type=self.content_type,
+                object_id=self.inc.id
+            ).exists()
+        )
 
     def test_favorite_inc_visible_to_rule_enforced(self):
         self.authenticate(self.non_friend)
@@ -280,13 +303,24 @@ class IncFavoriteAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_unfavorite_inc_success(self):
-        FavoriteInc.objects.create(user=self.friend, inc=self.inc)
+        Favorite.objects.create(
+            user=self.friend,
+            content_type=self.content_type,
+            object_id=self.inc.id
+        )
 
         self.authenticate(self.friend)
         response = self.client.delete(self.favorite_url(self.inc.id))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse(FavoriteInc.objects.filter(user=self.friend, inc=self.inc).exists())
+
+        self.assertFalse(
+            Favorite.objects.filter(
+                user=self.friend,
+                content_type=self.content_type,
+                object_id=self.inc.id
+            ).exists()
+        )
 
     def test_unfavorite_inc_not_found(self):
         self.authenticate(self.friend)
@@ -295,7 +329,11 @@ class IncFavoriteAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_unfavorite_inc_visibility_enforced(self):
-        FavoriteInc.objects.create(user=self.non_friend, inc=self.inc)
+        Favorite.objects.create(
+            user=self.non_friend,
+            content_type=self.content_type,
+            object_id=self.inc.id
+        )
 
         self.authenticate(self.non_friend)
         response = self.client.delete(self.favorite_url(self.inc.id))
@@ -303,8 +341,17 @@ class IncFavoriteAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_favorite_list_returns_only_user_favorites(self):
-        FavoriteInc.objects.create(user=self.friend, inc=self.inc)
-        FavoriteInc.objects.create(user=self.user, inc=self.public_inc)
+        Favorite.objects.create(
+            user=self.friend,
+            content_type=self.content_type,
+            object_id=self.inc.id
+        )
+
+        Favorite.objects.create(
+            user=self.user,
+            content_type=self.content_type,
+            object_id=self.public_inc.id
+        )
 
         self.authenticate(self.friend)
         response = self.client.get(self.list_url)
@@ -318,7 +365,11 @@ class IncFavoriteAPITests(APITestCase):
         self.assertNotIn(self.public_inc.id, ids)
 
     def test_favorite_list_respects_visibility(self):
-        FavoriteInc.objects.create(user=self.friend, inc=self.inc)
+        Favorite.objects.create(
+            user=self.friend,
+            content_type=self.content_type,
+            object_id=self.inc.id
+        )
 
         self.authenticate(self.non_friend)
         response = self.client.get(self.list_url)

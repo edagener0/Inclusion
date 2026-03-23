@@ -3,19 +3,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from comments.models import Comment
-from incs.models import FavoriteInc, Inc
-from posts.models import FavoritePost, Post
-
-FAVORITE_CONFIG = {
-    Inc: {
-        "model": FavoriteInc,
-        "field": "inc",
-    },
-    Post: {
-        "model": FavoritePost,
-        "field": "post",
-    },
-}
+from .models import Favorite
+from django.contrib.contenttypes.models import ContentType
 
 def create_like_for_content(request, content_id, queryset=None):
     visible_queryset = queryset if queryset is not None else Content.objects.visible_to(request.user)
@@ -65,54 +54,25 @@ def get_queryset_comments_for_lf_content(kclass, lf_content_id, user):
     )
 
 
-def favorite_lf_content(kclass, lf_content_id, user):
-    config = FAVORITE_CONFIG.get(kclass)
-    if not config:
-        raise Exception("Can only favorite long form content.")
+def toggle_favorite(user, obj):
+    content_type = ContentType.objects.get_for_model(obj.__class__)
 
-    lf_content = get_object_or_404(
-        kclass.objects.visible_to(user),
-        id=lf_content_id
-    )
-
-    fav_model = config["model"]
-    field_name = config["field"]
-
-    fav, created = fav_model.objects.get_or_create(
+    favorite, created = Favorite.objects.get_or_create(
         user=user,
-        **{field_name: lf_content}
+        content_type=content_type,
+        object_id=obj.id
     )
 
-    return Response(
-        {
-            "detail": "Favorited successfully." if created else "Already favorited.",
-            "favorited": True,
-        },
-        status=status.HTTP_201_CREATED if created else status.HTTP_200_OK
-    )
+    return favorite, created
 
-def unfavorite_lf_content(kclass, lf_content_id, user):
-    config = FAVORITE_CONFIG.get(kclass)
-    if not config:
-        raise Exception("Can only favorite long form content.")
 
-    lf_content = get_object_or_404(
-        kclass.objects.visible_to(user),
-        id=lf_content_id
-    )
-
-    fav_model = config["model"]
-    field_name = config["field"]
+def remove_favorite(user, obj):
+    content_type = ContentType.objects.get_for_model(obj.__class__)
 
     fav = get_object_or_404(
-        fav_model,
+        Favorite,
         user=user,
-        **{field_name: lf_content}
+        content_type=content_type,
+        object_id=obj.id
     )
-
     fav.delete()
-
-    return Response(
-        {"detail": "Removed from favorites", "favorited": False},
-        status=status.HTTP_200_OK
-    )

@@ -16,11 +16,7 @@ from content.utils import (
     create_comment_for_lf_content,
     get_queryset_comments_for_lf_content,
 )
-from content.views import BaseFavoriteListView
-from content.utils import (
-    favorite_lf_content,
-    unfavorite_lf_content
-)
+from content.views import BaseFavoriteListView, FavoriteToggleView
 
 
 class PostCreateListView(ListCreateAPIView):
@@ -79,14 +75,8 @@ class PostCommentsCreateListView(ListCreateAPIView):
             self.request.user
         )
     
-class PostFavoriteToggleView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, post_id):
-        return favorite_lf_content(Post, post_id, self.request.user)
-
-    def delete(self, request, post_id):
-        return unfavorite_lf_content(Post, post_id, self.request.user)
+class PostFavoriteToggleView(FavoriteToggleView):
+    model = Post
 
 class PostFavoriteListView(BaseFavoriteListView):
     model = Post
