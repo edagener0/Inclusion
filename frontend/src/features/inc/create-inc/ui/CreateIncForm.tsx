@@ -20,7 +20,7 @@ export function CreateIncForm() {
 
   return (
     <form
-      className="flex flex-col gap-4 py-4"
+      className="flex flex-col gap-4 pt-4"
       onSubmit={e => {
         e.preventDefault();
         e.stopPropagation();
@@ -31,14 +31,22 @@ export function CreateIncForm() {
         <form.Field
           name="content"
           children={field => (
-            <Textarea
-              placeholder="What's new?"
-              className="min-h-32"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={e => field.handleChange(e.target.value)}
-              autoFocus
-            />
+            <div>
+              <Textarea
+                placeholder="What's new?"
+                className="min-h-32"
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={e => field.handleChange(e.target.value)}
+                autoFocus
+              />
+
+              {field.state.meta.errors.length > 0 && (
+                <p className="pt-2 text-[10px] font-medium text-destructive animate-in fade-in slide-in-from-top-1">
+                  {field.state.meta.errors[0]?.message?.toString()}
+                </p>
+              )}
+            </div>
           )}
         />
       </div>

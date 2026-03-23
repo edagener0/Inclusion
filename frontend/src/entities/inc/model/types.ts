@@ -8,7 +8,7 @@ export const IncSchema = z.object({
     avatar: z.url(),
   }),
   content: z.string().min(1, 'Inc can not be empty.').max(1000, 'Maximum 1000 characters.'),
-  likesCount: z.boolean(),
+  likesCount: z.int(),
   isLiked: z.boolean(),
   createdAt: z.coerce.date(),
 });
