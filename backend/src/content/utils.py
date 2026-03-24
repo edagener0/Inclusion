@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from comments.models import Comment
+from .models import Favorite
+from django.contrib.contenttypes.models import ContentType
 
 def create_like_for_content(request, content_id, queryset=None):
     visible_queryset = queryset if queryset is not None else Content.objects.visible_to(request.user)
@@ -50,3 +52,27 @@ def get_queryset_comments_for_lf_content(kclass, lf_content_id, user):
         .filter(lf_content=lf_content)
         .order_by("-likes_count")
     )
+
+
+def toggle_favorite(user, obj):
+    content_type = ContentType.objects.get_for_model(obj.__class__)
+
+    favorite, created = Favorite.objects.get_or_create(
+        user=user,
+        content_type=content_type,
+        object_id=obj.id
+    )
+
+    return favorite, created
+
+
+def remove_favorite(user, obj):
+    content_type = ContentType.objects.get_for_model(obj.__class__)
+
+    fav = get_object_or_404(
+        Favorite,
+        user=user,
+        content_type=content_type,
+        object_id=obj.id
+    )
+    fav.delete()

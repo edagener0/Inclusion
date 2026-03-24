@@ -7,6 +7,8 @@ from django.db.models import (
     Exists
 )
 from django.db.models import Q
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 User = get_user_model()
 
@@ -52,3 +54,17 @@ class ShortFormContent(Content):
 
 class LongFormContent(Content):
     pass
+
+
+class Favorite(TimeStampedModel):
+    pk = models.CompositePrimaryKey(
+        "user_id",
+        "content_type_id",
+        "object_id"
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+
+    content_object = GenericForeignKey("content_type", "object_id")

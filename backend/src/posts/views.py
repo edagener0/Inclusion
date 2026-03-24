@@ -1,6 +1,6 @@
 from rest_framework.generics import (
     ListCreateAPIView,
-    RetrieveDestroyAPIView
+    RetrieveDestroyAPIView,
 )
 from rest_framework.permissions import IsAuthenticated
 from common.permissions import IsOwnerOrReadOnly
@@ -16,6 +16,8 @@ from content.utils import (
     create_comment_for_lf_content,
     get_queryset_comments_for_lf_content,
 )
+from content.views import BaseFavoriteListView, FavoriteToggleView
+
 
 class PostCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
@@ -72,3 +74,10 @@ class PostCommentsCreateListView(ListCreateAPIView):
             self.kwargs["post_id"],
             self.request.user
         )
+    
+class PostFavoriteToggleView(FavoriteToggleView):
+    model = Post
+
+class PostFavoriteListView(BaseFavoriteListView):
+    model = Post
+    serializer_class = PostSerializer

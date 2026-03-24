@@ -7,6 +7,8 @@ from posts.models import Post
 from content.models import UserLikesContent
 from comments.models import Comment
 from friends.models import Friend
+from content.models import Favorite
+from django.contrib.contenttypes.models import ContentType
 
 User = get_user_model()
 
@@ -319,3 +321,227 @@ class PostVisibilityAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
+
+class PostFavoriteAPITests(APITestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+
+        self.user = User.objects.create_user(username="user1", password="pass")
+        self.other_user = User.objects.create_user(username="user2", password="pass")
+
+        self.valid_image = create_test_image()
+
+        self.post1 = Post.objects.create(
+            user=self.user,
+            description="Post 1",
+            file=self.valid_image
+        )
+
+        self.post2 = Post.objects.create(
+            user=self.user,
+            description="Post 2",
+            file=self.valid_image
+        )
+
+        self.content_type = ContentType.objects.get_for_model(Post)
+
+    def authenticate(self, user):
+        self.client.force_authenticate(user=user)
+
+    def test_favorite_post(self):
+        self.authenticate(self.other_user)
+
+        url = reverse("post-favorite-create-delete", kwargs={"post_id": self.post1.id})
+        response = self.client.post(url)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(response.data["favorited"])
+
+        self.assertTrue(
+            Favorite.objects.filter(
+                user=self.other_user,
+                content_type=self.content_type,
+                object_id=self.post1.id
+            ).exists()
+        )
+
+    def test_favorite_post_twice(self):
+        self.authenticate(self.other_user)
+
+        url = reverse("post-favorite-create-delete", kwargs={"post_id": self.post1.id})
+
+        self.client.post(url)
+        response = self.client.post(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(
+            Favorite.objects.filter(
+                user=self.other_user,
+                content_type=self.content_type,
+                object_id=self.post1.id
+            ).count(),
+            1
+        )
+
+    def test_unfavorite_post(self):
+        Favorite.objects.create(
+            user=self.other_user,
+            content_type=self.content_type,
+            object_id=self.post1.id
+        )
+
+        self.authenticate(self.other_user)
+
+        url = reverse("post-favorite-create-delete", kwargs={"post_id": self.post1.id})
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data["favorited"])
+
+        self.assertFalse(
+            Favorite.objects.filter(
+                user=self.other_user,
+                content_type=self.content_type,
+                object_id=self.post1.id
+            ).exists()
+        )
+
+    def test_unfavorite_post_not_favorited(self):
+        self.authenticate(self.other_user)
+
+        url = reverse("post-favorite-create-delete", kwargs={"post_id": self.post1.id})
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_favorite_requires_authentication(self):
+        url = reverse("post-favorite-create-delete", kwargs={"post_id": self.post1.id})
+
+        response = self.client.post(url)
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_list_favorited_posts(self):
+        Favorite.objects.create(
+            user=self.other_user,
+            content_type=self.content_type,
+            object_id=self.post1.id
+        )
+
+        Favorite.objects.create(
+            user=self.other_user,
+            content_type=self.content_type,
+            object_id=self.post2.id
+        )
+
+        self.authenticate(self.other_user)
+
+        url = reverse("post-favorite-list")
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        returned_ids = [p["id"] for p in response.data["results"]]
+
+        self.assertIn(self.post1.id, returned_ids)
+        self.assertIn(self.post2.id, returned_ids)
+
+    def test_list_only_user_favorites(self):
+        Favorite.objects.create(
+            user=self.other_user,
+            content_type=self.content_type,
+            object_id=self.post1.id
+        )
+
+        Favorite.objects.create(
+            user=self.user,
+            content_type=self.content_type,
+            object_id=self.post2.id
+        )
+
+        self.authenticate(self.other_user)
+
+        url = reverse("post-favorite-list")
+        response = self.client.get(url)
+
+        returned_ids = [p["id"] for p in response.data["results"]]
+
+        self.assertIn(self.post1.id, returned_ids)
+        self.assertNotIn(self.post2.id, returned_ids)
+
+    def test_favorites_ordered_by_most_recent(self):
+        import time
+
+        self.authenticate(self.other_user)
+
+        Favorite.objects.create(
+            user=self.other_user,
+            content_type=self.content_type,
+            object_id=self.post1.id
+        )
+
+        time.sleep(0.01)
+
+        Favorite.objects.create(
+            user=self.other_user,
+            content_type=self.content_type,
+            object_id=self.post2.id
+        )
+
+        url = reverse("post-favorite-list")
+        response = self.client.get(url)
+
+        results = response.data["results"]
+
+        self.assertEqual(results[0]["id"], self.post2.id)
+        self.assertEqual(results[1]["id"], self.post1.id)
+
+    def test_cannot_favorite_invisible_post(self):
+        self.user.is_private = True
+        self.user.save()
+
+        self.authenticate(self.other_user)
+
+        url = reverse("post-favorite-create-delete", kwargs={"post_id": self.post1.id})
+        response = self.client.post(url)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_owner_can_favorite_own_post(self):
+        self.authenticate(self.user)
+
+        url = reverse("post-favorite-create-delete", kwargs={"post_id": self.post1.id})
+        response = self.client.post(url)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_favorite_list_respects_visibility(self):
+        self.user.is_private = True
+        self.user.save()
+
+        Favorite.objects.create(
+            user=self.other_user,
+            content_type=self.content_type,
+            object_id=self.post1.id
+        )
+
+        self.authenticate(self.other_user)
+
+        url = reverse("post-favorite-list")
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data["results"]), 0)
+
+    def test_favorite_deleted_post(self):
+        self.authenticate(self.other_user)
+
+        post_id = self.post1.id
+        self.post1.delete()
+
+        url = reverse("post-favorite-create-delete", kwargs={"post_id": post_id})
+        response = self.client.post(url)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
