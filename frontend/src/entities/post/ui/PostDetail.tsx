@@ -54,13 +54,14 @@ export function PostDetail({ userAvatarSlot, post, likeSlot, commentsSlot }: Pro
             </div>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-4 custom-scrollbar h-0">
+        <div className="flex-1 flex flex-col min-h-0 p-4 pt-3 gap-4">
           {post.description && (
-            <div className="text-sm mb-6 whitespace-pre-wrap leading-relaxed">
+            <div className="text-[15px] whitespace-pre-wrap leading-relaxed shrink-0 custom-scrollbar overflow-y-auto max-h-[30vh]">
               {post.description}
             </div>
           )}
-          {commentsSlot}
+
+          <div className="flex-1 min-h-0">{commentsSlot}</div>
         </div>
 
         <div className="border-t border-border shrink-0">

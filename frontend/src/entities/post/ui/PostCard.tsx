@@ -22,7 +22,7 @@ export function PostCard({ userAvatarSlot, likeSlot, actionsSlot, post }: Props)
   return (
     <Card
       key={post.id}
-      className="w-full max-w-8/12 mx-auto overflow-hidden border sm:rounded-xl bg-background p-0 gap-0"
+      className="w-full max-w-10/12 mx-auto overflow-hidden border sm:rounded-xl bg-background p-0 gap-0"
     >
       <CardHeader className="flex flex-row items-center justify-between px-3 pt-2 pb-2 space-y-0 border-none">
         <div className="flex items-center gap-3">
@@ -38,7 +38,7 @@ export function PostCard({ userAvatarSlot, likeSlot, actionsSlot, post }: Props)
             </Link>
           </div>
         </div>
-        <div className="">{actionsSlot}</div>
+        <div>{actionsSlot}</div>
       </CardHeader>
       <CardContent className="p-0 border-y border-border/50">
         <div className="relative flex w-full items-center justify-center bg-black/5 dark:bg-black/40">

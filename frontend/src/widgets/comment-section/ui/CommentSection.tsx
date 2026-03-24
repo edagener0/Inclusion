@@ -32,7 +32,11 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
           fetchNextPage();
         }
       },
-      { threshold: 1.0 },
+      {
+        root: null,
+        rootMargin: '200px',
+        threshold: 0,
+      },
     );
 
     if (observerTarget.current) observer.observe(observerTarget.current);
@@ -42,7 +46,7 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
   const allComments = data?.pages.flatMap(page => page.data) ?? [];
 
   return (
-    <section className={cn('flex flex-col', className)}>
+    <section className={cn('flex flex-col h-full', className)}>
       <div className="flex-none space-y-4 pb-4 border-b border-border/40">
         <h3 className="text-lg font-semibold tracking-tight">Comments</h3>
         <CreateComment entityId={entityId} entityType={entityType} />

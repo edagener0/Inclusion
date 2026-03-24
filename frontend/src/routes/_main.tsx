@@ -29,7 +29,7 @@ export const Route = createFileRoute('/_main')({
       <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
         <Header sideBarSlot={<SidebarNav mobile />} userMenuSlot={<UserDropDownMenu />} />
 
-        <div className="container mx-auto max-w-6xl flex flex-1 items-start px-4">
+        <div className="mx-auto flex justify-center gap-x-8 items-start px-4 w-full">
           <aside className="hidden md:flex flex-col w-50 shrink-0 sticky top-16 h-[calc(100vh-4rem)] py-6 border-r pr-4">
             <SidebarNav />
 
@@ -40,7 +40,7 @@ export const Route = createFileRoute('/_main')({
             </div>
           </aside>
 
-          <main className="flex-1 min-w-0 py-6 px-6">
+          <main className="w-full max-w-2xl py-6">
             <Outlet />
           </main>
         </div>
