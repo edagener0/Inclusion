@@ -1,6 +1,6 @@
 import { type ReactNode, forwardRef } from 'react';
 
-import type { Note } from '../model/types';
+import type { Note } from '../model/schema';
 
 interface Props {
   note: Note;

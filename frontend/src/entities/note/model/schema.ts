@@ -1,13 +1,11 @@
 import z from 'zod';
 
+import { UserPreviewSchema } from '@/shared/api';
+
 export const NoteSchema = z.object({
   id: z.int(),
+  user: UserPreviewSchema,
   content: z.string(),
-  user: z.object({
-    id: z.int(),
-    username: z.string(),
-    avatar: z.url(),
-  }),
   isLiked: z.boolean(),
   likesCount: z.int(),
   createdAt: z.coerce.date(),

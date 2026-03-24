@@ -1,12 +1,10 @@
 import z from 'zod';
 
+import { UserPreviewSchema } from '@/shared/api';
+
 export const PostSchema = z.object({
   id: z.int(),
-  user: z.object({
-    id: z.int(),
-    username: z.string(),
-    avatar: z.url(),
-  }),
+  user: UserPreviewSchema,
   file: z.url(),
   description: z.string().nullable(),
   likesCount: z.int(),
@@ -14,8 +12,3 @@ export const PostSchema = z.object({
   createdAt: z.coerce.date(),
 });
 export type Post = z.infer<typeof PostSchema>;
-
-export type CreatePostDTO = {
-  description: string;
-  file: File;
-};

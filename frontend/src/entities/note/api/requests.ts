@@ -1,7 +1,7 @@
 import { api } from '@/shared/api';
 import type { PaginatedResponse } from '@/shared/api';
 
-import { type Note, NoteSchema } from '../model/types';
+import { type Note, NoteSchema } from '../model/schema';
 
 export async function getNotes(): Promise<Note[]> {
   const res = await api.get<PaginatedResponse<Note>>('/notes');

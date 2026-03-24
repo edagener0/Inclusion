@@ -1,4 +1,4 @@
-export { IncSchema, type Inc } from './model/types';
+export { IncSchema, type Inc } from './model/schema';
 export { incQueries } from './api/queries';
 export { createInc, deleteInc } from './api/requests';
 export { IncCard } from './ui/IncCard';

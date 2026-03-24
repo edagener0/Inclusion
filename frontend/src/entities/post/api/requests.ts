@@ -1,7 +1,8 @@
 import { api } from '@/shared/api';
 import type { PaginatedResponse } from '@/shared/api';
 
-import { type CreatePostDTO, type Post, PostSchema } from '../model/types';
+import { type Post, PostSchema } from '../model/schema';
+import type { CreatePostDTO } from './types';
 
 export async function fetchPostById(id: number): Promise<Post> {
   const result = await api.get<Post>(`/posts/${id}`);

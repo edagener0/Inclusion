@@ -1,6 +1,7 @@
 import { api } from '@/shared/api';
 
-import { type Session, SessionSchema, type SignInDTO, type SignUpDTO } from '../model/types';
+import { type Session, SessionSchema } from '../model/schema';
+import type { SignInDTO, SignUpDTO } from './types';
 
 export async function fetchMe(): Promise<Session> {
   const response = await api.get('/auth/me');

@@ -7,7 +7,7 @@ import { isVideo, timeAgo } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/shared/ui/card';
 
-import { type Post } from '../model/types';
+import { type Post } from '../model/schema';
 
 type Props = {
   post: Post;

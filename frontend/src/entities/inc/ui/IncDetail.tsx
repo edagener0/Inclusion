@@ -6,7 +6,7 @@ import { MessageCircle } from 'lucide-react';
 import { timeAgo } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 
-import type { Inc } from '../model/types';
+import type { Inc } from '../model/schema';
 
 type Props = {
   inc: Inc;

@@ -1,4 +1,4 @@
-import type { Profile } from '../model/types';
+import type { Profile } from '../model/schema';
 
 export function ProfileInfo({
   biography,
