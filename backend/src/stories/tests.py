@@ -11,8 +11,18 @@ from friends.models import Friend
 
 User = get_user_model()
 
+
 def test_file():
     return SimpleUploadedFile("test.jpg", b"file_content", content_type="image/jpeg")
+
+
+def extract_story_ids(groups):
+    return [
+        story["id"]
+        for group in groups
+        for story in group["stories"]
+    ]
+
 
 class StoryAPITests(APITestCase):
 
@@ -33,10 +43,17 @@ class StoryAPITests(APITestCase):
 
     def test_list_stories_authenticated(self):
         self.authenticate()
-        Story.objects.create(user=self.user, file=test_file())
+        first_story = Story.objects.create(user=self.user, file=test_file())
+        second_story = Story.objects.create(user=self.user, file=test_file())
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
         self.assertEqual(len(response.data["results"]), 1)
+        self.assertEqual(response.data["results"][0]["user"]["id"], self.user.id)
+        self.assertCountEqual(
+            [story["id"] for story in response.data["results"][0]["stories"]],
+            [first_story.id, second_story.id],
+        )
 
     def test_list_stories_only_last_24h(self):
         self.authenticate()
@@ -44,9 +61,40 @@ class StoryAPITests(APITestCase):
         old = Story.objects.create(user=self.user, file=test_file())
         Story.objects.filter(pk=old.pk).update(created_at=timezone.now()-timedelta(days=2))
         response = self.client.get(self.list_url)
-        ids = [s["id"] for s in response.data["results"]]
+        ids = extract_story_ids(response.data["results"])
         self.assertIn(recent.id, ids)
         self.assertNotIn(old.id, ids)
+
+    def test_list_stories_returns_absolute_file_url(self):
+        self.authenticate()
+        Story.objects.create(user=self.user, file=test_file())
+
+        response = self.client.get(self.list_url)
+
+        file_url = response.data["results"][0]["stories"][0]["file"]
+        self.assertTrue(file_url.startswith("http://testserver/media/"))
+
+    def test_list_stories_is_paginated_by_user_groups(self):
+        self.authenticate()
+
+        for index in range(11):
+            friend = User.objects.create_user(
+                username=f"friend{index}",
+                password="pass123",
+            )
+            Friend.objects.create(
+                user1=min(self.user, friend, key=lambda user: user.id),
+                user2=max(self.user, friend, key=lambda user: user.id),
+            )
+            Story.objects.create(user=friend, file=test_file())
+
+        response = self.client.get(self.list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 11)
+        self.assertEqual(len(response.data["results"]), 10)
+        self.assertIsNotNone(response.data["next"])
+        self.assertIsNone(response.data["previous"])
 
     def test_retrieve_story_authenticated(self):
         story = Story.objects.create(user=self.user, file=test_file())
@@ -184,13 +232,14 @@ class StoryVisibilityAPITests(APITestCase):
     def test_list_stories_only_last_24h_for_owner_and_friend(self):
         self.authenticate(self.friend)
         response = self.client.get(self.list_url)
-        story_ids = [s["id"] for s in response.data["results"]]
+        story_ids = extract_story_ids(response.data["results"])
         self.assertIn(self.recent_story.id, story_ids)
         self.assertNotIn(self.old_story.id, story_ids)
 
     def test_non_friend_cannot_list_private_stories(self):
         self.authenticate(self.non_friend)
         response = self.client.get(self.list_url)
+        self.assertEqual(response.data["count"], 0)
         self.assertEqual(response.data["results"], [])
 
     def test_non_friend_cannot_list_public_stories_in_feed(self):
@@ -198,6 +247,7 @@ class StoryVisibilityAPITests(APITestCase):
         self.authenticate(self.non_friend)
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 0)
         self.assertEqual(response.data["results"], [])
 
     def test_non_friend_cannot_like_private_story(self):
@@ -254,7 +304,7 @@ class StoryVisibilityAPITests(APITestCase):
         self.make_user_public()
         self.authenticate(self.friend)
         response = self.client.get(self.list_url)
-        story_ids = [s["id"] for s in response.data["results"]]
+        story_ids = extract_story_ids(response.data["results"])
         self.assertIn(self.recent_story.id, story_ids)
 
     def test_public_story_older_than_24h_is_not_visible_in_detail(self):
