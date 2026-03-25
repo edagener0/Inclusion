@@ -131,6 +131,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
 
             <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all z-20">
               <button
+                type="button"
                 onClick={e => {
                   e.stopPropagation();
                   fileInputRef.current?.click();
@@ -141,6 +142,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
                 <UploadCloud className="w-4 h-4" />
               </button>
               <button
+                type="button"
                 onClick={removeFile}
                 title="Remove"
                 className="p-2 bg-background/90 hover:bg-destructive hover:text-destructive-foreground rounded-full shadow-sm transition-colors"
@@ -148,7 +150,6 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
                 <X className="w-4 h-4" />
               </button>
             </div>
-
             <div className="absolute bottom-3 left-3 p-1.5 bg-background/90 rounded-md shadow-sm pointer-events-none">
               {mediaFile.type === 'image' ? (
                 <ImageIcon className="w-4 h-4 text-foreground" />
@@ -168,6 +169,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
 
           <div className="relative flex items-center justify-center">
             <button
+              type="button"
               onClick={() => setIsPreviewOpen(false)}
               className="fixed top-6 right-6 z-50 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors"
             >
