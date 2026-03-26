@@ -8,3 +8,4 @@ export { getNextStoryIdFlat } from './lib/get-next-story';
 export { getPrevStoryIdFlat } from './lib/get-prev-story';
 export { type UserStories } from './model/schema';
 export { updateStoryLikeInCache } from './model/cache';
+export { StoryCardSkeleton } from './ui/StoryCardSkeleton';
