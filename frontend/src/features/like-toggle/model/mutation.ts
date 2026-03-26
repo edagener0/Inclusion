@@ -7,16 +7,14 @@ import {
 
 import { api } from '@/shared/api';
 
-// Базовый тип сущности
 export type BaseLikeable = { id: number; isLiked: boolean; likesCount: number };
 
-export type ToggleLikeArgs<TNode> = {
+type ToggleLikeArgs<TNode> = {
   entityType: string;
   entityId: number;
-  isLiked: boolean; // Текущее состояние ДО клика
-  count: number; // Текущее количество ДО клика
+  isLiked: boolean;
+  count: number;
   queryKey: QueryKey;
-  // Функция знает новые значения и просит вернуть обновленный узел
   updateNode?: (node: TNode, newIsLiked: boolean, newCount: number) => TNode;
 };
 
@@ -25,7 +23,6 @@ export function useToggleLike<TNode extends object = BaseLikeable>() {
 
   return useMutation({
     mutationFn: async ({ entityType, entityId, isLiked }: ToggleLikeArgs<TNode>) => {
-      // Если было лайкнуто, значит сейчас мы лайк УБИРАЕМ (delete), и наоборот
       const method = isLiked ? 'delete' : 'post';
       const response = await api[method](`/${entityType}/${entityId}/like`);
       return response.data;
@@ -35,11 +32,9 @@ export function useToggleLike<TNode extends object = BaseLikeable>() {
       await queryClient.cancelQueries({ queryKey: variables.queryKey });
       const previousData = queryClient.getQueryData(variables.queryKey);
 
-      // Вычисляем новые значения прямо здесь
       const newIsLiked = !variables.isLiked;
       const newCount = variables.isLiked ? Math.max(0, variables.count - 1) : variables.count + 1;
 
-      // Дефолтная логика без any
       const defaultUpdateNode = (item: TNode): TNode => {
         if ('id' in item && item.id === variables.entityId) {
           return { ...item, isLiked: newIsLiked, likesCount: newCount };
@@ -51,7 +46,11 @@ export function useToggleLike<TNode extends object = BaseLikeable>() {
         ? (item: TNode) => variables.updateNode!(item, newIsLiked, newCount)
         : defaultUpdateNode;
 
-      // Логика обновления кэша (остается твоя, она отличная)
+      /*
+       * Since we mainly use infinite scrolling, it is not appropriate to make requests to update all
+       * the pages that have already been scrolled because of one like, so we edit the cache directly
+       * to provide an immediate optimistic update.
+       */
       queryClient.setQueryData(variables.queryKey, (oldData: unknown) => {
         if (!oldData) return oldData;
         if (Array.isArray(oldData)) return (oldData as TNode[]).map(updateLike);
@@ -72,6 +71,10 @@ export function useToggleLike<TNode extends object = BaseLikeable>() {
         return oldData;
       });
 
+      /*
+       * Since the hook is reusable, we "assume" that the detail key is correct,
+       * but if it doesn't exist, nothing will happen and there is no detail cache to update.
+       */
       queryClient.setQueryData(
         [variables.entityType, 'detail', variables.entityId],
         (oldData: unknown) => (oldData ? updateLike(oldData as TNode) : oldData),
