@@ -6,10 +6,10 @@ import { CommentCard, commentQueries } from '@/entities/comment';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
 import { CreateComment } from '@/features/comment/create-comment';
-import { LikeButton } from '@/features/like-toggle';
 import { cn } from '@/shared/lib/utils';
 
 import { CommentActions } from './CommentActions';
+import { CommentLikeButton } from './CommentLikeButton';
 
 interface CommentSectionProps {
   entityType: string;
@@ -65,12 +65,12 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
               key={comment.id}
               comment={comment}
               likeSlot={
-                <LikeButton
-                  entityType={commentQueries.entityType}
-                  entityId={comment.id}
+                <CommentLikeButton
+                  entityType={entityType}
+                  entityId={entityId}
+                  commentId={comment.id}
                   isLiked={comment.isLiked}
                   likesCount={comment.likesCount}
-                  queryKey={commentQueries.feed(entityType, entityId).queryKey}
                 />
               }
               userAvatarSlot={

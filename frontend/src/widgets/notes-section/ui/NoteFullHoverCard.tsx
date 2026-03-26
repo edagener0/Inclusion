@@ -1,7 +1,8 @@
-import { type Note, NoteCard, noteQueries } from '@/entities/note';
+import { type Note, NoteCard } from '@/entities/note';
 import { UserAvatar } from '@/entities/user';
-import { LikeButton } from '@/features/like-toggle';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/shared/ui/hover-card';
+
+import { NoteLikeButton } from './NoteLikeButton';
 
 type Props = {
   note: Note;
@@ -31,13 +32,7 @@ export function NoteFullHoverCard({ note }: Props) {
           </div>
 
           <div className="flex items-center gap-1 shrink-0 pb-0.5">
-            <LikeButton
-              entityId={note.id}
-              entityType={noteQueries.entityType}
-              likesCount={note.likesCount}
-              isLiked={note.isLiked}
-              queryKey={noteQueries.list().queryKey}
-            />
+            <NoteLikeButton isLiked={note.isLiked} likesCount={note.likesCount} noteId={note.id} />
           </div>
         </div>
       </HoverCardContent>

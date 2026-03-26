@@ -1,25 +1,20 @@
 import { MoreHorizontal } from 'lucide-react';
 
-import { type Post, PostCard, postQueries } from '@/entities/post';
+import { type Post, PostCard } from '@/entities/post';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
-import { LikeButton } from '@/features/like-toggle';
 import { DeletePostMenuItem } from '@/features/post/delete-post';
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
+
+import { PostLikeButton } from './PostLikeButton';
 
 export function PostListItem({ post }: { post: Post }) {
   const user = useSession();
   const isAuthor = user.id === post.user.id;
 
   const likeButton = (
-    <LikeButton
-      queryKey={postQueries.feed().queryKey}
-      likesCount={post.likesCount}
-      entityId={post.id}
-      entityType={postQueries.entityType}
-      isLiked={post.isLiked}
-    />
+    <PostLikeButton isLiked={post.isLiked} likesCount={post.likesCount} postId={post.id} />
   );
 
   const userAvatar = (
