@@ -19,8 +19,10 @@ import { Route as MainIncsRouteImport } from './routes/_main/incs'
 import { Route as MainUsernameRouteImport } from './routes/_main/$username'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
+import { Route as MainStoriesIndexRouteImport } from './routes/_main/stories/index'
 import { Route as MainPostsIndexRouteImport } from './routes/_main/posts/index'
 import { Route as MainIncsIndexRouteImport } from './routes/_main/incs/index'
+import { Route as MainStoriesIdRouteImport } from './routes/_main/stories/$id'
 import { Route as MainPostsIdRouteImport } from './routes/_main/posts/$id'
 import { Route as MainIncsIdRouteImport } from './routes/_main/incs/$id'
 
@@ -74,6 +76,11 @@ const AuthSignInRoute = AuthSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/sign-in.lazy').then((d) => d.Route))
+const MainStoriesIndexRoute = MainStoriesIndexRouteImport.update({
+  id: '/stories/',
+  path: '/stories/',
+  getParentRoute: () => MainRoute,
+} as any)
 const MainPostsIndexRoute = MainPostsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -84,6 +91,13 @@ const MainIncsIndexRoute = MainIncsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => MainIncsRoute,
 } as any)
+const MainStoriesIdRoute = MainStoriesIdRouteImport.update({
+  id: '/stories/$id',
+  path: '/stories/$id',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/stories/$id.lazy').then((d) => d.Route),
+)
 const MainPostsIdRoute = MainPostsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -110,8 +124,10 @@ export interface FileRoutesByFullPath {
   '/profile': typeof MainProfileRoute
   '/incs/$id': typeof MainIncsIdRoute
   '/posts/$id': typeof MainPostsIdRoute
+  '/stories/$id': typeof MainStoriesIdRoute
   '/incs/': typeof MainIncsIndexRoute
   '/posts/': typeof MainPostsIndexRoute
+  '/stories/': typeof MainStoriesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
@@ -122,8 +138,10 @@ export interface FileRoutesByTo {
   '/profile': typeof MainProfileRoute
   '/incs/$id': typeof MainIncsIdRoute
   '/posts/$id': typeof MainPostsIdRoute
+  '/stories/$id': typeof MainStoriesIdRoute
   '/incs': typeof MainIncsIndexRoute
   '/posts': typeof MainPostsIndexRoute
+  '/stories': typeof MainStoriesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -139,8 +157,10 @@ export interface FileRoutesById {
   '/_main/': typeof MainIndexRoute
   '/_main/incs/$id': typeof MainIncsIdRoute
   '/_main/posts/$id': typeof MainPostsIdRoute
+  '/_main/stories/$id': typeof MainStoriesIdRoute
   '/_main/incs/': typeof MainIncsIndexRoute
   '/_main/posts/': typeof MainPostsIndexRoute
+  '/_main/stories/': typeof MainStoriesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -155,8 +175,10 @@ export interface FileRouteTypes {
     | '/profile'
     | '/incs/$id'
     | '/posts/$id'
+    | '/stories/$id'
     | '/incs/'
     | '/posts/'
+    | '/stories/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -167,8 +189,10 @@ export interface FileRouteTypes {
     | '/profile'
     | '/incs/$id'
     | '/posts/$id'
+    | '/stories/$id'
     | '/incs'
     | '/posts'
+    | '/stories'
   id:
     | '__root__'
     | '/_auth'
@@ -183,8 +207,10 @@ export interface FileRouteTypes {
     | '/_main/'
     | '/_main/incs/$id'
     | '/_main/posts/$id'
+    | '/_main/stories/$id'
     | '/_main/incs/'
     | '/_main/posts/'
+    | '/_main/stories/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -264,6 +290,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_main/stories/': {
+      id: '/_main/stories/'
+      path: '/stories'
+      fullPath: '/stories/'
+      preLoaderRoute: typeof MainStoriesIndexRouteImport
+      parentRoute: typeof MainRoute
+    }
     '/_main/posts/': {
       id: '/_main/posts/'
       path: '/'
@@ -277,6 +310,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/incs/'
       preLoaderRoute: typeof MainIncsIndexRouteImport
       parentRoute: typeof MainIncsRoute
+    }
+    '/_main/stories/$id': {
+      id: '/_main/stories/$id'
+      path: '/stories/$id'
+      fullPath: '/stories/$id'
+      preLoaderRoute: typeof MainStoriesIdRouteImport
+      parentRoute: typeof MainRoute
     }
     '/_main/posts/$id': {
       id: '/_main/posts/$id'
@@ -342,6 +382,8 @@ interface MainRouteChildren {
   MainPostsRoute: typeof MainPostsRouteWithChildren
   MainProfileRoute: typeof MainProfileRoute
   MainIndexRoute: typeof MainIndexRoute
+  MainStoriesIdRoute: typeof MainStoriesIdRoute
+  MainStoriesIndexRoute: typeof MainStoriesIndexRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
@@ -351,6 +393,8 @@ const MainRouteChildren: MainRouteChildren = {
   MainPostsRoute: MainPostsRouteWithChildren,
   MainProfileRoute: MainProfileRoute,
   MainIndexRoute: MainIndexRoute,
+  MainStoriesIdRoute: MainStoriesIdRoute,
+  MainStoriesIndexRoute: MainStoriesIndexRoute,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
