@@ -165,6 +165,7 @@ class CommentVisibilityTests(APITestCase):
 
         self.owner = User.objects.create_user(username="owner", password="pass")
         self.friend = User.objects.create_user(username="friend", password="pass")
+        self.friend_two = User.objects.create_user(username="friend_two", password="pass")
         self.outsider = User.objects.create_user(username="outsider", password="pass")
 
         self.owner.is_private = True
@@ -173,6 +174,10 @@ class CommentVisibilityTests(APITestCase):
         Friend.objects.create(
             user1=min(self.owner, self.friend, key=lambda user: user.id),
             user2=max(self.owner, self.friend, key=lambda user: user.id),
+        )
+        Friend.objects.create(
+            user1=min(self.owner, self.friend_two, key=lambda user: user.id),
+            user2=max(self.owner, self.friend_two, key=lambda user: user.id),
         )
 
         self.private_post = Post.objects.create(
@@ -257,5 +262,80 @@ class CommentVisibilityTests(APITestCase):
             UserLikesContent.objects.filter(
                 user=self.owner,
                 content=self.owner_post_comment,
+            ).exists()
+        )
+
+    def test_second_friend_can_retrieve_other_friend_comment_for_private_inc(self):
+        self.authenticate(self.friend_two)
+
+        response = self.client.get(
+            reverse(
+                "comment-retrieve-destroy",
+                kwargs={"comment_id": self.friend_inc_comment.id},
+            )
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["id"], self.friend_inc_comment.id)
+
+    def test_second_friend_can_like_other_friend_comment_for_private_inc(self):
+        self.authenticate(self.friend_two)
+
+        response = self.client.post(
+            reverse(
+                "comment-like",
+                kwargs={"comment_id": self.friend_inc_comment.id},
+            )
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(
+            UserLikesContent.objects.filter(
+                user=self.friend_two,
+                content=self.friend_inc_comment,
+            ).exists()
+        )
+
+    def test_non_friend_can_retrieve_comment_for_public_post(self):
+        self.owner.is_private = False
+        self.owner.save()
+        self.authenticate(self.outsider)
+
+        response = self.client.get(
+            reverse(
+                "comment-retrieve-destroy",
+                kwargs={"comment_id": self.owner_post_comment.id},
+            )
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["id"], self.owner_post_comment.id)
+
+    def test_non_friend_can_like_private_user_comment_when_parent_post_is_public(self):
+        self.friend.is_private = True
+        self.friend.save()
+        self.owner.is_private = False
+        self.owner.save()
+
+        public_post_comment = Comment.objects.create(
+            user=self.friend,
+            lf_content=self.private_post,
+            commentary="Private user comment on public post",
+        )
+
+        self.authenticate(self.outsider)
+
+        response = self.client.post(
+            reverse(
+                "comment-like",
+                kwargs={"comment_id": public_post_comment.id},
+            )
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(
+            UserLikesContent.objects.filter(
+                user=self.outsider,
+                content=public_post_comment,
             ).exists()
         )
