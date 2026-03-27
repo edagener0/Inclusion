@@ -1,6 +1,6 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
-import { API_URL, IS_AUTH_MARKER } from '@/shared/config';
+import { API_URL, IS_AUTH_MARKER } from '@/shared/config/constants';
 
 export const api = axios.create({
   baseURL: API_URL,

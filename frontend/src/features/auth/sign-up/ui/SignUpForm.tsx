@@ -1,3 +1,6 @@
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useForm } from '@tanstack/react-form';
 import { Link } from '@tanstack/react-router';
 
@@ -6,10 +9,12 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/s
 import { Input } from '@/shared/ui/input';
 
 import { useSignUpMutation } from '../model/mutation';
-import { type SignUp, SignUpSchema } from '../model/schema';
+import { type SignUp, createSignUpSchema } from '../model/schema';
 
 export function SignUpForm() {
   const mutation = useSignUpMutation();
+  const { t } = useTranslation('auth', { keyPrefix: 'sign-up' });
+  const schema = useMemo(() => createSignUpSchema(t), [t]);
 
   const form = useForm({
     defaultValues: {
@@ -20,9 +25,7 @@ export function SignUpForm() {
       lastName: '',
       username: '',
     } satisfies SignUp,
-    validators: {
-      onChange: SignUpSchema,
-    },
+    validators: { onChange: schema },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value);
     },
@@ -38,10 +41,8 @@ export function SignUpForm() {
     >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">Create your account</h1>
-          <p className="text-muted-foreground text-sm text-balance">
-            Fill in the form below to create your account
-          </p>
+          <h1 className="text-2xl font-bold">{t('title')}</h1>
+          <p className="text-muted-foreground text-sm text-balance">{t('description')}</p>
         </div>
 
         <form.Field
@@ -50,7 +51,7 @@ export function SignUpForm() {
             const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
-                <FieldLabel htmlFor={field.name}>Username</FieldLabel>
+                <FieldLabel htmlFor={field.name}>{t('fields.username.label')}</FieldLabel>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -72,7 +73,7 @@ export function SignUpForm() {
             const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
-                <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                <FieldLabel htmlFor={field.name}>{t('fields.email.label')}</FieldLabel>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -95,7 +96,7 @@ export function SignUpForm() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>First Name</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('fields.firstName.label')}</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
@@ -117,7 +118,7 @@ export function SignUpForm() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Last Name</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('fields.lastName.label')}</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
@@ -141,7 +142,7 @@ export function SignUpForm() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Password</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('fields.password.label')}</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
@@ -164,7 +165,7 @@ export function SignUpForm() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Confirm Password</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>{t('fields.confirmPassword.label')}</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
@@ -183,11 +184,11 @@ export function SignUpForm() {
         </div>
 
         <Field>
-          <Button type="submit">Create Account</Button>
+          <Button type="submit">{t('submit_btn')}</Button>
         </Field>
         <Field>
           <FieldDescription className="px-6 text-center">
-            Already have an account? <Link to={'/sign-in'}>Sign in</Link>
+            {t('footer.text')} <Link to={'/sign-in'}>{t('footer.link')}</Link>
           </FieldDescription>
         </Field>
       </FieldGroup>

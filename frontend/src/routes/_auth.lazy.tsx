@@ -3,7 +3,7 @@ import { Link, Outlet, createLazyFileRoute, useLocation } from '@tanstack/react-
 import { SignInIcon } from '@/features/auth/sign-in';
 import { SignUpIcon } from '@/features/auth/sign-up';
 import { AppLogo } from '@/shared/assets';
-import { APP_NAME } from '@/shared/config';
+import { APP_NAME } from '@/shared/config/constants';
 
 export const Route = createLazyFileRoute('/_auth')({
   component: AuthLayout,

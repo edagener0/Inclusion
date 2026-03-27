@@ -1,23 +1,26 @@
+import { useTranslation } from 'react-i18next';
+
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
 
 import { signIn } from '@/entities/session';
-import { IS_AUTH_MARKER } from '@/shared/config';
+import { IS_AUTH_MARKER } from '@/shared/config/constants';
 
 export function useSignInMutation() {
   const navigate = useNavigate();
+  const { t } = useTranslation('auth');
 
   return useMutation({
     mutationFn: signIn,
     onSuccess: () => {
       localStorage.setItem(IS_AUTH_MARKER, 'true');
       navigate({ to: '/' });
-      toast.success('Welcome back!');
+      toast.success(t('sign-in.success'));
     },
     onError: error => {
       console.error(error);
-      toast.error('Unable to sign in. Please try again.');
+      toast.error(t('sign-in.error'));
     },
   });
 }

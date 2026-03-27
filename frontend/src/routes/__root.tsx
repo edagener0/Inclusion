@@ -4,6 +4,8 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import z from 'zod';
 
 import { ModalProvider } from '@/app/provider/ModalProvider';
+import '@/shared/config/i18n';
+import { loadNamespace } from '@/shared/config/i18n';
 import { Toaster } from '@/shared/ui/sonner';
 
 interface RouterContext {
@@ -23,6 +25,9 @@ export type ModalType = z.infer<typeof modalEnum>;
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   validateSearch: SearchSchema,
+  loader: async () => {
+    await loadNamespace(['common', 'zod']);
+  },
   component: () => (
     <>
       <Outlet />

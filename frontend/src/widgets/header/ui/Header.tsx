@@ -4,7 +4,7 @@ import { Link } from '@tanstack/react-router';
 import { Menu, Search } from 'lucide-react';
 
 import { AppLogo } from '@/shared/assets';
-import { APP_NAME } from '@/shared/config';
+import { APP_NAME } from '@/shared/config/constants';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/shared/ui/sheet';
