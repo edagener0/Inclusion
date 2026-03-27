@@ -21,6 +21,8 @@ export function StoriesSection() {
 
   const stories = data?.pages.flatMap(page => page.data) ?? [];
 
+  if (!isLoading && !stories.length) return null;
+
   return (
     <div className="relative w-full max-w-2xl mb-4 border-b border-border/40">
       <ScrollArea className="w-full whitespace-nowrap mask-[linear-gradient(to_right,black_85%,transparent_100%)] md:mask-[linear-gradient(to_right,black_90%,transparent_100%)] cursor-grab active:cursor-grabbing">
