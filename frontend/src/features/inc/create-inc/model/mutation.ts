@@ -17,7 +17,7 @@ export function useCreateIncMutation() {
     },
     onError: error => {
       console.error(error);
-      toast.error('Error while createing inc.');
+      toast.error('Error while creating inc.');
     },
   });
 }

@@ -16,7 +16,7 @@ export function useUpdateFullName() {
       client.invalidateQueries({ queryKey: sessionQueries.me().queryKey });
       client.invalidateQueries({ queryKey: userQueries.me().queryKey });
       client.invalidateQueries({ queryKey: profileQueries.byUsername(user.username).queryKey });
-      toast('Full name updated succesefully');
+      toast('Full name updated successfully');
     },
   });
 }

@@ -1,5 +1,5 @@
 import type { LinkProps } from '@tanstack/react-router';
-import { ImagesIcon, type LucideIcon, MessageCirclePlusIcon } from 'lucide-react';
+import { HistoryIcon, ImagesIcon, type LucideIcon, MessageCirclePlusIcon } from 'lucide-react';
 
 type ExtractModal<T> = T extends { modal?: infer M } ? M : never;
 
@@ -25,5 +25,12 @@ export const items = [
     description: 'Share a quick thought or short update with your friends.',
     icon: MessageCirclePlusIcon,
     modal: 'create-inc',
+  },
+  {
+    id: 'story',
+    label: 'Create a story',
+    description: 'Share a moment that disappears after 24 hours.',
+    icon: HistoryIcon,
+    modal: 'create-story',
   },
 ] as const satisfies CreateContentItem[];

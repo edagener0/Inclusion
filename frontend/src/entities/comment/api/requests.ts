@@ -1,12 +1,8 @@
 import { api } from '@/shared/api';
 import type { PaginatedResponse } from '@/shared/api';
 
-import {
-  type Comment,
-  CommentSchema,
-  type CreateCommentDTO,
-  type FetchCommentsDTO,
-} from '../model/types';
+import { type Comment, CommentSchema } from '../model/schema';
+import type { CreateCommentDTO, FetchCommentsDTO } from './types';
 
 export async function createComment({ commentary, entityId, entityType }: CreateCommentDTO) {
   await api.post(`/${entityType}/${entityId}/comments`, { commentary });

@@ -2,36 +2,40 @@ import { Skeleton } from '@/shared/ui/skeleton';
 
 export function IncCardSkeleton() {
   return (
-    <div className="border border-border rounded-2xl bg-background shadow-lg overflow-hidden flex flex-col h-full max-h-55">
-      <div className="p-4 flex flex-col flex-1">
-        <div className="h-5.5 overflow-hidden">
-          <Skeleton className="h-4.5 w-48" />
+    <article className="w-full max-w-150 mx-auto flex gap-3 px-4 pt-3 pb-2 border-b border-border bg-background">
+      <div className="shrink-0">
+        <Skeleton className="h-10 w-10 rounded-full" />
+      </div>
+
+      <div className="flex flex-col w-full min-w-0">
+        <div className="flex justify-between items-start">
+          <div className="flex items-center gap-2 mt-1">
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-1 w-1 rounded-full" />
+            <Skeleton className="h-3 w-12" />
+          </div>
+
+          <div className="shrink-0 -mt-2 -mr-2">
+            <Skeleton className="h-8 w-8 rounded-full m-2" />
+          </div>
         </div>
 
-        <div className="flex items-start gap-3.5 mt-3.5 flex-1">
-          <Skeleton className="h-10 w-10 shrink-0 rounded-full" />
+        <div className="mt-2.5 flex flex-col gap-2">
+          <Skeleton className="h-3.5 w-full" />
+          <Skeleton className="h-3.5 w-[90%]" />
+          <Skeleton className="h-3.5 w-[60%]" />
+        </div>
 
-          <div className="flex flex-col flex-1 gap-1.5 mt-0.5">
-            <div className="h-4.5 flex items-center">
-              <Skeleton className="h-3.5 w-28" />
-            </div>
+        <div className="flex items-center justify-start gap-12 mt-3 max-w-md">
+          <div className="flex items-center">
+            <Skeleton className="h-9 w-9 rounded-full" />
+          </div>
 
-            <div className="space-y-1.5 mt-1.5 h-15.5 overflow-hidden">
-              <Skeleton className="h-3.5 w-full" />
-              <Skeleton className="h-3.5 w-[85%]" />
-              <Skeleton className="h-3.5 w-[60%]" />
-            </div>
+          <div className="flex items-center">
+            <Skeleton className="h-9 w-9 rounded-full" />
           </div>
         </div>
       </div>
-
-      <div className="border-t border-border/80 p-3.5 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <Skeleton className="h-8 w-14" />
-          <Skeleton className="h-8 w-14" />
-        </div>
-        <Skeleton className="h-3 w-16" />
-      </div>
-    </div>
+    </article>
   );
 }

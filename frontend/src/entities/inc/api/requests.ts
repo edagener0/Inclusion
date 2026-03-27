@@ -1,6 +1,6 @@
 import { type PaginatedResponse, api } from '@/shared/api';
 
-import { type Inc, IncSchema } from '../model/types';
+import { type Inc, IncSchema } from '../model/schema';
 
 export async function getInc(id: number): Promise<Inc> {
   const result = await api.get(`/incs/${id}`);

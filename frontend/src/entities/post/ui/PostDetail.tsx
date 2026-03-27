@@ -4,7 +4,7 @@ import { Link } from '@tanstack/react-router';
 
 import { isVideo, timeAgo } from '@/shared/lib/utils';
 
-import type { Post } from '../model/types';
+import type { Post } from '../model/schema';
 
 type Props = {
   post: Post;

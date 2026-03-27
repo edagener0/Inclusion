@@ -1,25 +1,20 @@
 import { MoreHorizontal } from 'lucide-react';
 
-import { type Inc, IncCard, incQueries } from '@/entities/inc';
+import { type Inc, IncCard } from '@/entities/inc';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
 import { DeleteIncMenuItem } from '@/features/inc/delete-inc';
-import { LikeButton } from '@/features/like-toggle';
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
+
+import { IncLikeButton } from './IncLikeButton';
 
 export function IncListItem({ inc }: { inc: Inc }) {
   const user = useSession();
   const isAuthor = user.id === inc.user.id;
 
   const likeButton = (
-    <LikeButton
-      queryKey={incQueries.feed().queryKey}
-      likesCount={inc.likesCount}
-      entityId={inc.id}
-      entityType={incQueries.entityType}
-      isLiked={inc.isLiked}
-    />
+    <IncLikeButton isLiked={inc.isLiked} likesCount={inc.likesCount} incId={inc.id} />
   );
 
   const userAvatar = (

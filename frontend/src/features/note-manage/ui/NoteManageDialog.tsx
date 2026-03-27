@@ -56,7 +56,7 @@ export function NoteManageDialog() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <NoteCard
-          note={note ?? emptyNote(user.avatar, user.username)}
+          note={note ?? emptyNote(user)}
           avatar={
             <UserAvatar className="w-16 h-16" avatar={user.avatar} username={user.username} />
           }

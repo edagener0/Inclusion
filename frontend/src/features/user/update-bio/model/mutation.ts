@@ -16,7 +16,7 @@ export function useUpdateBio() {
       client.invalidateQueries({ queryKey: sessionQueries.me().queryKey });
       client.invalidateQueries({ queryKey: userQueries.me().queryKey });
       client.invalidateQueries({ queryKey: profileQueries.byUsername(user.username).queryKey });
-      toast.success('Biography updated succesefully');
+      toast.success('Biography updated successfully');
     },
   });
 }

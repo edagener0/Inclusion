@@ -164,7 +164,7 @@ export function SignUpForm() {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Cofnirm Password</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Confirm Password</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}

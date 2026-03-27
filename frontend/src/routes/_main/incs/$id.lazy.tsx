@@ -3,7 +3,6 @@ import { createLazyFileRoute, useRouter } from '@tanstack/react-router';
 
 import { IncDetail, incQueries } from '@/entities/inc';
 import { UserAvatar } from '@/entities/user';
-import { LikeButton } from '@/features/like-toggle';
 import {
   Dialog,
   DialogContent,
@@ -13,6 +12,7 @@ import {
 } from '@/shared/ui/dialog';
 import { CenterSpinner } from '@/shared/ui/spinner';
 import { CommentSection } from '@/widgets/comment-section';
+import { IncLikeButton } from '@/widgets/inc-list';
 
 export const Route = createLazyFileRoute('/_main/incs/$id')({
   component: RouteComponent,
@@ -51,13 +51,7 @@ export function RouteComponent() {
               />
             }
             likeSlot={
-              <LikeButton
-                queryKey={incQueries.feed().queryKey}
-                likesCount={inc.likesCount}
-                entityId={inc.id}
-                entityType={incQueries.entityType}
-                isLiked={inc.isLiked}
-              />
+              <IncLikeButton incId={inc.id} isLiked={inc.isLiked} likesCount={inc.likesCount} />
             }
             commentsSlot={<CommentSection entityType={incQueries.entityType} entityId={inc.id} />}
           />

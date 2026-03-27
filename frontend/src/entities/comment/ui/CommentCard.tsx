@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 
 import { timeAgo } from '@/shared/lib/utils';
 
-import type { Comment } from '../model/types';
+import type { Comment } from '../model/schema';
 
 type Props = {
   comment: Comment;
