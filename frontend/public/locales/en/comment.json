@@ -1,0 +1,13 @@
+{
+  "create": {
+    "success": "Comment created successfully!",
+    "error": "Error while creating comment."
+  },
+  "delete": {
+    "success": "Comment deleted successfully!",
+    "error": "Error while deleting comment.",
+    "dialog": {
+      "title": "Delete comment"
+    }
+  }
+}
