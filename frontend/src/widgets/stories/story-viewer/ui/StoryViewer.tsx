@@ -35,6 +35,7 @@ export function StoryViewer({ initialId, onClose }: Props) {
           <div className="pointer-events-auto">
             <StoryHeader
               user={currentUserGroup.user}
+              createdAt={currentStory.createdAt}
               userAvatarSlot={
                 <UserAvatar
                   avatar={currentUserGroup.user.avatar}
