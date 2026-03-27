@@ -14,22 +14,22 @@ type CreateContentItem = {
 export const items = [
   {
     id: 'post',
-    label: 'Create a post',
-    description: 'Draft a new post, upload images, and share updates with your friends.',
+    label: 'post.label',
+    description: 'post.description',
     icon: ImagesIcon,
     modal: 'create-post',
   },
   {
     id: 'inc',
-    label: 'Create an inc',
-    description: 'Share a quick thought or short update with your friends.',
+    label: 'inc.label',
+    description: 'inc.description',
     icon: MessageCirclePlusIcon,
     modal: 'create-inc',
   },
   {
     id: 'story',
-    label: 'Create a story',
-    description: 'Share a moment that disappears after 24 hours.',
+    label: 'story.label',
+    description: 'story.description',
     icon: HistoryIcon,
     modal: 'create-story',
   },

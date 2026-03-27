@@ -4,5 +4,21 @@
     "description": "This action cannot be undone.",
     "confirm": "Confirm",
     "cancel": "Cancel"
+  },
+  "create-content": {
+    "title": "Create new content",
+    "description": "Select a content type below to continue.",
+    "post": {
+      "label": "Create a post",
+      "description": "Draft a new post, upload images, and share updates with your friends."
+    },
+    "inc": {
+      "label": "Create an inc",
+      "description": "Share a quick thought or short update with your friends."
+    },
+    "story": {
+      "label": "Create a story",
+      "description": "Share a moment that disappears after 24 hours."
+    }
   }
 }

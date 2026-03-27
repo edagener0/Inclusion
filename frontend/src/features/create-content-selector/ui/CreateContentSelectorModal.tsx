@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useNavigate } from '@tanstack/react-router';
 
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
@@ -7,13 +9,14 @@ import { items } from '../model/types';
 
 export function CreateContentSelectorModal() {
   const navigate = useNavigate();
+  const { t } = useTranslation('common', { keyPrefix: 'create-content' });
 
   return (
     <RoutedDialog>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-xl">Create new content</DialogTitle>
-          <DialogDescription>Select a content type below to continue.</DialogDescription>
+          <DialogTitle className="text-xl">{t('title')}</DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
@@ -27,8 +30,8 @@ export function CreateContentSelectorModal() {
                 <item.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
               </div>
               <div className="flex-1">
-                <div className="font-medium text-base">{item.label}</div>
-                <p className="text-sm text-muted-foreground">{item.description}</p>
+                <div className="font-medium text-base">{t(item.label)}</div>
+                <p className="text-sm text-muted-foreground">{t(item.description)}</p>
               </div>
             </button>
           ))}
