@@ -16,7 +16,7 @@ export function useUpdateAccountPrivacy() {
       client.invalidateQueries({ queryKey: sessionQueries.me().queryKey });
       client.invalidateQueries({ queryKey: userQueries.me().queryKey });
       client.invalidateQueries({ queryKey: profileQueries.byUsername(user.username).queryKey });
-      toast.success('Account privacy updated succesefully');
+      toast.success('Account privacy updated successfully');
     },
   });
 }

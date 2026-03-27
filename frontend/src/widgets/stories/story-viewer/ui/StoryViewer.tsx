@@ -5,7 +5,7 @@ import { StoryHeader, StoryMedia, StoryProgress, storyQueries } from '@/entities
 import { UserAvatar } from '@/entities/user';
 import { Button } from '@/shared/ui/button';
 
-import { useStoryViewer } from '../model/user-story-viewser';
+import { useStoryViewer } from '../model/user-story-viewer';
 import { StoryActions } from './StoryActions';
 import { StoryLikeButton } from './StoryLikeButton';
 
