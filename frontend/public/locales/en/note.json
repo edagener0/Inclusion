@@ -1,0 +1,14 @@
+{
+  "delete": {
+    "success": "Deleted note successfully!",
+    "error": "Error while deleting note."
+  },
+  "create": {
+    "success": "Updated note successfully!",
+    "error": "Error while upserting note.",
+    "default": "What are you thinking?"
+  },
+  "edit": {
+    "title": "Edit note"
+  }
+}

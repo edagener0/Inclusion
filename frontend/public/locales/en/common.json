@@ -6,7 +6,9 @@
     "publish": "Publish",
     "publishing": "Publishing...",
     "delete": "Delete",
-    "confirm": "Confirm"
+    "deleting": "Deleting",
+    "confirm": "Confirm",
+    "update": "Update"
   },
   "confirm-dialog": {
     "title": "Are you sure?",

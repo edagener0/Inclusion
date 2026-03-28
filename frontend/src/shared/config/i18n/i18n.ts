@@ -13,7 +13,7 @@ i18n
     fallbackLng: 'en',
     supportedLngs: ['en'],
     nonExplicitSupportedLngs: true,
-    ns: ['common', 'auth', 'inc'],
+    ns: ['common', 'auth', 'inc', 'note'],
     defaultNS: 'common',
     debug: import.meta.env.DEV,
     interpolation: {

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@tanstack/react-form';
 import { useQuery } from '@tanstack/react-query';
@@ -24,6 +25,7 @@ import { useUpsertNoteMutation } from '../model/upsert-mutations';
 export function NoteManageDialog() {
   const user = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation(['note', 'common']);
 
   const { data: note } = useQuery({
     ...noteQueries.list(),
@@ -56,7 +58,7 @@ export function NoteManageDialog() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <NoteCard
-          note={note ?? emptyNote(user)}
+          note={note ?? { ...emptyNote(user), content: t(emptyNote(user).content) }}
           avatar={
             <UserAvatar className="w-16 h-16" avatar={user.avatar} username={user.username} />
           }
@@ -65,7 +67,7 @@ export function NoteManageDialog() {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{note ? 'Edit note' : 'Share what your thinking'}</DialogTitle>
+          <DialogTitle>{note ? t('edit.title') : t('create.default')}</DialogTitle>
         </DialogHeader>
 
         <form
@@ -81,7 +83,6 @@ export function NoteManageDialog() {
             children={field => (
               <div className="flex flex-col w-full relative mb-1">
                 <Textarea
-                  placeholder="Tell me what you're thinking..."
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={e => field.handleChange(e.target.value)}
@@ -112,7 +113,9 @@ export function NoteManageDialog() {
                   onClick={handleDelete}
                   disabled={isPending}
                 >
-                  {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+                  {deleteMutation.isPending
+                    ? t('common:actions.deleting')
+                    : t('common:actions.delete')}
                 </Button>
               )}
             </div>
@@ -137,10 +140,10 @@ export function NoteManageDialog() {
                     disabled={!canSubmit || isSubmitting || isPending || !content.trim()}
                   >
                     {upsertMutation.isPending || isSubmitting
-                      ? 'Sharing...'
+                      ? t('common:actions.publishing')
                       : note
-                        ? 'Update'
-                        : 'Share'}
+                        ? t('common:actions.update')
+                        : t('common:actions.publish')}
                   </Button>
                 )}
               />
