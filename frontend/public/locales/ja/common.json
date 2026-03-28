@@ -1,0 +1,70 @@
+{
+  "actions": {
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "delete": "削除",
+    "deleting": "削除中...",
+    "publish": "公開",
+    "publishing": "公開中...",
+    "remove": "削除",
+    "save": "保存",
+    "saving": "保存中...",
+    "submit": "送信",
+    "submitting": "送信中...",
+    "update": "更新"
+  },
+  "confirm-dialog": {
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "description": "この操作は元に戻せません。",
+    "title": "よろしいですか？"
+  },
+  "createContent": {
+    "description": "続行するには、以下のコンテンツタイプを選択してください。",
+    "inc": {
+      "description": "簡単な思いつきや短い近況を友達とシェアしましょう。",
+      "label": "Incを作成"
+    },
+    "post": {
+      "description": "新しい投稿を作成し、画像をアップロードして、友達と近況をシェアしましょう。",
+      "label": "投稿を作成"
+    },
+    "story": {
+      "description": "24時間で消える日常の瞬間をシェアしましょう。",
+      "label": "ストーリーを作成"
+    },
+    "title": "新しいコンテンツを作成"
+  },
+  "errors": {
+    "file": {
+      "empty": "ファイルが空です。",
+      "invalidFormat": "サポートされている形式: {{formats}}。",
+      "required": "ファイルを選択してください。",
+      "tooLarge": "最大ファイルサイズ - {{max}}。"
+    }
+  },
+  "language": "言語",
+  "mediaUploader": {
+    "changeFile": "ファイルを変更",
+    "fullscreen": "フルスクリーン",
+    "preview": "プレビュー",
+    "select": "クリックまたはドラッグ＆ドロップ"
+  },
+  "sideBar": {
+    "incs": "Incs",
+    "messages": "メッセージ",
+    "newContent": "新規作成",
+    "posts": "投稿",
+    "profile": "プロフィール",
+    "settings": "設定"
+  },
+  "theme": {
+    "dark": "ダーク",
+    "light": "ライト",
+    "system": "システム",
+    "title": "テーマ"
+  },
+  "time": {
+    "justNow": "たった今"
+  }
+}

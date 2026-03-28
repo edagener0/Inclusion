@@ -102,20 +102,20 @@ interface Resources {
       "title": "Are you sure?"
     },
     "createContent": {
-      "description": "description",
+      "description": "Select a content type below to continue.",
       "inc": {
-        "description": "common:createContent.inc.description",
-        "label": "Inc"
+        "description": "Share a quick thought or short update with your friends.",
+        "label": "Create an inc"
       },
       "post": {
-        "description": "common:createContent.post.description",
-        "label": "Post"
+        "description": "Draft a new post, upload images, and share updates with your friends.",
+        "label": "Create a post"
       },
       "story": {
-        "description": "common:createContent.story.description",
-        "label": "Story"
+        "description": "Share a moment that disappears after 24 hours.",
+        "label": "Create a story"
       },
-      "title": "title"
+      "title": "Create new content"
     },
     "errors": {
       "file": {

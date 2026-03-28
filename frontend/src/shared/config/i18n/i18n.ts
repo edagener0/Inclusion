@@ -14,7 +14,9 @@ i18n
   .init({
     supportedLngs: supportedLanguages.map(l => l.key),
     nonExplicitSupportedLngs: true,
+    fallbackLng: 'en',
     defaultNS: 'common',
+    ns: ['common'],
     debug: import.meta.env.DEV,
     interpolation: {
       escapeValue: false,
@@ -35,6 +37,8 @@ i18n.on('languageChanged', lng => {
     z.config(z.locales.es());
   } else if (lng === 'fr' && z.locales.fr) {
     z.config(z.locales.fr());
+  } else if (lng === 'ja' && z.locales.ja) {
+    z.config(z.locales.ja());
   }
 });
 
