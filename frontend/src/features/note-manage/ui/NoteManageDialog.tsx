@@ -127,7 +127,7 @@ export function NoteManageDialog() {
                 disabled={isPending}
                 onClick={() => setIsOpen(false)}
               >
-                Cancel
+                {t('common:actions.cancel')}
               </Button>
 
               <form.Subscribe

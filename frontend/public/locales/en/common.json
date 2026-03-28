@@ -10,7 +10,9 @@
     "delete": "Delete",
     "deleting": "Deleting",
     "confirm": "Confirm",
-    "update": "Update"
+    "update": "Update",
+    "remove": "Remove",
+    "close": "Close"
   },
   "errors": {
     "file": {
@@ -47,5 +49,11 @@
     "dark": "Dark",
     "light": "Light",
     "system": "System"
+  },
+  "mediaUploader": {
+    "select": "Click or drag and drop",
+    "fullscreen": "Fullscreen",
+    "preview": "Preview",
+    "changeFile": "Change file"
   }
 }

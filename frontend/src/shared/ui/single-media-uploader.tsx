@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Film, Image as ImageIcon, Maximize2, UploadCloud, X } from 'lucide-react';
 
@@ -16,11 +17,14 @@ interface SingleMediaUploaderProps {
   className?: string;
 }
 
+const SUPPORTED_FORMATS_TEXT = 'JPG, PNG, GIF, MP4 & WebM';
+
 export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUploaderProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [mediaFile, setMediaFile] = useState<MediaFile | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     return () => {
@@ -102,8 +106,9 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
           <div className="flex items-center justify-center w-14 h-14 mb-4 rounded-full bg-primary/10">
             <UploadCloud className="w-7 h-7 text-primary" />
           </div>
-          <p className="mb-1 text-base font-medium text-foreground">Click or drag and drop</p>
-          <p className="text-sm text-muted-foreground">JPG, PNG, GIF, MP4 or WebM</p>
+          <p className="mb-1 text-base font-medium text-foreground">{t('mediaUploader.select')}</p>
+
+          <p className="text-sm text-muted-foreground">{SUPPORTED_FORMATS_TEXT}</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -114,7 +119,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
             {mediaFile.type === 'image' ? (
               <img
                 src={mediaFile.preview}
-                alt="Preview"
+                alt={t('mediaUploader.preview')}
                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
               />
             ) : (
@@ -125,7 +130,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
 
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center pointer-events-none">
               <div className="opacity-0 group-hover:opacity-100 bg-background/95 text-foreground px-4 py-2 rounded-lg text-sm font-medium shadow-md flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-all">
-                <Maximize2 className="w-4 h-4" /> Fullscreen
+                <Maximize2 className="w-4 h-4" /> {t('mediaUploader.fullscreen')}
               </div>
             </div>
 
@@ -136,7 +141,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
                   e.stopPropagation();
                   fileInputRef.current?.click();
                 }}
-                title="Change file"
+                title={t('mediaUploader.changeFile')}
                 className="p-2 bg-background/90 hover:bg-primary hover:text-primary-foreground rounded-full shadow-sm transition-colors"
               >
                 <UploadCloud className="w-4 h-4" />
@@ -144,7 +149,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
               <button
                 type="button"
                 onClick={removeFile}
-                title="Remove"
+                title={t('actions.remove')}
                 className="p-2 bg-background/90 hover:bg-destructive hover:text-destructive-foreground rounded-full shadow-sm transition-colors"
               >
                 <X className="w-4 h-4" />
@@ -164,7 +169,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
         <DialogContent className="max-w-none! w-fit p-0 bg-transparent border-none shadow-none flex items-center justify-center focus:outline-none [&>button:last-child]:hidden">
           <DialogHeader className="sr-only">
-            <DialogTitle>Media Preview</DialogTitle>
+            <DialogTitle>{t('actions.save')}</DialogTitle>
           </DialogHeader>
 
           <div className="relative flex items-center justify-center">
@@ -179,7 +184,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
             {mediaFile?.type === 'image' && (
               <img
                 src={mediaFile.preview}
-                alt="Full Preview"
+                alt={t('mediaUploader.preview')}
                 className="max-h-[95vh] max-w-[95vw] w-auto h-auto object-contain shadow-2xl rounded-md"
               />
             )}

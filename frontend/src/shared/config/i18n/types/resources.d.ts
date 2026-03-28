@@ -77,16 +77,19 @@ interface Resources {
       "error": "Error while deleting comment.",
       "success": "Comment deleted successfully!"
     },
-    "empty": "There are no comments yet. Be the first!"
+    "empty": "There are no comments yet. Be the first!",
+    "title": "Comments"
   },
   "common": {
     "actions": {
       "cancel": "Cancel",
+      "close": "Close",
       "confirm": "Confirm",
       "delete": "Delete",
       "deleting": "Deleting",
       "publish": "Publish",
       "publishing": "Publishing...",
+      "remove": "Remove",
       "save": "Save",
       "saving": "Saving...",
       "submit": "Submit",
@@ -123,6 +126,12 @@ interface Resources {
         "tooLarge": "Maximum file size - {{max}}."
       }
     },
+    "mediaUploader": {
+      "changeFile": "Change file",
+      "fullscreen": "Fullscreen",
+      "preview": "Preview",
+      "select": "Click or drag and drop"
+    },
     "theme": {
       "dark": "Dark",
       "light": "Light",
@@ -151,6 +160,9 @@ interface Resources {
       "error": "Error while deleting inc.",
       "success": "Inc deleted successfully!"
     }
+  },
+  "message": {
+    "title": "Messages"
   },
   "note": {
     "create": {
@@ -256,7 +268,7 @@ interface Resources {
     "settings": {
       "description": "Manage your account, security, and other information.",
       "general": "General",
-      "personal": "",
+      "personal": "Personal Information",
       "title": "Account settings"
     }
   }
