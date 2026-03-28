@@ -10,6 +10,9 @@
     "confirm": "Confirm",
     "update": "Update"
   },
+  "errors": {
+    "mediaFileRequired": "Media file is required."
+  },
   "confirm-dialog": {
     "title": "Are you sure?",
     "description": "This action cannot be undone.",

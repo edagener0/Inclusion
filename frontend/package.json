@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "fsd": "steiger ./src",
-    "knip": "knip"
+    "knip": "knip",
+    "lang": "i18next-cli"
   },
   "dependencies": {
     "@fontsource-variable/nunito-sans": "^5.2.7",
@@ -51,6 +52,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "i18next-cli": "^1.51.4",
     "knip": "^6.0.1",
     "prettier": "^3.8.1",
     "steiger": "^0.5.11",

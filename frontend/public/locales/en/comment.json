@@ -1,16 +1,16 @@
 {
   "create": {
-    "success": "Comment created successfully!",
-    "error": "Error while creating comment."
+    "error": "Error while creating comment.",
+    "success": "Comment created successfully!"
   },
   "delete": {
-    "success": "Comment deleted successfully!",
-    "error": "Error while deleting comment.",
     "dialog": {
-      "trigger": "Delete comment",
-      "title": "Delete comment?",
+      "confirm": "Delete",
       "description": "This action cannot be undone.",
-      "confirm": "Delete"
-    }
+      "title": "Delete comment?",
+      "trigger": "Delete comment"
+    },
+    "error": "Error while deleting comment.",
+    "success": "Comment deleted successfully!"
   }
 }
