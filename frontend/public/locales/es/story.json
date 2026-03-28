@@ -1,0 +1,17 @@
+{
+  "create": {
+    "error": "Error al crear la historia.",
+    "success": "¡Historia creada con éxito!",
+    "title": "Crear historia"
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "Eliminar",
+      "description": "Esta acción no se puede deshacer.",
+      "title": "¿Eliminar historia?",
+      "trigger": "Eliminar historia"
+    },
+    "error": "Error al eliminar la historia.",
+    "success": "¡Historia eliminada con éxito!"
+  }
+}

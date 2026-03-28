@@ -1,0 +1,18 @@
+{
+  "create": {
+    "error": "Error al crear el comentario.",
+    "success": "¡Comentario creado con éxito!"
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "Eliminar",
+      "description": "Esta acción no se puede deshacer.",
+      "title": "¿Eliminar comentario?",
+      "trigger": "Eliminar comentario"
+    },
+    "error": "Error al eliminar el comentario.",
+    "success": "¡Comentario eliminado con éxito!"
+  },
+  "empty": "Aún no hay comentarios. ¡Sé el primero!",
+  "title": "Comentarios"
+}
