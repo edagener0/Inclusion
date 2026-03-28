@@ -1,0 +1,22 @@
+{
+  "create": {
+    "success": "Inc created successfully!",
+    "error": "Error while creating inc.",
+    "title": "Create new inc",
+    "fields": {
+      "content": {
+        "placeholder": "What's new?"
+      }
+    }
+  },
+  "delete": {
+    "success": "Inc deleted successfully!",
+    "error": "Error while deleting inc.",
+    "dialog": {
+      "trigger": "Delete inc",
+      "title": "Delete inc?",
+      "description": "This action cannot be undone.",
+      "confirm": "Delete"
+    }
+  }
+}
