@@ -23,5 +23,5 @@ export function timeAgo(date: Date): string {
     }
   }
 
-  return i18n.t('time.justNow', { defaultValue: 'just now' });
+  return i18n.t('common:time.justNow', { defaultValue: 'just now' });
 }

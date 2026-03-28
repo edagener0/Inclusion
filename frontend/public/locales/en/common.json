@@ -1,71 +1,50 @@
 {
   "actions": {
-    "submit": "Submit",
-    "submitting": "Submitting",
     "cancel": "Cancel",
-    "save": "Save",
-    "saving": "Saving...",
-    "publish": "Publish",
-    "publishing": "Publishing...",
+    "close": "Close",
     "delete": "Delete",
     "deleting": "Deleting",
-    "confirm": "Confirm",
-    "update": "Update",
+    "publish": "Publish",
+    "publishing": "Publishing...",
     "remove": "Remove",
-    "close": "Close"
+    "save": "Save",
+    "saving": "Saving...",
+    "submit": "Submit",
+    "submitting": "Submitting",
+    "update": "Update"
+  },
+  "confirm-dialog": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "description": "This action cannot be undone.",
+    "title": "Are you sure?"
+  },
+  "create-content": {
+    "description": "Select a content type below to continue.",
+    "title": "Create new content"
   },
   "errors": {
     "file": {
-      "required": "Please select a file.",
       "empty": "The file cannot be empty.",
-      "tooLarge": "Maximum file size - {{max}}.",
-      "invalidFormat": "Supported formats: {{formats}}."
-    }
-  },
-  "confirm-dialog": {
-    "title": "Are you sure?",
-    "description": "This action cannot be undone.",
-    "confirm": "Confirm",
-    "cancel": "Cancel"
-  },
-  "create-content": {
-    "title": "Create new content",
-    "description": "Select a content type below to continue.",
-    "post": {
-      "label": "Create a post",
-      "description": "Draft a new post, upload images, and share updates with your friends."
-    },
-    "inc": {
-      "label": "Create an inc",
-      "description": "Share a quick thought or short update with your friends."
-    },
-    "story": {
-      "label": "Create a story",
-      "description": "Share a moment that disappears after 24 hours."
+      "invalidFormat": "Supported formats: {{formats}}.",
+      "required": "Please select a file.",
+      "tooLarge": "Maximum file size - {{max}}."
     }
   },
   "language": "Language",
-  "theme": {
-    "title": "Theme",
-    "dark": "Dark",
-    "light": "Light",
-    "system": "System"
-  },
-  "sideBar": {
-    "incs": "Incs",
-    "posts": "Posts",
-    "profile": "Profile",
-    "messages": "Messages",
-    "settings": "Settings",
-    "newContent": "New Content"
-  },
   "mediaUploader": {
-    "select": "Click or drag and drop",
+    "changeFile": "Change file",
     "fullscreen": "Fullscreen",
     "preview": "Preview",
-    "changeFile": "Change file"
+    "select": "Click or drag and drop"
+  },
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System",
+    "title": "Theme"
   },
   "time": {
-    "justNow": "jow now"
+    "justNow": "just now"
   }
 }
