@@ -35,5 +35,11 @@
       "label": "Create a story",
       "description": "Share a moment that disappears after 24 hours."
     }
+  },
+  "theme": {
+    "title": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
   }
 }

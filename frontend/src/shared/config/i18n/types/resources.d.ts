@@ -115,6 +115,12 @@ interface Resources {
     },
     "errors": {
       "mediaFileRequired": "Media file is required."
+    },
+    "theme": {
+      "dark": "Dark",
+      "light": "Light",
+      "system": "System",
+      "title": "Theme"
     }
   },
   "inc": {
