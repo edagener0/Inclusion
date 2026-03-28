@@ -7,7 +7,7 @@ import {
 
 import { api } from '@/shared/api';
 
-export type BaseLikeable = { id: number; isLiked: boolean; likesCount: number };
+type BaseLikeable = { id: number; isLiked: boolean; likesCount: number };
 
 type ToggleLikeArgs<TNode> = {
   entityType: string;
