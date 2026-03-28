@@ -1,4 +1,5 @@
 {
+  "notFound": "User not found",
   "privacy": {
     "success": "Account privacy updated successfully",
     "error": "Error while updating privacy settings",

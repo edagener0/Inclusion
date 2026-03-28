@@ -234,6 +234,7 @@ interface Resources {
       },
       "success": "Full name updated successfully"
     },
+    "notFound": "User not found",
     "privacy": {
       "error": "Error while updating privacy settings",
       "form": {
