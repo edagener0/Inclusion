@@ -235,6 +235,11 @@ interface Resources {
       },
       "success": "Full name updated successfully"
     },
+    "menu": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "signOut": "Sign Out"
+    },
     "notFound": "User not found",
     "privacy": {
       "error": "Error while updating privacy settings",
@@ -247,6 +252,12 @@ interface Resources {
         "title": "Account Visibility"
       },
       "success": "Account privacy updated successfully"
+    },
+    "settings": {
+      "description": "Manage your account, security, and other information.",
+      "general": "General",
+      "personal": "",
+      "title": "Account settings"
     }
   }
 }

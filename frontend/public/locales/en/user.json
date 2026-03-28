@@ -1,5 +1,16 @@
 {
   "notFound": "User not found",
+  "menu": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "signOut": "Sign Out"
+  },
+  "settings": {
+    "title": "Account settings",
+    "description": "Manage your account, security, and other information.",
+    "general": "General",
+    "personal": "Personal Information"
+  },
   "privacy": {
     "success": "Account privacy updated successfully",
     "error": "Error while updating privacy settings",

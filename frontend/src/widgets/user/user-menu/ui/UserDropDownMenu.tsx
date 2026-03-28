@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useNavigate } from '@tanstack/react-router';
 import { LogOut, Settings, User } from 'lucide-react';
 
@@ -19,6 +21,7 @@ export function UserDropDownMenu() {
   const user = useSession();
   const navigate = useNavigate();
   const mutation = useSignOutMutation();
+  const { t } = useTranslation('user', { keyPrefix: 'menu' });
 
   return (
     <DropdownMenu>
@@ -41,12 +44,12 @@ export function UserDropDownMenu() {
           onClick={() => navigate({ to: `/$username`, params: { username: user.username } })}
         >
           <User className="mr-2 h-4 w-4" />
-          Profile
+          {t('profile')}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => navigate({ to: '.', search: { modal: 'user-settings' } })}>
           <Settings className="mr-2 h-4 w-4" />
-          Settings
+          {t('settings')}
         </DropdownMenuItem>
 
         <ThemeSwitcherDropDownMenuSub />
@@ -58,7 +61,7 @@ export function UserDropDownMenu() {
           onClick={() => mutation.mutate()}
         >
           <LogOut className="mr-2 h-4 w-4" />
-          Sign out
+          {t('signOut')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

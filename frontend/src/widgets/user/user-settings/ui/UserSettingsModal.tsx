@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useQuery } from '@tanstack/react-query';
 
 import { userQueries } from '@/entities/user';
@@ -12,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 
 export function UserSettingsModal() {
   const { data: user, isLoading } = useQuery(userQueries.me());
+  const { t } = useTranslation('user', { keyPrefix: 'settings' });
 
   if (isLoading) return <CenterSpinner />;
   if (!user) throw new Error('unreachable');
@@ -21,10 +24,8 @@ export function UserSettingsModal() {
       <DialogContent className="sm:max-w-175 h-[85vh] flex flex-col p-0">
         <div className="px-6 pt-6 pb-2">
           <DialogHeader>
-            <DialogTitle>Account settings</DialogTitle>
-            <DialogDescription>
-              Manage your account, security, and other information.
-            </DialogDescription>
+            <DialogTitle>{t('title')}</DialogTitle>
+            <DialogDescription>{t('description')}</DialogDescription>
           </DialogHeader>
         </div>
 
@@ -35,13 +36,13 @@ export function UserSettingsModal() {
                 value="general"
                 className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
               >
-                General
+                {t('general')}
               </TabsTrigger>
               <TabsTrigger
                 value="personal-information"
                 className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
               >
-                Personal Information
+                {t('personal')}
               </TabsTrigger>
             </TabsList>
           </div>
