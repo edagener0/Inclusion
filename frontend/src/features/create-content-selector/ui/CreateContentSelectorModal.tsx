@@ -9,7 +9,7 @@ import { items } from '../model/types';
 
 export function CreateContentSelectorModal() {
   const navigate = useNavigate();
-  const { t } = useTranslation('common', { keyPrefix: 'create-content' });
+  const { t } = useTranslation('common', { keyPrefix: 'createContent' });
 
   return (
     <RoutedDialog>

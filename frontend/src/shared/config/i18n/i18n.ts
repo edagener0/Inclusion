@@ -12,10 +12,8 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
     supportedLngs: supportedLanguages.map(l => l.key),
     nonExplicitSupportedLngs: true,
-    ns: ['common', 'auth', 'inc', 'note', 'post', 'story', 'user'],
     defaultNS: 'common',
     debug: import.meta.env.DEV,
     interpolation: {

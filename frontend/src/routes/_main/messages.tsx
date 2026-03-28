@@ -2,10 +2,14 @@ import { useTranslation } from 'react-i18next';
 
 import { createFileRoute } from '@tanstack/react-router';
 
+import { loadNamespace } from '@/shared/config';
 import { NotesSection } from '@/widgets/notes-section';
 
 export const Route = createFileRoute('/_main/messages')({
   component: Messages,
+  loader: async () => {
+    await loadNamespace(['note', 'message']);
+  },
 });
 
 // eslint-disable-next-line react-refresh/only-export-components

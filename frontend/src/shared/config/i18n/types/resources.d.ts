@@ -84,7 +84,6 @@ interface Resources {
     "actions": {
       "cancel": "Cancel",
       "close": "Close",
-      "confirm": "Confirm",
       "delete": "Delete",
       "deleting": "Deleting",
       "publish": "Publish",
@@ -102,21 +101,21 @@ interface Resources {
       "description": "This action cannot be undone.",
       "title": "Are you sure?"
     },
-    "create-content": {
-      "description": "Select a content type below to continue.",
+    "createContent": {
+      "description": "description",
       "inc": {
-        "description": "Share a quick thought or short update with your friends.",
-        "label": "Create an inc"
+        "description": "common:createContent.inc.description",
+        "label": "Inc"
       },
       "post": {
-        "description": "Draft a new post, upload images, and share updates with your friends.",
-        "label": "Create a post"
+        "description": "common:createContent.post.description",
+        "label": "Post"
       },
       "story": {
-        "description": "Share a moment that disappears after 24 hours.",
-        "label": "Create a story"
+        "description": "common:createContent.story.description",
+        "label": "Story"
       },
-      "title": "Create new content"
+      "title": "title"
     },
     "errors": {
       "file": {
@@ -146,6 +145,9 @@ interface Resources {
       "light": "Light",
       "system": "System",
       "title": "Theme"
+    },
+    "time": {
+      "justNow": "just now"
     }
   },
   "inc": {

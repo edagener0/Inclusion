@@ -1,69 +1,68 @@
 {
   "actions": {
-    "submit": "Отправить",
-    "submitting": "Отправка...",
     "cancel": "Отмена",
-    "save": "Сохранить",
-    "saving": "Сохранение...",
-    "publish": "Опубликовать",
-    "publishing": "Публикация...",
+    "close": "Закрыть",
     "delete": "Удалить",
     "deleting": "Удаление...",
-    "confirm": "Подтвердить",
-    "update": "Обновить",
+    "publish": "Опубликовать",
+    "publishing": "Публикация...",
     "remove": "Убрать",
-    "close": "Закрыть"
+    "save": "Сохранить",
+    "saving": "Сохранение...",
+    "submit": "Отправить",
+    "submitting": "Отправка...",
+    "update": "Обновить"
+  },
+  "confirm-dialog": {
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "description": "Это действие нельзя отменить.",
+    "title": "Вы уверены?"
+  },
+  "createContent": {
+    "description": "",
+    "inc": {
+      "description": "",
+      "label": ""
+    },
+    "post": {
+      "description": "",
+      "label": ""
+    },
+    "story": {
+      "description": "",
+      "label": ""
+    },
+    "title": ""
   },
   "errors": {
     "file": {
-      "required": "Пожалуйста, выберите файл.",
       "empty": "Файл не может быть пустым.",
-      "tooLarge": "Максимальный размер файла - {{max}}.",
-      "invalidFormat": "Поддерживаемые форматы: {{formats}}."
-    }
-  },
-  "confirm-dialog": {
-    "title": "Вы уверены?",
-    "description": "Это действие нельзя отменить.",
-    "confirm": "Подтвердить",
-    "cancel": "Отмена"
-  },
-  "create-content": {
-    "title": "Создать новый контент",
-    "description": "Выберите тип контента ниже, чтобы продолжить.",
-    "post": {
-      "label": "Создать пост",
-      "description": "Создайте новый пост, загрузите изображения и поделитесь новостями с друзьями."
-    },
-    "inc": {
-      "label": "Создать инк",
-      "description": "Поделитесь короткой мыслью или новостью с друзьями."
-    },
-    "story": {
-      "label": "Создать историю",
-      "description": "Поделитесь моментом, который исчезнет через 24 часа."
+      "invalidFormat": "Поддерживаемые форматы: {{formats}}.",
+      "required": "Пожалуйста, выберите файл.",
+      "tooLarge": "Максимальный размер файла - {{max}}."
     }
   },
   "language": "Язык",
-  "theme": {
-    "title": "Тема",
-    "dark": "Темная",
-    "light": "Светлая",
-    "system": "Системная"
+  "mediaUploader": {
+    "changeFile": "Изменить файл",
+    "fullscreen": "На весь экран",
+    "preview": "Предпросмотр",
+    "select": "Нажмите или перетащите файл"
   },
   "sideBar": {
     "incs": "Инки",
+    "messages": "Сообщения",
+    "newContent": "Новый Контент",
     "posts": "Посты",
     "profile": "Профиль",
-    "messages": "Сообщения",
-    "settings": "Настройки",
-    "newContent": "Новый контент"
+    "settings": "Настройки"
   },
-  "mediaUploader": {
-    "select": "Нажмите или перетащите файл",
-    "fullscreen": "На весь экран",
-    "preview": "Предпросмотр",
-    "changeFile": "Изменить файл"
+  "theme": {
+    "dark": "Темная",
+    "light": "Светлая",
+    "system": "Системная",
+    "title": "Тема"
   },
   "time": {
     "justNow": "только что"

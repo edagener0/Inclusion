@@ -28,7 +28,7 @@ export default defineConfig([
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',
-        { allowConstantExport: true, allowExportNames: ['Route'] },
+        { allowConstantExport: true, allowExportNames: ['Route', 'loader', 'action'] },
       ],
       'prettier/prettier': 'error',
     },
