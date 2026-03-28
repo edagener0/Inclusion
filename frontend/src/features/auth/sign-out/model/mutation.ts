@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { signOut } from '@/entities/session';
-import { IS_AUTH_MARKER } from '@/shared/config/constants';
+import { IS_AUTH_MARKER } from '@/shared/config';
 
 export function useSignOutMutation() {
   const queryClient = useQueryClient();

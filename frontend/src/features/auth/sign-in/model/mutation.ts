@@ -5,7 +5,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
 
 import { signIn } from '@/entities/session';
-import { IS_AUTH_MARKER } from '@/shared/config/constants';
+import { IS_AUTH_MARKER } from '@/shared/config';
 
 export function useSignInMutation() {
   const navigate = useNavigate();

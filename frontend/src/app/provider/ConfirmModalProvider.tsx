@@ -1,4 +1,4 @@
-import { useConfirmModal } from '@/shared/model/use-confirm-modal';
+import { useConfirmModal } from '@/shared/model';
 import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 
 export function ConfirmModalProvider() {

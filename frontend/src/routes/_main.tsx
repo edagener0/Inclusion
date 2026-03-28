@@ -2,7 +2,7 @@ import { Outlet, createFileRoute, isRedirect, redirect } from '@tanstack/react-r
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 import { sessionQueries } from '@/entities/session';
-import { APP_NAME, IS_AUTH_MARKER } from '@/shared/config/constants';
+import { APP_NAME, IS_AUTH_MARKER } from '@/shared/config';
 import { Header } from '@/widgets/header';
 import { SidebarNav } from '@/widgets/sidebar';
 import { UserDropDownMenu } from '@/widgets/user/user-menu';
