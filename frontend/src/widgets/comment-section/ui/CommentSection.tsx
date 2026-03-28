@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { CommentCard, commentQueries } from '@/entities/comment';
+import { CommentCard, CommentCardSkeleton, commentQueries } from '@/entities/comment';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
 import { CreateComment } from '@/features/comment/create-comment';
@@ -57,7 +57,11 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
 
       <div className="flex-1 overflow-y-auto pt-4 space-y-5 pr-2 custom-scrollbar">
         {isLoading ? (
-          <div className="animate-pulse text-sm text-muted-foreground">Loading...</div>
+          <div className="flex flex-col">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <CommentCardSkeleton key={index} />
+            ))}
+          </div>
         ) : allComments?.length === 0 ? (
           <div className="text-sm text-muted-foreground py-4">{t('empty')}</div>
         ) : (
