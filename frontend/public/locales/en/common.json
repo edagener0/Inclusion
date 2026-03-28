@@ -3,7 +3,8 @@
     "submit": "Submit",
     "submitting": "Submitting",
     "cancel": "Cancel",
-    "save": "Save changes",
+    "save": "Save",
+    "saving": "Saving...",
     "publish": "Publish",
     "publishing": "Publishing...",
     "delete": "Delete",
@@ -12,7 +13,12 @@
     "update": "Update"
   },
   "errors": {
-    "mediaFileRequired": "Media file is required."
+    "file": {
+      "required": "Please select a file.",
+      "empty": "The file cannot be empty.",
+      "tooLarge": "Maximum file size - {{max}}.",
+      "invalidFormat": "Supported formats: {{formats}}."
+    }
   },
   "confirm-dialog": {
     "title": "Are you sure?",

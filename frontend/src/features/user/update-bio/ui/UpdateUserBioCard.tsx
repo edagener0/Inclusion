@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useForm } from '@tanstack/react-form';
 
 import { Button } from '@/shared/ui/button';
@@ -9,6 +11,7 @@ import { type UpdateBio, UpdateBioSchema } from '../model/schema';
 
 export function UpdateUserBioCard({ biography }: { biography: string | null }) {
   const mutation = useUpdateBio();
+  const { t } = useTranslation(['common', 'user']);
 
   const form = useForm({
     defaultValues: { biography: biography ?? '' } satisfies UpdateBio,
@@ -28,7 +31,7 @@ export function UpdateUserBioCard({ biography }: { biography: string | null }) {
     >
       <Card>
         <CardHeader>
-          <CardTitle>Biography</CardTitle>
+          <CardTitle>{t('user:biography.title')}</CardTitle>
         </CardHeader>
 
         <CardContent>
@@ -54,7 +57,7 @@ export function UpdateUserBioCard({ biography }: { biography: string | null }) {
         </CardContent>
         <CardFooter className="flex justify-end">
           <Button size="sm" type="submit">
-            Save
+            {t('common:actions.save')}
           </Button>
         </CardFooter>
       </Card>

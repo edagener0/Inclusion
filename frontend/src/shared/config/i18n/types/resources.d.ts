@@ -86,7 +86,8 @@ interface Resources {
       "deleting": "Deleting",
       "publish": "Publish",
       "publishing": "Publishing...",
-      "save": "Save changes",
+      "save": "Save",
+      "saving": "Saving...",
       "submit": "Submit",
       "submitting": "Submitting",
       "update": "Update"
@@ -114,7 +115,12 @@ interface Resources {
       "title": "Create new content"
     },
     "errors": {
-      "mediaFileRequired": "Media file is required."
+      "file": {
+        "empty": "The file cannot be empty.",
+        "invalidFormat": "Supported formats: {{formats}}.",
+        "required": "Please select a file.",
+        "tooLarge": "Maximum file size - {{max}}."
+      }
     },
     "theme": {
       "dark": "Dark",
@@ -199,6 +205,46 @@ interface Resources {
       },
       "error": "Error while deleting story.",
       "success": "Story deleted successfully!"
+    }
+  },
+  "user": {
+    "avatar": {
+      "error": "Error while updating avatar.",
+      "form": {
+        "description": "Update your avatar. This will be displayed on your profile.",
+        "image": {
+          "label": "Upload new photo",
+          "size": "Recommended size is 256x256px. Max size 2MB."
+        },
+        "title": "Avatar"
+      },
+      "success": "Avatar updated successfully."
+    },
+    "biography": {
+      "error": "Error while updating biography.",
+      "success": "Biography updated successfully",
+      "title": "Biography"
+    },
+    "fullName": {
+      "error": "Error while updaing full name.",
+      "form": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "title": "Full Name"
+      },
+      "success": "Full name updated successfully"
+    },
+    "privacy": {
+      "error": "Error while updating privacy settings",
+      "form": {
+        "description": "Choose if you want your profile to be public or private.",
+        "isPrivate": {
+          "description": "When private, only your friends can see your posts, incs... This setting protects your profile and personal content.",
+          "title": "Private Account"
+        },
+        "title": "Account Visibility"
+      },
+      "success": "Account privacy updated successfully"
     }
   }
 }

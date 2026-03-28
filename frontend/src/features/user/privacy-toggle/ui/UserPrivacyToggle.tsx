@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useForm } from '@tanstack/react-form';
 
 import { Button } from '@/shared/ui/button';
@@ -16,6 +18,7 @@ import { type AccountPrivacy, AccountPrivacySchema } from '../model/schema';
 
 export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
   const mutation = useUpdateAccountPrivacy();
+  const { t } = useTranslation(['common', 'user']);
 
   const form = useForm({
     defaultValues: { isPrivate } satisfies AccountPrivacy,
@@ -35,10 +38,8 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
     >
       <Card className="shadow-sm">
         <CardHeader>
-          <CardTitle>Account Visibility</CardTitle>
-          <CardDescription>
-            Choose if you want your profile to be public or private.
-          </CardDescription>
+          <CardTitle>{t('user:privacy.form.title')}</CardTitle>
+          <CardDescription>{t('user:privacy.form.description')}</CardDescription>
         </CardHeader>
 
         <CardContent>
@@ -58,10 +59,11 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
                   className="mt-1 transition-transform group-hover:scale-105"
                 />
                 <div className="space-y-1.5 leading-none">
-                  <span className="text-base font-semibold block">Private Account</span>
+                  <span className="text-base font-semibold block">
+                    {t('user:privacy.form.isPrivate.title')}
+                  </span>
                   <p className="text-sm font-normal text-muted-foreground">
-                    When private, only your friends can see your posts, incs... This setting
-                    protects your profile and personal content.
+                    {t('user:privacy.form.isPrivate.description')}
                   </p>
                 </div>
               </label>
@@ -71,7 +73,7 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
 
         <CardFooter className="flex justify-end border-t bg-muted/50 px-6 py-4">
           <Button size="sm" type="submit" disabled={mutation.isPending}>
-            {mutation.isPending ? 'Saving...' : 'Save Settings'}
+            {mutation.isPending ? t('common:actions.saving') : t('common:actions.save')}
           </Button>
         </CardFooter>
       </Card>
