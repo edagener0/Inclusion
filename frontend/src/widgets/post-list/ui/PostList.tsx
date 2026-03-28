@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { PostCardSkeleton, postQueries } from '@/entities/post';
+import { CenterSpinner } from '@/shared/ui/spinner';
 
 import { PostListItem } from './PostListItem';
 
@@ -47,7 +48,9 @@ export function PostList() {
         className="w-full py-6 flex items-center justify-center text-muted-foreground"
       >
         {isFetchingNextPage && (
-          <span className="text-sm font-medium animate-pulse">Loading more posts...</span>
+          <span className="text-sm font-medium animate-pulse">
+            <CenterSpinner className="size-4" />
+          </span>
         )}
       </div>
     </div>
