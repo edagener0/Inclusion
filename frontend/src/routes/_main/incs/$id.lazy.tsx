@@ -37,8 +37,8 @@ export function RouteComponent() {
       <DialogOverlay className="bg-black/60 z-100" />
 
       <DialogContent className="p-0 border sm:border-border sm:rounded-xl gap-0 z-100 flex flex-col w-full sm:max-w-2xl h-dvh sm:max-h-[85vh] overflow-hidden bg-background">
-        <DialogTitle className="sr-only">Post Detail</DialogTitle>
-        <DialogDescription className="sr-only">Details and comments for the post</DialogDescription>
+        <DialogTitle className="hidden"></DialogTitle>
+        <DialogDescription className="hidden"></DialogDescription>
 
         <div className="flex-1 overflow-hidden">
           <IncDetail
