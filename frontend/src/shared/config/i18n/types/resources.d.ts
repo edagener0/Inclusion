@@ -76,7 +76,8 @@ interface Resources {
       },
       "error": "Error while deleting comment.",
       "success": "Comment deleted successfully!"
-    }
+    },
+    "empty": "There are no comments yet. Be the first!"
   },
   "common": {
     "actions": {

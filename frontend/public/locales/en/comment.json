@@ -1,4 +1,5 @@
 {
+  "empty": "There are no comments yet. Be the first!",
   "create": {
     "error": "Error while creating comment.",
     "success": "Comment created successfully!"

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
@@ -22,6 +23,8 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery(
     commentQueries.feed(entityType, entityId),
   );
+
+  const { t } = useTranslation('comment');
 
   const observerTarget = useRef<HTMLDivElement | null>(null);
 
@@ -56,9 +59,7 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
         {isLoading ? (
           <div className="animate-pulse text-sm text-muted-foreground">Loading...</div>
         ) : allComments?.length === 0 ? (
-          <div className="text-sm text-muted-foreground py-4">
-            There are no comments yet. Be the first!
-          </div>
+          <div className="text-sm text-muted-foreground py-4">{t('empty')}</div>
         ) : (
           allComments?.map(comment => (
             <CommentCard
