@@ -1,0 +1,22 @@
+{
+  "create": {
+    "error": "Erro ao criar inc.",
+    "fields": {
+      "content": {
+        "placeholder": "O que há de novo?"
+      }
+    },
+    "success": "Inc criado com sucesso!",
+    "title": "Criar novo inc"
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "Eliminar",
+      "description": "Esta ação não pode ser desfeita.",
+      "title": "Eliminar inc?",
+      "trigger": "Eliminar inc"
+    },
+    "error": "Erro ao eliminar inc.",
+    "success": "Inc eliminado com sucesso!"
+  }
+}

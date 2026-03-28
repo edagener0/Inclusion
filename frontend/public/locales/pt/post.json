@@ -1,0 +1,25 @@
+{
+  "create": {
+    "dialog": {
+      "description": {
+        "placeholder": "O que há de novo?"
+      },
+      "file": {
+        "button": "Carregar multimédia"
+      },
+      "title": "Criar nova publicação"
+    },
+    "error": "Erro ao criar publicação.",
+    "success": "Publicação criada com sucesso!"
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "Eliminar",
+      "description": "Esta ação não pode ser desfeita.",
+      "title": "Eliminar publicação?",
+      "trigger": "Eliminar publicação"
+    },
+    "error": "Erro ao eliminar publicação.",
+    "success": "Publicação eliminada com sucesso!"
+  }
+}

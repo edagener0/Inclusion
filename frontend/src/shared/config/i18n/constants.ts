@@ -1,8 +1,9 @@
 import en from './assets/en.svg?url';
+import pt from './assets/pt.svg?url';
 import ru from './assets/ru.svg?url';
 import ua from './assets/ua.svg?url';
 
-type AppLanguage = 'en' | 'ru' | 'ua';
+type AppLanguage = 'en' | 'pt' | 'ru' | 'ua';
 
 type LanguageConfig = {
   key: AppLanguage;
@@ -15,6 +16,11 @@ export const supportedLanguages = [
     key: 'en',
     name: 'English',
     flagUrl: en,
+  },
+  {
+    key: 'pt',
+    name: 'Português',
+    flagUrl: pt,
   },
   {
     key: 'ru',
