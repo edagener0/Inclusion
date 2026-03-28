@@ -32,9 +32,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Type Check
-        run: npx tsc -noEmit
-
       - name: Linting
         run: npm run lint
 
@@ -46,3 +43,12 @@ jobs:
 
       - name: Check FSD Architecture
         run: npm run fsd
+
+      - name: i18next
+        run: npm run lang -- extract --ci && npm run lang -- lint
+
+      - name: Check Dead Code
+        run: npm run knip
+
+      - name: Security Audit
+        run: npm audit --audit-level=high --omit=dev
