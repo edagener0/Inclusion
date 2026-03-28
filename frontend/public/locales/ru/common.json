@@ -51,10 +51,21 @@
     "light": "Светлая",
     "system": "Системная"
   },
+  "sideBar": {
+    "incs": "Инки",
+    "posts": "Посты",
+    "profile": "Профиль",
+    "messages": "Сообщения",
+    "settings": "Настройки",
+    "newContent": "Новый контент"
+  },
   "mediaUploader": {
     "select": "Нажмите или перетащите файл",
     "fullscreen": "На весь экран",
     "preview": "Предпросмотр",
     "changeFile": "Изменить файл"
+  },
+  "time": {
+    "justNow": "только что"
   }
 }

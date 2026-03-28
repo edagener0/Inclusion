@@ -51,10 +51,21 @@
     "light": "Light",
     "system": "System"
   },
+  "sideBar": {
+    "incs": "Incs",
+    "posts": "Posts",
+    "profile": "Profile",
+    "messages": "Messages",
+    "settings": "Settings",
+    "newContent": "New Content"
+  },
   "mediaUploader": {
     "select": "Click or drag and drop",
     "fullscreen": "Fullscreen",
     "preview": "Preview",
     "changeFile": "Change file"
+  },
+  "time": {
+    "justNow": "jow now"
   }
 }

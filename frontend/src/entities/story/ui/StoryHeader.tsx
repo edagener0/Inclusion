@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 import type { UserPreview } from '@/shared/api';
-import { timeAgo } from '@/shared/lib/utils';
+import { useTimeAgo } from '@/shared/lib/hooks';
 
 type Props = {
   user: UserPreview;
@@ -14,7 +14,7 @@ export function StoryHeader({ createdAt, user, userAvatarSlot }: Props) {
     <div className="flex items-center gap-2 pointer-events-auto">
       {userAvatarSlot}
       <span className="text-white font-medium text-sm drop-shadow-md">{user.username}</span>
-      <span className="text-white font-sm text-sm drop-shadow-md">{timeAgo(createdAt)}</span>
+      <span className="text-white font-sm text-sm drop-shadow-md">{useTimeAgo(createdAt)}</span>
     </div>
   );
 }

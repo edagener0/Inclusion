@@ -29,7 +29,7 @@ export function DeletePostMenuItem({ id }: { id: number }) {
       className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
     >
       <Trash className="mr-2 h-4 w-4" />
-      <span>{t('dialog.trigger')}</span>
+      <span className="whitespace-nowrap">{t('dialog.trigger')}</span>
     </DropdownMenuItem>
   );
 }

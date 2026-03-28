@@ -3,7 +3,8 @@ import type { ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
 import { MessageCircle } from 'lucide-react';
 
-import { isVideo, timeAgo } from '@/shared/lib/utils';
+import { useTimeAgo } from '@/shared/lib/hooks';
+import { isVideo } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/shared/ui/card';
 
@@ -34,7 +35,9 @@ export function PostCard({ userAvatarSlot, likeSlot, actionsSlot, post }: Props)
               </span>
             </Link>
             <Link to="/posts/$id" params={{ id: String(post.id) }} resetScroll={false}>
-              <span className="text-[12px] text-muted-foreground">{timeAgo(post.createdAt)}</span>
+              <span className="text-[12px] text-muted-foreground">
+                {useTimeAgo(post.createdAt)}
+              </span>
             </Link>
           </div>
         </div>

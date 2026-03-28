@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Link } from '@tanstack/react-router';
 
 import { cn } from '@/shared/lib/utils';
@@ -6,6 +8,8 @@ import { Button } from '@/shared/ui/button';
 import { navItems } from '../config/items';
 
 export const SidebarNav = ({ mobile = false }: { mobile?: boolean }) => {
+  const { t } = useTranslation('common');
+
   return (
     <nav className={`flex flex-col ${mobile ? 'gap-1 px-2' : 'gap-1.5'}`}>
       {navItems.map(item => (
@@ -34,7 +38,7 @@ export const SidebarNav = ({ mobile = false }: { mobile?: boolean }) => {
                 mobile ? 'h-4 w-4' : 'h-4 w-4 mr-1',
               )}
             />
-            {item.label}
+            {t(item.label)}
           </Button>
         </Link>
       ))}

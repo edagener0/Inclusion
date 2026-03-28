@@ -2,7 +2,8 @@ import type { ReactNode } from 'react';
 
 import { Link } from '@tanstack/react-router';
 
-import { isVideo, timeAgo } from '@/shared/lib/utils';
+import { useTimeAgo } from '@/shared/lib/hooks';
+import { isVideo } from '@/shared/lib/utils';
 
 import type { Post } from '../model/schema';
 
@@ -49,7 +50,7 @@ export function PostDetail({ userAvatarSlot, post, likeSlot, commentsSlot }: Pro
                 {post.user.username}
               </Link>
               <span className="text-[11px] text-muted-foreground mt-1 leading-none">
-                {timeAgo(post.createdAt)}
+                {useTimeAgo(post.createdAt)}
               </span>
             </div>
           </div>

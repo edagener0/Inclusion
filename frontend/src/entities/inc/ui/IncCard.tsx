@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
 import { MessageCircle } from 'lucide-react';
 
-import { timeAgo } from '@/shared/lib/utils';
+import { useTimeAgo } from '@/shared/lib/hooks';
 import { Button } from '@/shared/ui/button';
 
 import type { Inc } from '../model/schema';
@@ -36,7 +36,7 @@ export function IncCard({ userAvatarSlot, likeSlot, actionsSlot, inc }: Props) {
               resetScroll={false}
               className="text-muted-foreground hover:underline whitespace-nowrap text-sm"
             >
-              {timeAgo(inc.createdAt)}
+              {useTimeAgo(inc.createdAt)}
             </Link>
           </div>
 

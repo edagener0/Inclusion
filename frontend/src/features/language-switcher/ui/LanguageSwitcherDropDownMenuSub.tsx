@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Languages } from 'lucide-react';
 
-import { i18n, supportedLanguages } from '@/shared/config/i18n';
+import { i18n, supportedLanguages } from '@/shared/config';
 import {
   DropdownMenuItem,
   DropdownMenuPortal,

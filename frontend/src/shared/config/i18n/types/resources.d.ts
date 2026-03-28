@@ -133,6 +133,14 @@ interface Resources {
       "preview": "Preview",
       "select": "Click or drag and drop"
     },
+    "sideBar": {
+      "incs": "Incs",
+      "messages": "Messages",
+      "newContent": "New Content",
+      "posts": "Posts",
+      "profile": "Profile",
+      "settings": "Settings"
+    },
     "theme": {
       "dark": "Dark",
       "light": "Light",

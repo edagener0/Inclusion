@@ -16,7 +16,10 @@ export function StoryActions({ storyId }: Props) {
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent
+        align="end"
+        className="min-w-(--radix-dropdown-menu-trigger-width) w-max"
+      >
         <DeleteStoryMenuItem id={storyId} />
       </DropdownMenuContent>
     </DropdownMenu>
