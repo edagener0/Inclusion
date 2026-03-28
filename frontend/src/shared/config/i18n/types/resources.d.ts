@@ -88,6 +88,7 @@ interface Resources {
       "publishing": "Publishing...",
       "save": "Save changes",
       "submit": "Submit",
+      "submitting": "Submitting",
       "update": "Update"
     },
     "confirm-dialog": {
@@ -170,11 +171,28 @@ interface Resources {
       "dialog": {
         "confirm": "Delete",
         "description": "This action cannot be undone.",
-        "title": "Delete comment?",
-        "trigger": "Delete comment"
+        "title": "Delete post?",
+        "trigger": "Delete post"
       },
       "error": "Error while deleting post.",
       "success": "Post deleted successfully!"
+    }
+  },
+  "story": {
+    "create": {
+      "error": "Error while creating story.",
+      "success": "Story created successfully!",
+      "title": "Create story"
+    },
+    "delete": {
+      "dialog": {
+        "confirm": "Delete",
+        "description": "This action cannot be undone.",
+        "title": "Delete story?",
+        "trigger": "Delete story"
+      },
+      "error": "Error while deleting story.",
+      "success": "Story deleted successfully!"
     }
   }
 }

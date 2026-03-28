@@ -1,6 +1,7 @@
 {
   "actions": {
     "submit": "Submit",
+    "submitting": "Submitting",
     "cancel": "Cancel",
     "save": "Save changes",
     "publish": "Publish",

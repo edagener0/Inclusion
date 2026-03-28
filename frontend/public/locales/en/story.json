@@ -1,0 +1,17 @@
+{
+  "create": {
+    "success": "Story created successfully!",
+    "error": "Error while creating story.",
+    "title": "Create story"
+  },
+  "delete": {
+    "success": "Story deleted successfully!",
+    "error": "Error while deleting story.",
+    "dialog": {
+      "confirm": "Delete",
+      "description": "This action cannot be undone.",
+      "title": "Delete story?",
+      "trigger": "Delete story"
+    }
+  }
+}

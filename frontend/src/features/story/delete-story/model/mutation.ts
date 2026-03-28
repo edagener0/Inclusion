@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { type InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { toast } from 'sonner';
@@ -14,6 +16,7 @@ export function useDeleteStoryMutation() {
   const navigate = useNavigate();
   const { from } = useSearch({ from: '/_main/stories/$id' });
   const queryClient = useQueryClient();
+  const { t } = useTranslation('story', { keyPrefix: 'delete' });
   const feedQueryKey = storyQueries.feed().queryKey;
 
   return useMutation({
@@ -54,12 +57,12 @@ export function useDeleteStoryMutation() {
     },
     onSuccess: () => {
       navigate({ to: from });
-      toast.success('Story deleted successfully!');
+      toast.success(t('success'));
       queryClient.invalidateQueries({ queryKey: storyQueries.feed().queryKey });
     },
     onError: (error, _, context) => {
       console.error(error);
-      toast.error('Error while deleting story.');
+      toast.error(t('error'));
 
       if (context?.previousFeed) {
         queryClient.setQueryData(feedQueryKey, context.previousFeed);

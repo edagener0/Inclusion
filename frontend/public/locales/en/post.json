@@ -18,8 +18,8 @@
     "dialog": {
       "confirm": "Delete",
       "description": "This action cannot be undone.",
-      "title": "Delete comment?",
-      "trigger": "Delete comment"
+      "title": "Delete post?",
+      "trigger": "Delete post"
     }
   }
 }
