@@ -1,0 +1,17 @@
+{
+  "create": {
+    "error": "Erreur lors de la création de la story.",
+    "success": "Story créée avec succès !",
+    "title": "Créer une story"
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "Supprimer",
+      "description": "Cette action ne peut pas être annulée.",
+      "title": "Supprimer la story ?",
+      "trigger": "Supprimer la story"
+    },
+    "error": "Erreur lors de la suppression de la story.",
+    "success": "Story supprimée avec succès !"
+  }
+}

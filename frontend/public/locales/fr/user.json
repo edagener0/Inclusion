@@ -1,0 +1,52 @@
+{
+  "avatar": {
+    "error": "Erreur lors de la mise à jour de l'avatar.",
+    "form": {
+      "description": "Mettez à jour votre avatar. Il sera affiché sur votre profil.",
+      "image": {
+        "label": "Télécharger une nouvelle photo",
+        "size": "La taille recommandée est de 256x256px. Taille max 2MB."
+      },
+      "title": "Avatar"
+    },
+    "success": "Avatar mis à jour avec succès."
+  },
+  "biography": {
+    "error": "Erreur lors de la mise à jour de la biographie.",
+    "success": "Biographie mise à jour avec succès",
+    "title": "Biographie"
+  },
+  "fullName": {
+    "error": "Erreur lors de la mise à jour du nom complet.",
+    "form": {
+      "firstName": "Prénom",
+      "lastName": "Nom de famille",
+      "title": "Nom complet"
+    },
+    "success": "Nom complet mis à jour avec succès"
+  },
+  "menu": {
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "signOut": "Se déconnecter"
+  },
+  "notFound": "Utilisateur introuvable",
+  "privacy": {
+    "error": "Erreur lors de la mise à jour des paramètres de confidentialité",
+    "form": {
+      "description": "Choisissez si vous souhaitez que votre profil soit public ou privé.",
+      "isPrivate": {
+        "description": "En mode privé, seuls vos amis peuvent voir vos publications, incs... Ce paramètre protège votre profil et votre contenu personnel.",
+        "title": "Compte privé"
+      },
+      "title": "Visibilité du compte"
+    },
+    "success": "Confidentialité du compte mise à jour avec succès"
+  },
+  "settings": {
+    "description": "Gérez votre compte, la sécurité et d'autres informations.",
+    "general": "Général",
+    "personal": "Informations personnelles",
+    "title": "Paramètres du compte"
+  }
+}

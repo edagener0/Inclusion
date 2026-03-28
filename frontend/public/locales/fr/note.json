@@ -1,0 +1,25 @@
+{
+  "create": {
+    "dialog": {
+      "description": {
+        "placeholder": ""
+      },
+      "file": {
+        "button": ""
+      },
+      "title": ""
+    },
+    "error": "",
+    "success": ""
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "",
+      "description": "",
+      "title": "",
+      "trigger": ""
+    },
+    "error": "",
+    "success": ""
+  }
+}

@@ -1,10 +1,11 @@
 import en from './assets/en.svg?url';
 import es from './assets/es.svg?url';
+import fr from './assets/fr.svg?url';
 import pt from './assets/pt.svg?url';
 import ru from './assets/ru.svg?url';
 import ua from './assets/ua.svg?url';
 
-type AppLanguage = 'en' | 'pt' | 'es' | 'ru' | 'ua';
+type AppLanguage = 'en' | 'pt' | 'es' | 'fr' | 'ru' | 'ua';
 
 type LanguageConfig = {
   key: AppLanguage;
@@ -27,6 +28,11 @@ export const supportedLanguages = [
     key: 'es',
     name: 'España',
     flagUrl: es,
+  },
+  {
+    key: 'fr',
+    name: 'Français',
+    flagUrl: fr,
   },
   {
     key: 'ru',

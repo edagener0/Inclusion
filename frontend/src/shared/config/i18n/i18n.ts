@@ -33,6 +33,8 @@ i18n.on('languageChanged', lng => {
     z.config(z.locales.pt());
   } else if (lng === 'es' && z.locales.es) {
     z.config(z.locales.es());
+  } else if (lng === 'fr' && z.locales.fr) {
+    z.config(z.locales.fr());
   }
 });
 
