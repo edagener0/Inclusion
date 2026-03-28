@@ -11,7 +11,7 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    supportedLngs: ['en'],
+    supportedLngs: ['en', 'ru'],
     nonExplicitSupportedLngs: true,
     ns: ['common', 'auth', 'inc', 'note', 'post', 'story', 'user'],
     defaultNS: 'common',
