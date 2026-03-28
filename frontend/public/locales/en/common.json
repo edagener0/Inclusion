@@ -44,6 +44,7 @@
       "description": "Share a moment that disappears after 24 hours."
     }
   },
+  "language": "Language",
   "theme": {
     "title": "Theme",
     "dark": "Dark",

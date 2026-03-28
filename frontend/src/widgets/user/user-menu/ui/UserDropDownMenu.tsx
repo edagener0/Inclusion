@@ -6,6 +6,7 @@ import { LogOut, Settings, User } from 'lucide-react';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
 import { useSignOutMutation } from '@/features/auth/sign-out';
+import { LanguageSwitcherDropDownMenuSub } from '@/features/language-switcher';
 import { ThemeSwitcherDropDownMenuSub } from '@/features/theme-switcher';
 import { Button } from '@/shared/ui/button';
 import {
@@ -52,6 +53,7 @@ export function UserDropDownMenu() {
           {t('settings')}
         </DropdownMenuItem>
 
+        <LanguageSwitcherDropDownMenuSub />
         <ThemeSwitcherDropDownMenuSub />
 
         <DropdownMenuSeparator />

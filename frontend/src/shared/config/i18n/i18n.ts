@@ -5,13 +5,15 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
 import { z } from 'zod';
 
+import { supportedLanguages } from './constants';
+
 i18n
   .use(Backend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    supportedLngs: ['en', 'ru'],
+    supportedLngs: supportedLanguages.map(l => l.key),
     nonExplicitSupportedLngs: true,
     ns: ['common', 'auth', 'inc', 'note', 'post', 'story', 'user'],
     defaultNS: 'common',
