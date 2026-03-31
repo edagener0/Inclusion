@@ -8,7 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from .serializers import (
     FriendRequestCreateDestroySerializer,
-    FriendRequestListRetrieveSerializer
+    FriendRequestReceivedListRetrieveSerializer,
+    FriendRequestSentListRetrieveSerializer
 )
 from .models import (
     FriendRequest,
@@ -32,7 +33,7 @@ class FriendRequestCreateView(CreateAPIView):
 
 class FriendRequestListReceivedView(ListAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = FriendRequestListRetrieveSerializer
+    serializer_class = FriendRequestReceivedListRetrieveSerializer
 
     def get_queryset(self):
         return FriendRequest.objects.filter(
@@ -41,7 +42,7 @@ class FriendRequestListReceivedView(ListAPIView):
 
 class FriendRequestListSentView(ListAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = FriendRequestListRetrieveSerializer
+    serializer_class = FriendRequestSentListRetrieveSerializer
 
     def get_queryset(self):
         return FriendRequest.objects.filter(
@@ -50,7 +51,7 @@ class FriendRequestListSentView(ListAPIView):
 
 class FriendRequestRetrieveReceivedView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = FriendRequestListRetrieveSerializer
+    serializer_class = FriendRequestReceivedListRetrieveSerializer
     lookup_field = "from_user_id"
     lookup_url_kwarg = "from_user_id"
 
@@ -85,7 +86,12 @@ class FriendRequestAcceptReceivedView(APIView):
             user2_id = self.request.user.id,
         )
 
-        friend_request.delete()
+        # if i send a friend request and someone sends me a friend request and I accept that friend request
+        # the other friend request stays forever in our database. This fixes this, deleting in both 'directions of friendship'
+        FriendRequest.objects.filter(
+            Q(from_user_id=from_user_id, to_user_id=self.request.user.id) |
+            Q(from_user_id=self.request.user.id, to_user_id=from_user_id)
+        ).delete()
 
         return Response(
             {"detail": "Accepted the friend request!"},

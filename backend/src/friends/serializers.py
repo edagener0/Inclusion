@@ -10,13 +10,13 @@ from .models import Friend
 User = get_user_model()
 
 class FriendRequestCreateDestroySerializer(serializers.ModelSerializer):
-    from_user = serializers.PrimaryKeyRelatedField(read_only=True)
-    to_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    to_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+    to_user_profile = ProfileFeedSerializer(source='to_user', read_only=True)
 
     class Meta:
         model = FriendRequest
-        fields = ["from_user", "to_user"]
-
+        fields = ["to_user", "to_user_profile"]
+    
     def validate(self, attrs):
         from_user = self.context["request"].user
         to_user = attrs["to_user"]
@@ -33,10 +33,16 @@ class FriendRequestCreateDestroySerializer(serializers.ModelSerializer):
 
         return attrs
 
-class FriendRequestListRetrieveSerializer(serializers.ModelSerializer):
+class FriendRequestReceivedListRetrieveSerializer(serializers.ModelSerializer):
     from_user = ProfileFeedSerializer(read_only=True)
+
+    class Meta:
+        model = FriendRequest
+        fields = ["from_user"]
+
+class FriendRequestSentListRetrieveSerializer(serializers.ModelSerializer):
     to_user = ProfileFeedSerializer(read_only=True)
 
     class Meta:
         model = FriendRequest
-        fields = ["from_user", "to_user"]
+        fields = ["to_user"]
