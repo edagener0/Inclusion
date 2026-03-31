@@ -53,10 +53,18 @@ class IncLikeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, inc_id):
-        return create_like_for_content(request, inc_id)
+        return create_like_for_content(
+            request,
+            inc_id,
+            queryset=Inc.objects.visible_to(request.user),
+        )
 
     def delete(self, request, inc_id):
-        return remove_like_from_content(request, inc_id)
+        return remove_like_from_content(
+            request,
+            inc_id,
+            queryset=Inc.objects.visible_to(request.user),
+        )
     
 
 class IncCommentsCreateListView(ListCreateAPIView):
