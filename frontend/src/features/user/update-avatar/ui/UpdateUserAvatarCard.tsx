@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@tanstack/react-form';
 
@@ -12,11 +13,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/ui/card';
+import { FieldError } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 
 import { useUpdateAvatar } from '../model/mutation';
-import { type UpdateAvatar, UpdateAvatarSchema } from '../model/schema';
+import { type UpdateAvatar, createUpdateAvatarSchema } from '../model/schema';
 
 export function UpdateUserAvatarCard({
   currentAvatar,
@@ -26,6 +28,9 @@ export function UpdateUserAvatarCard({
   username: string;
 }) {
   const mutation = useUpdateAvatar();
+  const { t } = useTranslation('common');
+  const { t: tU } = useTranslation('user', { keyPrefix: 'avatar' });
+  const schema = useMemo(() => createUpdateAvatarSchema(t), [t]);
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -37,7 +42,7 @@ export function UpdateUserAvatarCard({
 
   const form = useForm({
     defaultValues: { image: null as unknown as File } satisfies UpdateAvatar,
-    validators: { onChange: UpdateAvatarSchema },
+    validators: { onChange: schema },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value.image);
     },
@@ -53,10 +58,8 @@ export function UpdateUserAvatarCard({
         }}
       >
         <CardHeader>
-          <CardTitle>Avatar</CardTitle>
-          <CardDescription>
-            Update your avatar. This will be displayed on your profile.
-          </CardDescription>
+          <CardTitle>{tU('form.title')}</CardTitle>
+          <CardDescription>{tU('form.description')}</CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
@@ -72,7 +75,7 @@ export function UpdateUserAvatarCard({
               children={field => (
                 <>
                   <Label htmlFor={field.name} className="font-semibold">
-                    Upload new photo
+                    {tU('form.image.label')}
                   </Label>
                   <Input
                     id={field.name}
@@ -88,15 +91,9 @@ export function UpdateUserAvatarCard({
                       }
                     }}
                   />
-                  <p className="text-xs text-muted-foreground">
-                    Recommended size is 256x256px. Max size 2MB.
-                  </p>
+                  <p className="text-xs text-muted-foreground">{tU('form.image.size')}</p>
 
-                  {field.state.meta.errors.length > 0 && (
-                    <p className="text-sm font-medium text-destructive mt-1">
-                      {field.state.meta.errors.join(', ')}
-                    </p>
-                  )}
+                  <FieldError errors={field.state.meta.errors} />
                 </>
               )}
             />
@@ -112,7 +109,7 @@ export function UpdateUserAvatarCard({
                 size="sm"
                 disabled={!isDirty || !canSubmit || isSubmitting || mutation.isPending}
               >
-                {isSubmitting || mutation.isPending ? 'Saving...' : 'Save changes'}
+                {isSubmitting || mutation.isPending ? t('actions.saving') : t('actions.save')}
               </Button>
             )}
           />

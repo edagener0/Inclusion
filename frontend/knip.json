@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignore": [
+    "i18next.config.ts",
+    "steiger.config.ts",
+    "src/shared/config/i18n/types/**/*.d.ts",
+    "src/shared/config/i18n/extract-dummy.ts",
+    "src/shared/ui/**"
+  ],
+  "ignoreDependencies": ["@feature-sliced/steiger-plugin"]
+}

@@ -13,10 +13,10 @@ function Spinner({ className, ...props }: React.ComponentProps<'svg'>) {
   );
 }
 
-function CenterSpinner() {
+function CenterSpinner({ className, ...props }: React.ComponentProps<typeof Spinner>) {
   return (
-    <div className="flex h-full w-full min-h-[50vh] flex-1 items-center justify-center">
-      <Spinner className="size-6" />
+    <div className="flex h-full w-full flex-1 items-center justify-center">
+      <Spinner className={cn('size-6', className)} {...props} />
     </div>
   );
 }

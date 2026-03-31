@@ -46,7 +46,7 @@ export function Header({ sideBarSlot, userMenuSlot }: Props) {
         <div className="flex w-full max-w-2xl items-center justify-between">
           {/* Title */}
           <div className="flex-1 flex items-center md:px-0">
-            <h1 className="text-sm md:text-lg font-bold truncate">News</h1>
+            <h1 className="text-sm md:text-lg font-bold truncate"></h1>
           </div>
 
           <div className="flex items-center gap-2 md:gap-4 shrink-0">

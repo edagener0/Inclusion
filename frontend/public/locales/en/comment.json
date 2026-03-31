@@ -1,0 +1,18 @@
+{
+  "create": {
+    "error": "Error while creating comment.",
+    "success": "Comment created successfully!"
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "Delete",
+      "description": "This action cannot be undone.",
+      "title": "Delete comment?",
+      "trigger": "Delete comment"
+    },
+    "error": "Error while deleting comment.",
+    "success": "Comment deleted successfully!"
+  },
+  "empty": "There are no comments yet. Be the first!",
+  "title": "Comments"
+}

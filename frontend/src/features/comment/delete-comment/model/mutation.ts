@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -12,6 +14,7 @@ type DeleteCommentVars = {
 
 export function useDeleteCommentMutation() {
   const queryClient = useQueryClient();
+  const { t } = useTranslation('comment', { keyPrefix: 'delete' });
 
   return useMutation({
     mutationFn: ({ commentId }: DeleteCommentVars) => deleteComment(commentId),
@@ -36,11 +39,11 @@ export function useDeleteCommentMutation() {
     },
 
     onSuccess: () => {
-      toast.success('Comment deleted successfully!');
+      toast.success(t('success'));
     },
     onError: (error, _, context) => {
       console.error(error);
-      toast.error('Error while deleting comment.');
+      toast.error(t('error'));
 
       if (context?.previousFeed && context?.feedQueryKey) {
         queryClient.setQueryData(context.feedQueryKey, context.previousFeed);

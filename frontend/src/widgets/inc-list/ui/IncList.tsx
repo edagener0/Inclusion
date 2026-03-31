@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { IncCardSkeleton, incQueries } from '@/entities/inc';
+import { CenterSpinner } from '@/shared/ui/spinner';
 
 import { IncListItem } from './IncListItem';
 
@@ -47,7 +48,9 @@ export function IncList() {
         className="w-full py-6 flex items-center justify-center text-muted-foreground"
       >
         {isFetchingNextPage && (
-          <span className="text-sm font-medium animate-pulse">Loading more incs...</span>
+          <span className="text-sm font-medium animate-pulse">
+            <CenterSpinner className="size-4" />
+          </span>
         )}
       </div>
     </div>

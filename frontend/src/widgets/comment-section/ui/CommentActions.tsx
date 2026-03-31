@@ -19,7 +19,10 @@ export function CommentActions({ comment, entityId, entityType }: Props) {
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="z-110 min-w-32 w-40">
+      <DropdownMenuContent
+        align="end"
+        className="z-110 min-w-(--radix-dropdown-menu-trigger-width) w-max"
+      >
         <DeleteCommentMenuItem commentId={comment.id} entityId={entityId} entityType={entityType} />
       </DropdownMenuContent>
     </DropdownMenu>

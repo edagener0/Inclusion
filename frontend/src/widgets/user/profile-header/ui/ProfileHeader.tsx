@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -11,6 +13,7 @@ export function ProfileHeader({ username }: { username: string }) {
   const { data: profile, isLoading } = useQuery(profileQueries.byUsername(username));
   const user = useSession();
   const navigate = useNavigate();
+  const { t } = useTranslation('user');
 
   if (isLoading) return <CenterSpinner />;
   if (!profile) return null;
@@ -42,7 +45,7 @@ export function ProfileHeader({ username }: { username: string }) {
                   className="bg-white hover:bg-zinc-100 text-zinc-900 shadow-sm border border-zinc-200 dark:border-none dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200 dark:shadow-none h-8 px-3 text-xs"
                   onClick={() => navigate({ to: '.', search: { modal: 'user-settings' } })}
                 >
-                  Settings
+                  {t('menu.settings')}
                 </Button>
               )}
             </div>

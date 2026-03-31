@@ -20,8 +20,8 @@ export function RouteComponent() {
   return (
     <Dialog open={true} onOpenChange={handleClose}>
       <DialogContent className="p-0 border-none sm:rounded-xl gap-0 z-50 flex flex-col w-full sm:max-w-130 h-dvh sm:h-[95vh] overflow-hidden bg-black shadow-2xl [&>button]:hidden">
-        <DialogTitle className="sr-only">Story</DialogTitle>
-        <DialogDescription className="sr-only">User story viewer</DialogDescription>
+        <DialogTitle className="hidden"></DialogTitle>
+        <DialogDescription className="hidden"></DialogDescription>
 
         <StoryViewer initialId={Number(id)} onClose={handleClose} />
       </DialogContent>

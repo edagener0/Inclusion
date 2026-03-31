@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useForm } from '@tanstack/react-form';
 
 import { Button } from '@/shared/ui/button';
@@ -9,6 +11,7 @@ import { type CreateInc, CreateIncSchema } from '../model/schema';
 
 export function CreateIncForm() {
   const mutation = useCreateIncMutation();
+  const { t } = useTranslation(['common', 'inc']);
 
   const form = useForm({
     defaultValues: { content: '' } as CreateInc,
@@ -33,7 +36,7 @@ export function CreateIncForm() {
           children={field => (
             <div>
               <Textarea
-                placeholder="What's new?"
+                placeholder={t('inc:create.fields.content.placeholder')}
                 className="min-h-32"
                 value={field.state.value}
                 onBlur={field.handleBlur}
@@ -52,13 +55,13 @@ export function CreateIncForm() {
       </div>
       <DialogFooter>
         <Button type="button" variant="outline">
-          Cancel
+          {t('common:actions.cancel')}
         </Button>
         <form.Subscribe
           selector={state => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
             <Button type="submit" disabled={!canSubmit || isSubmitting}>
-              {isSubmitting ? 'Publishing...' : 'Publish'}
+              {isSubmitting ? t('common:actions.publishing') : t('common:actions.publish')}
             </Button>
           )}
         />

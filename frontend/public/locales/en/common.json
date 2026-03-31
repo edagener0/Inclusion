@@ -1,0 +1,70 @@
+{
+  "actions": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "delete": "Delete",
+    "deleting": "Deleting",
+    "publish": "Publish",
+    "publishing": "Publishing...",
+    "remove": "Remove",
+    "save": "Save",
+    "saving": "Saving...",
+    "submit": "Submit",
+    "submitting": "Submitting",
+    "update": "Update"
+  },
+  "confirm-dialog": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "description": "This action cannot be undone.",
+    "title": "Are you sure?"
+  },
+  "createContent": {
+    "description": "Select a content type below to continue.",
+    "inc": {
+      "description": "Share a quick thought or short update with your friends.",
+      "label": "Create an inc"
+    },
+    "post": {
+      "description": "Draft a new post, upload images, and share updates with your friends.",
+      "label": "Create a post"
+    },
+    "story": {
+      "description": "Share a moment that disappears after 24 hours.",
+      "label": "Create a story"
+    },
+    "title": "Create new content"
+  },
+  "errors": {
+    "file": {
+      "empty": "The file cannot be empty.",
+      "invalidFormat": "Supported formats: {{formats}}.",
+      "required": "Please select a file.",
+      "tooLarge": "Maximum file size - {{max}}."
+    }
+  },
+  "language": "Language",
+  "mediaUploader": {
+    "changeFile": "Change file",
+    "fullscreen": "Fullscreen",
+    "preview": "Preview",
+    "select": "Click or drag and drop"
+  },
+  "sideBar": {
+    "incs": "Incs",
+    "messages": "Messages",
+    "newContent": "New Content",
+    "posts": "Posts",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System",
+    "title": "Theme"
+  },
+  "time": {
+    "justNow": "just now"
+  }
+}

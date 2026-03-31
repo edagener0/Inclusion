@@ -2,11 +2,11 @@ import { ImagesIcon, Mail, PlusIcon, ScrollTextIcon, Settings, UserIcon } from '
 
 import type { NavItem } from '../model/types';
 
-export const navItems: NavItem[] = [
-  { icon: ScrollTextIcon, label: 'Incs', path: '/incs' },
-  { icon: ImagesIcon, label: 'Posts', path: '/posts' },
-  { icon: UserIcon, label: 'Profile', path: '/profile' },
-  { icon: Mail, label: 'Messages', path: '/messages' },
-  { icon: Settings, label: 'Settings', modal: 'user-settings' },
-  { icon: PlusIcon, label: 'New Content', modal: 'create-content' },
-];
+export const navItems = [
+  { icon: ScrollTextIcon, label: 'sideBar.incs', path: '/incs', modal: undefined },
+  { icon: ImagesIcon, label: 'sideBar.posts', path: '/posts', modal: undefined },
+  { icon: UserIcon, label: 'sideBar.profile', path: '/profile', modal: undefined },
+  { icon: Mail, label: 'sideBar.messages', path: '/messages', modal: undefined },
+  { icon: Settings, label: 'sideBar.settings', modal: 'user-settings', path: '.' },
+  { icon: PlusIcon, label: 'sideBar.newContent', modal: 'create-content', path: '.' },
+] as const satisfies NavItem[];

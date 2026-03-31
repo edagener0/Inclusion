@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 
-import { timeAgo } from '@/shared/lib/utils';
+import { useTimeAgo } from '@/shared/lib/hooks';
 
 import type { Comment } from '../model/schema';
 
@@ -23,7 +23,7 @@ export function CommentCard({ comment, likeSlot, actionSlot, userAvatarSlot }: P
                 {comment.user.username}
               </span>
               <span className="text-muted-foreground text-[10px]">
-                {timeAgo(comment.createdAt)}
+                {useTimeAgo(comment.createdAt)}
               </span>
             </div>
             <p className="text-sm text-foreground whitespace-pre-wrap break-all mt-1">

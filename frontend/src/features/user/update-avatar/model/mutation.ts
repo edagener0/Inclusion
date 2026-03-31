@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -9,6 +11,7 @@ import { updateAvatar } from '../api/request';
 export function useUpdateAvatar() {
   const client = useQueryClient();
   const user = useSession();
+  const { t } = useTranslation('user', { keyPrefix: 'avatar' });
 
   return useMutation({
     mutationFn: (file: File) => updateAvatar(file),
@@ -16,7 +19,10 @@ export function useUpdateAvatar() {
       client.invalidateQueries({ queryKey: sessionQueries.me().queryKey });
       client.invalidateQueries({ queryKey: userQueries.me().queryKey });
       client.invalidateQueries({ queryKey: profileQueries.byUsername(user.username).queryKey });
-      toast('Avatar updated successfully');
+      toast.success(t('success'));
+    },
+    onError: () => {
+      toast.error(t('error'));
     },
   });
 }

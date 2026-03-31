@@ -1,0 +1,25 @@
+{
+  "create": {
+    "dialog": {
+      "description": {
+        "placeholder": "Quoi de neuf ?"
+      },
+      "file": {
+        "button": "Télécharger un média"
+      },
+      "title": "Créer une nouvelle publication"
+    },
+    "error": "Erreur lors de la création de la publication.",
+    "success": "Publication créée avec succès !"
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "Supprimer",
+      "description": "Cette action ne peut pas être annulée.",
+      "title": "Supprimer la publication ?",
+      "trigger": "Supprimer la publication"
+    },
+    "error": "Erreur lors de la suppression de la publication.",
+    "success": "Publication supprimée avec succès !"
+  }
+}

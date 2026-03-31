@@ -1,11 +1,6 @@
 import { type PaginatedResponse, api } from '@/shared/api';
 
-import { type Story, StorySchema, type UserStories, UserStoriesSchema } from '../model/schema';
-
-export async function getStory(id: number): Promise<Story> {
-  const result = await api.get(`/stories/${id}`);
-  return StorySchema.parse(result.data);
-}
+import { type UserStories, UserStoriesSchema } from '../model/schema';
 
 export async function fetchStories(
   page: number,

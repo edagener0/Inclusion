@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
 import { MessageCircle } from 'lucide-react';
 
-import { timeAgo } from '@/shared/lib/utils';
+import { useTimeAgo } from '@/shared/lib/hooks';
 import { Button } from '@/shared/ui/button';
 
 import type { Inc } from '../model/schema';
@@ -40,7 +40,7 @@ export function IncDetail({ inc, userAvatarSlot, likeSlot, commentsSlot }: Props
         </div>
 
         <div className="px-4 mt-4 pb-3 flex items-center gap-1 text-[15px] text-muted-foreground">
-          <span>{timeAgo(inc.createdAt)}</span>
+          <span>{useTimeAgo(inc.createdAt)}</span>
         </div>
 
         <div className="px-2 py-1 mx-4 border-y border-border flex justify-around items-center text-muted-foreground">

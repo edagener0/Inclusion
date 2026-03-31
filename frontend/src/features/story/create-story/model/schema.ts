@@ -1,9 +1,9 @@
+import { type TFunction } from 'i18next';
 import { z } from 'zod';
 
-export const CreateStorySchema = z.object({
-  file: z
-    .instanceof(File, { message: 'Please select an image or video.' })
-    .refine(file => file.size > 0, 'File is empty.'),
-});
+export const createStorySchema = (t: TFunction<'common'>) =>
+  z.object({
+    file: z.instanceof(File, { message: t('errors.file.required') }),
+  });
 
-export type CreateStory = z.infer<typeof CreateStorySchema>;
+export type CreateStory = z.infer<ReturnType<typeof createStorySchema>>;

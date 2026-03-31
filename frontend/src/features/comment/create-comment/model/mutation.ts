@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -6,11 +8,12 @@ import { createComment } from '@/entities/comment';
 
 export function useCreateCommentMutation() {
   const queryClient = useQueryClient();
+  const { t } = useTranslation('comment', { keyPrefix: 'create' });
 
   return useMutation({
     mutationFn: createComment,
     onSuccess: (_, variables) => {
-      toast.success('Comment created successfully!');
+      toast.success(t('success'));
 
       queryClient.invalidateQueries({
         queryKey: commentQueries.feed(variables.entityType, variables.entityId).queryKey,
@@ -18,7 +21,7 @@ export function useCreateCommentMutation() {
     },
     onError: error => {
       console.error(error);
-      toast.error('Error while creating comment.');
+      toast.error(t('error'));
     },
   });
 }

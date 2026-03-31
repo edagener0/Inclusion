@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -6,6 +8,7 @@ import { deletePost, postQueries } from '@/entities/post';
 export function useDeletePostMutation() {
   const queryClient = useQueryClient();
   const feedQueryKey = postQueries.feed().queryKey;
+  const { t } = useTranslation('post', { keyPrefix: 'delete' });
 
   return useMutation({
     mutationFn: deletePost,
@@ -28,12 +31,12 @@ export function useDeletePostMutation() {
       return { previousFeed };
     },
     onSuccess: () => {
-      toast.success('Post deleted successfully!');
+      toast.success(t('success'));
       queryClient.invalidateQueries({ queryKey: postQueries.feed().queryKey });
     },
     onError: (error, _, context) => {
       console.error(error);
-      toast.error('Error while deleting post.');
+      toast.error(t('error'));
 
       if (context?.previousFeed) {
         queryClient.setQueryData(feedQueryKey, context.previousFeed);

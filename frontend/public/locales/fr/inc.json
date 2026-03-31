@@ -1,0 +1,22 @@
+{
+  "create": {
+    "error": "Erreur lors de la création de l'inc.",
+    "fields": {
+      "content": {
+        "placeholder": "Quoi de neuf ?"
+      }
+    },
+    "success": "Inc créé avec succès !",
+    "title": "Créer un nouvel inc"
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "Supprimer",
+      "description": "Cette action ne peut pas être annulée.",
+      "title": "Supprimer l'inc ?",
+      "trigger": "Supprimer l'inc"
+    },
+    "error": "Erreur lors de la suppression de l'inc.",
+    "success": "Inc supprimé avec succès !"
+  }
+}

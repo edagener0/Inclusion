@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -6,11 +8,12 @@ import { IS_AUTH_MARKER } from '@/shared/config';
 
 export function useSignOutMutation() {
   const queryClient = useQueryClient();
+  const { t } = useTranslation('auth');
 
   return useMutation({
     mutationFn: signOut,
     onSuccess: () => {
-      toast.success('You’ve been signed out');
+      toast.success(t('sign-out.success'));
 
       queryClient.clear();
       localStorage.removeItem(IS_AUTH_MARKER);
@@ -18,7 +21,7 @@ export function useSignOutMutation() {
     },
     onError: error => {
       console.error(error);
-      toast.error('Unable to sign out. Please try again');
+      toast.error(t('sign-out.error'));
     },
   });
 }

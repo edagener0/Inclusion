@@ -1,0 +1,14 @@
+{
+  "create": {
+    "default": "À quoi pensez-vous ?",
+    "error": "Erreur lors de la mise à jour de la note.",
+    "success": "Note mise à jour avec succès !"
+  },
+  "delete": {
+    "error": "Erreur lors de la suppression de la note.",
+    "success": "Note supprimée avec succès !"
+  },
+  "edit": {
+    "title": "Modifier la note"
+  }
+}

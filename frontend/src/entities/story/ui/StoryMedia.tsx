@@ -24,5 +24,5 @@ export function StoryMedia({ story }: Props) {
     );
   }
 
-  return <img key={story.id} src={story.file} alt="story" className={className} />;
+  return <img key={story.id} src={story.file} className={className} />;
 }

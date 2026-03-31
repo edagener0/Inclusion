@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { CommentCard, commentQueries } from '@/entities/comment';
+import { CommentCard, CommentCardSkeleton, commentQueries } from '@/entities/comment';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
 import { CreateComment } from '@/features/comment/create-comment';
@@ -22,6 +23,8 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery(
     commentQueries.feed(entityType, entityId),
   );
+
+  const { t } = useTranslation('comment');
 
   const observerTarget = useRef<HTMLDivElement | null>(null);
 
@@ -48,17 +51,19 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
   return (
     <section className={cn('flex flex-col h-full', className)}>
       <div className="flex-none space-y-4 pb-4 border-b border-border/40">
-        <h3 className="text-lg font-semibold tracking-tight">Comments</h3>
+        <h3 className="text-lg font-semibold tracking-tight">{t('title')}</h3>
         <CreateComment entityId={entityId} entityType={entityType} />
       </div>
 
       <div className="flex-1 overflow-y-auto pt-4 space-y-5 pr-2 custom-scrollbar">
         {isLoading ? (
-          <div className="animate-pulse text-sm text-muted-foreground">Loading...</div>
-        ) : allComments?.length === 0 ? (
-          <div className="text-sm text-muted-foreground py-4">
-            There are no comments yet. Be the first!
+          <div className="flex flex-col">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <CommentCardSkeleton key={index} />
+            ))}
           </div>
+        ) : allComments?.length === 0 ? (
+          <div className="text-sm text-muted-foreground py-4">{t('empty')}</div>
         ) : (
           allComments?.map(comment => (
             <CommentCard

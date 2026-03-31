@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { X } from 'lucide-react';
 
@@ -17,6 +19,7 @@ type Props = {
 export function StoryViewer({ initialId, onClose }: Props) {
   const { data } = useInfiniteQuery(storyQueries.feed());
   const flatData = data?.pages.flatMap(p => p.data) ?? [];
+  const { t } = useTranslation('common');
 
   const { currentStory, currentUserGroup, currentIndex, next, prev } = useStoryViewer(
     flatData,
@@ -53,7 +56,7 @@ export function StoryViewer({ initialId, onClose }: Props) {
                 variant="ghost"
                 onClick={onClose}
                 className="p-2 text-white/80 transition-colors hover:text-white hover:bg-white/20 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/50 cursor-pointer"
-                aria-label="Close story"
+                aria-label={t('actions.close')}
               >
                 <X className="w-6 h-6 drop-shadow-md" />
               </Button>

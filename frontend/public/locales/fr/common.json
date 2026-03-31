@@ -1,0 +1,70 @@
+{
+  "actions": {
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "delete": "Supprimer",
+    "deleting": "Suppression...",
+    "publish": "Publier",
+    "publishing": "Publication...",
+    "remove": "Retirer",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "submit": "Envoyer",
+    "submitting": "Envoi...",
+    "update": "Mettre à jour"
+  },
+  "confirm-dialog": {
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "description": "Cette action ne peut pas être annulée.",
+    "title": "Êtes-vous sûr ?"
+  },
+  "createContent": {
+    "description": "Sélectionnez un type de contenu ci-dessous pour continuer.",
+    "inc": {
+      "description": "Partagez une pensée rapide ou une courte mise à jour avec vos amis.",
+      "label": "Créer un inc"
+    },
+    "post": {
+      "description": "Rédigez une nouvelle publication, téléchargez des images et partagez des mises à jour avec vos amis.",
+      "label": "Créer une publication"
+    },
+    "story": {
+      "description": "Partagez un moment qui disparaît après 24 heures.",
+      "label": "Créer une story"
+    },
+    "title": "Créer un nouveau contenu"
+  },
+  "errors": {
+    "file": {
+      "empty": "Le fichier ne peut pas être vide.",
+      "invalidFormat": "Formats pris en charge : {{formats}}.",
+      "required": "Veuillez sélectionner un fichier.",
+      "tooLarge": "Taille maximale du fichier - {{max}}."
+    }
+  },
+  "language": "Langue",
+  "mediaUploader": {
+    "changeFile": "Changer de fichier",
+    "fullscreen": "Plein écran",
+    "preview": "Aperçu",
+    "select": "Cliquez ou glissez-déposez"
+  },
+  "sideBar": {
+    "incs": "Incs",
+    "messages": "Messages",
+    "newContent": "Nouveau contenu",
+    "posts": "Publications",
+    "profile": "Profil",
+    "settings": "Paramètres"
+  },
+  "theme": {
+    "dark": "Sombre",
+    "light": "Clair",
+    "system": "Système",
+    "title": "Thème"
+  },
+  "time": {
+    "justNow": "à l'instant"
+  }
+}

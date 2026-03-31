@@ -1,0 +1,70 @@
+{
+  "actions": {
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "delete": "Eliminar",
+    "deleting": "Eliminando...",
+    "publish": "Publicar",
+    "publishing": "Publicando...",
+    "remove": "Quitar",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "submit": "Enviar",
+    "submitting": "Enviando...",
+    "update": "Actualizar"
+  },
+  "confirm-dialog": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "description": "Esta acción no se puede deshacer.",
+    "title": "¿Estás seguro?"
+  },
+  "createContent": {
+    "description": "Selecciona un tipo de contenido a continuación para continuar.",
+    "inc": {
+      "description": "Comparte un pensamiento rápido o una actualización corta con tus amigos.",
+      "label": "Crear un inc"
+    },
+    "post": {
+      "description": "Redacta una nueva publicación, sube imágenes y comparte actualizaciones con tus amigos.",
+      "label": "Crear una publicación"
+    },
+    "story": {
+      "description": "Comparte un momento que desaparece después de 24 horas.",
+      "label": "Crear una historia"
+    },
+    "title": "Crear nuevo contenido"
+  },
+  "errors": {
+    "file": {
+      "empty": "El archivo no puede estar vacío.",
+      "invalidFormat": "Formatos admitidos: {{formats}}.",
+      "required": "Por favor, selecciona un archivo.",
+      "tooLarge": "Tamaño máximo de archivo - {{max}}."
+    }
+  },
+  "language": "Idioma",
+  "mediaUploader": {
+    "changeFile": "Cambiar archivo",
+    "fullscreen": "Pantalla completa",
+    "preview": "Vista previa",
+    "select": "Haz clic o arrastra y suelta"
+  },
+  "sideBar": {
+    "incs": "Incs",
+    "messages": "Mensajes",
+    "newContent": "Nuevo contenido",
+    "posts": "Publicaciones",
+    "profile": "Perfil",
+    "settings": "Ajustes"
+  },
+  "theme": {
+    "dark": "Oscuro",
+    "light": "Claro",
+    "system": "Sistema",
+    "title": "Tema"
+  },
+  "time": {
+    "justNow": "ahora mismo"
+  }
+}

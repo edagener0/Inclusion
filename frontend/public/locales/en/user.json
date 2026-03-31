@@ -1,0 +1,52 @@
+{
+  "avatar": {
+    "error": "Error while updating avatar.",
+    "form": {
+      "description": "Update your avatar. This will be displayed on your profile.",
+      "image": {
+        "label": "Upload new photo",
+        "size": "Recommended size is 256x256px. Max size 2MB."
+      },
+      "title": "Avatar"
+    },
+    "success": "Avatar updated successfully."
+  },
+  "biography": {
+    "error": "Error while updating biography.",
+    "success": "Biography updated successfully",
+    "title": "Biography"
+  },
+  "fullName": {
+    "error": "Error while updaing full name.",
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "title": "Full Name"
+    },
+    "success": "Full name updated successfully"
+  },
+  "menu": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "signOut": "Sign Out"
+  },
+  "notFound": "User not found",
+  "privacy": {
+    "error": "Error while updating privacy settings",
+    "form": {
+      "description": "Choose if you want your profile to be public or private.",
+      "isPrivate": {
+        "description": "When private, only your friends can see your posts, incs... This setting protects your profile and personal content.",
+        "title": "Private Account"
+      },
+      "title": "Account Visibility"
+    },
+    "success": "Account privacy updated successfully"
+  },
+  "settings": {
+    "description": "Manage your account, security, and other information.",
+    "general": "General",
+    "personal": "Personal Information",
+    "title": "Account settings"
+  }
+}

@@ -30,7 +30,10 @@ export function PostListItem({ post }: { post: Post }) {
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent
+        align="end"
+        className="min-w-(--radix-dropdown-menu-trigger-width) w-max"
+      >
         <DeletePostMenuItem id={post.id} />
       </DropdownMenuContent>
     </DropdownMenu>

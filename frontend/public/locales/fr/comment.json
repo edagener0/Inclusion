@@ -1,0 +1,18 @@
+{
+  "create": {
+    "error": "Erreur lors de la création du commentaire.",
+    "success": "Commentaire créé avec succès !"
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "Supprimer",
+      "description": "Cette action ne peut pas être annulée.",
+      "title": "Supprimer le commentaire ?",
+      "trigger": "Supprimer le commentaire"
+    },
+    "error": "Erreur lors de la suppression du commentaire.",
+    "success": "Commentaire supprimé avec succès !"
+  },
+  "empty": "Il n'y a pas encore de commentaires. Soyez le premier !",
+  "title": "Commentaires"
+}

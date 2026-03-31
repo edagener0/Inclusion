@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { X } from 'lucide-react';
 
 import { Button } from '@/shared/ui/button';
@@ -9,6 +11,7 @@ interface MediaPreviewCardProps {
 }
 
 export function MediaPreviewCard({ previewUrl, type, onRemove }: MediaPreviewCardProps) {
+  const { t } = useTranslation('common');
   return (
     <div className="relative rounded-xl overflow-hidden border border-border/50 bg-black/5 flex items-center justify-center dark:bg-black/20 shrink-0">
       <Button
@@ -23,7 +26,11 @@ export function MediaPreviewCard({ previewUrl, type, onRemove }: MediaPreviewCar
       {type === 'video' ? (
         <video src={previewUrl} controls className="max-h-75 w-full object-contain" />
       ) : (
-        <img src={previewUrl} alt="Post preview" className="max-h-75 w-full object-contain" />
+        <img
+          src={previewUrl}
+          alt={t('mediaUploader.preview')}
+          className="max-h-75 w-full object-contain"
+        />
       )}
     </div>
   );
