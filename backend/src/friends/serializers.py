@@ -10,12 +10,13 @@ from .models import Friend
 User = get_user_model()
 
 class FriendRequestCreateDestroySerializer(serializers.ModelSerializer):
-    to_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
-    to_user_profile = ProfileFeedSerializer(source='to_user', read_only=True)
+    to_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    username = serializers.CharField(source="to_user.username", read_only=True)
+    avatar = serializers.CharField(source="to_user.avatar", read_only=True)
 
     class Meta:
         model = FriendRequest
-        fields = ["to_user", "to_user_profile"]
+        fields = ["to_user", "username", "avatar"]
     
     def validate(self, attrs):
         from_user = self.context["request"].user
@@ -34,15 +35,19 @@ class FriendRequestCreateDestroySerializer(serializers.ModelSerializer):
         return attrs
 
 class FriendRequestReceivedListRetrieveSerializer(serializers.ModelSerializer):
-    from_user = ProfileFeedSerializer(read_only=True)
+    from_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    username = serializers.CharField(source="from_user.username", read_only=True)
+    avatar = serializers.CharField(source="from_user.avatar", read_only=True)
 
     class Meta:
         model = FriendRequest
-        fields = ["from_user"]
+        fields = ["from_user", "username", "avatar"]
 
 class FriendRequestSentListRetrieveSerializer(serializers.ModelSerializer):
-    to_user = ProfileFeedSerializer(read_only=True)
+    to_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    username = serializers.CharField(source="to_user.username", read_only=True)
+    avatar = serializers.CharField(source="to_user.avatar", read_only=True)
 
     class Meta:
         model = FriendRequest
-        fields = ["to_user"]
+        fields = ["to_user", "username", "avatar"]
