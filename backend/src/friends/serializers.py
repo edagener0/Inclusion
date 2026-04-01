@@ -9,14 +9,18 @@ from .models import Friend
 
 User = get_user_model()
 
-class FriendRequestCreateDestroySerializer(serializers.ModelSerializer):
-    from_user = serializers.PrimaryKeyRelatedField(read_only=True)
-    to_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+
+class FriendRequestSentListRetrieveSerializer(serializers.ModelSerializer):
+    to_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+    id = serializers.IntegerField(source="to_user.id", read_only=True)
+    username = serializers.CharField(source="to_user.username", read_only=True)
+    avatar = serializers.ImageField(source="to_user.avatar", read_only=True)
 
     class Meta:
         model = FriendRequest
-        fields = ["from_user", "to_user"]
+        fields = ["to_user", "id", "username", "avatar"]
 
+class FriendRequestCreateDestroySerializer(FriendRequestSentListRetrieveSerializer):
     def validate(self, attrs):
         from_user = self.context["request"].user
         to_user = attrs["to_user"]
@@ -33,10 +37,14 @@ class FriendRequestCreateDestroySerializer(serializers.ModelSerializer):
 
         return attrs
 
-class FriendRequestListRetrieveSerializer(serializers.ModelSerializer):
-    from_user = ProfileFeedSerializer(read_only=True)
-    to_user = ProfileFeedSerializer(read_only=True)
+class FriendRequestReceivedListRetrieveSerializer(serializers.ModelSerializer):
+    from_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+    id = serializers.IntegerField(source="from_user.id", read_only=True)
+    username = serializers.CharField(source="from_user.username", read_only=True)
+    avatar = serializers.ImageField(source="from_user.avatar", read_only=True)
 
     class Meta:
         model = FriendRequest
-        fields = ["from_user", "to_user"]
+        fields = ["from_user", "id", "username", "avatar"]
+
+
