@@ -150,6 +150,12 @@ interface Resources {
       "justNow": "just now"
     }
   },
+  "friend": {
+    "requests": {
+      "error": "error",
+      "success": "success"
+    }
+  },
   "inc": {
     "create": {
       "error": "Error while creating inc.",
