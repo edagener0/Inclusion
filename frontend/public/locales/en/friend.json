@@ -1,0 +1,6 @@
+{
+  "requests": {
+    "error": "error",
+    "success": "success"
+  }
+}
