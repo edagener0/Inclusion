@@ -11,6 +11,7 @@ from incs.serializers import IncSerializer
 from posts.models import Post
 from incs.models import Inc
 from rest_framework.exceptions import NotFound
+from .mixins import FriendAnnotationMixin
 
 User = get_user_model()
 
@@ -18,7 +19,7 @@ User = get_user_model()
     tags=["Profiles"],
     description="Get a user's profile."
 )
-class ProfileRetrieveView(RetrieveAPIView):
+class ProfileRetrieveView(FriendAnnotationMixin, RetrieveAPIView):
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = ProfileSerializer
@@ -30,7 +31,7 @@ class ProfileRetrieveView(RetrieveAPIView):
     tags=["Profiles"],
     description="Returns a list of paginated users' profiles."
 )
-class ProfileListView(ListAPIView):
+class ProfileListView(FriendAnnotationMixin, ListAPIView):
     queryset = User.objects.all().order_by("first_name")
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
