@@ -4,7 +4,7 @@ import { type PaginatedResponse, type UserPreview, UserPreviewSchema, api } from
 
 export async function getSentById(id: number): Promise<UserPreview | null> {
   try {
-    const result = await api.get(`/friends/sent/${id}`);
+    const result = await api.get(`/friends/requests/sent/${id}`);
     return UserPreviewSchema.parse(result.data);
   } catch (error) {
     if (isAxiosError(error) && error.response) {
@@ -17,12 +17,22 @@ export async function getSentById(id: number): Promise<UserPreview | null> {
   }
 }
 
-export async function getRequestById(id: number): Promise<UserPreview> {
-  const result = await api.get(`/friends/received/${id}`);
-  return UserPreviewSchema.parse(result.data);
+export async function getReceivedById(id: number): Promise<UserPreview | null> {
+  try {
+    const result = await api.get(`/friends/requests/received/${id}`);
+    return UserPreviewSchema.parse(result.data);
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      const status = error.response.status;
+
+      if (status >= 400 && status < 500) return null;
+    }
+
+    throw error;
+  }
 }
 
-export async function fetchRequests(
+export async function fetchReceived(
   page: number,
 ): Promise<{ data: UserPreview[]; hasNextPage: boolean }> {
   const response = await api.get<PaginatedResponse<unknown>>('/friends/requests', {

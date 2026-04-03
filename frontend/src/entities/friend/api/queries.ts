@@ -1,6 +1,6 @@
 import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
-import { fetchRequests, getRequestById, getSentById } from './requests';
+import { fetchReceived, getReceivedById, getSentById } from './requests';
 
 export const friendQueries = {
   entityType: 'friends',
@@ -9,14 +9,14 @@ export const friendQueries = {
     key: 'requests' as const,
     received: {
       key: 'received' as const,
-      requests: () =>
+      received: () =>
         infiniteQueryOptions({
           queryKey: [
             ...friendQueries.all(),
             friendQueries.requests.key,
             friendQueries.requests.received.key,
           ] as const,
-          queryFn: ({ pageParam }) => fetchRequests(pageParam),
+          queryFn: ({ pageParam }) => fetchReceived(pageParam),
           initialPageParam: 1,
           getNextPageParam: (lastPage, allPages) => {
             if (!lastPage.hasNextPage) return undefined;
@@ -25,7 +25,7 @@ export const friendQueries = {
           },
           staleTime: 60 * 1000,
         }),
-      requestById: (userId: number) =>
+      receivedById: (userId: number) =>
         queryOptions({
           queryKey: [
             ...friendQueries.all(),
@@ -33,7 +33,7 @@ export const friendQueries = {
             friendQueries.requests.received.key,
             userId,
           ] as const,
-          queryFn: () => getRequestById(userId),
+          queryFn: () => getReceivedById(userId),
           staleTime: 5 * 60 * 1000,
         }),
     },
