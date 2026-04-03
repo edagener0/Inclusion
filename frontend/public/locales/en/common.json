@@ -50,6 +50,11 @@
     "preview": "Preview",
     "select": "Click or drag and drop"
   },
+  "notFound": {
+    "button": "Back to Home",
+    "description": "The page you are looking for does not exist or has been moved.",
+    "title": "404 Not Found"
+  },
   "sideBar": {
     "incs": "Incs",
     "messages": "Messages",

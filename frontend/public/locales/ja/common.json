@@ -50,6 +50,11 @@
     "preview": "プレビュー",
     "select": "クリックまたはドラッグ＆ドロップ"
   },
+  "notFound": {
+    "button": "",
+    "description": "",
+    "title": ""
+  },
   "sideBar": {
     "incs": "Incs",
     "messages": "メッセージ",

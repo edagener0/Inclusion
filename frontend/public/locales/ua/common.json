@@ -50,6 +50,11 @@
     "preview": "Попередній перегляд",
     "select": "Натисніть або перетягніть сюди"
   },
+  "notFound": {
+    "button": "",
+    "description": "",
+    "title": ""
+  },
   "sideBar": {
     "incs": "Інки",
     "messages": "Повідомлення",

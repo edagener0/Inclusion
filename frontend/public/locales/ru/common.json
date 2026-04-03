@@ -50,6 +50,11 @@
     "preview": "Предпросмотр",
     "select": "Нажмите или перетащите файл"
   },
+  "notFound": {
+    "button": "",
+    "description": "",
+    "title": ""
+  },
   "sideBar": {
     "incs": "Инки",
     "messages": "Сообщения",

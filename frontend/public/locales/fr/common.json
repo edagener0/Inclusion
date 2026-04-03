@@ -50,6 +50,11 @@
     "preview": "Aperçu",
     "select": "Cliquez ou glissez-déposez"
   },
+  "notFound": {
+    "button": "",
+    "description": "",
+    "title": ""
+  },
   "sideBar": {
     "incs": "Incs",
     "messages": "Messages",

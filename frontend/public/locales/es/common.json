@@ -50,6 +50,11 @@
     "preview": "Vista previa",
     "select": "Haz clic o arrastra y suelta"
   },
+  "notFound": {
+    "button": "",
+    "description": "",
+    "title": ""
+  },
   "sideBar": {
     "incs": "Incs",
     "messages": "Mensajes",

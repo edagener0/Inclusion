@@ -30,7 +30,6 @@
     "settings": "Paramètres",
     "signOut": "Se déconnecter"
   },
-  "notFound": "Utilisateur introuvable",
   "privacy": {
     "error": "Erreur lors de la mise à jour des paramètres de confidentialité",
     "form": {

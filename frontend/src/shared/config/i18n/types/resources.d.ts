@@ -132,6 +132,11 @@ interface Resources {
       "preview": "Preview",
       "select": "Click or drag and drop"
     },
+    "notFound": {
+      "button": "button",
+      "description": "description",
+      "title": "title"
+    },
     "sideBar": {
       "incs": "Incs",
       "messages": "Messages",
@@ -269,7 +274,6 @@ interface Resources {
       "settings": "Settings",
       "signOut": "Sign Out"
     },
-    "notFound": "User not found",
     "privacy": {
       "error": "Error while updating privacy settings",
       "form": {

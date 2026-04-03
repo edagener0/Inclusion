@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from '@tanstack/react-router';
+import { notFound, useNavigate } from '@tanstack/react-router';
 
 import { useSession } from '@/entities/session';
 import { ProfileInfo, UserAvatar, profileQueries } from '@/entities/user';
@@ -11,12 +11,12 @@ import { CenterSpinner } from '@/shared/ui/spinner';
 
 export function ProfileHeader({ username }: { username: string }) {
   const { data: profile, isLoading } = useQuery(profileQueries.byUsername(username));
-  const user = useSession();
+  const session = useSession();
   const navigate = useNavigate();
   const { t } = useTranslation('user');
 
   if (isLoading) return <CenterSpinner />;
-  if (!profile) return null;
+  if (!profile) throw notFound();
 
   return (
     <Card className="overflow-hidden border-none bg-zinc-100/50 dark:bg-zinc-900/50 backdrop-blur-md">
@@ -38,7 +38,7 @@ export function ProfileHeader({ username }: { username: string }) {
             />
 
             <div className="flex flex-wrap justify-center sm:justify-start gap-2 pt-1">
-              {user.id === profile.id && (
+              {session.id === profile.id && (
                 <Button
                   variant="secondary"
                   size="sm"

@@ -30,7 +30,6 @@
     "settings": "Settings",
     "signOut": "Sign Out"
   },
-  "notFound": "User not found",
   "privacy": {
     "error": "Error while updating privacy settings",
     "form": {
