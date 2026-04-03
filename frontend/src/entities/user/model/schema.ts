@@ -7,6 +7,7 @@ export const ProfileSchema = UserPreviewSchema.extend({
   lastName: z.string(),
   biography: z.string().nullable(),
   friendsCount: z.int(),
+  isFriend: z.boolean(),
 });
 export type Profile = z.infer<typeof ProfileSchema>;
 
