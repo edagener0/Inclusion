@@ -16,6 +16,20 @@ export async function fetchIncs(page: number): Promise<{ data: Inc[]; hasNextPag
   };
 }
 
+export async function fetchIncsByUsername(
+  page: number,
+  username: string,
+): Promise<{ data: Inc[]; hasNextPage: boolean }> {
+  const response = await api.get<PaginatedResponse<unknown>>(`/profiles/${username}/incs`, {
+    params: { page },
+  });
+
+  return {
+    data: IncSchema.array().parse(response.data.results),
+    hasNextPage: response.data.next !== null,
+  };
+}
+
 export async function createInc(content: string) {
   await api.post('/incs', { content });
 }

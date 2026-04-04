@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute, notFound } from '@tanstack/react-router';
 
+import { incQueries } from '@/entities/inc';
 import { postQueries } from '@/entities/post';
 import { profileQueries } from '@/entities/user';
 import { CenterSpinner } from '@/shared/ui/spinner';
+import { IncList } from '@/widgets/inc-list';
 import { PostList } from '@/widgets/post-list';
 import { ProfileContent } from '@/widgets/user/profile-content';
 import { ProfileHeader } from '@/widgets/user/profile-header';
@@ -22,7 +24,10 @@ export function RouteComponent() {
   return (
     <>
       <ProfileHeader username={username} />
-      <ProfileContent postsSlot=<PostList queryOptions={postQueries.byUsername(username)} /> />
+      <ProfileContent
+        incsSlot={<IncList queryOptions={incQueries.byUsername(username)} />}
+        postsSlot=<PostList queryOptions={postQueries.byUsername(username)} />
+      />
     </>
   );
 }

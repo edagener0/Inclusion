@@ -17,7 +17,7 @@ export function IncLikeButton({ incId, isLiked, likesCount }: Props) {
       entityId: incId,
       isLiked,
       count: likesCount,
-      queryKey: incQueries.feed().queryKey,
+      queryKey: incQueries.all(),
     });
   };
 

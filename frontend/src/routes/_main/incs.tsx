@@ -1,5 +1,6 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router';
 
+import { incQueries } from '@/entities/inc';
 import { loadNamespace } from '@/shared/config';
 import { IncList } from '@/widgets/inc-list';
 import { StoriesSection } from '@/widgets/stories/stories-section';
@@ -14,7 +15,7 @@ export const Route = createFileRoute('/_main/incs')({
         <div className="pb-2">
           <StoriesSection />
         </div>
-        <IncList />
+        <IncList queryOptions={incQueries.feed()} />
         <Outlet />
       </div>
     );
