@@ -7,6 +7,7 @@ import { friendQueries } from '@/entities/friend';
 import { profileQueries } from '@/entities/user';
 
 import { acceptRequest } from '../api/requests';
+import { useSetFriendStatus } from './use-update-user';
 
 type Params = {
   userId: number;
@@ -15,11 +16,13 @@ type Params = {
 
 export function useAcceptRequestMutation() {
   const { t } = useTranslation('friend', { keyPrefix: 'request.accept' });
+  const { setFriendStatus } = useSetFriendStatus();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ userId }: Params) => acceptRequest(userId),
     onSuccess: (_, { userId, username }) => {
+      setFriendStatus(userId, true);
       queryClient.setQueryData(friendQueries.requests.received.receivedById(userId).queryKey, null);
       queryClient.invalidateQueries({ queryKey: profileQueries.byUsername(username).queryKey });
       queryClient.setQueryData(friendQueries.requests.received.received().queryKey, (oldData) => {

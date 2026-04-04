@@ -7,6 +7,8 @@ export type PaginatedResponse<T> = {
   results: T[];
 };
 
+export type PaginatedReturnData<T> = { data: T[]; hasNextPage: boolean };
+
 export type AnyInfiniteOptions<TData, TError = Error> = UndefinedInitialDataInfiniteOptions<
   TData,
   TError,

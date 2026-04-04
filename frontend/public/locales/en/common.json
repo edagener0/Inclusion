@@ -43,6 +43,7 @@
       "tooLarge": "Maximum file size - {{max}}."
     }
   },
+  "friends": "Friends",
   "language": "Language",
   "mediaUploader": {
     "changeFile": "Change file",

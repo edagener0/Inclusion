@@ -1,10 +1,22 @@
 import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
-import { fetchReceived, getReceivedById, getSentById } from './requests';
+import { fetchFriendsByUsername, fetchReceived, getReceivedById, getSentById } from './requests';
 
 export const friendQueries = {
   entityType: 'friends',
   all: () => [friendQueries['entityType']] as const,
+  friendsByUsername: (username: string) =>
+    infiniteQueryOptions({
+      queryKey: [...friendQueries.all(), 'username', username] as const,
+      queryFn: ({ pageParam }) => fetchFriendsByUsername(pageParam, username),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, allPages) => {
+        if (!lastPage.hasNextPage) return undefined;
+
+        return allPages.length + 1;
+      },
+      staleTime: 60 * 1000,
+    }),
   requests: {
     key: 'requests' as const,
     received: {

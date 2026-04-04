@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute, notFound } from '@tanstack/react-router';
 
+import { FriendList } from '@/widgets/friend-list';
 import { IncList } from '@/widgets/inc-list';
 import { PostList } from '@/widgets/post-list';
 import { ProfileContent } from '@/widgets/user/profile-content';
 import { ProfileHeader } from '@/widgets/user/profile-header';
 
+import { friendQueries } from '@/entities/friend';
 import { incQueries } from '@/entities/inc';
 import { postQueries } from '@/entities/post';
 import { profileQueries } from '@/entities/user';
@@ -28,7 +30,8 @@ export function RouteComponent() {
       <ProfileHeader username={username} />
       <ProfileContent
         incsSlot={<IncList queryOptions={incQueries.byUsername(username)} />}
-        postsSlot=<PostList queryOptions={postQueries.byUsername(username)} />
+        postsSlot={<PostList queryOptions={postQueries.byUsername(username)} />}
+        friendsSlot={<FriendList queryOptions={friendQueries.friendsByUsername(username)} />}
       />
     </>
   );

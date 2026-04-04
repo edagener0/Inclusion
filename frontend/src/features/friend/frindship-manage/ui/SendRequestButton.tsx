@@ -22,7 +22,6 @@ export function SendRequestButton({ userId }: Props) {
       onClick={() => mutation.mutate(userId)}
     >
       <UserPlus className="h-4 w-4" />
-      {t('button')}
     </Button>
   );
 }

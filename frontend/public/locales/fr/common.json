@@ -43,6 +43,7 @@
       "tooLarge": "Taille maximale du fichier - {{max}}."
     }
   },
+  "friends": "",
   "language": "Langue",
   "mediaUploader": {
     "changeFile": "Changer de fichier",

@@ -8,9 +8,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 interface Props {
   postsSlot: ReactNode;
   incsSlot: ReactNode;
+  friendsSlot: ReactNode;
 }
 
-export function ProfileContent({ postsSlot, incsSlot }: Props) {
+export function ProfileContent({ postsSlot, incsSlot, friendsSlot }: Props) {
   const { t } = useTranslation('common');
 
   return (
@@ -32,6 +33,14 @@ export function ProfileContent({ postsSlot, incsSlot }: Props) {
               <ImagesIcon className="h-4 w-4" />
               <span className="hidden sm:inline">{t('sideBar.posts')}</span>
             </TabsTrigger>
+
+            <TabsTrigger
+              value="friends"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 shadow-sm transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-950"
+            >
+              <ImagesIcon className="h-4 w-4" />
+              <span className="hidden sm:inline">{t('friends')}</span>
+            </TabsTrigger>
           </TabsList>
         </div>
 
@@ -41,6 +50,10 @@ export function ProfileContent({ postsSlot, incsSlot }: Props) {
 
         <TabsContent value="incs" className="m-0 space-y-4 outline-none">
           {incsSlot}
+        </TabsContent>
+
+        <TabsContent value="friends" className="m-0 outline-none">
+          {friendsSlot}
         </TabsContent>
       </Tabs>
     </div>

@@ -43,6 +43,7 @@
       "tooLarge": "最大ファイルサイズ - {{max}}。"
     }
   },
+  "friends": "",
   "language": "言語",
   "mediaUploader": {
     "changeFile": "ファイルを変更",

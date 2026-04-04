@@ -21,7 +21,6 @@ export function CancelRequestButton({ userId }: Props) {
       title={t('button')}
       onClick={() => mutation.mutate(userId)}
     >
-      {t('button')}
       <CircleX className="h-4 w-4" />
     </Button>
   );

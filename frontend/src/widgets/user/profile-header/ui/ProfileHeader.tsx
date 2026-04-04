@@ -36,7 +36,13 @@ export function ProfileHeader({ username }: { username: string }) {
             />
 
             <div className="flex flex-wrap justify-center gap-2 pt-1 sm:justify-start">
-              {session.id !== profile.id && <FriendshipManageButton profile={profile} />}
+              {session.id !== profile.id && (
+                <FriendshipManageButton
+                  isFriend={profile.isFriend}
+                  userId={profile.id}
+                  username={profile.username}
+                />
+              )}
             </div>
           </div>
         </div>

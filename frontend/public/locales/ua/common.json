@@ -43,6 +43,7 @@
       "tooLarge": "Максимальний розмір файлу - {{max}}."
     }
   },
+  "friends": "",
   "language": "Мова",
   "mediaUploader": {
     "changeFile": "Змінити файл",

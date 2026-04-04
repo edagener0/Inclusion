@@ -22,7 +22,6 @@ export function RemoveFriendButton({ userId, username }: Props) {
       title={t('button')}
       onClick={() => mutation.mutate({ username, userId })}
     >
-      {t('button')}
       <UserMinus className="h-4 w-4" />
     </Button>
   );

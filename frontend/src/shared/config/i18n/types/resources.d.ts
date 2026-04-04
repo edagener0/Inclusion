@@ -125,6 +125,7 @@ interface Resources {
         "tooLarge": "Maximum file size - {{max}}."
       }
     },
+    "friends": "friends",
     "language": "Language",
     "mediaUploader": {
       "changeFile": "Change file",
