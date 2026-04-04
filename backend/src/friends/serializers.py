@@ -58,8 +58,6 @@ class FriendRequestReceivedListRetrieveSerializer(serializers.ModelSerializer):
 
 class FriendListSerializer(ProfileFeedSerializer):
     def get_fields(self):
-        # Получаем все поля от базового ProfileFeedSerializer
         fields = super().get_fields()
-        # И динамически подмешиваем к ним наше новое поле
         fields["is_friend"] = serializers.BooleanField(read_only=True, default=False)
         return fields
