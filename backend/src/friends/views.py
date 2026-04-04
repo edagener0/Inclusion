@@ -131,7 +131,6 @@ class FriendListView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Предотвращаем падение drf_spectacular при генерации схемы
         if getattr(self, "swagger_fake_view", False):
             return User.objects.none()
 
