@@ -1,5 +1,6 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router';
 
+import { postQueries } from '@/entities/post';
 import { PostList } from '@/widgets/post-list';
 import { StoriesSection } from '@/widgets/stories/stories-section';
 
@@ -10,7 +11,7 @@ export const Route = createFileRoute('/_main/posts')({
         <div className="pb-2">
           <StoriesSection />
         </div>
-        <PostList />
+        <PostList queryOptions={postQueries.feed()} />
         <Outlet />
       </div>
     );

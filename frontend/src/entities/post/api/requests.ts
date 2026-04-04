@@ -18,6 +18,20 @@ export async function fetchPosts(page: number): Promise<{ data: Post[]; hasNextP
   };
 }
 
+export async function fetchPostsByUsername(
+  page: number,
+  username: string,
+): Promise<{ data: Post[]; hasNextPage: boolean }> {
+  const response = await api.get<PaginatedResponse<unknown>>(`/profiles/${username}/posts`, {
+    params: { page },
+  });
+
+  return {
+    data: PostSchema.array().parse(response.data.results),
+    hasNextPage: response.data.next !== null,
+  };
+}
+
 export async function createPost(dto: CreatePostDTO) {
   await api.post('/posts', dto, {
     headers: {

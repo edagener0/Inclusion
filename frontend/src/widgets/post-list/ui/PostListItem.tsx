@@ -9,7 +9,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared
 
 import { PostLikeButton } from './PostLikeButton';
 
-export function PostListItem({ post }: { post: Post }) {
+type Props = {
+  post: Post;
+};
+
+export function PostListItem({ post }: Props) {
   const user = useSession();
   const isAuthor = user.id === post.user.id;
 

@@ -17,7 +17,7 @@ export function PostLikeButton({ postId, isLiked, likesCount }: Props) {
       entityId: postId,
       isLiked,
       count: likesCount,
-      queryKey: postQueries.feed().queryKey,
+      queryKey: postQueries.all(),
     });
   };
 
