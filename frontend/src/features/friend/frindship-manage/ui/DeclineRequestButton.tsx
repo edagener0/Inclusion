@@ -16,10 +16,11 @@ export function DeclineRequestButton({ userId }: Props) {
 
   return (
     <Button
-      variant="destructive"
+      variant="outline"
       size="icon"
       aria-label={t('button')}
       title={t('button')}
+      className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
       onClick={() => mutation.mutate(userId)}
     >
       <X className="h-4 w-4" />

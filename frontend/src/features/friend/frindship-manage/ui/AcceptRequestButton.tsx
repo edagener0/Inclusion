@@ -21,6 +21,7 @@ export function AcceptRequestButton({ userId, username }: Props) {
       size="icon"
       aria-label={t('button')}
       title={t('button')}
+      className="h-8 w-8 text-emerald-500 hover:bg-emerald-500/10 hover:text-emerald-400"
       onClick={() => mutation.mutate({ username, userId })}
     >
       <Check className="h-4 w-4" />
