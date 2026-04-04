@@ -34,7 +34,7 @@ export function SignUpForm() {
     <form
       id="sign-up"
       className="flex flex-col gap-6"
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         form.handleSubmit();
       }}
@@ -47,7 +47,7 @@ export function SignUpForm() {
 
         <form.Field
           name="username"
-          children={field => {
+          children={(field) => {
             const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
@@ -57,7 +57,7 @@ export function SignUpForm() {
                   name={field.name}
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={e => field.handleChange(e.target.value)}
+                  onChange={(e) => field.handleChange(e.target.value)}
                   aria-invalid={isInvalid}
                   autoComplete="off"
                 />
@@ -69,7 +69,7 @@ export function SignUpForm() {
 
         <form.Field
           name="email"
-          children={field => {
+          children={(field) => {
             const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
@@ -79,7 +79,7 @@ export function SignUpForm() {
                   name={field.name}
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={e => field.handleChange(e.target.value)}
+                  onChange={(e) => field.handleChange(e.target.value)}
                   aria-invalid={isInvalid}
                   autoComplete="off"
                 />
@@ -92,7 +92,7 @@ export function SignUpForm() {
         <div className="grid grid-cols-2 gap-4">
           <form.Field
             name="firstName"
-            children={field => {
+            children={(field) => {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
@@ -102,7 +102,7 @@ export function SignUpForm() {
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={e => field.handleChange(e.target.value)}
+                    onChange={(e) => field.handleChange(e.target.value)}
                     aria-invalid={isInvalid}
                     autoComplete="off"
                   />
@@ -114,7 +114,7 @@ export function SignUpForm() {
 
           <form.Field
             name="lastName"
-            children={field => {
+            children={(field) => {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
@@ -124,7 +124,7 @@ export function SignUpForm() {
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={e => field.handleChange(e.target.value)}
+                    onChange={(e) => field.handleChange(e.target.value)}
                     aria-invalid={isInvalid}
                     autoComplete="off"
                   />
@@ -138,7 +138,7 @@ export function SignUpForm() {
         <div className="grid grid-cols-2 gap-4">
           <form.Field
             name="password"
-            children={field => {
+            children={(field) => {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
@@ -149,7 +149,7 @@ export function SignUpForm() {
                     type="password"
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={e => field.handleChange(e.target.value)}
+                    onChange={(e) => field.handleChange(e.target.value)}
                     aria-invalid={isInvalid}
                     autoComplete="off"
                   />
@@ -161,7 +161,7 @@ export function SignUpForm() {
 
           <form.Field
             name="confirmPassword"
-            children={field => {
+            children={(field) => {
               const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
@@ -172,7 +172,7 @@ export function SignUpForm() {
                     type="password"
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={e => field.handleChange(e.target.value)}
+                    onChange={(e) => field.handleChange(e.target.value)}
                     aria-invalid={isInvalid}
                     autoComplete="off"
                   />

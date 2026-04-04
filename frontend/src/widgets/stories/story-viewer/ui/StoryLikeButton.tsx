@@ -1,6 +1,7 @@
-import { type UserStories, storyQueries, updateStoryLikeInCache } from '@/entities/story';
 import { LikeButton } from '@/features/like-toggle';
 import { useToggleLike } from '@/features/like-toggle';
+
+import { type UserStories, storyQueries, updateStoryLikeInCache } from '@/entities/story';
 
 type Props = {
   storyId: number;

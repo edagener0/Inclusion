@@ -26,7 +26,7 @@ function PopoverContent({
         align={align}
         sideOffset={sideOffset}
         className={cn(
-          'z-50 flex w-72 flex-col gap-2.5 rounded-lg bg-popover p-2.5 text-sm shadow-md',
+          'bg-popover z-50 flex w-72 flex-col gap-2.5 rounded-lg p-2.5 text-sm shadow-md',
           'data-[state=closed]:hidden',
           className,
         )}

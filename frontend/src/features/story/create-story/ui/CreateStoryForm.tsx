@@ -26,7 +26,7 @@ export function CreateStoryForm() {
 
   return (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         form.handleSubmit();
@@ -35,16 +35,18 @@ export function CreateStoryForm() {
       <div className="mt-2">
         <form.Field
           name="file"
-          children={field => (
+          children={(field) => (
             <div className="flex flex-col gap-2">
-              <SingleMediaUploader onChange={file => field.handleChange(file as unknown as File)} />
+              <SingleMediaUploader
+                onChange={(file) => field.handleChange(file as unknown as File)}
+              />
               <FieldError errors={field.state.meta.errors} />
             </div>
           )}
         />
       </div>
 
-      <div className="flex justify-end gap-3 mt-4">
+      <div className="mt-4 flex justify-end gap-3">
         <DialogClose asChild>
           <Button variant="outline" type="button">
             {t('actions.cancel')}
@@ -52,7 +54,7 @@ export function CreateStoryForm() {
         </DialogClose>
 
         <form.Subscribe
-          selector={state => [state.canSubmit, state.isSubmitting]}
+          selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
             <Button type="submit" disabled={!canSubmit || isSubmitting}>
               {isSubmitting ? t('actions.submitting') : t('actions.submit')}

@@ -1,5 +1,6 @@
 import { type Note, NoteCard } from '@/entities/note';
 import { UserAvatar } from '@/entities/user';
+
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/shared/ui/hover-card';
 
 import { NoteLikeButton } from './NoteLikeButton';
@@ -16,7 +17,7 @@ export function NoteFullHoverCard({ note }: Props) {
           note={note}
           avatar={
             <UserAvatar
-              className="w-16 h-16"
+              className="h-16 w-16"
               avatar={note.user.avatar}
               username={note.user.username}
             />
@@ -26,12 +27,12 @@ export function NoteFullHoverCard({ note }: Props) {
       <HoverCardContent side="bottom" align="start" className="w-72">
         <div className="flex items-end justify-between gap-3">
           <div className="flex flex-col">
-            <p className="text-sm text-foreground whitespace-pre-wrap wrap-break-word">
+            <p className="text-foreground text-sm wrap-break-word whitespace-pre-wrap">
               {note.content}
             </p>
           </div>
 
-          <div className="flex items-center gap-1 shrink-0 pb-0.5">
+          <div className="flex shrink-0 items-center gap-1 pb-0.5">
             <NoteLikeButton isLiked={note.isLiked} likesCount={note.likesCount} noteId={note.id} />
           </div>
         </div>

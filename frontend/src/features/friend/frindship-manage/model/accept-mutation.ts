@@ -22,21 +22,21 @@ export function useAcceptRequestMutation() {
     onSuccess: (_, { userId, username }) => {
       queryClient.setQueryData(friendQueries.requests.received.receivedById(userId).queryKey, null);
       queryClient.invalidateQueries({ queryKey: profileQueries.byUsername(username).queryKey });
-      queryClient.setQueryData(friendQueries.requests.received.received().queryKey, oldData => {
+      queryClient.setQueryData(friendQueries.requests.received.received().queryKey, (oldData) => {
         if (!oldData) return oldData;
 
         return {
           ...oldData,
-          pages: oldData.pages.map(page => ({
+          pages: oldData.pages.map((page) => ({
             ...page,
-            data: page.data.filter(req => req.id !== userId),
+            data: page.data.filter((req) => req.id !== userId),
           })),
         };
       });
 
       toast.success(t('success'));
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('error'));
     },

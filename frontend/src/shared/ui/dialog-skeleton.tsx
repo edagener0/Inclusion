@@ -8,7 +8,7 @@ export function DialogSkeleton() {
       <DialogContent className="flex h-50 w-full items-center justify-center">
         <DialogTitle className="sr-only">Loading data...</DialogTitle>
         <DialogDescription>.</DialogDescription>
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
       </DialogContent>
     </Dialog>
   );

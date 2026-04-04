@@ -17,15 +17,15 @@ type Props = {
 
 export function IncCard({ userAvatarSlot, likeSlot, actionsSlot, inc }: Props) {
   return (
-    <article className="w-full max-w-150 mx-auto flex gap-3 px-4 pt-3 pb-2 border-b border-border bg-background hover:bg-muted/10 transition-colors cursor-pointer">
+    <article className="border-border bg-background hover:bg-muted/10 mx-auto flex w-full max-w-150 cursor-pointer gap-3 border-b px-4 pt-3 pb-2 transition-colors">
       <div className="shrink-0">{userAvatarSlot}</div>
-      <div className="flex flex-col w-full min-w-0">
-        <div className="flex justify-between items-start">
+      <div className="flex w-full min-w-0 flex-col">
+        <div className="flex items-start justify-between">
           <div className="flex items-center gap-1 text-[15px]">
             <Link
               to="/$username"
               params={{ username: inc.user.username }}
-              className="font-bold text-foreground hover:underline truncate"
+              className="text-foreground truncate font-bold hover:underline"
             >
               {inc.user.username}
             </Link>
@@ -34,34 +34,34 @@ export function IncCard({ userAvatarSlot, likeSlot, actionsSlot, inc }: Props) {
               to="/incs/$id"
               params={{ id: String(inc.id) }}
               resetScroll={false}
-              className="text-muted-foreground hover:underline whitespace-nowrap text-sm"
+              className="text-muted-foreground text-sm whitespace-nowrap hover:underline"
             >
               {useTimeAgo(inc.createdAt)}
             </Link>
           </div>
 
           {actionsSlot && (
-            <div className="shrink-0 -mt-2 -mr-2 text-muted-foreground">{actionsSlot}</div>
+            <div className="text-muted-foreground -mt-2 -mr-2 shrink-0">{actionsSlot}</div>
           )}
         </div>
 
-        <div className="mt-0.5 text-[15px] leading-snug text-foreground whitespace-pre-wrap wrap-break-word">
+        <div className="text-foreground mt-0.5 text-[15px] leading-snug wrap-break-word whitespace-pre-wrap">
           {inc.content}
         </div>
 
-        <div className="flex items-center justify-start gap-12 mt-3 text-muted-foreground max-w-md">
+        <div className="text-muted-foreground mt-3 flex max-w-md items-center justify-start gap-12">
           <div className="flex items-center">{likeSlot}</div>
 
           <Link
             to="/incs/$id"
             params={{ id: String(inc.id) }}
             resetScroll={false}
-            className="group flex items-center gap-1 cursor-pointer"
+            className="group flex cursor-pointer items-center gap-1"
           >
             <Button
               variant="ghost"
               size="icon"
-              className="h-9 w-9 text-foreground hover:text-muted-foreground hover:bg-transparent transition-colors"
+              className="text-foreground hover:text-muted-foreground h-9 w-9 transition-colors hover:bg-transparent"
             >
               <MessageCircle className="h-6 w-6" strokeWidth={1.5} />
             </Button>

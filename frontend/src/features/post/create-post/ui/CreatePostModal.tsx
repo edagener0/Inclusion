@@ -10,8 +10,8 @@ export function CreatePostModal() {
 
   return (
     <RoutedDialog>
-      <DialogContent className="sm:max-w-lg p-0 gap-0 overflow-hidden flex flex-col max-h-[90vh]">
-        <DialogHeader className="px-6 pt-6 pb-2 shrink-0">
+      <DialogContent className="flex max-h-[90vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-lg">
+        <DialogHeader className="shrink-0 px-6 pt-6 pb-2">
           <DialogTitle className="text-xl">{t('title')}</DialogTitle>
           <DialogDescription className="hidden"></DialogDescription>
         </DialogHeader>

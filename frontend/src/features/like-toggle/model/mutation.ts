@@ -28,7 +28,7 @@ export function useToggleLike<TNode extends object = BaseLikeable>() {
       return response.data;
     },
 
-    onMutate: async variables => {
+    onMutate: async (variables) => {
       await queryClient.cancelQueries({ queryKey: variables.queryKey });
       const previousData = queryClient.getQueriesData({ queryKey: variables.queryKey });
 
@@ -62,7 +62,7 @@ export function useToggleLike<TNode extends object = BaseLikeable>() {
           >;
           return {
             ...infiniteData,
-            pages: infiniteData.pages.map(page => ({
+            pages: infiniteData.pages.map((page) => ({
               ...page,
               data: Array.isArray(page?.data) ? page.data.map(updateLike) : page.data,
             })),

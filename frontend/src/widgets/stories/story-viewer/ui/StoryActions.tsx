@@ -1,6 +1,7 @@
 import { MoreHorizontal } from 'lucide-react';
 
 import { DeleteStoryMenuItem } from '@/features/story/delete-story';
+
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 
@@ -18,7 +19,7 @@ export function StoryActions({ storyId }: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="min-w-(--radix-dropdown-menu-trigger-width) w-max"
+        className="w-max min-w-(--radix-dropdown-menu-trigger-width)"
       >
         <DeleteStoryMenuItem id={storyId} />
       </DropdownMenuContent>

@@ -17,7 +17,7 @@ export function useSendRequestMutation() {
       queryClient.invalidateQueries({ queryKey: friendQueries.requests.sentById(id).queryKey });
       toast.success(t('success'));
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('error'));
     },

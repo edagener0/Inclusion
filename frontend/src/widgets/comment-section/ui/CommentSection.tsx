@@ -2,10 +2,12 @@ import { useTranslation } from 'react-i18next';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
+import { CreateComment } from '@/features/comment/create-comment';
+
 import { CommentCard, CommentCardSkeleton, commentQueries } from '@/entities/comment';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
-import { CreateComment } from '@/features/comment/create-comment';
+
 import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { cn } from '@/shared/lib/utils';
 
@@ -32,16 +34,16 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
     fetchNextPage,
   });
 
-  const allComments = data?.pages.flatMap(page => page.data) ?? [];
+  const allComments = data?.pages.flatMap((page) => page.data) ?? [];
 
   return (
-    <section className={cn('flex flex-col h-full', className)}>
-      <div className="flex-none space-y-4 pb-4 border-b border-border/40">
+    <section className={cn('flex h-full flex-col', className)}>
+      <div className="border-border/40 flex-none space-y-4 border-b pb-4">
         <h3 className="text-lg font-semibold tracking-tight">{t('title')}</h3>
         <CreateComment entityId={entityId} entityType={entityType} />
       </div>
 
-      <div className="flex-1 overflow-y-auto pt-4 space-y-5 pr-2 custom-scrollbar">
+      <div className="custom-scrollbar flex-1 space-y-5 overflow-y-auto pt-4 pr-2">
         {isLoading ? (
           <div className="flex flex-col">
             {Array.from({ length: 5 }).map((_, index) => (
@@ -49,9 +51,9 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
             ))}
           </div>
         ) : allComments?.length === 0 ? (
-          <div className="text-sm text-muted-foreground py-4">{t('empty')}</div>
+          <div className="text-muted-foreground py-4 text-sm">{t('empty')}</div>
         ) : (
-          allComments?.map(comment => (
+          allComments?.map((comment) => (
             <CommentCard
               key={comment.id}
               comment={comment}

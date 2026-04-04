@@ -17,7 +17,7 @@ export function useCancelRequestMutation() {
       queryClient.setQueryData(friendQueries.requests.sentById(id).queryKey, null);
       toast.success(t('success'));
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('error'));
     },

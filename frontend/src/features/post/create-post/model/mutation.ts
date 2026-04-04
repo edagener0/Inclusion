@@ -25,7 +25,7 @@ export function useCreatePostMutation() {
       navigate({ to: '.', search: { modal: undefined } });
       queryClient.invalidateQueries({ queryKey: postQueries.feed().queryKey });
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('error'));
     },

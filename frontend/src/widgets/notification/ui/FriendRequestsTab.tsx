@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
+import { AcceptRequestButton, DeclineRequestButton } from '@/features/friend/frindship-manage';
+
 import { FriendRequestCard, friendQueries } from '@/entities/friend';
 import { UserAvatar } from '@/entities/user';
-import { AcceptRequestButton, DeclineRequestButton } from '@/features/friend/frindship-manage';
+
 import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { ScrollArea } from '@/shared/ui/scroll-area';
 import { CenterSpinner } from '@/shared/ui/spinner';
@@ -15,7 +17,7 @@ import { useNotificationCountStore } from '../model/store';
 
 export function FriendRequestsTab() {
   const { t } = useTranslation('common', { keyPrefix: 'notification' });
-  const setFriendsCount = useNotificationCountStore(s => s.setFriends);
+  const setFriendsCount = useNotificationCountStore((s) => s.setFriends);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
     ...friendQueries.requests.received.received(),
@@ -28,7 +30,7 @@ export function FriendRequestsTab() {
     fetchNextPage,
   });
 
-  const allRequests = data?.pages.flatMap(page => page.data) ?? [];
+  const allRequests = data?.pages.flatMap((page) => page.data) ?? [];
 
   useEffect(() => {
     if (!isLoading && data) {
@@ -41,14 +43,14 @@ export function FriendRequestsTab() {
       <ScrollArea className="h-80">
         <div className="flex flex-col gap-2 p-4">
           {isLoading ? (
-            <span className="text-sm font-medium animate-pulse">
+            <span className="animate-pulse text-sm font-medium">
               <CenterSpinner className="size-4" />
             </span>
           ) : allRequests.length === 0 ? (
-            <p className="mt-8 text-center text-sm text-muted-foreground">{t('requests.empty')}</p>
+            <p className="text-muted-foreground mt-8 text-center text-sm">{t('requests.empty')}</p>
           ) : (
             <>
-              {allRequests.map(req => (
+              {allRequests.map((req) => (
                 <FriendRequestCard
                   key={req.id}
                   user={req}
@@ -61,7 +63,7 @@ export function FriendRequestsTab() {
               <div ref={observerTarget} className="h-4 w-full" />
 
               {isFetchingNextPage && (
-                <span className="text-sm font-medium animate-pulse">
+                <span className="animate-pulse text-sm font-medium">
                   <CenterSpinner className="size-4" />
                 </span>
               )}

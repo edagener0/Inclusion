@@ -19,7 +19,7 @@ export function useCreateCommentMutation() {
         queryKey: commentQueries.feed(variables.entityType, variables.entityId).queryKey,
       });
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('error'));
     },

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import type { Note } from '@/entities/note';
+
 import type { UserPreview } from '@/shared/api';
 
 export const UpsertNoteSchema = z.object({

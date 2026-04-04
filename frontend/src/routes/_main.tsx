@@ -1,17 +1,19 @@
 import { Outlet, createFileRoute, isRedirect, redirect } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
-import { sessionQueries } from '@/entities/session';
-import { APP_NAME, IS_AUTH_MARKER } from '@/shared/config';
 import { Header } from '@/widgets/header';
 import { NotificationWidget } from '@/widgets/notification';
 import { SidebarNav } from '@/widgets/sidebar';
 import { UserDropDownMenu } from '@/widgets/user/user-menu';
 
+import { sessionQueries } from '@/entities/session';
+
+import { APP_NAME, IS_AUTH_MARKER } from '@/shared/config';
+
 export const Route = createFileRoute('/_main')({
   beforeLoad: async ({ context, location }) => {
     const publicPaths = ['/sign-in', '/sign-up'];
-    const isPublic = publicPaths.some(path => location.pathname.startsWith(path));
+    const isPublic = publicPaths.some((path) => location.pathname.startsWith(path));
 
     const hasAuthMarker = localStorage.getItem(IS_AUTH_MARKER) === 'true';
     if (isPublic && !hasAuthMarker) return;
@@ -27,19 +29,19 @@ export const Route = createFileRoute('/_main')({
   },
   component: function () {
     return (
-      <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
+      <div className="bg-background text-foreground flex min-h-screen w-full flex-col">
         <Header
           sideBarSlot={<SidebarNav mobile />}
           userMenuSlot={<UserDropDownMenu />}
           notificationSlot={<NotificationWidget />}
         />
 
-        <div className="mx-auto flex justify-center gap-x-8 items-start px-4 w-full">
-          <aside className="hidden md:flex flex-col w-50 shrink-0 sticky top-16 h-[calc(100vh-4rem)] py-6 border-r pr-4">
+        <div className="mx-auto flex w-full items-start justify-center gap-x-8 px-4">
+          <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-50 shrink-0 flex-col border-r py-6 pr-4 md:flex">
             <SidebarNav />
 
             <div className="mt-auto border-t pt-4">
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 © {new Date().getFullYear()} {APP_NAME}
               </p>
             </div>

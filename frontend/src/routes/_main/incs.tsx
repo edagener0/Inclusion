@@ -1,9 +1,11 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router';
 
-import { incQueries } from '@/entities/inc';
-import { loadNamespace } from '@/shared/config';
 import { IncList } from '@/widgets/inc-list';
 import { StoriesSection } from '@/widgets/stories/stories-section';
+
+import { incQueries } from '@/entities/inc';
+
+import { loadNamespace } from '@/shared/config';
 
 export const Route = createFileRoute('/_main/incs')({
   loader: async () => {

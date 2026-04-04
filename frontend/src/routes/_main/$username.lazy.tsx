@@ -1,14 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute, notFound } from '@tanstack/react-router';
 
-import { incQueries } from '@/entities/inc';
-import { postQueries } from '@/entities/post';
-import { profileQueries } from '@/entities/user';
-import { CenterSpinner } from '@/shared/ui/spinner';
 import { IncList } from '@/widgets/inc-list';
 import { PostList } from '@/widgets/post-list';
 import { ProfileContent } from '@/widgets/user/profile-content';
 import { ProfileHeader } from '@/widgets/user/profile-header';
+
+import { incQueries } from '@/entities/inc';
+import { postQueries } from '@/entities/post';
+import { profileQueries } from '@/entities/user';
+
+import { CenterSpinner } from '@/shared/ui/spinner';
 
 export const Route = createLazyFileRoute('/_main/$username')({
   component: RouteComponent,

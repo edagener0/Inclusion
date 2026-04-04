@@ -18,7 +18,7 @@ export function useUpsertNoteMutation() {
       navigate({ to: '.', search: { modal: undefined } });
       queryClient.invalidateQueries({ queryKey: noteQueries.all() });
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('error'));
     },

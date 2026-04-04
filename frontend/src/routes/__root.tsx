@@ -5,10 +5,12 @@ import z from 'zod';
 
 import { ConfirmModalProvider } from '@/app/provider/ConfirmModalProvider';
 import { ModalProvider } from '@/app/provider/ModalProvider';
+
+import { NotFoundWidget } from '@/widgets/not-found';
+
 import '@/shared/config/i18n';
 import { loadNamespace } from '@/shared/config/i18n';
 import { Toaster } from '@/shared/ui/sonner';
-import { NotFoundWidget } from '@/widgets/not-found';
 
 interface RouterContext {
   queryClient: QueryClient;

@@ -12,13 +12,13 @@ interface NotificationCountStore {
 
 export const useNotificationCountStore = create<NotificationCountStore>((set, get) => ({
   main: 0,
-  incrementMain: count => {
-    set(prev => ({ main: (prev.main += count) }));
+  incrementMain: (count) => {
+    set((prev) => ({ main: (prev.main += count) }));
   },
 
   friends: 0,
-  setFriends: count => {
-    set(prev => ({ friends: (prev.friends = count) }));
+  setFriends: (count) => {
+    set((prev) => ({ friends: (prev.friends = count) }));
   },
 
   total: () => get().friends + get().main,

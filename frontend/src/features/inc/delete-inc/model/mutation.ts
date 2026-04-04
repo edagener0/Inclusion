@@ -12,18 +12,18 @@ export function useDeleteIncMutation() {
 
   return useMutation({
     mutationFn: deleteInc,
-    onMutate: async deletedPostId => {
+    onMutate: async (deletedPostId) => {
       await queryClient.cancelQueries({ queryKey: feedQueryKey });
       const previousFeed = queryClient.getQueryData(feedQueryKey);
 
-      queryClient.setQueryData(feedQueryKey, oldData => {
+      queryClient.setQueryData(feedQueryKey, (oldData) => {
         if (!oldData) return oldData;
 
         return {
           ...oldData,
-          pages: oldData.pages.map(page => ({
+          pages: oldData.pages.map((page) => ({
             ...page,
-            data: page.data.filter(post => post.id !== deletedPostId),
+            data: page.data.filter((post) => post.id !== deletedPostId),
           })),
         };
       });

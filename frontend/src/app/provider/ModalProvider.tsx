@@ -3,27 +3,30 @@ import { Suspense, lazy, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 
-import { sessionQueries } from '@/entities/session';
-import { CreateContentSelectorModal } from '@/features/create-content-selector';
 import type { ModalType } from '@/routes/__root';
+
+import { CreateContentSelectorModal } from '@/features/create-content-selector';
+
+import { sessionQueries } from '@/entities/session';
+
 import { DialogSkeleton } from '@/shared/ui/dialog-skeleton';
 
 const UserSettingsModal = lazy(() =>
-  import('@/widgets/user/user-settings').then(module => ({
+  import('@/widgets/user/user-settings').then((module) => ({
     default: module.UserSettingsModal,
   })),
 );
 
 const CreatePostModal = lazy(() =>
-  import('@/features/post/create-post').then(module => ({ default: module.CreatePostModal })),
+  import('@/features/post/create-post').then((module) => ({ default: module.CreatePostModal })),
 );
 
 const CreateIncModal = lazy(() =>
-  import('@/features/inc/create-inc').then(module => ({ default: module.CreateIncModal })),
+  import('@/features/inc/create-inc').then((module) => ({ default: module.CreateIncModal })),
 );
 
 const CreateStoryModal = lazy(() =>
-  import('@/features/story/create-story').then(module => ({ default: module.CreateStoryModal })),
+  import('@/features/story/create-story').then((module) => ({ default: module.CreateStoryModal })),
 );
 
 const MODAL_COMPONENTS: Record<ModalType, React.ComponentType> = {

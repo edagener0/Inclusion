@@ -1,8 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute, useRouter } from '@tanstack/react-router';
 
+import { CommentSection } from '@/widgets/comment-section';
+import { IncLikeButton } from '@/widgets/inc-list';
+
 import { IncDetail, incQueries } from '@/entities/inc';
 import { UserAvatar } from '@/entities/user';
+
 import {
   Dialog,
   DialogContent,
@@ -11,8 +15,6 @@ import {
   DialogTitle,
 } from '@/shared/ui/dialog';
 import { CenterSpinner } from '@/shared/ui/spinner';
-import { CommentSection } from '@/widgets/comment-section';
-import { IncLikeButton } from '@/widgets/inc-list';
 
 export const Route = createLazyFileRoute('/_main/incs/$id')({
   component: RouteComponent,
@@ -34,9 +36,9 @@ export function RouteComponent() {
 
   return (
     <Dialog open={true} onOpenChange={handleOpenChange}>
-      <DialogOverlay className="bg-black/60 z-100" />
+      <DialogOverlay className="z-100 bg-black/60" />
 
-      <DialogContent className="p-0 border sm:border-border sm:rounded-xl gap-0 z-100 flex flex-col w-full sm:max-w-2xl h-dvh sm:max-h-[85vh] overflow-hidden bg-background">
+      <DialogContent className="sm:border-border bg-background z-100 flex h-dvh w-full flex-col gap-0 overflow-hidden border p-0 sm:max-h-[85vh] sm:max-w-2xl sm:rounded-xl">
         <DialogTitle className="hidden"></DialogTitle>
         <DialogDescription className="hidden"></DialogDescription>
 

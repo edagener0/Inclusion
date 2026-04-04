@@ -2,6 +2,7 @@ import { Link, Outlet, createLazyFileRoute, useLocation } from '@tanstack/react-
 
 import { SignInIcon } from '@/features/auth/sign-in';
 import { SignUpIcon } from '@/features/auth/sign-up';
+
 import { AppLogo } from '@/shared/assets';
 import { APP_NAME } from '@/shared/config';
 
@@ -17,7 +18,7 @@ export function AuthLayout() {
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
-          <Link to="/" className="flex items-center gap-1 font-bold text-lg">
+          <Link to="/" className="flex items-center gap-1 text-lg font-bold">
             <AppLogo className="h-14 w-14" />
             {APP_NAME}
           </Link>
@@ -29,7 +30,7 @@ export function AuthLayout() {
         </div>
       </div>
 
-      <div className="bg-muted hidden lg:flex items-center justify-center">
+      <div className="bg-muted hidden items-center justify-center lg:flex">
         {isSignUp ? <SignUpIcon /> : <SignInIcon />}
       </div>
     </div>

@@ -9,12 +9,12 @@ import { useDeletePostMutation } from '../model/mutation';
 
 export function DeletePostMenuItem({ id }: { id: number }) {
   const mutation = useDeletePostMutation();
-  const openConfirm = useConfirmModal(s => s.openConfirm);
+  const openConfirm = useConfirmModal((s) => s.openConfirm);
   const { t } = useTranslation('post', { keyPrefix: 'delete' });
 
   return (
     <DropdownMenuItem
-      onSelect={e => {
+      onSelect={(e) => {
         openConfirm({
           title: t('dialog.title'),
           description: t('dialog.description'),
@@ -26,7 +26,7 @@ export function DeletePostMenuItem({ id }: { id: number }) {
           },
         });
       }}
-      className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+      className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
     >
       <Trash className="mr-2 h-4 w-4" />
       <span className="whitespace-nowrap">{t('dialog.trigger')}</span>

@@ -34,7 +34,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
 
   const handleFiles = (files: FileList | File[]) => {
     const validFile = Array.from(files).find(
-      file => file.type.startsWith('image/') || file.type.startsWith('video/'),
+      (file) => file.type.startsWith('image/') || file.type.startsWith('video/'),
     );
 
     if (!validFile) return;
@@ -88,12 +88,12 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
         type="file"
         accept="image/*,video/*"
         className="hidden"
-        onChange={e => e.target.files && handleFiles(e.target.files)}
+        onChange={(e) => e.target.files && handleFiles(e.target.files)}
       />
 
       {!mediaFile ? (
         <div
-          className={`relative flex flex-col items-center justify-center w-full p-8 border-2 border-dashed rounded-xl cursor-pointer transition-colors ${
+          className={`relative flex w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 transition-colors ${
             isDragging
               ? 'border-primary bg-primary/5'
               : 'border-muted-foreground/25 hover:bg-accent/50 hover:border-muted-foreground/50'
@@ -103,63 +103,63 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
           onDrop={onDrop}
           onClick={() => fileInputRef.current?.click()}
         >
-          <div className="flex items-center justify-center w-14 h-14 mb-4 rounded-full bg-primary/10">
-            <UploadCloud className="w-7 h-7 text-primary" />
+          <div className="bg-primary/10 mb-4 flex h-14 w-14 items-center justify-center rounded-full">
+            <UploadCloud className="text-primary h-7 w-7" />
           </div>
-          <p className="mb-1 text-base font-medium text-foreground">{t('mediaUploader.select')}</p>
+          <p className="text-foreground mb-1 text-base font-medium">{t('mediaUploader.select')}</p>
 
-          <p className="text-sm text-muted-foreground">{SUPPORTED_FORMATS_TEXT}</p>
+          <p className="text-muted-foreground text-sm">{SUPPORTED_FORMATS_TEXT}</p>
         </div>
       ) : (
         <div className="space-y-4">
           <div
-            className="relative w-full aspect-video rounded-xl overflow-hidden border bg-muted group cursor-pointer shadow-sm"
+            className="bg-muted group relative aspect-video w-full cursor-pointer overflow-hidden rounded-xl border shadow-sm"
             onClick={() => setIsPreviewOpen(true)}
           >
             {mediaFile.type === 'image' ? (
               <img
                 src={mediaFile.preview}
                 alt={t('mediaUploader.preview')}
-                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
             ) : (
-              <div className="relative w-full h-full bg-black flex items-center justify-center">
-                <video src={mediaFile.preview} className="object-cover w-full h-full opacity-80" />
+              <div className="relative flex h-full w-full items-center justify-center bg-black">
+                <video src={mediaFile.preview} className="h-full w-full object-cover opacity-80" />
               </div>
             )}
 
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center pointer-events-none">
-              <div className="opacity-0 group-hover:opacity-100 bg-background/95 text-foreground px-4 py-2 rounded-lg text-sm font-medium shadow-md flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-all">
-                <Maximize2 className="w-4 h-4" /> {t('mediaUploader.fullscreen')}
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition-all group-hover:bg-black/20">
+              <div className="bg-background/95 text-foreground flex translate-y-2 transform items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium opacity-0 shadow-md transition-all group-hover:translate-y-0 group-hover:opacity-100">
+                <Maximize2 className="h-4 w-4" /> {t('mediaUploader.fullscreen')}
               </div>
             </div>
 
-            <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all z-20">
+            <div className="absolute top-3 right-3 z-20 flex gap-2 opacity-0 transition-all group-hover:opacity-100">
               <button
                 type="button"
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation();
                   fileInputRef.current?.click();
                 }}
                 title={t('mediaUploader.changeFile')}
-                className="p-2 bg-background/90 hover:bg-primary hover:text-primary-foreground rounded-full shadow-sm transition-colors"
+                className="bg-background/90 hover:bg-primary hover:text-primary-foreground rounded-full p-2 shadow-sm transition-colors"
               >
-                <UploadCloud className="w-4 h-4" />
+                <UploadCloud className="h-4 w-4" />
               </button>
               <button
                 type="button"
                 onClick={removeFile}
                 title={t('actions.remove')}
-                className="p-2 bg-background/90 hover:bg-destructive hover:text-destructive-foreground rounded-full shadow-sm transition-colors"
+                className="bg-background/90 hover:bg-destructive hover:text-destructive-foreground rounded-full p-2 shadow-sm transition-colors"
               >
-                <X className="w-4 h-4" />
+                <X className="h-4 w-4" />
               </button>
             </div>
-            <div className="absolute bottom-3 left-3 p-1.5 bg-background/90 rounded-md shadow-sm pointer-events-none">
+            <div className="bg-background/90 pointer-events-none absolute bottom-3 left-3 rounded-md p-1.5 shadow-sm">
               {mediaFile.type === 'image' ? (
-                <ImageIcon className="w-4 h-4 text-foreground" />
+                <ImageIcon className="text-foreground h-4 w-4" />
               ) : (
-                <Film className="w-4 h-4 text-foreground" />
+                <Film className="text-foreground h-4 w-4" />
               )}
             </div>
           </div>
@@ -167,7 +167,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
       )}
 
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-        <DialogContent className="max-w-none! w-fit p-0 bg-transparent border-none shadow-none flex items-center justify-center focus:outline-none [&>button:last-child]:hidden">
+        <DialogContent className="flex w-fit max-w-none! items-center justify-center border-none bg-transparent p-0 shadow-none focus:outline-none [&>button:last-child]:hidden">
           <DialogHeader className="sr-only">
             <DialogTitle>{t('actions.save')}</DialogTitle>
           </DialogHeader>
@@ -176,16 +176,16 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
             <button
               type="button"
               onClick={() => setIsPreviewOpen(false)}
-              className="fixed top-6 right-6 z-50 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors"
+              className="fixed top-6 right-6 z-50 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/80"
             >
-              <X className="w-6 h-6" />
+              <X className="h-6 w-6" />
             </button>
 
             {mediaFile?.type === 'image' && (
               <img
                 src={mediaFile.preview}
                 alt={t('mediaUploader.preview')}
-                className="max-h-[95vh] max-w-[95vw] w-auto h-auto object-contain shadow-2xl rounded-md"
+                className="h-auto max-h-[95vh] w-auto max-w-[95vw] rounded-md object-contain shadow-2xl"
               />
             )}
 
@@ -194,7 +194,7 @@ export function SingleMediaUploader({ onChange, className = '' }: SingleMediaUpl
                 src={mediaFile.preview}
                 controls
                 autoPlay
-                className="max-h-[95vh] max-w-[95vw] w-auto h-auto outline-none shadow-2xl rounded-md"
+                className="h-auto max-h-[95vh] w-auto max-w-[95vw] rounded-md shadow-2xl outline-none"
               />
             )}
           </div>

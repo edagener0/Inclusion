@@ -20,11 +20,11 @@ interface ConfirmModalStore {
   setLoading: (loading: boolean) => void;
 }
 
-export const useConfirmModal = create<ConfirmModalStore>(set => ({
+export const useConfirmModal = create<ConfirmModalStore>((set) => ({
   isOpen: false,
   config: null,
   isLoading: false,
-  openConfirm: config => set({ isOpen: true, config, isLoading: false }),
+  openConfirm: (config) => set({ isOpen: true, config, isLoading: false }),
   closeConfirm: () => set({ isOpen: false, config: null }),
-  setLoading: loading => set({ isLoading: loading }),
+  setLoading: (loading) => set({ isLoading: loading }),
 }));

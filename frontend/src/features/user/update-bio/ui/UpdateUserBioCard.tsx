@@ -23,7 +23,7 @@ export function UpdateUserBioCard({ biography }: { biography: string | null }) {
 
   return (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         form.handleSubmit();
@@ -37,16 +37,16 @@ export function UpdateUserBioCard({ biography }: { biography: string | null }) {
         <CardContent>
           <form.Field
             name="biography"
-            children={field => (
+            children={(field) => (
               <Textarea
-                className="w-full min-h-24 resize-none"
+                className="min-h-24 w-full resize-none"
                 id={field.name}
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 defaultValue={field.state.value}
-                onChange={e => field.handleChange(e.target.value)}
-                onInput={e => {
+                onChange={(e) => field.handleChange(e.target.value)}
+                onInput={(e) => {
                   const el = e.currentTarget;
                   el.style.height = 'auto';
                   el.style.height = el.scrollHeight + 'px';

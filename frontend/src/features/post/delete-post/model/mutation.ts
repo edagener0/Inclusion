@@ -17,22 +17,22 @@ export function useDeletePostMutation() {
       toast.success(t('success'));
 
       [postQueries.byUsername(session.username).queryKey, postQueries.feed().queryKey].forEach(
-        key => {
-          queryClient.setQueryData(key, oldData => {
+        (key) => {
+          queryClient.setQueryData(key, (oldData) => {
             if (!oldData) return oldData;
 
             return {
               ...oldData,
-              pages: oldData.pages.map(page => ({
+              pages: oldData.pages.map((page) => ({
                 ...page,
-                data: page.data.filter(post => post.id !== postId),
+                data: page.data.filter((post) => post.id !== postId),
               })),
             };
           });
         },
       );
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('error'));
     },

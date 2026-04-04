@@ -22,7 +22,7 @@ export function useRemoveFriendMutation() {
       queryClient.invalidateQueries({ queryKey: profileQueries.byUsername(username).queryKey });
       toast.success(t('success'));
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('error'));
     },

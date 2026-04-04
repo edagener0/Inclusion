@@ -1,8 +1,9 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router';
 
-import { postQueries } from '@/entities/post';
 import { PostList } from '@/widgets/post-list';
 import { StoriesSection } from '@/widgets/stories/stories-section';
+
+import { postQueries } from '@/entities/post';
 
 export const Route = createFileRoute('/_main/posts')({
   component: function () {

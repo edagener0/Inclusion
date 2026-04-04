@@ -1,6 +1,7 @@
-import { type Post, postQueries } from '@/entities/post';
 import { LikeButton } from '@/features/like-toggle';
 import { useToggleLike } from '@/features/like-toggle';
+
+import { type Post, postQueries } from '@/entities/post';
 
 type Props = {
   postId: number;

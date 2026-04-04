@@ -30,7 +30,7 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
 
   return (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         form.handleSubmit();
@@ -45,24 +45,24 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
         <CardContent>
           <form.Field
             name="isPrivate"
-            children={field => (
+            children={(field) => (
               <label
                 htmlFor={field.name}
-                className="group flex items-start space-x-4 rounded-lg border border-border p-4 cursor-pointer transition-colors hover:bg-muted/50"
+                className="group border-border hover:bg-muted/50 flex cursor-pointer items-start space-x-4 rounded-lg border p-4 transition-colors"
               >
                 <Checkbox
                   id={field.name}
                   name={field.name}
                   checked={field.state.value}
-                  onCheckedChange={checked => field.handleChange(!!checked)}
+                  onCheckedChange={(checked) => field.handleChange(!!checked)}
                   disabled={mutation.isPending}
                   className="mt-1 transition-transform group-hover:scale-105"
                 />
                 <div className="space-y-1.5 leading-none">
-                  <span className="text-base font-semibold block">
+                  <span className="block text-base font-semibold">
                     {t('user:privacy.form.isPrivate.title')}
                   </span>
-                  <p className="text-sm font-normal text-muted-foreground">
+                  <p className="text-muted-foreground text-sm font-normal">
                     {t('user:privacy.form.isPrivate.description')}
                   </p>
                 </div>
@@ -71,7 +71,7 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
           />
         </CardContent>
 
-        <CardFooter className="flex justify-end border-t bg-muted/50 px-6 py-4">
+        <CardFooter className="bg-muted/50 flex justify-end border-t px-6 py-4">
           <Button size="sm" type="submit" disabled={mutation.isPending}>
             {mutation.isPending ? t('common:actions.saving') : t('common:actions.save')}
           </Button>

@@ -12,11 +12,11 @@ export const SidebarNav = ({ mobile = false }: { mobile?: boolean }) => {
 
   return (
     <nav className={`flex flex-col ${mobile ? 'gap-1 px-2' : 'gap-1.5'}`}>
-      {navItems.map(item => (
+      {navItems.map((item) => (
         <Link
           key={item.label}
           to={item.path ?? '.'}
-          search={prev => (item.modal ? { ...prev, modal: item.modal } : prev)}
+          search={(prev) => (item.modal ? { ...prev, modal: item.modal } : prev)}
         >
           <Button
             variant={item.modal === 'create-content' ? 'outline' : 'ghost'}
@@ -25,17 +25,17 @@ export const SidebarNav = ({ mobile = false }: { mobile?: boolean }) => {
 
               'text-muted-foreground hover:text-foreground',
 
-              'bg-transparent hover:bg-muted/50',
+              'hover:bg-muted/50 bg-transparent',
 
               'transition-all duration-300 ease-out',
 
-              mobile ? 'h-10 text-sm px-3 font-normal' : 'h-10 text-base px-4 font-semibold',
+              mobile ? 'h-10 px-3 text-sm font-normal' : 'h-10 px-4 text-base font-semibold',
             )}
           >
             <item.icon
               className={cn(
                 'transition-transform duration-300 group-hover:scale-110',
-                mobile ? 'h-4 w-4' : 'h-4 w-4 mr-1',
+                mobile ? 'h-4 w-4' : 'mr-1 h-4 w-4',
               )}
             />
             {t(item.label)}

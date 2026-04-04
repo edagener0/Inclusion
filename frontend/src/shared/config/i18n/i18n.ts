@@ -12,7 +12,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    supportedLngs: supportedLanguages.map(l => l.key),
+    supportedLngs: supportedLanguages.map((l) => l.key),
     nonExplicitSupportedLngs: true,
     fallbackLng: 'en',
     defaultNS: 'common',
@@ -29,7 +29,7 @@ i18n
     },
   });
 
-i18n.on('languageChanged', lng => {
+i18n.on('languageChanged', (lng) => {
   if (lng === 'ru' && z.locales.ru) {
     z.config(z.locales.ru());
   } else if (lng === 'en' && z.locales.en) {

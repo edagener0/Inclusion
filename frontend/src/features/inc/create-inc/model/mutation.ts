@@ -18,7 +18,7 @@ export function useCreateIncMutation() {
       navigate({ to: '.', search: { modal: undefined } });
       queryClient.invalidateQueries({ queryKey: incQueries.feed().queryKey });
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('error'));
     },

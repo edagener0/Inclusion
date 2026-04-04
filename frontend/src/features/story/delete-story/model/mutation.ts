@@ -21,7 +21,7 @@ export function useDeleteStoryMutation() {
 
   return useMutation({
     mutationFn: deleteStory,
-    onMutate: async deletedPostId => {
+    onMutate: async (deletedPostId) => {
       await queryClient.cancelQueries({ queryKey: feedQueryKey });
       const previousFeed = queryClient.getQueryData(feedQueryKey);
 
@@ -32,12 +32,12 @@ export function useDeleteStoryMutation() {
 
           return {
             ...oldData,
-            pages: oldData.pages.map(page => {
-              const updatedData = page.data.map(userStoryNode => {
+            pages: oldData.pages.map((page) => {
+              const updatedData = page.data.map((userStoryNode) => {
                 if (!userStoryNode.stories) return userStoryNode;
 
                 const filteredStories = userStoryNode.stories.filter(
-                  story => story.id !== deletedPostId,
+                  (story) => story.id !== deletedPostId,
                 );
 
                 if (filteredStories.length === 0) return null;

@@ -6,13 +6,13 @@ export function useStoryViewer(data: UserStories[], initialId: number, onClose?:
   const [currentId, setCurrentId] = useState(initialId);
 
   const { currentStory, currentUserGroup, currentIndex } = useMemo(() => {
-    const group = data.find(g => g.stories.some(s => s.id === currentId));
+    const group = data.find((g) => g.stories.some((s) => s.id === currentId));
 
     if (!group) {
       return { currentStory: null, currentUserGroup: null, currentIndex: -1 };
     }
 
-    const index = group.stories.findIndex(s => s.id === currentId);
+    const index = group.stories.findIndex((s) => s.id === currentId);
 
     return {
       currentStory: group.stories[index],

@@ -8,10 +8,10 @@ export const createUpdateAvatarSchema = (t: TFunction<'common'>) =>
   z.object({
     image: z
       .instanceof(File, { message: t('errors.file.required') })
-      .refine(file => file.size > 0, t('errors.file.empty'))
-      .refine(file => file.size <= MAX_FILE_SIZE, t('errors.file.tooLarge', { max: '10MB' }))
+      .refine((file) => file.size > 0, t('errors.file.empty'))
+      .refine((file) => file.size <= MAX_FILE_SIZE, t('errors.file.tooLarge', { max: '10MB' }))
       .refine(
-        file => ACCEPTED_IMAGE_TYPES.includes(file.type),
+        (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
         t('errors.file.invalidFormat', { formats: '.jpg, .jpeg, .png, .webp' }),
       ),
   });

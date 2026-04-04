@@ -18,17 +18,17 @@ export function useDeleteCommentMutation() {
 
   return useMutation({
     mutationFn: ({ commentId }: DeleteCommentVars) => deleteComment(commentId),
-    onMutate: async variables => {
+    onMutate: async (variables) => {
       const feedQueryKey = commentQueries.feed(variables.entityType, variables.entityId).queryKey;
       await queryClient.cancelQueries({ queryKey: feedQueryKey });
       const previousFeed = queryClient.getQueryData(feedQueryKey);
 
-      queryClient.setQueryData(feedQueryKey, oldData => {
+      queryClient.setQueryData(feedQueryKey, (oldData) => {
         if (!oldData) return oldData;
 
         return {
           ...oldData,
-          pages: oldData.pages.map(page => ({
+          pages: oldData.pages.map((page) => ({
             ...page,
             data: page.data.filter((comment: Comment) => comment.id !== variables.commentId),
           })),

@@ -1,9 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { createLazyFileRoute, useRouter } from '@tanstack/react-router';
 
+import { CommentSection } from '@/widgets/comment-section';
+import { PostLikeButton } from '@/widgets/post-list';
+
 import { postQueries } from '@/entities/post';
 import { PostDetail } from '@/entities/post/ui/PostDetail';
 import { UserAvatar } from '@/entities/user';
+
 import {
   Dialog,
   DialogContent,
@@ -12,8 +16,6 @@ import {
   DialogTitle,
 } from '@/shared/ui/dialog';
 import { CenterSpinner } from '@/shared/ui/spinner';
-import { CommentSection } from '@/widgets/comment-section';
-import { PostLikeButton } from '@/widgets/post-list';
 
 export const Route = createLazyFileRoute('/_main/posts/$id')({
   component: RouteComponent,
@@ -35,9 +37,9 @@ export function RouteComponent() {
 
   return (
     <Dialog open={true} onOpenChange={handleOpenChange}>
-      <DialogOverlay className="bg-black/80 z-100" />
+      <DialogOverlay className="z-100 bg-black/80" />
 
-      <DialogContent className="p-0 border-none shadow-none gap-0 z-100 flex justify-center w-full md:w-max max-w-[100vw] sm:max-w-[calc(100vw-2rem)] h-dvh md:h-fit max-h-dvh md:max-h-[90vh] overflow-hidden">
+      <DialogContent className="z-100 flex h-dvh max-h-dvh w-full max-w-[100vw] justify-center gap-0 overflow-hidden border-none p-0 shadow-none sm:max-w-[calc(100vw-2rem)] md:h-fit md:max-h-[90vh] md:w-max">
         <DialogTitle className="hidden"></DialogTitle>
         <DialogDescription className="hidden"></DialogDescription>
         <PostDetail

@@ -38,24 +38,24 @@ export function CreatePostForm() {
 
   return (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         form.handleSubmit();
       }}
-      className="flex flex-col flex-1 overflow-hidden"
+      className="flex flex-1 flex-col overflow-hidden"
     >
-      <div className="px-6 py-2 flex flex-col gap-4 flex-1 overflow-y-auto">
+      <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-6 py-2">
         <div className="bg-background">
           <form.Field
             name="description"
-            children={field => (
+            children={(field) => (
               <Textarea
                 placeholder={t('post:create.dialog.description.placeholder')}
-                className="resize-none h-50 overflow-y-auto border-none focus-visible:ring-0 shadow-none text-base px-2 py-2 leading-normal box-border"
+                className="box-border h-50 resize-none overflow-y-auto border-none px-2 py-2 text-base leading-normal shadow-none focus-visible:ring-0"
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={e => field.handleChange(e.target.value)}
+                onChange={(e) => field.handleChange(e.target.value)}
               />
             )}
           />
@@ -67,14 +67,14 @@ export function CreatePostForm() {
 
         <form.Field
           name="file"
-          children={field => (
+          children={(field) => (
             <Input
               id="file-upload"
               type="file"
               accept="image/*,video/*"
               className="hidden"
               ref={fileInputRef}
-              onChange={e => {
+              onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (!file) return;
                 handleFileSelect(file);
@@ -85,7 +85,7 @@ export function CreatePostForm() {
         />
       </div>
 
-      <div className="flex items-center justify-between border-t px-6 py-4 bg-muted/5 shrink-0">
+      <div className="bg-muted/5 flex shrink-0 items-center justify-between border-t px-6 py-4">
         <Button
           type="button"
           variant="ghost"
@@ -94,13 +94,13 @@ export function CreatePostForm() {
           asChild
         >
           <Label htmlFor="file-upload" className="cursor-pointer font-medium">
-            <ImageIcon className="w-5 h-5 mr-2" />
+            <ImageIcon className="mr-2 h-5 w-5" />
             {t('post:create.dialog.file.button')}
           </Label>
         </Button>
 
         <form.Subscribe
-          selector={state => [state.canSubmit, state.isSubmitting]}
+          selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
             <Button type="submit" className="px-6" disabled={!canSubmit || isSubmitting}>
               {isSubmitting ? t('common:actions.publishing') : t('common:actions.publish')}

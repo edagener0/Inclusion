@@ -1,6 +1,7 @@
-import { type Inc, incQueries } from '@/entities/inc';
 import { LikeButton } from '@/features/like-toggle';
 import { useToggleLike } from '@/features/like-toggle';
+
+import { type Inc, incQueries } from '@/entities/inc';
 
 type Props = {
   incId: number;

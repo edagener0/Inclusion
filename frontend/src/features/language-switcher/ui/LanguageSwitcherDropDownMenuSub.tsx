@@ -22,7 +22,7 @@ export function LanguageSwitcherDropDownMenuSub() {
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
         <DropdownMenuSubContent>
-          {supportedLanguages.map(s => (
+          {supportedLanguages.map((s) => (
             <DropdownMenuItem
               key={s.key}
               onClick={() => i18n.changeLanguage(s.key)}
@@ -31,7 +31,7 @@ export function LanguageSwitcherDropDownMenuSub() {
               <img
                 src={s.flagUrl}
                 alt={`${s.name} flag`}
-                className="h-4 w-6 object-cover rounded-sm border"
+                className="h-4 w-6 rounded-sm border object-cover"
               />
               <span>{s.name}</span>
             </DropdownMenuItem>

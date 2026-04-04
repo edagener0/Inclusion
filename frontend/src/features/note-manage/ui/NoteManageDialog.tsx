@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { NoteCard, noteQueries } from '@/entities/note';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
+
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import {
@@ -29,7 +30,7 @@ export function NoteManageDialog() {
 
   const { data: note } = useQuery({
     ...noteQueries.list(),
-    select: allNotes => allNotes.find(n => n.user.id === user.id),
+    select: (allNotes) => allNotes.find((n) => n.user.id === user.id),
   });
 
   const upsertMutation = useUpsertNoteMutation();
@@ -60,7 +61,7 @@ export function NoteManageDialog() {
         <NoteCard
           note={note ?? { ...emptyNote(user), content: t(emptyNote(user).content) }}
           avatar={
-            <UserAvatar className="w-16 h-16" avatar={user.avatar} username={user.username} />
+            <UserAvatar className="h-16 w-16" avatar={user.avatar} username={user.username} />
           }
         />
       </DialogTrigger>
@@ -71,23 +72,23 @@ export function NoteManageDialog() {
         </DialogHeader>
 
         <form
-          onSubmit={e => {
+          onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
             form.handleSubmit();
           }}
-          className="flex flex-col gap-4 mt-2"
+          className="mt-2 flex flex-col gap-4"
         >
           <form.Field
             name="content"
-            children={field => (
-              <div className="flex flex-col w-full relative mb-1">
+            children={(field) => (
+              <div className="relative mb-1 flex w-full flex-col">
                 <Textarea
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={e => field.handleChange(e.target.value)}
+                  onChange={(e) => field.handleChange(e.target.value)}
                   className={cn(
-                    'pr-10 transition-all resize-none break-all',
+                    'resize-none pr-10 break-all transition-all',
                     (field.state.meta.isTouched || field.state.meta.errors.length > 0) &&
                       field.state.meta.errors.length > 0 &&
                       'border-destructive focus-visible:ring-destructive',
@@ -97,14 +98,14 @@ export function NoteManageDialog() {
                 />
 
                 {field.state.meta.errors.length > 0 && (
-                  <p className="absolute -bottom-5 left-0 text-[10px] font-medium text-destructive animate-in fade-in slide-in-from-top-1">
+                  <p className="text-destructive animate-in fade-in slide-in-from-top-1 absolute -bottom-5 left-0 text-[10px] font-medium">
                     {field.state.meta.errors[0]?.message?.toString()}
                   </p>
                 )}
               </div>
             )}
           />
-          <div className="flex justify-between items-center gap-2">
+          <div className="flex items-center justify-between gap-2">
             <div>
               {note && (
                 <Button
@@ -131,7 +132,7 @@ export function NoteManageDialog() {
               </Button>
 
               <form.Subscribe
-                selector={state =>
+                selector={(state) =>
                   [state.canSubmit, state.isSubmitting, state.values.content] as const
                 }
                 children={([canSubmit, isSubmitting, content]) => (

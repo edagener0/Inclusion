@@ -7,9 +7,9 @@ export function StoryProgress({ total, currentIndex }: Props) {
   const storiesArray = Array.from({ length: total });
 
   return (
-    <div className="flex gap-1 w-full pointer-events-auto">
+    <div className="pointer-events-auto flex w-full gap-1">
       {storiesArray.map((_, index) => (
-        <div key={index} className="h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
+        <div key={index} className="h-1 flex-1 overflow-hidden rounded-full bg-white/30">
           <div
             className={`h-full w-full transition-colors duration-200 ${
               index <= currentIndex ? 'bg-white' : 'bg-transparent'

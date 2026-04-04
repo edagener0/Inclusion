@@ -19,10 +19,10 @@ export function FriendRequestCard({
   return (
     <Card
       key={user.id}
-      className="flex flex-row w-full items-center justify-between p-3 pt-4 pb-4 shadow-sm transition-colors hover:bg-muted/40"
+      className="hover:bg-muted/40 flex w-full flex-row items-center justify-between p-3 pt-4 pb-4 shadow-sm transition-colors"
     >
       <div className="flex items-center gap-3 overflow-hidden">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted">
+        <div className="bg-muted flex h-9 w-9 shrink-0 items-center justify-center rounded-full">
           {userAvatarSlot}
         </div>
         <div className="flex flex-col truncate">
