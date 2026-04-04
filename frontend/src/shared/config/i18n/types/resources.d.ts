@@ -133,9 +133,9 @@ interface Resources {
       "select": "Click or drag and drop"
     },
     "notFound": {
-      "button": "button",
-      "description": "description",
-      "title": "title"
+      "button": "Back to Home",
+      "description": "The page you are looking for does not exist or has been moved.",
+      "title": "404 Not Found"
     },
     "sideBar": {
       "incs": "Incs",
@@ -156,9 +156,32 @@ interface Resources {
     }
   },
   "friend": {
-    "requests": {
-      "error": "error",
-      "success": "success"
+    "request": {
+      "accept": {
+        "button": "button",
+        "error": "error",
+        "success": "success"
+      },
+      "cancel": {
+        "button": "button",
+        "error": "error",
+        "success": "success"
+      },
+      "decline": {
+        "button": "button",
+        "error": "error",
+        "success": "success"
+      },
+      "remove": {
+        "button": "button",
+        "error": "error",
+        "success": "success"
+      },
+      "send": {
+        "button": "button",
+        "error": "error",
+        "success": "success"
+      }
     }
   },
   "inc": {

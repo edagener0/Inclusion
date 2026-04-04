@@ -1,20 +1,16 @@
-import { useTranslation } from 'react-i18next';
-
 import { useQuery } from '@tanstack/react-query';
-import { notFound, useNavigate } from '@tanstack/react-router';
+import { notFound } from '@tanstack/react-router';
 
 import { useSession } from '@/entities/session';
 import { ProfileInfo, UserAvatar, profileQueries } from '@/entities/user';
-import { Button } from '@/shared/ui/button';
+import { FriendshipManageButton } from '@/features/friend/frindship-manage';
 import { Card, CardContent } from '@/shared/ui/card';
 import { CenterSpinner } from '@/shared/ui/spinner';
 
 export function ProfileHeader({ username }: { username: string }) {
-  const { data: profile, isLoading } = useQuery(profileQueries.byUsername(username));
   const session = useSession();
-  const navigate = useNavigate();
-  const { t } = useTranslation('user');
 
+  const { data: profile, isLoading } = useQuery(profileQueries.byUsername(username));
   if (isLoading) return <CenterSpinner />;
   if (!profile) throw notFound();
 
@@ -38,16 +34,7 @@ export function ProfileHeader({ username }: { username: string }) {
             />
 
             <div className="flex flex-wrap justify-center sm:justify-start gap-2 pt-1">
-              {session.id === profile.id && (
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="bg-white hover:bg-zinc-100 text-zinc-900 shadow-sm border border-zinc-200 dark:border-none dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200 dark:shadow-none h-8 px-3 text-xs"
-                  onClick={() => navigate({ to: '.', search: { modal: 'user-settings' } })}
-                >
-                  {t('menu.settings')}
-                </Button>
-              )}
+              {session.id !== profile.id && <FriendshipManageButton profile={profile} />}
             </div>
           </div>
         </div>
