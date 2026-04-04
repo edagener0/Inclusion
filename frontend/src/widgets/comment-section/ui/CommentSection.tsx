@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -7,6 +6,7 @@ import { CommentCard, CommentCardSkeleton, commentQueries } from '@/entities/com
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
 import { CreateComment } from '@/features/comment/create-comment';
+import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { cn } from '@/shared/lib/utils';
 
 import { CommentActions } from './CommentActions';
@@ -20,31 +20,17 @@ interface CommentSectionProps {
 
 export function CommentSection({ entityType, entityId, className }: CommentSectionProps) {
   const user = useSession();
+  const { t } = useTranslation('comment');
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery(
     commentQueries.feed(entityType, entityId),
   );
 
-  const { t } = useTranslation('comment');
-
-  const observerTarget = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      {
-        root: null,
-        rootMargin: '200px',
-        threshold: 0,
-      },
-    );
-
-    if (observerTarget.current) observer.observe(observerTarget.current);
-    return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  const { observerTarget } = useInfiniteScroll({
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  });
 
   const allComments = data?.pages.flatMap(page => page.data) ?? [];
 

@@ -1,8 +1,7 @@
-import { useEffect, useRef } from 'react';
-
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { PostCardSkeleton, postQueries } from '@/entities/post';
+import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { CenterSpinner } from '@/shared/ui/spinner';
 
 import { PostListItem } from './PostListItem';
@@ -12,28 +11,11 @@ export function PostList() {
     postQueries.feed(),
   );
 
-  const observerTarget = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const target = observerTarget.current;
-
-    if (!target) return;
-
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 1.0 },
-    );
-
-    observer.observe(target);
-
-    return () => {
-      observer.unobserve(target);
-    };
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  const { observerTarget } = useInfiniteScroll({
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  });
 
   const allPosts = data?.pages.flatMap(page => page.data) ?? [];
 

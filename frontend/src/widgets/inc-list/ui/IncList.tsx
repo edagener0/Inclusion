@@ -1,8 +1,7 @@
-import { useEffect, useRef } from 'react';
-
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { IncCardSkeleton, incQueries } from '@/entities/inc';
+import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { CenterSpinner } from '@/shared/ui/spinner';
 
 import { IncListItem } from './IncListItem';
@@ -12,28 +11,11 @@ export function IncList() {
     incQueries.feed(),
   );
 
-  const observerTarget = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const target = observerTarget.current;
-
-    if (!target) return;
-
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 1.0 },
-    );
-
-    observer.observe(target);
-
-    return () => {
-      observer.unobserve(target);
-    };
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  const { observerTarget } = useInfiniteScroll({
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  });
 
   const incs = data?.pages.flatMap(page => page.data) ?? [];
 
