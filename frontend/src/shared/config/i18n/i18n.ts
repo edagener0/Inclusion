@@ -18,6 +18,9 @@ i18n
     defaultNS: 'common',
     ns: ['common'],
     debug: import.meta.env.DEV,
+    react: {
+      useSuspense: false,
+    },
     interpolation: {
       escapeValue: false,
     },
