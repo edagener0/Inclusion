@@ -27,7 +27,6 @@ export function FriendRequestCard({
         </div>
         <div className="flex flex-col truncate">
           <span className="truncate text-sm font-medium">{user.username}</span>
-          <span className="text-xs text-muted-foreground">Хочет в друзья</span>
         </div>
       </div>
 

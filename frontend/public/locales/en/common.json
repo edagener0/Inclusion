@@ -55,6 +55,17 @@
     "description": "The page you are looking for does not exist or has been moved.",
     "title": "404 Not Found"
   },
+  "notification": {
+    "all": {
+      "empty": "There is no notifications.",
+      "title": "All"
+    },
+    "requests": {
+      "empty": "There is no friend requests.",
+      "title": "Requests"
+    },
+    "title": "Notifications"
+  },
   "sideBar": {
     "incs": "Incs",
     "messages": "Messages",

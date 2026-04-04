@@ -137,6 +137,17 @@ interface Resources {
       "description": "The page you are looking for does not exist or has been moved.",
       "title": "404 Not Found"
     },
+    "notification": {
+      "all": {
+        "empty": "There is no notifications.",
+        "title": "All"
+      },
+      "requests": {
+        "empty": "There is no friend requests.",
+        "title": "Requests"
+      },
+      "title": "Notifications"
+    },
     "sideBar": {
       "incs": "Incs",
       "messages": "Messages",
@@ -158,29 +169,29 @@ interface Resources {
   "friend": {
     "request": {
       "accept": {
-        "button": "button",
-        "error": "error",
-        "success": "success"
+        "button": "Accept friend request",
+        "error": "Error while accepting friend request.",
+        "success": "Friend request successfully accepted."
       },
       "cancel": {
-        "button": "button",
-        "error": "error",
-        "success": "success"
+        "button": "Cancel friend request",
+        "error": "Error while cancelling friend request.",
+        "success": "Friend request successfully cancelled."
       },
       "decline": {
-        "button": "button",
-        "error": "error",
-        "success": "success"
+        "button": "Decline friend request",
+        "error": "Error while declining friend request.",
+        "success": "Friend request successfully declined."
       },
       "remove": {
-        "button": "button",
-        "error": "error",
-        "success": "success"
+        "button": "Remove friend",
+        "error": "Error while removing friend.",
+        "success": "Friend successfully removed."
       },
       "send": {
-        "button": "button",
-        "error": "error",
-        "success": "success"
+        "button": "Send friend request",
+        "error": "Error while sending friend request.",
+        "success": "Friend request successfully sent."
       }
     }
   },

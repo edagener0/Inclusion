@@ -55,6 +55,17 @@
     "description": "",
     "title": ""
   },
+  "notification": {
+    "all": {
+      "empty": "",
+      "title": ""
+    },
+    "requests": {
+      "empty": "",
+      "title": ""
+    },
+    "title": ""
+  },
   "sideBar": {
     "incs": "Incs",
     "messages": "Messages",

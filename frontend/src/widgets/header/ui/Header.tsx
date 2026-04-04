@@ -12,9 +12,10 @@ import { Sheet, SheetContent, SheetTrigger } from '@/shared/ui/sheet';
 type Props = {
   sideBarSlot: ReactNode;
   userMenuSlot: ReactNode;
+  notificationSlot: ReactNode;
 };
 
-export function Header({ sideBarSlot, userMenuSlot }: Props) {
+export function Header({ sideBarSlot, userMenuSlot, notificationSlot }: Props) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -57,6 +58,7 @@ export function Header({ sideBarSlot, userMenuSlot }: Props) {
                 className="pl-9 rounded-full h-9 bg-muted/50 border-none focus-visible:ring-1"
               />
             </div>
+            {notificationSlot}
             {userMenuSlot}
           </div>
         </div>

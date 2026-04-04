@@ -35,7 +35,7 @@ export async function getReceivedById(id: number): Promise<UserPreview | null> {
 export async function fetchReceived(
   page: number,
 ): Promise<{ data: UserPreview[]; hasNextPage: boolean }> {
-  const response = await api.get<PaginatedResponse<unknown>>('/friends/requests', {
+  const response = await api.get<PaginatedResponse<unknown>>('/friends/requests/received', {
     params: { page },
   });
 
