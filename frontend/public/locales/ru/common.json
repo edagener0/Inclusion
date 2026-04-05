@@ -43,12 +43,29 @@
       "tooLarge": "Максимальный размер файла - {{max}}."
     }
   },
+  "friends": "",
   "language": "Язык",
   "mediaUploader": {
     "changeFile": "Изменить файл",
     "fullscreen": "На весь экран",
     "preview": "Предпросмотр",
     "select": "Нажмите или перетащите файл"
+  },
+  "notFound": {
+    "button": "",
+    "description": "",
+    "title": ""
+  },
+  "notification": {
+    "all": {
+      "empty": "",
+      "title": ""
+    },
+    "requests": {
+      "empty": "",
+      "title": ""
+    },
+    "title": ""
   },
   "sideBar": {
     "incs": "Инки",

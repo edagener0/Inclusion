@@ -1,9 +1,11 @@
 import { MoreHorizontal } from 'lucide-react';
 
+import { DeleteIncMenuItem } from '@/features/inc/delete-inc';
+
 import { type Inc, IncCard } from '@/entities/inc';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
-import { DeleteIncMenuItem } from '@/features/inc/delete-inc';
+
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 
@@ -32,7 +34,7 @@ export function IncListItem({ inc }: { inc: Inc }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="min-w-(--radix-dropdown-menu-trigger-width) w-max"
+        className="w-max min-w-(--radix-dropdown-menu-trigger-width)"
       >
         <DeleteIncMenuItem id={inc.id} />
       </DropdownMenuContent>

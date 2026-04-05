@@ -1,5 +1,6 @@
-import { commentQueries } from '@/entities/comment';
 import { LikeButton, useToggleLike } from '@/features/like-toggle';
+
+import { commentQueries } from '@/entities/comment';
 
 type Props = {
   entityType: string;

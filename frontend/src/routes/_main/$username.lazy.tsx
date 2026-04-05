@@ -1,11 +1,18 @@
-import { useTranslation } from 'react-i18next';
-
 import { useQuery } from '@tanstack/react-query';
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute, notFound } from '@tanstack/react-router';
 
-import { profileQueries } from '@/entities/user';
-import { CenterSpinner } from '@/shared/ui/spinner';
+import { FriendList } from '@/widgets/friend-list';
+import { IncList } from '@/widgets/inc-list';
+import { PostList } from '@/widgets/post-list';
+import { ProfileContent } from '@/widgets/user/profile-content';
 import { ProfileHeader } from '@/widgets/user/profile-header';
+
+import { friendQueries } from '@/entities/friend';
+import { incQueries } from '@/entities/inc';
+import { postQueries } from '@/entities/post';
+import { profileQueries } from '@/entities/user';
+
+import { CenterSpinner } from '@/shared/ui/spinner';
 
 export const Route = createLazyFileRoute('/_main/$username')({
   component: RouteComponent,
@@ -14,14 +21,18 @@ export const Route = createLazyFileRoute('/_main/$username')({
 export function RouteComponent() {
   const { username } = Route.useParams();
   const { data: user, isLoading } = useQuery(profileQueries.byUsername(username));
-  const { t } = useTranslation('user');
 
   if (isLoading) return <CenterSpinner />;
-  if (!user) return <>{t('notFound')}</>;
+  if (!user) throw notFound();
 
   return (
     <>
       <ProfileHeader username={username} />
+      <ProfileContent
+        incsSlot={<IncList queryOptions={incQueries.byUsername(username)} />}
+        postsSlot={<PostList queryOptions={postQueries.byUsername(username)} />}
+        friendsSlot={<FriendList queryOptions={friendQueries.friendsByUsername(username)} />}
+      />
     </>
   );
 }

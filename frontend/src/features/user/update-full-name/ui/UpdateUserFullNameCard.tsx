@@ -30,7 +30,7 @@ export function UpdateUserFullNameCard({
 
   return (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         form.handleSubmit();
@@ -42,10 +42,10 @@ export function UpdateUserFullNameCard({
         </CardHeader>
 
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <form.Field
               name="firstName"
-              children={field => (
+              children={(field) => (
                 <div className="flex flex-col gap-2">
                   <Label htmlFor={field.name}>{t('fullName.form.firstName')}</Label>
                   <Input
@@ -53,7 +53,7 @@ export function UpdateUserFullNameCard({
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={e => field.handleChange(e.target.value)}
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
                 </div>
               )}
@@ -61,7 +61,7 @@ export function UpdateUserFullNameCard({
 
             <form.Field
               name="lastName"
-              children={field => (
+              children={(field) => (
                 <div className="flex flex-col gap-2">
                   <Label htmlFor={field.name}>{t('fullName.form.lastName')}</Label>
                   <Input
@@ -69,7 +69,7 @@ export function UpdateUserFullNameCard({
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={e => field.handleChange(e.target.value)}
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
                 </div>
               )}

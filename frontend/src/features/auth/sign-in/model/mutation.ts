@@ -5,6 +5,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
 
 import { signIn } from '@/entities/session';
+
 import { IS_AUTH_MARKER } from '@/shared/config';
 
 export function useSignInMutation() {
@@ -18,7 +19,7 @@ export function useSignInMutation() {
       navigate({ to: '/' });
       toast.success(t('sign-in.success'));
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('sign-in.error'));
     },

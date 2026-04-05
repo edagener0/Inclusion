@@ -11,10 +11,10 @@ type Props = {
 
 export function StoryHeader({ createdAt, user, userAvatarSlot }: Props) {
   return (
-    <div className="flex items-center gap-2 pointer-events-auto">
+    <div className="pointer-events-auto flex items-center gap-2">
       {userAvatarSlot}
-      <span className="text-white font-medium text-sm drop-shadow-md">{user.username}</span>
-      <span className="text-white font-sm text-sm drop-shadow-md">{useTimeAgo(createdAt)}</span>
+      <span className="text-sm font-medium text-white drop-shadow-md">{user.username}</span>
+      <span className="font-sm text-sm text-white drop-shadow-md">{useTimeAgo(createdAt)}</span>
     </div>
   );
 }

@@ -43,12 +43,29 @@
       "tooLarge": "Максимальний розмір файлу - {{max}}."
     }
   },
+  "friends": "",
   "language": "Мова",
   "mediaUploader": {
     "changeFile": "Змінити файл",
     "fullscreen": "На весь екран",
     "preview": "Попередній перегляд",
     "select": "Натисніть або перетягніть сюди"
+  },
+  "notFound": {
+    "button": "",
+    "description": "",
+    "title": ""
+  },
+  "notification": {
+    "all": {
+      "empty": "",
+      "title": ""
+    },
+    "requests": {
+      "empty": "",
+      "title": ""
+    },
+    "title": ""
   },
   "sideBar": {
     "incs": "Інки",

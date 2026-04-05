@@ -13,12 +13,12 @@ interface MediaPreviewCardProps {
 export function MediaPreviewCard({ previewUrl, type, onRemove }: MediaPreviewCardProps) {
   const { t } = useTranslation('common');
   return (
-    <div className="relative rounded-xl overflow-hidden border border-border/50 bg-black/5 flex items-center justify-center dark:bg-black/20 shrink-0">
+    <div className="border-border/50 relative flex shrink-0 items-center justify-center overflow-hidden rounded-xl border bg-black/5 dark:bg-black/20">
       <Button
         type="button"
         variant="ghost"
         size="icon"
-        className="absolute top-2 right-2 h-8 w-8 rounded-full z-10 bg-black/50 hover:bg-black/70 text-white backdrop-blur-md transition-all"
+        className="absolute top-2 right-2 z-10 h-8 w-8 rounded-full bg-black/50 text-white backdrop-blur-md transition-all hover:bg-black/70"
         onClick={onRemove}
       >
         <X className="h-4 w-4" />

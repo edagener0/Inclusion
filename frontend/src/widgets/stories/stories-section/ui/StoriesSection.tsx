@@ -5,6 +5,7 @@ import { Link, useLocation } from '@tanstack/react-router';
 
 import { StoryCard, StoryCardSkeleton, storyQueries } from '@/entities/story';
 import { UserAvatar } from '@/entities/user';
+
 import { ScrollArea, ScrollBar } from '@/shared/ui/scroll-area';
 
 export function StoriesSection() {
@@ -19,17 +20,17 @@ export function StoriesSection() {
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const stories = data?.pages.flatMap(page => page.data) ?? [];
+  const stories = data?.pages.flatMap((page) => page.data) ?? [];
 
   if (!isLoading && !stories.length) return null;
 
   return (
-    <div className="relative w-full max-w-2xl mb-4 border-b border-border/40">
-      <ScrollArea className="w-full whitespace-nowrap mask-[linear-gradient(to_right,black_85%,transparent_100%)] md:mask-[linear-gradient(to_right,black_90%,transparent_100%)] cursor-grab active:cursor-grabbing">
+    <div className="border-border/40 relative mb-4 w-full max-w-2xl border-b">
+      <ScrollArea className="w-full cursor-grab mask-[linear-gradient(to_right,black_85%,transparent_100%)] whitespace-nowrap active:cursor-grabbing md:mask-[linear-gradient(to_right,black_90%,transparent_100%)]">
         <div className="flex w-max space-x-4 px-2 py-4 pr-12">
           {isLoading
             ? Array.from({ length: 10 }).map((_, i) => <StoryCardSkeleton key={i} />)
-            : stories.map(story => (
+            : stories.map((story) => (
                 <Link
                   to="/stories/$id"
                   params={{ id: String(story.stories[0].id) }}
@@ -40,7 +41,7 @@ export function StoriesSection() {
                     username={story.user.username}
                     userAvatarSlot={
                       <UserAvatar
-                        className="w-16 h-16"
+                        className="h-16 w-16"
                         username={story.user.username}
                         avatar={story.user.avatar}
                       />

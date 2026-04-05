@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 
 import { StoryHeader, StoryMedia, StoryProgress, storyQueries } from '@/entities/story';
 import { UserAvatar } from '@/entities/user';
+
 import { Button } from '@/shared/ui/button';
 
 import { useStoryViewer } from '../model/user-story-viewer';
@@ -18,7 +19,7 @@ type Props = {
 
 export function StoryViewer({ initialId, onClose }: Props) {
   const { data } = useInfiniteQuery(storyQueries.feed());
-  const flatData = data?.pages.flatMap(p => p.data) ?? [];
+  const flatData = data?.pages.flatMap((p) => p.data) ?? [];
   const { t } = useTranslation('common');
 
   const { currentStory, currentUserGroup, currentIndex, next, prev } = useStoryViewer(
@@ -30,11 +31,11 @@ export function StoryViewer({ initialId, onClose }: Props) {
   if (!currentUserGroup || !currentStory) return null;
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center bg-black select-none">
-      <div className="absolute top-0 left-0 right-0 z-20 flex flex-col gap-3 p-4 bg-linear-to-b from-black/60 to-transparent pointer-events-none">
+    <div className="relative flex h-full w-full flex-col items-center justify-center bg-black select-none">
+      <div className="pointer-events-none absolute top-0 right-0 left-0 z-20 flex flex-col gap-3 bg-linear-to-b from-black/60 to-transparent p-4">
         <StoryProgress total={currentUserGroup.stories.length} currentIndex={currentIndex} />
 
-        <div className="flex items-center justify-between w-full">
+        <div className="flex w-full items-center justify-between">
           <div className="pointer-events-auto">
             <StoryHeader
               user={currentUserGroup.user}
@@ -55,25 +56,25 @@ export function StoryViewer({ initialId, onClose }: Props) {
               <Button
                 variant="ghost"
                 onClick={onClose}
-                className="p-2 text-white/80 transition-colors hover:text-white hover:bg-white/20 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/50 cursor-pointer"
+                className="cursor-pointer rounded-full p-2 text-white/80 transition-colors outline-none hover:bg-white/20 hover:text-white focus-visible:ring-2 focus-visible:ring-white/50"
                 aria-label={t('actions.close')}
               >
-                <X className="w-6 h-6 drop-shadow-md" />
+                <X className="h-6 w-6 drop-shadow-md" />
               </Button>
             )}
           </div>
         </div>
       </div>
 
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center">
         <StoryMedia story={currentStory} />
       </div>
 
-      <div className="absolute inset-y-0 left-0 w-1/3 z-10 cursor-pointer" onClick={prev} />
+      <div className="absolute inset-y-0 left-0 z-10 w-1/3 cursor-pointer" onClick={prev} />
 
-      <div className="absolute inset-y-0 right-0 w-2/3 z-10 cursor-pointer" onClick={next} />
+      <div className="absolute inset-y-0 right-0 z-10 w-2/3 cursor-pointer" onClick={next} />
 
-      <div className="absolute bottom-0 left-0 right-0 z-20 flex justify-end p-4 bg-linear-to-t from-black/60 to-transparent pointer-events-none">
+      <div className="pointer-events-none absolute right-0 bottom-0 left-0 z-20 flex justify-end bg-linear-to-t from-black/60 to-transparent p-4">
         <div className="pointer-events-auto">
           <StoryLikeButton
             storyId={currentStory.id}

@@ -14,7 +14,7 @@ export function LikeButton({ count, isLiked, isLoading, onToggle }: Props) {
     <Button
       variant="ghost"
       size="sm"
-      onClick={e => {
+      onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
         onToggle();
@@ -22,8 +22,8 @@ export function LikeButton({ count, isLiked, isLoading, onToggle }: Props) {
       disabled={isLoading}
       className={`gap-2 transition-colors ${
         isLiked
-          ? 'text-red-500 hover:text-red-600 hover:bg-red-500/10'
-          : 'text-muted-foreground hover:text-red-500 hover:bg-red-500/10'
+          ? 'text-red-500 hover:bg-red-500/10 hover:text-red-600'
+          : 'text-muted-foreground hover:bg-red-500/10 hover:text-red-500'
       }`}
     >
       <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />

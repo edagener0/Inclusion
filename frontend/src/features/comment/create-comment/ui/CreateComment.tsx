@@ -27,8 +27,8 @@ export function CreateComment({ entityId, entityType }: Props) {
 
   return (
     <form
-      className="relative flex items-start w-full gap-2"
-      onSubmit={e => {
+      className="relative flex w-full items-start gap-2"
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         form.handleSubmit();
@@ -36,12 +36,12 @@ export function CreateComment({ entityId, entityType }: Props) {
     >
       <form.Field
         name="commentary"
-        children={field => (
-          <div className="flex flex-col w-full relative">
+        children={(field) => (
+          <div className="relative flex w-full flex-col">
             <Input
               value={field.state.value}
               onBlur={field.handleBlur}
-              onChange={e => field.handleChange(e.target.value)}
+              onChange={(e) => field.handleChange(e.target.value)}
               placeholder="Write a comment..."
               className={cn(
                 'pr-10 transition-all',
@@ -52,7 +52,7 @@ export function CreateComment({ entityId, entityType }: Props) {
             />
 
             {field.state.meta.errors.length > 0 && (
-              <p className="absolute -bottom-5 left-0 text-[10px] font-medium text-destructive animate-in fade-in slide-in-from-top-1">
+              <p className="text-destructive animate-in fade-in slide-in-from-top-1 absolute -bottom-5 left-0 text-[10px] font-medium">
                 {field.state.meta.errors[0]?.message?.toString()}
               </p>
             )}
@@ -61,7 +61,7 @@ export function CreateComment({ entityId, entityType }: Props) {
       />
 
       <form.Subscribe
-        selector={state => ({
+        selector={(state) => ({
           isSubmitting: state.isSubmitting,
           value: state.values.commentary,
         })}
@@ -72,7 +72,7 @@ export function CreateComment({ entityId, entityType }: Props) {
             variant="secondary"
             disabled={!value.trim() || isSubmitting}
           >
-            <Send className="w-4 h-4" />
+            <Send className="h-4 w-4" />
           </Button>
         )}
       />

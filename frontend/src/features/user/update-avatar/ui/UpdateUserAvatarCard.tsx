@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@tanstack/react-form';
 
 import { UserAvatar } from '@/entities/user';
+
 import { Button } from '@/shared/ui/button';
 import {
   Card,
@@ -51,7 +52,7 @@ export function UpdateUserAvatarCard({
   return (
     <Card className="overflow-hidden">
       <form
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
           form.handleSubmit();
@@ -62,17 +63,17 @@ export function UpdateUserAvatarCard({
           <CardDescription>{tU('form.description')}</CardDescription>
         </CardHeader>
 
-        <CardContent className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+        <CardContent className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
           <UserAvatar
             avatar={previewUrl || currentAvatar}
             username={username}
-            className="size-24 sm:size-32 rounded-full border border-border shadow-sm shrink-0"
+            className="border-border size-24 shrink-0 rounded-full border shadow-sm sm:size-32"
           />
 
-          <div className="flex flex-col gap-2 w-full max-w-sm">
+          <div className="flex w-full max-w-sm flex-col gap-2">
             <form.Field
               name="image"
-              children={field => (
+              children={(field) => (
                 <>
                   <Label htmlFor={field.name} className="font-semibold">
                     {tU('form.image.label')}
@@ -83,7 +84,7 @@ export function UpdateUserAvatarCard({
                     className="cursor-pointer file:cursor-pointer"
                     accept="image/png, image/jpeg, image/jpg, image/webp"
                     onBlur={field.handleBlur}
-                    onChange={e => {
+                    onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
                         field.handleChange(file);
@@ -91,7 +92,7 @@ export function UpdateUserAvatarCard({
                       }
                     }}
                   />
-                  <p className="text-xs text-muted-foreground">{tU('form.image.size')}</p>
+                  <p className="text-muted-foreground text-xs">{tU('form.image.size')}</p>
 
                   <FieldError errors={field.state.meta.errors} />
                 </>
@@ -100,9 +101,9 @@ export function UpdateUserAvatarCard({
           </div>
         </CardContent>
 
-        <CardFooter className="flex justify-end border-t bg-muted/50 px-6 py-4 mt-2">
+        <CardFooter className="bg-muted/50 mt-2 flex justify-end border-t px-6 py-4">
           <form.Subscribe
-            selector={state => [state.canSubmit, state.isSubmitting, state.isDirty]}
+            selector={(state) => [state.canSubmit, state.isSubmitting, state.isDirty]}
             children={([canSubmit, isSubmitting, isDirty]) => (
               <Button
                 type="submit"

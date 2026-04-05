@@ -43,12 +43,29 @@
       "tooLarge": "Taille maximale du fichier - {{max}}."
     }
   },
+  "friends": "",
   "language": "Langue",
   "mediaUploader": {
     "changeFile": "Changer de fichier",
     "fullscreen": "Plein écran",
     "preview": "Aperçu",
     "select": "Cliquez ou glissez-déposez"
+  },
+  "notFound": {
+    "button": "",
+    "description": "",
+    "title": ""
+  },
+  "notification": {
+    "all": {
+      "empty": "",
+      "title": ""
+    },
+    "requests": {
+      "empty": "",
+      "title": ""
+    },
+    "title": ""
   },
   "sideBar": {
     "incs": "Incs",

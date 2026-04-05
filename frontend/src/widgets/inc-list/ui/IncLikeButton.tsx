@@ -1,6 +1,7 @@
-import { type Inc, incQueries } from '@/entities/inc';
 import { LikeButton } from '@/features/like-toggle';
 import { useToggleLike } from '@/features/like-toggle';
+
+import { type Inc, incQueries } from '@/entities/inc';
 
 type Props = {
   incId: number;
@@ -17,7 +18,7 @@ export function IncLikeButton({ incId, isLiked, likesCount }: Props) {
       entityId: incId,
       isLiked,
       count: likesCount,
-      queryKey: incQueries.feed().queryKey,
+      queryKey: incQueries.all(),
     });
   };
 

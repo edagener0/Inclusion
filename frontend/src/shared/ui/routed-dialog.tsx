@@ -15,7 +15,7 @@ export function RoutedDialog({ children }: RoutedDialogProps) {
     if (!isOpen) {
       navigate({
         to: '.',
-        search: prev => ({
+        search: (prev) => ({
           ...prev,
           modal: undefined,
         }),

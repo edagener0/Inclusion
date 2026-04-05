@@ -1,6 +1,7 @@
-import { type Note, noteQueries } from '@/entities/note';
 import { LikeButton } from '@/features/like-toggle';
 import { useToggleLike } from '@/features/like-toggle';
+
+import { type Note, noteQueries } from '@/entities/note';
 
 type Props = {
   noteId: number;

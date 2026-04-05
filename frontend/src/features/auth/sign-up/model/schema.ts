@@ -17,7 +17,7 @@ export const createSignUpSchema = (t: TFunction<'auth', 'sign-up'>) =>
           message: t('fields.username.errors.regex'),
         }),
     })
-    .refine(data => data.password === data.confirmPassword, {
+    .refine((data) => data.password === data.confirmPassword, {
       message: t('fields.password.errors.missmatch'),
       path: ['confirmPassword'],
     });

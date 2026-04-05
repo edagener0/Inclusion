@@ -1,15 +1,21 @@
 import { MoreHorizontal } from 'lucide-react';
 
+import { DeletePostMenuItem } from '@/features/post/delete-post';
+
 import { type Post, PostCard } from '@/entities/post';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
-import { DeletePostMenuItem } from '@/features/post/delete-post';
+
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 
 import { PostLikeButton } from './PostLikeButton';
 
-export function PostListItem({ post }: { post: Post }) {
+type Props = {
+  post: Post;
+};
+
+export function PostListItem({ post }: Props) {
   const user = useSession();
   const isAuthor = user.id === post.user.id;
 
@@ -32,7 +38,7 @@ export function PostListItem({ post }: { post: Post }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="min-w-(--radix-dropdown-menu-trigger-width) w-max"
+        className="w-max min-w-(--radix-dropdown-menu-trigger-width)"
       >
         <DeletePostMenuItem id={post.id} />
       </DropdownMenuContent>

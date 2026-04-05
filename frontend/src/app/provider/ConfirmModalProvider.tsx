@@ -21,7 +21,7 @@ export function ConfirmModalProvider() {
   return (
     <ConfirmDialog
       isOpen={isOpen}
-      onOpenChange={open => !open && closeConfirm()}
+      onOpenChange={(open) => !open && closeConfirm()}
       onConfirm={handleConfirm}
       isLoading={isLoading}
       title={config.title}

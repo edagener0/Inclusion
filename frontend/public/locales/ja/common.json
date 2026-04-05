@@ -43,12 +43,29 @@
       "tooLarge": "最大ファイルサイズ - {{max}}。"
     }
   },
+  "friends": "",
   "language": "言語",
   "mediaUploader": {
     "changeFile": "ファイルを変更",
     "fullscreen": "フルスクリーン",
     "preview": "プレビュー",
     "select": "クリックまたはドラッグ＆ドロップ"
+  },
+  "notFound": {
+    "button": "",
+    "description": "",
+    "title": ""
+  },
+  "notification": {
+    "all": {
+      "empty": "",
+      "title": ""
+    },
+    "requests": {
+      "empty": "",
+      "title": ""
+    },
+    "title": ""
   },
   "sideBar": {
     "incs": "Incs",

@@ -16,7 +16,7 @@ export function useSignUpMutation() {
       navigate({ to: '/sign-in' });
       toast.success(t('sign-up.success'));
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('sign-up.error'));
     },

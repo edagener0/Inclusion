@@ -22,7 +22,7 @@ export function useCreateStoryMutation() {
       navigate({ to: '.', search: { modal: undefined } });
       queryClient.invalidateQueries({ queryKey: storyQueries.feed().queryKey });
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('error'));
     },

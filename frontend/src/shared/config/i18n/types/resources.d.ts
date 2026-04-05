@@ -125,12 +125,29 @@ interface Resources {
         "tooLarge": "Maximum file size - {{max}}."
       }
     },
+    "friends": "friends",
     "language": "Language",
     "mediaUploader": {
       "changeFile": "Change file",
       "fullscreen": "Fullscreen",
       "preview": "Preview",
       "select": "Click or drag and drop"
+    },
+    "notFound": {
+      "button": "Back to Home",
+      "description": "The page you are looking for does not exist or has been moved.",
+      "title": "404 Not Found"
+    },
+    "notification": {
+      "all": {
+        "empty": "There is no notifications.",
+        "title": "All"
+      },
+      "requests": {
+        "empty": "There is no friend requests.",
+        "title": "Requests"
+      },
+      "title": "Notifications"
     },
     "sideBar": {
       "incs": "Incs",
@@ -148,6 +165,35 @@ interface Resources {
     },
     "time": {
       "justNow": "just now"
+    }
+  },
+  "friend": {
+    "request": {
+      "accept": {
+        "button": "Accept friend request",
+        "error": "Error while accepting friend request.",
+        "success": "Friend request successfully accepted."
+      },
+      "cancel": {
+        "button": "Cancel friend request",
+        "error": "Error while cancelling friend request.",
+        "success": "Friend request successfully cancelled."
+      },
+      "decline": {
+        "button": "Decline friend request",
+        "error": "Error while declining friend request.",
+        "success": "Friend request successfully declined."
+      },
+      "remove": {
+        "button": "Remove friend",
+        "error": "Error while removing friend.",
+        "success": "Friend successfully removed."
+      },
+      "send": {
+        "button": "Send friend request",
+        "error": "Error while sending friend request.",
+        "success": "Friend request successfully sent."
+      }
     }
   },
   "inc": {
@@ -263,7 +309,6 @@ interface Resources {
       "settings": "Settings",
       "signOut": "Sign Out"
     },
-    "notFound": "User not found",
     "privacy": {
       "error": "Error while updating privacy settings",
       "form": {

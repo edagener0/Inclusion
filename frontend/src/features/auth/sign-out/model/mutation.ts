@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { signOut } from '@/entities/session';
+
 import { IS_AUTH_MARKER } from '@/shared/config';
 
 export function useSignOutMutation() {
@@ -19,7 +20,7 @@ export function useSignOutMutation() {
       localStorage.removeItem(IS_AUTH_MARKER);
       window.location.href = '/sign-in';
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('sign-out.error'));
     },

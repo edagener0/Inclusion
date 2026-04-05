@@ -2,11 +2,13 @@ import { useTranslation } from 'react-i18next';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { userQueries } from '@/entities/user';
 import { UserPrivacyToggle } from '@/features/user/privacy-toggle';
 import { UpdateUserAvatarCard } from '@/features/user/update-avatar';
 import { UpdateUserBioCard } from '@/features/user/update-bio';
 import { UpdateUserFullNameCard } from '@/features/user/update-full-name';
+
+import { userQueries } from '@/entities/user';
+
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
 import { RoutedDialog } from '@/shared/ui/routed-dialog';
 import { CenterSpinner } from '@/shared/ui/spinner';
@@ -21,7 +23,7 @@ export function UserSettingsModal() {
 
   return (
     <RoutedDialog>
-      <DialogContent className="sm:max-w-175 h-[85vh] flex flex-col p-0">
+      <DialogContent className="flex h-[85vh] flex-col p-0 sm:max-w-175">
         <div className="px-6 pt-6 pb-2">
           <DialogHeader>
             <DialogTitle>{t('title')}</DialogTitle>
@@ -29,7 +31,7 @@ export function UserSettingsModal() {
           </DialogHeader>
         </div>
 
-        <Tabs defaultValue="general" className="flex flex-col flex-1 overflow-hidden">
+        <Tabs defaultValue="general" className="flex flex-1 flex-col overflow-hidden">
           <div className="px-6">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger

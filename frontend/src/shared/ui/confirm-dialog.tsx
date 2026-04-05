@@ -51,7 +51,7 @@ export const ConfirmDialog = ({
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>{cancelText}</AlertDialogCancel>
           <AlertDialogAction
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault();
               onConfirm();
             }}

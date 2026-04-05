@@ -15,7 +15,7 @@ export function useDeleteNoteMutation() {
       toast.success(t('success'));
       queryClient.invalidateQueries({ queryKey: noteQueries.all() });
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error);
       toast.error(t('error'));
     },

@@ -1,0 +1,29 @@
+{
+  "request": {
+    "accept": {
+      "button": "Accept friend request",
+      "error": "Error while accepting friend request.",
+      "success": "Friend request successfully accepted."
+    },
+    "cancel": {
+      "button": "Cancel friend request",
+      "error": "Error while cancelling friend request.",
+      "success": "Friend request successfully cancelled."
+    },
+    "decline": {
+      "button": "Decline friend request",
+      "error": "Error while declining friend request.",
+      "success": "Friend request successfully declined."
+    },
+    "remove": {
+      "button": "Remove friend",
+      "error": "Error while removing friend.",
+      "success": "Friend successfully removed."
+    },
+    "send": {
+      "button": "Send friend request",
+      "error": "Error while sending friend request.",
+      "success": "Friend request successfully sent."
+    }
+  }
+}

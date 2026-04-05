@@ -24,7 +24,7 @@ export function CreateIncForm() {
   return (
     <form
       className="flex flex-col gap-4 pt-4"
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         form.handleSubmit();
@@ -33,19 +33,19 @@ export function CreateIncForm() {
       <div className="space-y-4">
         <form.Field
           name="content"
-          children={field => (
+          children={(field) => (
             <div>
               <Textarea
                 placeholder={t('inc:create.fields.content.placeholder')}
                 className="min-h-32"
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={e => field.handleChange(e.target.value)}
+                onChange={(e) => field.handleChange(e.target.value)}
                 autoFocus
               />
 
               {field.state.meta.errors.length > 0 && (
-                <p className="pt-2 text-[10px] font-medium text-destructive animate-in fade-in slide-in-from-top-1">
+                <p className="text-destructive animate-in fade-in slide-in-from-top-1 pt-2 text-[10px] font-medium">
                   {field.state.meta.errors[0]?.message?.toString()}
                 </p>
               )}
@@ -58,7 +58,7 @@ export function CreateIncForm() {
           {t('common:actions.cancel')}
         </Button>
         <form.Subscribe
-          selector={state => [state.canSubmit, state.isSubmitting]}
+          selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
             <Button type="submit" disabled={!canSubmit || isSubmitting}>
               {isSubmitting ? t('common:actions.publishing') : t('common:actions.publish')}
