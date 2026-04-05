@@ -2,14 +2,13 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { type Post, PostCardSkeleton } from '@/entities/post';
 
-import type { AnyInfiniteOptions } from '@/shared/api';
+import type { AnyInfiniteOptions, PaginatedReturnData } from '@/shared/api';
 import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { CenterSpinner } from '@/shared/ui/spinner';
 
 import { PostListItem } from './PostListItem';
 
-type PostPageData = { data: Post[]; hasNextPage: boolean };
-type Props = { queryOptions: AnyInfiniteOptions<PostPageData> };
+type Props = { queryOptions: AnyInfiniteOptions<PaginatedReturnData<Post>> };
 
 export function PostList({ queryOptions }: Props) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =

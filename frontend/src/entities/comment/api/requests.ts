@@ -1,5 +1,5 @@
 import { api } from '@/shared/api';
-import type { PaginatedResponse } from '@/shared/api';
+import type { PaginatedResponse, PaginatedReturnData } from '@/shared/api';
 
 import { type Comment, CommentSchema } from '../model/schema';
 import type { CreateCommentDTO, FetchCommentsDTO } from './types';
@@ -16,7 +16,7 @@ export async function fetchComments({
   entityId,
   entityType: entity,
   page,
-}: FetchCommentsDTO): Promise<{ data: Comment[]; hasNextPage: boolean }> {
+}: FetchCommentsDTO): Promise<PaginatedReturnData<Comment>> {
   const response = await api.get<PaginatedResponse<Comment>>(`/${entity}/${entityId}/comments`, {
     params: { page },
   });

@@ -2,14 +2,13 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { type Inc, IncCardSkeleton } from '@/entities/inc';
 
-import type { AnyInfiniteOptions } from '@/shared/api';
+import type { AnyInfiniteOptions, PaginatedReturnData } from '@/shared/api';
 import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { CenterSpinner } from '@/shared/ui/spinner';
 
 import { IncListItem } from './IncListItem';
 
-type PostPageData = { data: Inc[]; hasNextPage: boolean };
-type Props = { queryOptions: AnyInfiniteOptions<PostPageData> };
+type Props = { queryOptions: AnyInfiniteOptions<PaginatedReturnData<Inc>> };
 
 export function IncList({ queryOptions }: Props) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
