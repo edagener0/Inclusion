@@ -1,10 +1,8 @@
-import { type PaginatedResponse, api } from '@/shared/api';
+import { type PaginatedResponse, type PaginatedReturnData, api } from '@/shared/api';
 
 import { type UserStories, UserStoriesSchema } from '../model/schema';
 
-export async function fetchStories(
-  page: number,
-): Promise<{ data: UserStories[]; hasNextPage: boolean }> {
+export async function fetchStories(page: number): Promise<PaginatedReturnData<UserStories>> {
   const response = await api.get<PaginatedResponse<unknown>>('/stories', { params: { page } });
 
   return {

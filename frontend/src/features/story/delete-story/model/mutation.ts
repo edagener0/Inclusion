@@ -7,10 +7,7 @@ import { toast } from 'sonner';
 import { type UserStories, storyQueries } from '@/entities/story';
 import { deleteStory } from '@/entities/story';
 
-type FeedPage = {
-  data: UserStories[];
-  hasNextPage: boolean;
-};
+import type { PaginatedReturnData } from '@/shared/api';
 
 export function useDeleteStoryMutation() {
   const navigate = useNavigate();
@@ -27,7 +24,7 @@ export function useDeleteStoryMutation() {
 
       queryClient.setQueryData(
         feedQueryKey,
-        (oldData: InfiniteData<FeedPage, unknown> | undefined) => {
+        (oldData: InfiniteData<PaginatedReturnData<UserStories>, unknown> | undefined) => {
           if (!oldData) return oldData;
 
           return {
