@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ImagesIcon, ScrollTextIcon } from 'lucide-react';
+import { ImagesIcon, ScrollTextIcon, UsersIcon } from 'lucide-react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 
@@ -38,7 +38,7 @@ export function ProfileContent({ postsSlot, incsSlot, friendsSlot }: Props) {
               value="friends"
               className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 shadow-sm transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-950"
             >
-              <ImagesIcon className="h-4 w-4" />
+              <UsersIcon className="h-4 w-4" />
               <span className="hidden sm:inline">{t('friends')}</span>
             </TabsTrigger>
           </TabsList>
