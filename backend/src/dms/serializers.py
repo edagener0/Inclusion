@@ -1,42 +1,34 @@
 from rest_framework import serializers
 from drf_spectacular.utils import extend_schema_field
 from authentication.serializers import UserMeSerializer
-from django.contrib.auth import get_user_model
 from .models import DM
-
-User = get_user_model()
-
-
-class DMCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DM
-        fields = ["content", "receiver"]
-
-    def validate_receiver(self, value):
-        request = self.context["request"]
-
-        if value.id == request.user.id:
-            raise serializers.ValidationError("You cannot send a DM to yourself.")
-
-        return value
 
 
 class DMInboxSerializer(serializers.ModelSerializer):
-    other_user = serializers.SerializerMethodField(read_only=True)
+    user = serializers.SerializerMethodField(read_only=True)
     last_message = serializers.CharField(source="content", read_only=True)
 
     class Meta:
         model = DM
-        fields = ["id", "other_user", "last_message", "created_at"]
+        fields = ["id", "user", "last_message", "created_at"]
         read_only_fields = fields
 
     @extend_schema_field(UserMeSerializer)
-    def get_other_user(self, obj):
+    def get_user(self, obj):
         # A mesma DM pode ser enviada ou recebida pelo utilizador autenticado.
         # Aqui escolhemos sempre "o outro lado" da conversa para a inbox.
         request = self.context["request"]
         other_user = obj.receiver if obj.sender_id == request.user.id else obj.sender
-        return UserMeSerializer(other_user).data
+        serializer_context = (
+            self.context
+            if hasattr(request, "build_absolute_uri")
+            else None
+        )
+
+        if serializer_context is None:
+            return UserMeSerializer(other_user).data
+
+        return UserMeSerializer(other_user, context=serializer_context).data
 
 
 class DMConversationCreateSerializer(serializers.ModelSerializer):
