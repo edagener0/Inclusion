@@ -41,15 +41,13 @@ def _normalize_group_payload(group_payload):
 def serialize_group_realtime_message(message):
     serializer = GroupRealtimeMessageSerializer(message)
     payload = camelize(serializer.data)
-    payload["sender"] = _normalize_user_payload(payload["sender"])
+    payload["user"] = _normalize_user_payload(payload["user"])
     return payload
 
 
 def serialize_group_deleted_message(message):
     return camelize({
         "id": message.id,
-        "group_id": message.group_id,
-        "sender_id": message.sender_id,
     })
 
 

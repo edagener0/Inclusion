@@ -47,6 +47,8 @@ class DMViewsTests(APITestCase):
         self.assertEqual(response.data["results"][1]["last_message"], "latest bob")
         self.assertEqual(response.data["results"][1]["user"]["username"], self.user2.username)
         self.assertTrue(response.data["results"][1]["user"]["avatar"].startswith("http://testserver/"))
+        self.assertNotIn("firstName", response.data["results"][1]["user"])
+        self.assertNotIn("lastName", response.data["results"][1]["user"])
 
     def test_inbox_post_is_not_allowed(self):
         response = self.client.post(
@@ -95,7 +97,11 @@ class DMViewsTests(APITestCase):
             ).exists()
         )
         mocked_broadcast.assert_called_once()
-        self.assertEqual(response.data["receiver"]["username"], self.user2.username)
+        self.assertEqual(response.data["user"]["username"], self.user1.username)
+        self.assertNotIn("receiver", response.data)
+        self.assertNotIn("sender", response.data)
+        self.assertNotIn("firstName", response.data["user"])
+        self.assertNotIn("lastName", response.data["user"])
 
     def test_sender_can_update_own_dm_message(self):
         dm = DM.objects.create(sender=self.user1, receiver=self.user2, content="before")
@@ -111,6 +117,19 @@ class DMViewsTests(APITestCase):
         mocked_broadcast.assert_called_once()
         dm.refresh_from_db()
         self.assertEqual(dm.content, "after")
+
+    def test_put_is_not_allowed_for_dm_message_update(self):
+        dm = DM.objects.create(sender=self.user1, receiver=self.user2, content="before")
+
+        response = self.client.put(
+            reverse("dm-message-retrieve-update-destroy", kwargs={"dm_id": dm.id}),
+            {"content": "after"},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        dm.refresh_from_db()
+        self.assertEqual(dm.content, "before")
 
     def test_receiver_cannot_update_dm_message(self):
         dm = DM.objects.create(sender=self.user1, receiver=self.user2, content="before")
@@ -194,16 +213,18 @@ class DMRealtimeHelpersTests(APITestCase):
         self.assertEqual(build_dm_conversation_group(3, 7), "dm_3_7")
         self.assertEqual(build_dm_conversation_group(7, 3), "dm_3_7")
 
-    def test_realtime_payload_is_camel_case_and_contains_user_ids(self):
+    def test_realtime_payload_is_camel_case_and_contains_user(self):
         dm = DM.objects.create(sender=self.user1, receiver=self.user2, content="hello")
 
         payload = serialize_dm_realtime_message(dm)
 
-        self.assertEqual(payload["senderId"], self.user1.id)
-        self.assertEqual(payload["receiverId"], self.user2.id)
         self.assertIn("createdAt", payload)
         self.assertNotIn("created_at", payload)
-        self.assertTrue(payload["sender"]["avatar"].startswith("http://localhost:8000/"))
+        self.assertNotIn("receiver", payload)
+        self.assertNotIn("sender", payload)
+        self.assertTrue(payload["user"]["avatar"].startswith("http://localhost:8000/"))
+        self.assertNotIn("firstName", payload["user"])
+        self.assertNotIn("lastName", payload["user"])
 
     def test_inbox_payload_uses_user_for_current_user(self):
         dm = DM.objects.create(sender=self.user1, receiver=self.user2, content="hello inbox")
@@ -213,6 +234,8 @@ class DMRealtimeHelpersTests(APITestCase):
         self.assertEqual(payload["user"]["id"], self.user2.id)
         self.assertEqual(payload["lastMessage"], "hello inbox")
         self.assertTrue(payload["user"]["avatar"].startswith("http://localhost:8000/"))
+        self.assertNotIn("firstName", payload["user"])
+        self.assertNotIn("lastName", payload["user"])
 
 
 class DMWebSocketTests(TransactionTestCase):
@@ -325,7 +348,9 @@ class DMWebSocketTests(TransactionTestCase):
             payload = await communicator.receive_json_from(timeout=2)
             self.assertEqual(payload["type"], "dm.message.created")
             self.assertEqual(payload["message"]["content"], "hello through rest")
-            self.assertEqual(payload["message"]["receiverId"], self.user2.id)
+            self.assertEqual(payload["message"]["user"]["id"], self.user1.id)
+            self.assertNotIn("receiver", payload["message"])
+            self.assertNotIn("sender", payload["message"])
 
             await communicator.disconnect()
 
@@ -442,6 +467,7 @@ class DMWebSocketTests(TransactionTestCase):
             payload = await communicator.receive_json_from(timeout=2)
             self.assertEqual(payload["type"], "dm.message.deleted")
             self.assertEqual(payload["message"]["id"], dm.id)
+            self.assertEqual(list(payload["message"].keys()), ["id"])
 
             await communicator.disconnect()
 

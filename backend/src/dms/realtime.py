@@ -36,8 +36,7 @@ def _normalize_user_payload(user_payload):
 def serialize_dm_realtime_message(dm):
     serializer = DMRealtimeMessageSerializer(dm)
     payload = camelize(serializer.data)
-    payload["sender"] = _normalize_user_payload(payload["sender"])
-    payload["receiver"] = _normalize_user_payload(payload["receiver"])
+    payload["user"] = _normalize_user_payload(payload["user"])
     return payload
 
 
@@ -54,8 +53,6 @@ def serialize_dm_inbox_item(dm, current_user):
 def serialize_dm_deleted_message(dm):
     return camelize({
         "id": dm.id,
-        "sender_id": dm.sender_id,
-        "receiver_id": dm.receiver_id,
     })
 
 
