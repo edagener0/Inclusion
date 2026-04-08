@@ -16,15 +16,18 @@ import { Route as MainProfileRouteImport } from './routes/_main/profile'
 import { Route as MainPostsRouteImport } from './routes/_main/posts'
 import { Route as MainMessagesRouteImport } from './routes/_main/messages'
 import { Route as MainIncsRouteImport } from './routes/_main/incs'
+import { Route as MainGamesRouteImport } from './routes/_main/games'
 import { Route as MainUsernameRouteImport } from './routes/_main/$username'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as MainStoriesIndexRouteImport } from './routes/_main/stories/index'
 import { Route as MainPostsIndexRouteImport } from './routes/_main/posts/index'
 import { Route as MainIncsIndexRouteImport } from './routes/_main/incs/index'
+import { Route as MainGamesIndexRouteImport } from './routes/_main/games/index'
 import { Route as MainStoriesIdRouteImport } from './routes/_main/stories/$id'
 import { Route as MainPostsIdRouteImport } from './routes/_main/posts/$id'
 import { Route as MainIncsIdRouteImport } from './routes/_main/incs/$id'
+import { Route as MainGamesWordleRouteImport } from './routes/_main/games/wordle'
 
 const MainRoute = MainRouteImport.update({
   id: '/_main',
@@ -59,6 +62,11 @@ const MainIncsRoute = MainIncsRouteImport.update({
   path: '/incs',
   getParentRoute: () => MainRoute,
 } as any)
+const MainGamesRoute = MainGamesRouteImport.update({
+  id: '/games',
+  path: '/games',
+  getParentRoute: () => MainRoute,
+} as any)
 const MainUsernameRoute = MainUsernameRouteImport.update({
   id: '/$username',
   path: '/$username',
@@ -91,6 +99,11 @@ const MainIncsIndexRoute = MainIncsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => MainIncsRoute,
 } as any)
+const MainGamesIndexRoute = MainGamesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainGamesRoute,
+} as any)
 const MainStoriesIdRoute = MainStoriesIdRouteImport.update({
   id: '/stories/$id',
   path: '/stories/$id',
@@ -112,19 +125,27 @@ const MainIncsIdRoute = MainIncsIdRouteImport.update({
 } as any).lazy(() =>
   import('./routes/_main/incs/$id.lazy').then((d) => d.Route),
 )
+const MainGamesWordleRoute = MainGamesWordleRouteImport.update({
+  id: '/wordle',
+  path: '/wordle',
+  getParentRoute: () => MainGamesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/$username': typeof MainUsernameRoute
+  '/games': typeof MainGamesRouteWithChildren
   '/incs': typeof MainIncsRouteWithChildren
   '/messages': typeof MainMessagesRoute
   '/posts': typeof MainPostsRouteWithChildren
   '/profile': typeof MainProfileRoute
+  '/games/wordle': typeof MainGamesWordleRoute
   '/incs/$id': typeof MainIncsIdRoute
   '/posts/$id': typeof MainPostsIdRoute
   '/stories/$id': typeof MainStoriesIdRoute
+  '/games/': typeof MainGamesIndexRoute
   '/incs/': typeof MainIncsIndexRoute
   '/posts/': typeof MainPostsIndexRoute
   '/stories/': typeof MainStoriesIndexRoute
@@ -136,9 +157,11 @@ export interface FileRoutesByTo {
   '/$username': typeof MainUsernameRoute
   '/messages': typeof MainMessagesRoute
   '/profile': typeof MainProfileRoute
+  '/games/wordle': typeof MainGamesWordleRoute
   '/incs/$id': typeof MainIncsIdRoute
   '/posts/$id': typeof MainPostsIdRoute
   '/stories/$id': typeof MainStoriesIdRoute
+  '/games': typeof MainGamesIndexRoute
   '/incs': typeof MainIncsIndexRoute
   '/posts': typeof MainPostsIndexRoute
   '/stories': typeof MainStoriesIndexRoute
@@ -150,14 +173,17 @@ export interface FileRoutesById {
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_main/$username': typeof MainUsernameRoute
+  '/_main/games': typeof MainGamesRouteWithChildren
   '/_main/incs': typeof MainIncsRouteWithChildren
   '/_main/messages': typeof MainMessagesRoute
   '/_main/posts': typeof MainPostsRouteWithChildren
   '/_main/profile': typeof MainProfileRoute
   '/_main/': typeof MainIndexRoute
+  '/_main/games/wordle': typeof MainGamesWordleRoute
   '/_main/incs/$id': typeof MainIncsIdRoute
   '/_main/posts/$id': typeof MainPostsIdRoute
   '/_main/stories/$id': typeof MainStoriesIdRoute
+  '/_main/games/': typeof MainGamesIndexRoute
   '/_main/incs/': typeof MainIncsIndexRoute
   '/_main/posts/': typeof MainPostsIndexRoute
   '/_main/stories/': typeof MainStoriesIndexRoute
@@ -169,13 +195,16 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/$username'
+    | '/games'
     | '/incs'
     | '/messages'
     | '/posts'
     | '/profile'
+    | '/games/wordle'
     | '/incs/$id'
     | '/posts/$id'
     | '/stories/$id'
+    | '/games/'
     | '/incs/'
     | '/posts/'
     | '/stories/'
@@ -187,9 +216,11 @@ export interface FileRouteTypes {
     | '/$username'
     | '/messages'
     | '/profile'
+    | '/games/wordle'
     | '/incs/$id'
     | '/posts/$id'
     | '/stories/$id'
+    | '/games'
     | '/incs'
     | '/posts'
     | '/stories'
@@ -200,14 +231,17 @@ export interface FileRouteTypes {
     | '/_auth/sign-in'
     | '/_auth/sign-up'
     | '/_main/$username'
+    | '/_main/games'
     | '/_main/incs'
     | '/_main/messages'
     | '/_main/posts'
     | '/_main/profile'
     | '/_main/'
+    | '/_main/games/wordle'
     | '/_main/incs/$id'
     | '/_main/posts/$id'
     | '/_main/stories/$id'
+    | '/_main/games/'
     | '/_main/incs/'
     | '/_main/posts/'
     | '/_main/stories/'
@@ -269,6 +303,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIncsRouteImport
       parentRoute: typeof MainRoute
     }
+    '/_main/games': {
+      id: '/_main/games'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof MainGamesRouteImport
+      parentRoute: typeof MainRoute
+    }
     '/_main/$username': {
       id: '/_main/$username'
       path: '/$username'
@@ -311,6 +352,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIncsIndexRouteImport
       parentRoute: typeof MainIncsRoute
     }
+    '/_main/games/': {
+      id: '/_main/games/'
+      path: '/'
+      fullPath: '/games/'
+      preLoaderRoute: typeof MainGamesIndexRouteImport
+      parentRoute: typeof MainGamesRoute
+    }
     '/_main/stories/$id': {
       id: '/_main/stories/$id'
       path: '/stories/$id'
@@ -332,6 +380,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIncsIdRouteImport
       parentRoute: typeof MainIncsRoute
     }
+    '/_main/games/wordle': {
+      id: '/_main/games/wordle'
+      path: '/wordle'
+      fullPath: '/games/wordle'
+      preLoaderRoute: typeof MainGamesWordleRouteImport
+      parentRoute: typeof MainGamesRoute
+    }
   }
 }
 
@@ -346,6 +401,20 @@ const AuthRouteChildren: AuthRouteChildren = {
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface MainGamesRouteChildren {
+  MainGamesWordleRoute: typeof MainGamesWordleRoute
+  MainGamesIndexRoute: typeof MainGamesIndexRoute
+}
+
+const MainGamesRouteChildren: MainGamesRouteChildren = {
+  MainGamesWordleRoute: MainGamesWordleRoute,
+  MainGamesIndexRoute: MainGamesIndexRoute,
+}
+
+const MainGamesRouteWithChildren = MainGamesRoute._addFileChildren(
+  MainGamesRouteChildren,
+)
 
 interface MainIncsRouteChildren {
   MainIncsIdRoute: typeof MainIncsIdRoute
@@ -377,6 +446,7 @@ const MainPostsRouteWithChildren = MainPostsRoute._addFileChildren(
 
 interface MainRouteChildren {
   MainUsernameRoute: typeof MainUsernameRoute
+  MainGamesRoute: typeof MainGamesRouteWithChildren
   MainIncsRoute: typeof MainIncsRouteWithChildren
   MainMessagesRoute: typeof MainMessagesRoute
   MainPostsRoute: typeof MainPostsRouteWithChildren
@@ -388,6 +458,7 @@ interface MainRouteChildren {
 
 const MainRouteChildren: MainRouteChildren = {
   MainUsernameRoute: MainUsernameRoute,
+  MainGamesRoute: MainGamesRouteWithChildren,
   MainIncsRoute: MainIncsRouteWithChildren,
   MainMessagesRoute: MainMessagesRoute,
   MainPostsRoute: MainPostsRouteWithChildren,

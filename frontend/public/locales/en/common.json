@@ -68,6 +68,7 @@
     "title": "Notifications"
   },
   "sideBar": {
+    "games": "Games",
     "incs": "Incs",
     "messages": "Messages",
     "newContent": "New Content",

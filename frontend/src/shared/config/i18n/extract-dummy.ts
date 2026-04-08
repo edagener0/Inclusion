@@ -9,6 +9,7 @@ const _dummy = () => {
   t('common:sideBar.messages');
   t('common:sideBar.settings');
   t('common:sideBar.newContent');
+  t('common:sideBar.games');
   t('common:createContent.post.label');
   t('common:createContent.post.description');
   t('common:createContent.inc.label');

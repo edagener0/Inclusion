@@ -125,7 +125,7 @@ interface Resources {
         "tooLarge": "Maximum file size - {{max}}."
       }
     },
-    "friends": "friends",
+    "friends": "Friends",
     "language": "Language",
     "mediaUploader": {
       "changeFile": "Change file",
@@ -150,6 +150,7 @@ interface Resources {
       "title": "Notifications"
     },
     "sideBar": {
+      "games": "common:sideBar.games",
       "incs": "Incs",
       "messages": "Messages",
       "newContent": "New Content",

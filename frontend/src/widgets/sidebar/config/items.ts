@@ -1,4 +1,4 @@
-import { ImagesIcon, Mail, PlusIcon, ScrollTextIcon, Settings, UserIcon } from 'lucide-react';
+import { ImagesIcon, Mail, PlusIcon, ScrollTextIcon, Settings, UserIcon, Gamepad2Icon } from 'lucide-react';
 
 import type { NavItem } from '../model/types';
 
@@ -7,6 +7,7 @@ export const navItems = [
   { icon: ImagesIcon, label: 'sideBar.posts', path: '/posts', modal: undefined },
   { icon: UserIcon, label: 'sideBar.profile', path: '/profile', modal: undefined },
   { icon: Mail, label: 'sideBar.messages', path: '/messages', modal: undefined },
+  { icon: Gamepad2Icon, label: 'sideBar.games', path: '/games', modal: undefined },
   { icon: Settings, label: 'sideBar.settings', modal: 'user-settings', path: '.' },
   { icon: PlusIcon, label: 'sideBar.newContent', modal: 'create-content', path: '.' },
 ] as const satisfies NavItem[];
