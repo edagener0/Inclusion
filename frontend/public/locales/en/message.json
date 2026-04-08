@@ -1,3 +1,9 @@
 {
+  "first": {
+    "description": "description",
+    "error": "error",
+    "placeholder": "placeholder",
+    "success": "success"
+  },
   "title": "Messages"
 }

@@ -14,5 +14,8 @@
     "success": "¡Comentario eliminado con éxito!"
   },
   "empty": "Aún no hay comentarios. ¡Sé el primero!",
+  "send": {
+    "placeholder": ""
+  },
   "title": "Comentarios"
 }

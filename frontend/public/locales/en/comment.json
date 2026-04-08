@@ -14,5 +14,8 @@
     "success": "Comment deleted successfully!"
   },
   "empty": "There are no comments yet. Be the first!",
+  "send": {
+    "placeholder": "placeholder"
+  },
   "title": "Comments"
 }

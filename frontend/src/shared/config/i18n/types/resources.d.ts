@@ -78,6 +78,9 @@ interface Resources {
       "success": "Comment deleted successfully!"
     },
     "empty": "There are no comments yet. Be the first!",
+    "send": {
+      "placeholder": "placeholder"
+    },
     "title": "Comments"
   },
   "common": {
@@ -125,7 +128,7 @@ interface Resources {
         "tooLarge": "Maximum file size - {{max}}."
       }
     },
-    "friends": "friends",
+    "friends": "Friends",
     "language": "Language",
     "mediaUploader": {
       "changeFile": "Change file",
@@ -219,6 +222,12 @@ interface Resources {
     }
   },
   "message": {
+    "first": {
+      "description": "description",
+      "error": "error",
+      "placeholder": "placeholder",
+      "success": "success"
+    },
     "title": "Messages"
   },
   "note": {

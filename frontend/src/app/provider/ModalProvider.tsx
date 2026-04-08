@@ -29,12 +29,19 @@ const CreateStoryModal = lazy(() =>
   import('@/features/story/create-story').then((module) => ({ default: module.CreateStoryModal })),
 );
 
+const CreateConversationDialog = lazy(() =>
+  import('@/features/conversation/create-conversation').then((module) => ({
+    default: module.CreateConversationDialog,
+  })),
+);
+
 const MODAL_COMPONENTS: Record<ModalType, React.ComponentType> = {
   'user-settings': UserSettingsModal,
   'create-content': CreateContentSelectorModal,
   'create-post': CreatePostModal,
   'create-inc': CreateIncModal,
   'create-story': CreateStoryModal,
+  'create-conversation': CreateConversationDialog,
 };
 
 export function ModalProvider() {

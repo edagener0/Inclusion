@@ -22,8 +22,12 @@ const modalEnum = z.enum([
   'create-post',
   'create-inc',
   'create-story',
+  'create-conversation',
 ]);
-const SearchSchema = z.object({ modal: modalEnum.optional() });
+const SearchSchema = z.object({
+  modal: modalEnum.optional(),
+  userId: z.int().positive().optional(),
+});
 
 export type ModalType = z.infer<typeof modalEnum>;
 

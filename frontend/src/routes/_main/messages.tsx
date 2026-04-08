@@ -2,7 +2,10 @@ import { useTranslation } from 'react-i18next';
 
 import { createFileRoute } from '@tanstack/react-router';
 
+import { ConversationList } from '@/widgets/conversation/conversation-list';
 import { NotesSection } from '@/widgets/notes-section';
+
+import { SelectFriendDialog } from '@/features/conversation/create-conversation';
 
 import { loadNamespace } from '@/shared/config';
 
@@ -18,11 +21,19 @@ function Messages() {
   const { t } = useTranslation('message');
 
   return (
-    <div className="flex flex-col">
-      <div className="max-h-60 overflow-y-hidden border-b">
+    <div className="flex h-full flex-col">
+      <div className="shrink-0 border-b pb-4">
         <NotesSection />
       </div>
-      <h2 className="pt-4 text-xl font-bold">{t('title')}</h2>
+
+      <div className="flex min-h-0 flex-1 flex-col pt-4">
+        <div className="mb-4 flex items-center justify-between pr-4">
+          <h2 className="text-xl font-bold">{t('title')}</h2>
+          <SelectFriendDialog />
+        </div>
+
+        <ConversationList />
+      </div>
     </div>
   );
 }
