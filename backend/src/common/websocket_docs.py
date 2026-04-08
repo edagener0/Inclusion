@@ -78,7 +78,15 @@ class DMConversationWebSocketDocView(APIView):
                 "type": "dm.inbox.updated",
                 "inboxItem": {
                     "id": 1,
+                    "user": {
+                        "id": 20,
+                        "username": "bob",
+                        "firstName": "Bob",
+                        "lastName": "Builder",
+                        "avatar": "http://localhost:8000/media/avatars/default.webp",
+                    },
                     "lastMessage": "Hello",
+                    "createdAt": "2026-03-19T10:00:00Z",
                 },
             },
             response_only=True,

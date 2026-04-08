@@ -37,7 +37,7 @@ class DMViewsTests(APITestCase):
         latest_bob_dm = DM.objects.create(sender=self.user2, receiver=self.user1, content="latest bob")
         latest_charlie_dm = DM.objects.create(sender=self.user1, receiver=self.user3, content="latest charlie")
 
-        response = self.client.get(reverse("dm-create-list"))
+        response = self.client.get(reverse("dm-list"))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["results"]), 2)
@@ -45,26 +45,24 @@ class DMViewsTests(APITestCase):
         self.assertEqual(response.data["results"][0]["last_message"], "latest charlie")
         self.assertEqual(response.data["results"][1]["id"], latest_bob_dm.id)
         self.assertEqual(response.data["results"][1]["last_message"], "latest bob")
-        self.assertEqual(response.data["results"][1]["other_user"]["username"], self.user2.username)
+        self.assertEqual(response.data["results"][1]["user"]["username"], self.user2.username)
+        self.assertTrue(response.data["results"][1]["user"]["avatar"].startswith("http://testserver/"))
 
-    def test_create_dm_from_inbox_sets_authenticated_user_as_sender(self):
-        with patch("dms.views.schedule_dm_message_created_broadcast") as mocked_broadcast:
-            response = self.client.post(
-                reverse("dm-create-list"),
-                {"content": "hello inbox", "receiver": self.user2.id},
-                format="json",
-            )
+    def test_inbox_post_is_not_allowed(self):
+        response = self.client.post(
+            reverse("dm-list"),
+            {"content": "hello inbox", "receiver": self.user2.id},
+            format="json",
+        )
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        self.assertFalse(
             DM.objects.filter(
                 sender=self.user1,
                 receiver=self.user2,
                 content="hello inbox",
             ).exists()
         )
-        mocked_broadcast.assert_called_once()
-        self.assertEqual(response.data["content"], "hello inbox")
 
     def test_conversation_messages_view_lists_only_messages_between_two_users(self):
         first_dm = DM.objects.create(sender=self.user1, receiver=self.user2, content="first")
@@ -161,7 +159,7 @@ class DMViewsTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        inbox_response = self.client.get(reverse("dm-create-list"))
+        inbox_response = self.client.get(reverse("dm-list"))
         self.assertEqual(inbox_response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(inbox_response.data["results"]), 1)
         self.assertEqual(inbox_response.data["results"][0]["id"], older_dm.id)
@@ -177,7 +175,7 @@ class DMViewsTests(APITestCase):
     def test_unauthenticated_access_is_rejected(self):
         self.client.force_authenticate(user=None)
 
-        response = self.client.get(reverse("dm-create-list"))
+        response = self.client.get(reverse("dm-list"))
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
         response = self.client.get(
@@ -207,14 +205,14 @@ class DMRealtimeHelpersTests(APITestCase):
         self.assertNotIn("created_at", payload)
         self.assertTrue(payload["sender"]["avatar"].startswith("http://localhost:8000/"))
 
-    def test_inbox_payload_uses_other_user_for_current_user(self):
+    def test_inbox_payload_uses_user_for_current_user(self):
         dm = DM.objects.create(sender=self.user1, receiver=self.user2, content="hello inbox")
 
         payload = serialize_dm_inbox_item(dm, self.user1)
 
-        self.assertEqual(payload["otherUser"]["id"], self.user2.id)
+        self.assertEqual(payload["user"]["id"], self.user2.id)
         self.assertEqual(payload["lastMessage"], "hello inbox")
-        self.assertTrue(payload["otherUser"]["avatar"].startswith("http://localhost:8000/"))
+        self.assertTrue(payload["user"]["avatar"].startswith("http://localhost:8000/"))
 
 
 class DMWebSocketTests(TransactionTestCase):
@@ -365,7 +363,7 @@ class DMWebSocketTests(TransactionTestCase):
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
             payload = await communicator.receive_json_from(timeout=2)
             self.assertEqual(payload["type"], "dm.inbox.updated")
-            self.assertEqual(payload["inboxItem"]["otherUser"]["id"], self.user1.id)
+            self.assertEqual(payload["inboxItem"]["user"]["id"], self.user1.id)
             self.assertEqual(payload["inboxItem"]["lastMessage"], "hello inbox after post")
 
             await communicator.disconnect()
@@ -480,7 +478,7 @@ class DMWebSocketTests(TransactionTestCase):
             self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
             payload = await communicator.receive_json_from(timeout=2)
             self.assertEqual(payload["type"], "dm.inbox.removed")
-            self.assertEqual(payload["conversation"]["otherUserId"], self.user1.id)
+            self.assertEqual(payload["conversation"]["userId"], self.user1.id)
 
             await communicator.disconnect()
 
