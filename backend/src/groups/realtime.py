@@ -53,7 +53,7 @@ def serialize_group_deleted_message(message):
     })
 
 
-def serialize_group_inbox_item(group, current_user):
+def serialize_group_inbox_item(group):
     serializer = GroupInboxSerializer(group)
     payload = camelize(serializer.data)
     return _normalize_group_payload(payload)
@@ -74,18 +74,18 @@ def _broadcast_group_message_event(event_type, payload, group_id):
     )
 
 
-def _broadcast_group_inbox_updated(group_id, member_user_id):
+def _broadcast_group_inbox_updated(group_id, member_user):
     channel_layer = get_channel_layer()
 
     if channel_layer is None:
         return
 
-    group = build_group_queryset_for_user(member_user_id).get(id=group_id)
+    group = build_group_queryset_for_user(member_user).get(id=group_id)
     async_to_sync(channel_layer.group_send)(
-        build_group_user_group(member_user_id.id),
+        build_group_user_group(member_user.id),
         {
             "type": "group.inbox.updated",
-            "group_item": serialize_group_inbox_item(group, member_user_id),
+            "group_item": serialize_group_inbox_item(group),
         },
     )
 

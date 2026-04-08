@@ -59,9 +59,8 @@ def serialize_dm_deleted_message(dm):
     })
 
 
-def serialize_dm_removed_conversation(current_user_id, other_user_id):
+def serialize_dm_removed_conversation(other_user_id):
     return camelize({
-        "current_user_id": current_user_id,
         "user_id": other_user_id,
     })
 
@@ -107,7 +106,6 @@ def _broadcast_dm_inbox_state_for_user(current_user_id, other_user_id):
             {
                 "type": "dm.inbox.removed",
                 "conversation": serialize_dm_removed_conversation(
-                    current_user_id,
                     other_user_id,
                 ),
             },
