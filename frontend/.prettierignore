@@ -1,2 +1,3 @@
 routeTree.gen.ts
 src/shared/config/i18n/types/*
+src-tauri/
