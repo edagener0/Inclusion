@@ -1,6 +1,6 @@
 import { cn } from '@/shared/lib/utils';
 
-import { type WordleTileProps } from '../model/hook';
+import { type WordleTileProps } from '../model/types';
 
 export function WordleTile({ letter, status = 'empty' }: WordleTileProps) {
   return (

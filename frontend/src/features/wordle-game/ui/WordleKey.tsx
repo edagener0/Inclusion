@@ -1,7 +1,7 @@
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 
-import { type WordleKeyProps } from '../model/hook';
+import { type WordleKeyProps } from '../model/types';
 
 export function WordleKey({ value, status = 'unused', onClick, disabled }: WordleKeyProps) {
   const isSpecialKey = value.length > 1;

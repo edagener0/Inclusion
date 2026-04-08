@@ -1,4 +1,4 @@
-import { type WordleBoardProps } from '../model/hook';
+import { type WordleBoardProps } from '../model/types';
 import { WordleTile } from './WordleTile';
 
 export function WordleBoard({
