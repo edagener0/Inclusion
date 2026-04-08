@@ -3,7 +3,7 @@ from django.db import transaction
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
-from authentication.serializers import UserMeSerializer
+from common.serializers import ProfileFeedSerializer
 
 from .models import GroupChat, GroupMessage, GroupParticipants
 
@@ -11,7 +11,7 @@ User = get_user_model()
 
 
 class GroupParticipantSerializer(serializers.ModelSerializer):
-    user = UserMeSerializer(read_only=True)
+    user = ProfileFeedSerializer(read_only=True)
 
     class Meta:
         model = GroupParticipants
@@ -151,27 +151,23 @@ class GroupMessageUpdateSerializer(serializers.ModelSerializer):
 
 
 class GroupMessageSerializer(serializers.ModelSerializer):
-    sender = UserMeSerializer(read_only=True)
+    user = ProfileFeedSerializer(read_only=True, source="sender")
 
     class Meta:
         model = GroupMessage
-        fields = ["id", "content", "sender", "created_at", "updated_at"]
+        fields = ["id", "content", "user", "created_at", "updated_at"]
         read_only_fields = fields
 
 
 class GroupRealtimeMessageSerializer(serializers.ModelSerializer):
-    sender = UserMeSerializer(read_only=True)
-    sender_id = serializers.IntegerField(read_only=True)
-    group_id = serializers.IntegerField(read_only=True)
+    user = ProfileFeedSerializer(read_only=True, source="sender")
 
     class Meta:
         model = GroupMessage
         fields = [
             "id",
             "content",
-            "sender",
-            "sender_id",
-            "group_id",
+            "user",
             "created_at",
             "updated_at",
         ]

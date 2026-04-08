@@ -159,6 +159,7 @@ class DMRetrieveUpdateDestroyView(DMUpdateResponseMixin, RetrieveUpdateDestroyAP
     response_serializer_class = DMConversationMessageSerializer
     lookup_url_kwarg = "dm_id"
     lookup_field = "id"
+    http_method_names = ["get", "patch", "delete", "head", "options"]
 
     def get_queryset(self):
         if getattr(self, "swagger_fake_view", False):
