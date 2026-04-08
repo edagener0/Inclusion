@@ -1,6 +1,6 @@
 import { api } from '@/shared/api';
 
-import { type Profile, ProfileSchema, type User, UserSchema } from '../model/types';
+import { type Profile, ProfileSchema, type User, UserSchema } from '../model/schema';
 
 export async function getProfileByUsername(username: string): Promise<Profile> {
   const response = await api.get(`/profiles/${username}`);

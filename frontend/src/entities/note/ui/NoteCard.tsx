@@ -1,6 +1,6 @@
 import { type ReactNode, forwardRef } from 'react';
 
-import type { Note } from '../model/types';
+import type { Note } from '../model/schema';
 
 interface Props {
   note: Note;
@@ -12,15 +12,15 @@ export const NoteCard = forwardRef<HTMLDivElement, Props>(({ note, avatar, ...pr
     <div
       ref={ref}
       {...props}
-      className="flex flex-col items-center w-24 max-w-24 shrink-0 relative group cursor-pointer"
+      className="group relative flex w-24 max-w-24 shrink-0 cursor-pointer flex-col items-center"
     >
-      <div className="absolute -top-2 z-10 bg-background border rounded-full px-2 py-1 text-[12px]/[16px] shadow-sm max-w-24 truncate transition-transform group-hover:scale-110">
+      <div className="bg-background absolute -top-2 z-10 max-w-24 truncate rounded-full border px-2 py-1 text-[12px]/[16px] shadow-sm transition-transform group-hover:scale-110">
         {note.content}
       </div>
 
       {avatar}
 
-      <span className="text-sm mt-1 truncate w-full text-center text-muted-foreground group-hover:text-foreground">
+      <span className="text-muted-foreground group-hover:text-foreground mt-1 w-full truncate text-center text-sm">
         {note.user.username}
       </span>
     </div>

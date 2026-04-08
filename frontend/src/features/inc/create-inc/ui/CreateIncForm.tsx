@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useForm } from '@tanstack/react-form';
 
 import { Button } from '@/shared/ui/button';
@@ -9,6 +11,7 @@ import { type CreateInc, CreateIncSchema } from '../model/schema';
 
 export function CreateIncForm() {
   const mutation = useCreateIncMutation();
+  const { t } = useTranslation(['common', 'inc']);
 
   const form = useForm({
     defaultValues: { content: '' } as CreateInc,
@@ -21,7 +24,7 @@ export function CreateIncForm() {
   return (
     <form
       className="flex flex-col gap-4 pt-4"
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         form.handleSubmit();
@@ -30,19 +33,19 @@ export function CreateIncForm() {
       <div className="space-y-4">
         <form.Field
           name="content"
-          children={field => (
+          children={(field) => (
             <div>
               <Textarea
-                placeholder="What's new?"
+                placeholder={t('inc:create.fields.content.placeholder')}
                 className="min-h-32"
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={e => field.handleChange(e.target.value)}
+                onChange={(e) => field.handleChange(e.target.value)}
                 autoFocus
               />
 
               {field.state.meta.errors.length > 0 && (
-                <p className="pt-2 text-[10px] font-medium text-destructive animate-in fade-in slide-in-from-top-1">
+                <p className="text-destructive animate-in fade-in slide-in-from-top-1 pt-2 text-[10px] font-medium">
                   {field.state.meta.errors[0]?.message?.toString()}
                 </p>
               )}
@@ -52,13 +55,13 @@ export function CreateIncForm() {
       </div>
       <DialogFooter>
         <Button type="button" variant="outline">
-          Cancel
+          {t('common:actions.cancel')}
         </Button>
         <form.Subscribe
-          selector={state => [state.canSubmit, state.isSubmitting]}
+          selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
             <Button type="submit" disabled={!canSubmit || isSubmitting}>
-              {isSubmitting ? 'Publishing...' : 'Publish'}
+              {isSubmitting ? t('common:actions.publishing') : t('common:actions.publish')}
             </Button>
           )}
         />

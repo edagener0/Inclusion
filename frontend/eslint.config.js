@@ -8,7 +8,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  globalIgnores(['dist', 'src/routeTree.gen.ts']),
+  globalIgnores(['dist', 'src/routeTree.gen.ts', 'src/shared/config/i18n/types/**']),
 
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -28,7 +28,7 @@ export default defineConfig([
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',
-        { allowConstantExport: true, allowExportNames: ['Route'] },
+        { allowConstantExport: true, allowExportNames: ['Route', 'loader', 'action'] },
       ],
       'prettier/prettier': 'error',
     },

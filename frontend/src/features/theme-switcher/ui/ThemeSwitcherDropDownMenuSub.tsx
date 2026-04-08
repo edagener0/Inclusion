@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Monitor, Moon, Palette, Sun } from 'lucide-react';
 
 import { useTheme } from '@/shared/lib/theme';
@@ -11,26 +13,27 @@ import {
 
 export function ThemeSwitcherDropDownMenuSub() {
   const { setTheme } = useTheme();
+  const { t } = useTranslation('common', { keyPrefix: 'theme' });
 
   return (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>
         <Palette className="mr-2 h-4 w-4" />
-        Theme
+        {t('title')}
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
         <DropdownMenuSubContent>
-          <DropdownMenuItem onClick={() => setTheme('light')}>
-            <Sun className="mr-2 h-4 w-4" />
-            Light
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setTheme('dark')}>
             <Moon className="mr-2 h-4 w-4" />
-            Dark
+            {t('dark')}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme('light')}>
+            <Sun className="mr-2 h-4 w-4" />
+            {t('light')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setTheme('system')}>
             <Monitor className="mr-2 h-4 w-4" />
-            System
+            {t('system')}
           </DropdownMenuItem>
         </DropdownMenuSubContent>
       </DropdownMenuPortal>

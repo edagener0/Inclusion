@@ -1,0 +1,87 @@
+{
+  "actions": {
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "delete": "Eliminar",
+    "deleting": "A eliminar...",
+    "publish": "Publicar",
+    "publishing": "A publicar...",
+    "remove": "Remover",
+    "save": "Guardar",
+    "saving": "A guardar...",
+    "submit": "Submeter",
+    "submitting": "A submeter...",
+    "update": "Atualizar"
+  },
+  "confirm-dialog": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "description": "Esta ação não pode ser desfeita.",
+    "title": "Tem a certeza?"
+  },
+  "createContent": {
+    "description": "Selecione abaixo um tipo de conteúdo para continuar.",
+    "inc": {
+      "description": "Partilhe um pensamento rápido ou uma atualização breve com os seus amigos.",
+      "label": "Criar um inc"
+    },
+    "post": {
+      "description": "Redija uma nova publicação, carregue imagens e partilhe atualizações com os seus amigos.",
+      "label": "Criar uma publicação"
+    },
+    "story": {
+      "description": "Partilhe um momento que desaparece após 24 horas.",
+      "label": "Criar uma história"
+    },
+    "title": "Criar novo conteúdo"
+  },
+  "errors": {
+    "file": {
+      "empty": "O ficheiro não pode estar vazio.",
+      "invalidFormat": "Formatos suportados: {{formats}}.",
+      "required": "Por favor, selecione um ficheiro.",
+      "tooLarge": "Tamanho máximo do ficheiro - {{max}}."
+    }
+  },
+  "friends": "",
+  "language": "Idioma",
+  "mediaUploader": {
+    "changeFile": "Alterar ficheiro",
+    "fullscreen": "Ecrã inteiro",
+    "preview": "Pré-visualizar",
+    "select": "Clique ou arraste e solte"
+  },
+  "notFound": {
+    "button": "",
+    "description": "",
+    "title": ""
+  },
+  "notification": {
+    "all": {
+      "empty": "",
+      "title": ""
+    },
+    "requests": {
+      "empty": "",
+      "title": ""
+    },
+    "title": ""
+  },
+  "sideBar": {
+    "incs": "Incs",
+    "messages": "Mensagens",
+    "newContent": "Novo Conteúdo",
+    "posts": "Publicações",
+    "profile": "Perfil",
+    "settings": "Definições"
+  },
+  "theme": {
+    "dark": "Escuro",
+    "light": "Claro",
+    "system": "Sistema",
+    "title": "Tema"
+  },
+  "time": {
+    "justNow": "agora mesmo"
+  }
+}

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useForm } from '@tanstack/react-form';
 
 import { Button } from '@/shared/ui/button';
@@ -16,6 +18,7 @@ export function UpdateUserFullNameCard({
   lastName: string;
 }) {
   const mutation = useUpdateFullName();
+  const { t } = useTranslation(['user', 'common']);
 
   const form = useForm({
     defaultValues: { firstName, lastName } satisfies UpdateFullName,
@@ -27,7 +30,7 @@ export function UpdateUserFullNameCard({
 
   return (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         form.handleSubmit();
@@ -35,22 +38,22 @@ export function UpdateUserFullNameCard({
     >
       <Card>
         <CardHeader>
-          <CardTitle>Full Name</CardTitle>
+          <CardTitle>{t('fullName.form.title')}</CardTitle>
         </CardHeader>
 
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <form.Field
               name="firstName"
-              children={field => (
+              children={(field) => (
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor={field.name}>First Name</Label>
+                  <Label htmlFor={field.name}>{t('fullName.form.firstName')}</Label>
                   <Input
                     id={field.name}
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={e => field.handleChange(e.target.value)}
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
                 </div>
               )}
@@ -58,15 +61,15 @@ export function UpdateUserFullNameCard({
 
             <form.Field
               name="lastName"
-              children={field => (
+              children={(field) => (
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor={field.name}>Last Name</Label>
+                  <Label htmlFor={field.name}>{t('fullName.form.lastName')}</Label>
                   <Input
                     id={field.name}
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={e => field.handleChange(e.target.value)}
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
                 </div>
               )}
@@ -76,7 +79,7 @@ export function UpdateUserFullNameCard({
 
         <CardFooter className="flex justify-end">
           <Button size="sm" type="submit">
-            Save
+            {t('common:actions.save')}
           </Button>
         </CardFooter>
       </Card>

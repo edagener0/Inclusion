@@ -1,0 +1,22 @@
+{
+  "create": {
+    "error": "Incの作成中にエラーが発生しました。",
+    "fields": {
+      "content": {
+        "placeholder": "最近どう？"
+      }
+    },
+    "success": "Incを作成しました！",
+    "title": "新しいIncを作成"
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "削除",
+      "description": "この操作は元に戻せません。",
+      "title": "Incを削除しますか？",
+      "trigger": "Incを削除"
+    },
+    "error": "Incの削除中にエラーが発生しました。",
+    "success": "Incを削除しました！"
+  }
+}

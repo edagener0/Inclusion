@@ -1,10 +1,15 @@
+import { useTranslation } from 'react-i18next';
+
 import { useNavigate } from '@tanstack/react-router';
 import { LogOut, Settings, User } from 'lucide-react';
 
+import { useSignOutMutation } from '@/features/auth/sign-out';
+import { LanguageSwitcherDropDownMenuSub } from '@/features/language-switcher';
+import { ThemeSwitcherDropDownMenuSub } from '@/features/theme-switcher';
+
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
-import { useSignOutMutation } from '@/features/auth/sign-out';
-import { ThemeSwitcherDropDownMenuSub } from '@/features/theme-switcher';
+
 import { Button } from '@/shared/ui/button';
 import {
   DropdownMenu,
@@ -19,6 +24,7 @@ export function UserDropDownMenu() {
   const user = useSession();
   const navigate = useNavigate();
   const mutation = useSignOutMutation();
+  const { t } = useTranslation('user', { keyPrefix: 'menu' });
 
   return (
     <DropdownMenu>
@@ -30,8 +36,8 @@ export function UserDropDownMenu() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user?.username}</p>
-            <p className="text-xs leading-none text-muted-foreground">
+            <p className="text-sm leading-none font-medium">{user?.username}</p>
+            <p className="text-muted-foreground text-xs leading-none">
               {user.firstName} {user.lastName}
             </p>
           </div>
@@ -41,24 +47,25 @@ export function UserDropDownMenu() {
           onClick={() => navigate({ to: `/$username`, params: { username: user.username } })}
         >
           <User className="mr-2 h-4 w-4" />
-          Profile
+          {t('profile')}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => navigate({ to: '.', search: { modal: 'user-settings' } })}>
           <Settings className="mr-2 h-4 w-4" />
-          Settings
+          {t('settings')}
         </DropdownMenuItem>
 
+        <LanguageSwitcherDropDownMenuSub />
         <ThemeSwitcherDropDownMenuSub />
 
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          className="text-red-600 focus:text-red-600 focus:bg-red-100 dark:focus:bg-red-950/50"
+          className="text-red-600 focus:bg-red-100 focus:text-red-600 dark:focus:bg-red-950/50"
           onClick={() => mutation.mutate()}
         >
           <LogOut className="mr-2 h-4 w-4" />
-          Sign out
+          {t('signOut')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

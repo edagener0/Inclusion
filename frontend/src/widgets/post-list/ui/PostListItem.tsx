@@ -1,25 +1,26 @@
 import { MoreHorizontal } from 'lucide-react';
 
-import { type Post, PostCard, postQueries } from '@/entities/post';
+import { DeletePostMenuItem } from '@/features/post/delete-post';
+
+import { type Post, PostCard } from '@/entities/post';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
-import { LikeButton } from '@/features/like-toggle';
-import { DeletePostMenuItem } from '@/features/post/delete-post';
+
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 
-export function PostListItem({ post }: { post: Post }) {
+import { PostLikeButton } from './PostLikeButton';
+
+type Props = {
+  post: Post;
+};
+
+export function PostListItem({ post }: Props) {
   const user = useSession();
   const isAuthor = user.id === post.user.id;
 
   const likeButton = (
-    <LikeButton
-      queryKey={postQueries.feed().queryKey}
-      likesCount={post.likesCount}
-      entityId={post.id}
-      entityType={postQueries.entityType}
-      isLiked={post.isLiked}
-    />
+    <PostLikeButton isLiked={post.isLiked} likesCount={post.likesCount} postId={post.id} />
   );
 
   const userAvatar = (
@@ -35,7 +36,10 @@ export function PostListItem({ post }: { post: Post }) {
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent
+        align="end"
+        className="w-max min-w-(--radix-dropdown-menu-trigger-width)"
+      >
         <DeletePostMenuItem id={post.id} />
       </DropdownMenuContent>
     </DropdownMenu>

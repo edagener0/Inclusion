@@ -1,15 +1,30 @@
 import { api } from '@/shared/api';
-import type { PaginatedResponse } from '@/shared/api';
+import type { PaginatedResponse, PaginatedReturnData } from '@/shared/api';
 
-import { type CreatePostDTO, type Post, PostSchema } from '../model/types';
+import { type Post, PostSchema } from '../model/schema';
+import type { CreatePostDTO } from './types';
 
 export async function fetchPostById(id: number): Promise<Post> {
   const result = await api.get<Post>(`/posts/${id}`);
   return PostSchema.parse(result.data);
 }
 
-export async function fetchPosts(page: number): Promise<{ data: Post[]; hasNextPage: boolean }> {
+export async function fetchPosts(page: number): Promise<PaginatedReturnData<Post>> {
   const response = await api.get<PaginatedResponse<unknown>>('/posts', { params: { page } });
+
+  return {
+    data: PostSchema.array().parse(response.data.results),
+    hasNextPage: response.data.next !== null,
+  };
+}
+
+export async function fetchPostsByUsername(
+  page: number,
+  username: string,
+): Promise<PaginatedReturnData<Post>> {
+  const response = await api.get<PaginatedResponse<unknown>>(`/profiles/${username}/posts`, {
+    params: { page },
+  });
 
   return {
     data: PostSchema.array().parse(response.data.results),

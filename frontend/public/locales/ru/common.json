@@ -1,0 +1,87 @@
+{
+  "actions": {
+    "cancel": "Отмена",
+    "close": "Закрыть",
+    "delete": "Удалить",
+    "deleting": "Удаление...",
+    "publish": "Опубликовать",
+    "publishing": "Публикация...",
+    "remove": "Убрать",
+    "save": "Сохранить",
+    "saving": "Сохранение...",
+    "submit": "Отправить",
+    "submitting": "Отправка...",
+    "update": "Обновить"
+  },
+  "confirm-dialog": {
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "description": "Это действие нельзя отменить.",
+    "title": "Вы уверены?"
+  },
+  "createContent": {
+    "description": "",
+    "inc": {
+      "description": "",
+      "label": ""
+    },
+    "post": {
+      "description": "",
+      "label": ""
+    },
+    "story": {
+      "description": "",
+      "label": ""
+    },
+    "title": ""
+  },
+  "errors": {
+    "file": {
+      "empty": "Файл не может быть пустым.",
+      "invalidFormat": "Поддерживаемые форматы: {{formats}}.",
+      "required": "Пожалуйста, выберите файл.",
+      "tooLarge": "Максимальный размер файла - {{max}}."
+    }
+  },
+  "friends": "",
+  "language": "Язык",
+  "mediaUploader": {
+    "changeFile": "Изменить файл",
+    "fullscreen": "На весь экран",
+    "preview": "Предпросмотр",
+    "select": "Нажмите или перетащите файл"
+  },
+  "notFound": {
+    "button": "",
+    "description": "",
+    "title": ""
+  },
+  "notification": {
+    "all": {
+      "empty": "",
+      "title": ""
+    },
+    "requests": {
+      "empty": "",
+      "title": ""
+    },
+    "title": ""
+  },
+  "sideBar": {
+    "incs": "Инки",
+    "messages": "Сообщения",
+    "newContent": "Новый Контент",
+    "posts": "Посты",
+    "profile": "Профиль",
+    "settings": "Настройки"
+  },
+  "theme": {
+    "dark": "Темная",
+    "light": "Светлая",
+    "system": "Системная",
+    "title": "Тема"
+  },
+  "time": {
+    "justNow": "только что"
+  }
+}

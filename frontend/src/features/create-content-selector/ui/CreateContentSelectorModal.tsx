@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useNavigate } from '@tanstack/react-router';
 
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
@@ -7,28 +9,29 @@ import { items } from '../model/types';
 
 export function CreateContentSelectorModal() {
   const navigate = useNavigate();
+  const { t } = useTranslation('common', { keyPrefix: 'createContent' });
 
   return (
     <RoutedDialog>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-xl">Create new content</DialogTitle>
-          <DialogDescription>Select a content type below to continue.</DialogDescription>
+          <DialogTitle className="text-xl">{t('title')}</DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
-          {items.map(item => (
+          {items.map((item) => (
             <button
               key={item.id}
               onClick={() => navigate({ to: '.', search: { modal: item.modal } })}
-              className="flex items-center gap-4 rounded-xl border p-4 text-left transition-all hover:bg-accent hover:border-primary group"
+              className="hover:bg-accent hover:border-primary group flex items-center gap-4 rounded-xl border p-4 text-left transition-all"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg border bg-background group-hover:border-primary/50">
-                <item.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
+              <div className="bg-background group-hover:border-primary/50 flex h-10 w-10 items-center justify-center rounded-lg border">
+                <item.icon className="text-muted-foreground group-hover:text-primary h-5 w-5" />
               </div>
               <div className="flex-1">
-                <div className="font-medium text-base">{item.label}</div>
-                <p className="text-sm text-muted-foreground">{item.description}</p>
+                <div className="text-base font-medium">{t(item.label)}</div>
+                <p className="text-muted-foreground text-sm">{t(item.description)}</p>
               </div>
             </button>
           ))}

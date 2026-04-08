@@ -1,0 +1,29 @@
+{
+  "request": {
+    "accept": {
+      "button": "",
+      "error": "",
+      "success": ""
+    },
+    "cancel": {
+      "button": "",
+      "error": "",
+      "success": ""
+    },
+    "decline": {
+      "button": "",
+      "error": "",
+      "success": ""
+    },
+    "remove": {
+      "button": "",
+      "error": "",
+      "success": ""
+    },
+    "send": {
+      "button": "",
+      "error": "",
+      "success": ""
+    }
+  }
+}

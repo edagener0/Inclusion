@@ -51,10 +51,18 @@ class PostLikeView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request, post_id):
-        return create_like_for_content(request, post_id)
+        return create_like_for_content(
+            request,
+            post_id,
+            queryset=Post.objects.visible_to(request.user),
+        )
 
     def delete(self, request, post_id):
-        return remove_like_from_content(request, post_id)
+        return remove_like_from_content(
+            request,
+            post_id,
+            queryset=Post.objects.visible_to(request.user),
+        )
     
 class PostCommentsCreateListView(ListCreateAPIView):
     serializer_class = CommentSerializer

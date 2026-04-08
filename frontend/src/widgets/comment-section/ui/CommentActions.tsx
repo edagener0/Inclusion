@@ -1,7 +1,9 @@
 import { MoreHorizontal } from 'lucide-react';
 
-import type { Comment } from '@/entities/comment';
 import { DeleteCommentMenuItem } from '@/features/comment/delete-comment';
+
+import type { Comment } from '@/entities/comment';
+
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 
@@ -19,7 +21,10 @@ export function CommentActions({ comment, entityId, entityType }: Props) {
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="z-110 min-w-32 w-40">
+      <DropdownMenuContent
+        align="end"
+        className="z-110 w-max min-w-(--radix-dropdown-menu-trigger-width)"
+      >
         <DeleteCommentMenuItem commentId={comment.id} entityId={entityId} entityType={entityType} />
       </DropdownMenuContent>
     </DropdownMenu>

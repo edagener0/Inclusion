@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@tanstack/react-form';
 
 import { UserAvatar } from '@/entities/user';
+
 import { Button } from '@/shared/ui/button';
 import {
   Card,
@@ -12,11 +14,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/ui/card';
+import { FieldError } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 
 import { useUpdateAvatar } from '../model/mutation';
-import { type UpdateAvatar, UpdateAvatarSchema } from '../model/schema';
+import { type UpdateAvatar, createUpdateAvatarSchema } from '../model/schema';
 
 export function UpdateUserAvatarCard({
   currentAvatar,
@@ -26,6 +29,9 @@ export function UpdateUserAvatarCard({
   username: string;
 }) {
   const mutation = useUpdateAvatar();
+  const { t } = useTranslation('common');
+  const { t: tU } = useTranslation('user', { keyPrefix: 'avatar' });
+  const schema = useMemo(() => createUpdateAvatarSchema(t), [t]);
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -37,7 +43,7 @@ export function UpdateUserAvatarCard({
 
   const form = useForm({
     defaultValues: { image: null as unknown as File } satisfies UpdateAvatar,
-    validators: { onChange: UpdateAvatarSchema },
+    validators: { onChange: schema },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value.image);
     },
@@ -46,33 +52,31 @@ export function UpdateUserAvatarCard({
   return (
     <Card className="overflow-hidden">
       <form
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
           form.handleSubmit();
         }}
       >
         <CardHeader>
-          <CardTitle>Avatar</CardTitle>
-          <CardDescription>
-            Update your avatar. This will be displayed on your profile.
-          </CardDescription>
+          <CardTitle>{tU('form.title')}</CardTitle>
+          <CardDescription>{tU('form.description')}</CardDescription>
         </CardHeader>
 
-        <CardContent className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+        <CardContent className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
           <UserAvatar
             avatar={previewUrl || currentAvatar}
             username={username}
-            className="size-24 sm:size-32 rounded-full border border-border shadow-sm shrink-0"
+            className="border-border size-24 shrink-0 rounded-full border shadow-sm sm:size-32"
           />
 
-          <div className="flex flex-col gap-2 w-full max-w-sm">
+          <div className="flex w-full max-w-sm flex-col gap-2">
             <form.Field
               name="image"
-              children={field => (
+              children={(field) => (
                 <>
                   <Label htmlFor={field.name} className="font-semibold">
-                    Upload new photo
+                    {tU('form.image.label')}
                   </Label>
                   <Input
                     id={field.name}
@@ -80,7 +84,7 @@ export function UpdateUserAvatarCard({
                     className="cursor-pointer file:cursor-pointer"
                     accept="image/png, image/jpeg, image/jpg, image/webp"
                     onBlur={field.handleBlur}
-                    onChange={e => {
+                    onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
                         field.handleChange(file);
@@ -88,31 +92,25 @@ export function UpdateUserAvatarCard({
                       }
                     }}
                   />
-                  <p className="text-xs text-muted-foreground">
-                    Recommended size is 256x256px. Max size 2MB.
-                  </p>
+                  <p className="text-muted-foreground text-xs">{tU('form.image.size')}</p>
 
-                  {field.state.meta.errors.length > 0 && (
-                    <p className="text-sm font-medium text-destructive mt-1">
-                      {field.state.meta.errors.join(', ')}
-                    </p>
-                  )}
+                  <FieldError errors={field.state.meta.errors} />
                 </>
               )}
             />
           </div>
         </CardContent>
 
-        <CardFooter className="flex justify-end border-t bg-muted/50 px-6 py-4 mt-2">
+        <CardFooter className="bg-muted/50 mt-2 flex justify-end border-t px-6 py-4">
           <form.Subscribe
-            selector={state => [state.canSubmit, state.isSubmitting, state.isDirty]}
+            selector={(state) => [state.canSubmit, state.isSubmitting, state.isDirty]}
             children={([canSubmit, isSubmitting, isDirty]) => (
               <Button
                 type="submit"
                 size="sm"
                 disabled={!isDirty || !canSubmit || isSubmitting || mutation.isPending}
               >
-                {isSubmitting || mutation.isPending ? 'Saving...' : 'Save changes'}
+                {isSubmitting || mutation.isPending ? t('actions.saving') : t('actions.save')}
               </Button>
             )}
           />

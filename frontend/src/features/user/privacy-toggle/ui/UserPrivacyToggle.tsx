@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useForm } from '@tanstack/react-form';
 
 import { Button } from '@/shared/ui/button';
@@ -16,6 +18,7 @@ import { type AccountPrivacy, AccountPrivacySchema } from '../model/schema';
 
 export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
   const mutation = useUpdateAccountPrivacy();
+  const { t } = useTranslation(['common', 'user']);
 
   const form = useForm({
     defaultValues: { isPrivate } satisfies AccountPrivacy,
@@ -27,7 +30,7 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
 
   return (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         form.handleSubmit();
@@ -35,33 +38,32 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
     >
       <Card className="shadow-sm">
         <CardHeader>
-          <CardTitle>Account Visibility</CardTitle>
-          <CardDescription>
-            Choose if you want your profile to be public or private.
-          </CardDescription>
+          <CardTitle>{t('user:privacy.form.title')}</CardTitle>
+          <CardDescription>{t('user:privacy.form.description')}</CardDescription>
         </CardHeader>
 
         <CardContent>
           <form.Field
             name="isPrivate"
-            children={field => (
+            children={(field) => (
               <label
                 htmlFor={field.name}
-                className="group flex items-start space-x-4 rounded-lg border border-border p-4 cursor-pointer transition-colors hover:bg-muted/50"
+                className="group border-border hover:bg-muted/50 flex cursor-pointer items-start space-x-4 rounded-lg border p-4 transition-colors"
               >
                 <Checkbox
                   id={field.name}
                   name={field.name}
                   checked={field.state.value}
-                  onCheckedChange={checked => field.handleChange(!!checked)}
+                  onCheckedChange={(checked) => field.handleChange(!!checked)}
                   disabled={mutation.isPending}
                   className="mt-1 transition-transform group-hover:scale-105"
                 />
                 <div className="space-y-1.5 leading-none">
-                  <span className="text-base font-semibold block">Private Account</span>
-                  <p className="text-sm font-normal text-muted-foreground">
-                    When private, only your friends can see your posts, incs... This setting
-                    protects your profile and personal content.
+                  <span className="block text-base font-semibold">
+                    {t('user:privacy.form.isPrivate.title')}
+                  </span>
+                  <p className="text-muted-foreground text-sm font-normal">
+                    {t('user:privacy.form.isPrivate.description')}
                   </p>
                 </div>
               </label>
@@ -69,9 +71,9 @@ export function UserPrivacyToggle({ isPrivate }: { isPrivate: boolean }) {
           />
         </CardContent>
 
-        <CardFooter className="flex justify-end border-t bg-muted/50 px-6 py-4">
+        <CardFooter className="bg-muted/50 flex justify-end border-t px-6 py-4">
           <Button size="sm" type="submit" disabled={mutation.isPending}>
-            {mutation.isPending ? 'Saving...' : 'Save Settings'}
+            {mutation.isPending ? t('common:actions.saving') : t('common:actions.save')}
           </Button>
         </CardFooter>
       </Card>

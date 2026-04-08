@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -9,6 +11,7 @@ import { updateBio } from '../api/requests';
 export function useUpdateBio() {
   const client = useQueryClient();
   const user = useSession();
+  const { t } = useTranslation('user', { keyPrefix: 'biography' });
 
   return useMutation({
     mutationFn: updateBio,
@@ -16,7 +19,10 @@ export function useUpdateBio() {
       client.invalidateQueries({ queryKey: sessionQueries.me().queryKey });
       client.invalidateQueries({ queryKey: userQueries.me().queryKey });
       client.invalidateQueries({ queryKey: profileQueries.byUsername(user.username).queryKey });
-      toast.success('Biography updated succesefully');
+      toast.success(t('success'));
+    },
+    onError: () => {
+      toast.error(t('error'));
     },
   });
 }

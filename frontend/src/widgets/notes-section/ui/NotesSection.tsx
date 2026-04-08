@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { noteQueries } from '@/entities/note';
-import { useSession } from '@/entities/session';
 import { NoteManageDialog } from '@/features/note-manage';
-import { CenterSpinner } from '@/shared/ui/spinner';
+
+import { NoteCardSkeleton, noteQueries } from '@/entities/note';
+import { useSession } from '@/entities/session';
 
 import { NoteFullHoverCard } from './NoteFullHoverCard';
 
@@ -11,24 +11,24 @@ export function NotesSection() {
   const user = useSession();
   const { data: notes, isLoading } = useQuery({
     ...noteQueries.list(),
-    select: notes => notes.filter(note => note.user.id !== user.id),
+    select: (notes) => notes.filter((note) => note.user.id !== user.id),
   });
 
   return (
-    <>
+    <div className="scrollbar-hide flex w-full justify-start gap-4 overflow-x-auto pt-3 pb-2 pl-2">
       {isLoading ? (
-        <CenterSpinner />
+        Array.from({ length: 10 }).map((_, i) => <NoteCardSkeleton key={i} />)
       ) : (
-        <div className="flex w-full justify-start gap-4 overflow-x-auto pl-2 pt-3 pb-2 scrollbar-hide">
+        <>
           <NoteManageDialog />
 
           {notes && notes.length > 0 && (
-            <div className="w-px h-16 self-center bg-border shrink-0 mx-0" />
+            <div className="bg-border mx-0 h-16 w-px shrink-0 self-center" />
           )}
 
-          {notes && notes.map(note => <NoteFullHoverCard key={note.id} note={note} />)}
-        </div>
+          {notes && notes.map((note) => <NoteFullHoverCard key={note.id} note={note} />)}
+        </>
       )}
-    </>
+    </div>
   );
 }

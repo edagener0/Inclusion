@@ -1,0 +1,88 @@
+import { useTranslation } from 'react-i18next';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { X } from 'lucide-react';
+
+import { StoryHeader, StoryMedia, StoryProgress, storyQueries } from '@/entities/story';
+import { UserAvatar } from '@/entities/user';
+
+import { Button } from '@/shared/ui/button';
+
+import { useStoryViewer } from '../model/user-story-viewer';
+import { StoryActions } from './StoryActions';
+import { StoryLikeButton } from './StoryLikeButton';
+
+type Props = {
+  initialId: number;
+  onClose?: () => void;
+};
+
+export function StoryViewer({ initialId, onClose }: Props) {
+  const { data } = useInfiniteQuery(storyQueries.feed());
+  const flatData = data?.pages.flatMap((p) => p.data) ?? [];
+  const { t } = useTranslation('common');
+
+  const { currentStory, currentUserGroup, currentIndex, next, prev } = useStoryViewer(
+    flatData,
+    initialId,
+    onClose,
+  );
+
+  if (!currentUserGroup || !currentStory) return null;
+
+  return (
+    <div className="relative flex h-full w-full flex-col items-center justify-center bg-black select-none">
+      <div className="pointer-events-none absolute top-0 right-0 left-0 z-20 flex flex-col gap-3 bg-linear-to-b from-black/60 to-transparent p-4">
+        <StoryProgress total={currentUserGroup.stories.length} currentIndex={currentIndex} />
+
+        <div className="flex w-full items-center justify-between">
+          <div className="pointer-events-auto">
+            <StoryHeader
+              user={currentUserGroup.user}
+              createdAt={currentStory.createdAt}
+              userAvatarSlot={
+                <UserAvatar
+                  avatar={currentUserGroup.user.avatar}
+                  username={currentUserGroup.user.username}
+                />
+              }
+            />
+          </div>
+
+          <div className="pointer-events-auto flex items-center gap-2">
+            <StoryActions storyId={currentStory.id} />
+
+            {onClose && (
+              <Button
+                variant="ghost"
+                onClick={onClose}
+                className="cursor-pointer rounded-full p-2 text-white/80 transition-colors outline-none hover:bg-white/20 hover:text-white focus-visible:ring-2 focus-visible:ring-white/50"
+                aria-label={t('actions.close')}
+              >
+                <X className="h-6 w-6 drop-shadow-md" />
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex h-full w-full items-center justify-center">
+        <StoryMedia story={currentStory} />
+      </div>
+
+      <div className="absolute inset-y-0 left-0 z-10 w-1/3 cursor-pointer" onClick={prev} />
+
+      <div className="absolute inset-y-0 right-0 z-10 w-2/3 cursor-pointer" onClick={next} />
+
+      <div className="pointer-events-none absolute right-0 bottom-0 left-0 z-20 flex justify-end bg-linear-to-t from-black/60 to-transparent p-4">
+        <div className="pointer-events-auto">
+          <StoryLikeButton
+            storyId={currentStory.id}
+            isLiked={currentStory.isLiked}
+            likesCount={currentStory.likesCount}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

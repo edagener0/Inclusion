@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useForm } from '@tanstack/react-form';
 
 import { Button } from '@/shared/ui/button';
@@ -9,6 +11,7 @@ import { type UpdateBio, UpdateBioSchema } from '../model/schema';
 
 export function UpdateUserBioCard({ biography }: { biography: string | null }) {
   const mutation = useUpdateBio();
+  const { t } = useTranslation(['common', 'user']);
 
   const form = useForm({
     defaultValues: { biography: biography ?? '' } satisfies UpdateBio,
@@ -20,7 +23,7 @@ export function UpdateUserBioCard({ biography }: { biography: string | null }) {
 
   return (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         form.handleSubmit();
@@ -28,22 +31,22 @@ export function UpdateUserBioCard({ biography }: { biography: string | null }) {
     >
       <Card>
         <CardHeader>
-          <CardTitle>Biography</CardTitle>
+          <CardTitle>{t('user:biography.title')}</CardTitle>
         </CardHeader>
 
         <CardContent>
           <form.Field
             name="biography"
-            children={field => (
+            children={(field) => (
               <Textarea
-                className="w-full min-h-24 resize-none"
+                className="min-h-24 w-full resize-none"
                 id={field.name}
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 defaultValue={field.state.value}
-                onChange={e => field.handleChange(e.target.value)}
-                onInput={e => {
+                onChange={(e) => field.handleChange(e.target.value)}
+                onInput={(e) => {
                   const el = e.currentTarget;
                   el.style.height = 'auto';
                   el.style.height = el.scrollHeight + 'px';
@@ -54,7 +57,7 @@ export function UpdateUserBioCard({ biography }: { biography: string | null }) {
         </CardContent>
         <CardFooter className="flex justify-end">
           <Button size="sm" type="submit">
-            Save
+            {t('common:actions.save')}
           </Button>
         </CardFooter>
       </Card>

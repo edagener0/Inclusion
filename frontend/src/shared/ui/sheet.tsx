@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { XIcon } from 'lucide-react';
 import { Dialog as SheetPrimitive } from 'radix-ui';
@@ -30,7 +31,7 @@ function SheetOverlay({
     <SheetPrimitive.Overlay
       data-slot="sheet-overlay"
       className={cn(
-        'data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 bg-black/10 duration-100 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-xs fixed inset-0 z-50',
+        'data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 fixed inset-0 z-50 bg-black/10 duration-100 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-xs',
         className,
       )}
       {...props}
@@ -48,6 +49,8 @@ function SheetContent({
   side?: 'top' | 'right' | 'bottom' | 'left';
   showCloseButton?: boolean;
 }) {
+  const { t } = useTranslation('common');
+
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -65,7 +68,7 @@ function SheetContent({
           <SheetPrimitive.Close data-slot="sheet-close" asChild>
             <Button variant="ghost" className="absolute top-3 right-3" size="icon-sm">
               <XIcon />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{t('actions.close')}</span>
             </Button>
           </SheetPrimitive.Close>
         )}
@@ -78,7 +81,7 @@ function SheetHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="sheet-header"
-      className={cn('gap-0.5 p-4 flex flex-col', className)}
+      className={cn('flex flex-col gap-0.5 p-4', className)}
       {...props}
     />
   );
@@ -88,7 +91,7 @@ function SheetFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="sheet-footer"
-      className={cn('gap-2 p-4 mt-auto flex flex-col', className)}
+      className={cn('mt-auto flex flex-col gap-2 p-4', className)}
       {...props}
     />
   );

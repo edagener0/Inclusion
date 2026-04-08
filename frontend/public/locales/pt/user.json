@@ -1,0 +1,51 @@
+{
+  "avatar": {
+    "error": "Erro ao atualizar o avatar.",
+    "form": {
+      "description": "Atualize o seu avatar. Este será exibido no seu perfil.",
+      "image": {
+        "label": "Carregar nova foto",
+        "size": "O tamanho recomendado é 256x256px. Tamanho máx. 2MB."
+      },
+      "title": "Avatar"
+    },
+    "success": "Avatar atualizado com sucesso."
+  },
+  "biography": {
+    "error": "Erro ao atualizar a biografia.",
+    "success": "Biografia atualizada com sucesso",
+    "title": "Biografia"
+  },
+  "fullName": {
+    "error": "Erro ao atualizar o nome completo.",
+    "form": {
+      "firstName": "Nome",
+      "lastName": "Apelido",
+      "title": "Nome Completo"
+    },
+    "success": "Nome completo atualizado com sucesso"
+  },
+  "menu": {
+    "profile": "Perfil",
+    "settings": "Definições",
+    "signOut": "Terminar sessão"
+  },
+  "privacy": {
+    "error": "Erro ao atualizar as definições de privacidade",
+    "form": {
+      "description": "Escolha se deseja que o seu perfil seja público ou privado.",
+      "isPrivate": {
+        "description": "Quando privado, apenas os seus amigos podem ver as suas publicações, incs... Esta definição protege o seu perfil e conteúdo pessoal.",
+        "title": "Conta Privada"
+      },
+      "title": "Visibilidade da Conta"
+    },
+    "success": "Privacidade da conta atualizada com sucesso"
+  },
+  "settings": {
+    "description": "Gerir a sua conta, segurança e outras informações.",
+    "general": "Geral",
+    "personal": "Informação Pessoal",
+    "title": "Definições de conta"
+  }
+}

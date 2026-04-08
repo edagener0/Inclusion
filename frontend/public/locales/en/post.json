@@ -1,0 +1,25 @@
+{
+  "create": {
+    "dialog": {
+      "description": {
+        "placeholder": "What's new?"
+      },
+      "file": {
+        "button": "Upload media"
+      },
+      "title": "Create new post"
+    },
+    "error": "Error while creating post.",
+    "success": "Post created successfully!"
+  },
+  "delete": {
+    "dialog": {
+      "confirm": "Delete",
+      "description": "This action cannot be undone.",
+      "title": "Delete post?",
+      "trigger": "Delete post"
+    },
+    "error": "Error while deleting post.",
+    "success": "Post deleted successfully!"
+  }
+}

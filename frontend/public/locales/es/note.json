@@ -1,0 +1,14 @@
+{
+  "create": {
+    "default": "¿En qué estás pensando?",
+    "error": "Error al actualizar la nota.",
+    "success": "¡Nota actualizada con éxito!"
+  },
+  "delete": {
+    "error": "Error al eliminar la nota.",
+    "success": "¡Nota eliminada con éxito!"
+  },
+  "edit": {
+    "title": "Editar nota"
+  }
+}

@@ -11,7 +11,16 @@ export const queryClient = new QueryClient({
     },
   },
   queryCache: new QueryCache({
-    onError: error => {
+    onError: (error) => {
+      if (
+        typeof error === 'object' &&
+        error !== null &&
+        'status' in error &&
+        error.status === 401
+      ) {
+        return;
+      }
+
       if (error instanceof z.ZodError) {
         console.error('Invalid data structure (Zod):', error.issues);
         toast.error('Data error', {
@@ -24,7 +33,7 @@ export const queryClient = new QueryClient({
     },
   }),
   mutationCache: new MutationCache({
-    onError: error => {
+    onError: (error) => {
       toast.error('Error occurred', { description: error.message });
     },
   }),
