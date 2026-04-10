@@ -1,4 +1,12 @@
-import { ImagesIcon, Mail, PlusIcon, ScrollTextIcon, Settings, UserIcon, Gamepad2Icon } from 'lucide-react';
+import {
+  Gamepad2Icon,
+  ImagesIcon,
+  Mail,
+  PlusIcon,
+  ScrollTextIcon,
+  Settings,
+  UserIcon,
+} from 'lucide-react';
 
 import type { NavItem } from '../model/types';
 
