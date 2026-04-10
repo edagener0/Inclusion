@@ -17,9 +17,9 @@ export function WordleKey({ value, status = 'unused', onClick, disabled }: Wordl
         // Cores do teclado baseadas no progresso do jogo
         status === 'unused' && 'bg-background',
         status === 'correct' &&
-          'bg-green-600 text-white hover:bg-green-700 hover:text-white border-green-600',
+          'border-green-600 bg-green-600 text-white hover:bg-green-700 hover:text-white',
         status === 'present' &&
-          'bg-yellow-500 text-white hover:bg-yellow-600 hover:text-white border-yellow-500',
+          'border-yellow-500 bg-yellow-500 text-white hover:bg-yellow-600 hover:text-white',
         status === 'absent' && 'bg-muted-foreground/50 text-muted-foreground border-transparent',
       )}
     >

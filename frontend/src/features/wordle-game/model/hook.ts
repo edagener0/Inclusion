@@ -26,10 +26,18 @@ export function useWordleGame() {
   const wordLength = wordMetadata?.length || 5;
   const maxTries = WORDLE_CONFIG.MAX_TRIES;
 
+  // Reset game state when word changes (e.g., new day)
+  useEffect(() => {
+    setGuesses([]);
+    setResults([]);
+    setCurrentGuess('');
+    setIsGameOver(false);
+  }, [wordMetadata]);
+
   // 3. Mutação para submeter o palpite ao backend
   const { mutate: guess, isPending: isSubmitting } = useMutation({
     mutationFn: submitGuess,
-    onSuccess: data => {
+    onSuccess: (data) => {
       // Adicionar a palavra escrita à lista de tentativas
       const newGuesses = [...guesses, currentGuess];
       setGuesses(newGuesses);
@@ -71,10 +79,10 @@ export function useWordleGame() {
         }
         guess(currentGuess);
       } else if (upperKey === 'DELETE' || upperKey === 'BACKSPACE') {
-        setCurrentGuess(prev => prev.slice(0, -1));
+        setCurrentGuess((prev) => prev.slice(0, -1));
       } else if (/^[A-Z]$/.test(upperKey)) {
         if (currentGuess.length < wordLength) {
-          setCurrentGuess(prev => (prev + upperKey).toLowerCase());
+          setCurrentGuess((prev) => (prev + upperKey).toLowerCase());
         }
       }
     },

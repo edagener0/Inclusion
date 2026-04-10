@@ -1,9 +1,14 @@
+import { useNavigate } from '@tanstack/react-router';
+
+import { Button } from '@/shared/ui/button';
+import { Spinner } from '@/shared/ui/spinner';
+
 import { useWordleGame } from '../model/hook';
 import { WordleBoard } from './WordleBoard';
 import { WordleKeyboard } from './WordleKeyBoard';
-import { Spinner } from '@/shared/ui/spinner';
 
 export function WordleGame() {
+  const navigate = useNavigate();
   const {
     guesses,
     results,
@@ -19,18 +24,27 @@ export function WordleGame() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <Spinner className="w-12 h-12" />
-        <p className="mt-4 text-muted-foreground">A carregar o jogo de hoje...</p>
+      <div className="flex min-h-[400px] flex-col items-center justify-center">
+        <Spinner className="h-12 w-12" />
+        <p className="text-muted-foreground mt-4">A carregar o jogo de hoje...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-2xl mx-auto py-8">
+    <div className="mx-auto flex w-full max-w-2xl flex-col items-center justify-center py-8">
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold mb-2">Wordle</h1>
-        <p className="text-muted-foreground">Adivinha a palavra de hoje em {maxTries} tentativas.</p>
+        <h1 className="mb-2 text-3xl font-bold">Wordle</h1>
+        <p className="text-muted-foreground">
+          Adivinha a palavra de hoje em {maxTries} tentativas.
+        </p>
+        <Button
+          variant="outline"
+          className="mt-4"
+          onClick={() => navigate({ to: '/games/wordle/leaderboard' })}
+        >
+          Ver Leaderboard
+        </Button>
       </div>
 
       <WordleBoard
@@ -41,20 +55,18 @@ export function WordleGame() {
         maxTries={maxTries}
       />
 
-      <WordleKeyboard 
-        onKey={onKeyPress} 
-        usedLetters={usedLetters} 
-        disabled={isGameOver || isSubmitting} 
+      <WordleKeyboard
+        onKey={onKeyPress}
+        usedLetters={usedLetters}
+        disabled={isGameOver || isSubmitting}
       />
 
       {isGameOver && (
-        <div className="mt-8 text-center animate-in fade-in zoom-in duration-300">
+        <div className="animate-in fade-in zoom-in mt-8 text-center duration-300">
           <p className="text-xl font-semibold">
             {guesses.length < maxTries ? 'Parabéns!' : 'Fim de jogo!'}
           </p>
-          <p className="text-muted-foreground mt-1">
-            Volta amanhã para uma nova palavra.
-          </p>
+          <p className="text-muted-foreground mt-1">Volta amanhã para uma nova palavra.</p>
         </div>
       )}
     </div>

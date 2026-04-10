@@ -16,10 +16,10 @@ interface WordleKeyboardProps {
 
 export function WordleKeyboard({ onKey, usedLetters, disabled }: WordleKeyboardProps) {
   return (
-    <div className="flex flex-col gap-2 items-center w-full max-w-md mx-auto mt-8">
+    <div className="mx-auto mt-8 flex w-full max-w-md flex-col items-center gap-2">
       {ROWS.map((row, i) => (
-        <div key={i} className="flex gap-1.5 justify-center w-full">
-          {row.map(key => (
+        <div key={i} className="flex w-full justify-center gap-1.5">
+          {row.map((key) => (
             <WordleKey
               key={key}
               value={key}

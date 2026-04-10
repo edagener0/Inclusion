@@ -14,7 +14,7 @@ export const wordleQueries = {
 
   leaderboard: () =>
     queryOptions({
-      queryKey: [...wordleQueries.all(), 'leaderboar'],
+      queryKey: [...wordleQueries.all(), 'leaderboard'],
       queryFn: getWordleLeaderboard,
       staleTime: 1 * 60 * 1000,
     }),

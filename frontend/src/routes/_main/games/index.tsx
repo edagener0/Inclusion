@@ -1,6 +1,7 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { Link, createFileRoute } from '@tanstack/react-router';
 import { Gamepad2 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/card';
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
 
 export const Route = createFileRoute('/_main/games/')({
   component: GamesList,
@@ -9,17 +10,17 @@ export const Route = createFileRoute('/_main/games/')({
 function GamesList() {
   return (
     <div className="container mx-auto py-8">
-      <div className="flex items-center gap-3 mb-8">
-        <Gamepad2 className="w-8 h-8 text-primary" />
+      <div className="mb-8 flex items-center gap-3">
+        <Gamepad2 className="text-primary h-8 w-8" />
         <h1 className="text-3xl font-bold">Jogos</h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Link to="/games/wordle">
-          <Card className="hover:ring-primary/50 transition-all cursor-pointer group">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <Link to="/games/wordle/wordle">
+          <Card className="hover:ring-primary/50 group cursor-pointer transition-all">
             <CardHeader>
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-2 group-hover:bg-primary/20 transition-colors">
-                <span className="text-2xl font-bold text-primary">W</span>
+              <div className="bg-primary/10 group-hover:bg-primary/20 mb-2 flex h-12 w-12 items-center justify-center rounded-lg transition-colors">
+                <span className="text-primary text-2xl font-bold">W</span>
               </div>
               <CardTitle>Wordle</CardTitle>
               <CardDescription>
@@ -29,7 +30,7 @@ function GamesList() {
             <CardContent>
               <div className="flex gap-1">
                 {[...Array(5)].map((_, i) => (
-                  <div key={i} className="w-6 h-6 rounded border bg-muted" />
+                  <div key={i} className="bg-muted h-6 w-6 rounded border" />
                 ))}
               </div>
             </CardContent>

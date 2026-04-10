@@ -11,7 +11,7 @@ export function WordleBoard({
   const emptyRowsCount = Math.max(0, maxTries - guesses.length - 1);
 
   return (
-    <div className="flex flex-col gap-2 items-center">
+    <div className="flex flex-col items-center gap-2">
       {/* 1. Linhas já submetidas */}
       {guesses.map((guess, i) => (
         <div key={i} className="flex gap-2">
