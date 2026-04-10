@@ -1,5 +1,4 @@
 export { parseDiff, type LetterStatus } from './lib/parse-diff';
-export * from './lib/word-validator';
 export * from './model/schema';
 export { wordleQueries } from './api/queries';
 export { submitGuess } from './api/requests';

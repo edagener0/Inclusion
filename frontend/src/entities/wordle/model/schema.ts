@@ -18,13 +18,6 @@ export const wordleGuessResponseSchema = z.object({
 
 export type WordleGuessResponse = z.infer<typeof wordleGuessResponseSchema>;
 
-// Schema para o erro de palpite
-const wordleGuessErrorSchema = z.object({
-  detail: z.string(),
-});
-
-type WordleGuessError = z.infer<typeof wordleGuessErrorSchema>;
-
 // Schema para o leaderboard (GET /wordle/leaderboard)
 const wordleLeaderboardUserSchema = z.object({
   id: z.number(),
@@ -35,8 +28,6 @@ const wordleLeaderboardUserSchema = z.object({
   currentWordleStreak: z.number(),
   maxWordleStreak: z.number(),
 });
-
-type WordleLeaderboardUser = z.infer<typeof wordleLeaderboardUserSchema>;
 
 // Schema para a lista de resultados do leaderboard
 export const wordleLeaderboardSchema = z.array(wordleLeaderboardUserSchema);
