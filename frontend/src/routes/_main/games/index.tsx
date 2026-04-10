@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { Gamepad2 } from 'lucide-react';
 

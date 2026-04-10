@@ -16,40 +16,47 @@ export function useWordleGame() {
   const queryClient = useQueryClient();
   const user = useSession();
 
-  // 1. Obter metadados da palavra de hoje (comprimento e dificuldade)
   const { data: wordMetadata, isLoading: isLoadingWord } = useQuery(wordleQueries.word());
 
-  // Memoize the storage key to keep it consistent
   const storageKey = useMemo(() => {
     const today = new Date().toISOString().split('T')[0];
     return `wordle_game_${user.id}_${today}`;
   }, [user.id]);
 
-  const getDefaultGameState = () => ({
+  type WordleGameState = {
+    guesses: string[];
+    results: LetterStatus[][];
+    currentGuess: string;
+    isGameOver: boolean;
+  };
+
+  const getDefaultGameState = (): WordleGameState => ({
     guesses: [] as string[],
     results: [] as LetterStatus[][],
     currentGuess: '',
     isGameOver: false,
   });
 
-  const loadGameState = () => {
+  const loadGameState = (): WordleGameState => {
     try {
       const stored = localStorage.getItem(storageKey);
-      return stored ? JSON.parse(stored) : getDefaultGameState();
+      return stored ? (JSON.parse(stored) as WordleGameState) : getDefaultGameState();
     } catch {
       return getDefaultGameState();
     }
   };
 
-  const saveGameState = (state: any) => {
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(state));
-    } catch {
-      // Silently fail if localStorage is unavailable
-    }
-  };
+  const saveGameState = useCallback(
+    (state: WordleGameState) => {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(state));
+      } catch {
+        // Silently fail if localStorage is unavailable
+      }
+    },
+    [storageKey],
+  );
 
-  // 2. Estados locais do jogo - initialize from localStorage
   const [guesses, setGuesses] = useState<string[]>(() => loadGameState().guesses);
   const [results, setResults] = useState<LetterStatus[][]>(() => loadGameState().results);
   const [currentGuess, setCurrentGuess] = useState<string>(() => loadGameState().currentGuess);
@@ -58,7 +65,6 @@ export function useWordleGame() {
   const wordLength = wordMetadata?.length || 5;
   const maxTries = WORDLE_CONFIG.MAX_TRIES;
 
-  // Save game state whenever it changes
   useEffect(() => {
     saveGameState({
       guesses,
@@ -66,40 +72,37 @@ export function useWordleGame() {
       currentGuess,
       isGameOver,
     });
-  }, [guesses, results, currentGuess, isGameOver]);
+  }, [guesses, results, currentGuess, isGameOver, saveGameState]);
 
-  // 3. Mutação para submeter o palpite ao backend
   const { mutate: guess, isPending: isSubmitting } = useMutation({
     mutationFn: submitGuess,
     onSuccess: (data) => {
-      // Adicionar a palavra escrita à lista de tentativas
       const newGuesses = [...guesses, currentGuess];
       setGuesses(newGuesses);
-
-      // Traduzir a string de "diff" (+, *, -) para estados que a UI entende
       const newResult = parseDiff(data.diff);
       setResults([...results, newResult]);
-
-      // Limpar o campo de escrita para a próxima tentativa
       setCurrentGuess('');
 
-      // Verificar condições de fim de jogo
       if (data.correct) {
         setIsGameOver(true);
         toast.success('Incrível! Acertaste na palavra!');
-        // Atualizar o leaderboard já que o utilizador ganhou
         queryClient.invalidateQueries({ queryKey: wordleQueries.leaderboard().queryKey });
       } else if (newGuesses.length >= maxTries) {
         setIsGameOver(true);
         toast.error('Game Over! Esgotaste as tuas tentativas.');
       }
     },
-    onError: (error: any) => {
-      toast.error(error.response?.data?.detail || 'Erro ao submeter palpite.');
+    onError: (error: unknown) => {
+      if (typeof error === 'object' && error !== null && 'response' in error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const apiError = error as any;
+        toast.error(apiError.response?.data?.detail || 'Erro ao submeter palpite.');
+      } else {
+        toast.error('Erro ao submeter palpite.');
+      }
     },
   });
 
-  // 4. Função principal de processamento de teclas
   const onKeyPress = useCallback(
     (key: string) => {
       if (isGameOver || isSubmitting) return;
@@ -123,12 +126,9 @@ export function useWordleGame() {
     [currentGuess, wordLength, isGameOver, isSubmitting, guess],
   );
 
-  // 5. Listener para o teclado físico do computador
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignorar se o utilizador estiver a usar atalhos (Ctrl+C, etc)
       if (e.ctrlKey || e.metaKey || e.altKey) return;
-
       onKeyPress(e.key);
     };
 
@@ -136,8 +136,6 @@ export function useWordleGame() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onKeyPress]);
 
-  // 6. Mapear o estado de cada letra para colorir o teclado virtual
-  // Prioridade: correct (verde) > present (amarelo) > absent (cinza)
   const usedLetters = results.reduce(
     (acc, row, rowIndex) => {
       const word = guesses[rowIndex];
