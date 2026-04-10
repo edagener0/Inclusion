@@ -1,6 +1,5 @@
-export * from './lib/parse-diff';
-export { checkLength } from './lib/word-validator';
-export * from './lib/constants';
+export { parseDiff, type LetterStatus } from './lib/parse-diff';
+export { checkLenght } from './lib/check-length';
 export * from './model/schema';
-export * from './api/queries';
-export * from './api/requests';
+export { wordleQueries } from './api/queries';
+export { getWordleWord, submitGuess, getWordleLeardboard } from './api/requests';

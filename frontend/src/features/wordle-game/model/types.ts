@@ -1,4 +1,4 @@
-import { type LetterStatus } from '@/entities/wordle/lib/parse-diff';
+import { type LetterStatus } from '@/entities/wordle';
 
 export interface WordleTileProps {
   letter?: string;
