@@ -1,0 +1,12 @@
+{
+  "games": {
+    "title": "Games",
+    "wordle": "Wordle",
+    "wordleDescription": "Guess the wrod in 6 tries. A new challenge every day!"
+  },
+  "wordle": {
+    "comeBackTomorrow": "Come back tomorrow for a new word.",
+    "title": "Wordle",
+    "viewLeaderboard": "View Leaderboard"
+  }
+}

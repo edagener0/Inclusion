@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useNavigate } from '@tanstack/react-router';
 
 import { Button } from '@/shared/ui/button';
@@ -22,11 +24,13 @@ export function WordleGame() {
     onKeyPress,
   } = useWordleGame();
 
+  const { t } = useTranslation(['games']);
+
   if (isLoading) {
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center">
         <Spinner className="h-12 w-12" />
-        <p className="text-muted-foreground mt-4">Loading today&apos;s game...</p>
+        <p className="text-muted-foreground mt-4">{}</p>
       </div>
     );
   }
@@ -34,14 +38,13 @@ export function WordleGame() {
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col items-center justify-center py-8">
       <div className="mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold">Wordle</h1>
-        <p className="text-muted-foreground">Guess today&apos;s word in {maxTries} tries.</p>
+        <h1 className="mb-2 text-3xl font-bold">{t('wordle.title')}</h1>
         <Button
           variant="outline"
           className="mt-4"
           onClick={() => navigate({ to: '/games/wordle/leaderboard' })}
         >
-          View Leaderboard
+          {t('wordle.viewLeaderboard')}
         </Button>
       </div>
 
@@ -64,7 +67,7 @@ export function WordleGame() {
           <p className="text-xl font-semibold">
             {guesses.length < maxTries ? 'Congratulations!' : 'Game Over!'}
           </p>
-          <p className="text-muted-foreground mt-1">Come back tomorrow for a new word.</p>
+          <p className="text-muted-foreground mt-1">{t('wordle.comeBackTomorrow')}</p>
         </div>
       )}
     </div>

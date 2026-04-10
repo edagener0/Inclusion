@@ -1,0 +1,12 @@
+{
+  "games": {
+    "title": "",
+    "wordle": "",
+    "wordleDescription": ""
+  },
+  "wordle": {
+    "comeBackTomorrow": "",
+    "title": "",
+    "viewLeaderboard": ""
+  }
+}
