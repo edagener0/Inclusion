@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
+import { useSession } from '@/entities/session';
 import {
   type LetterStatus,
   WORDLE_CONFIG,
@@ -13,26 +14,59 @@ import {
 
 export function useWordleGame() {
   const queryClient = useQueryClient();
+  const user = useSession();
 
   // 1. Obter metadados da palavra de hoje (comprimento e dificuldade)
   const { data: wordMetadata, isLoading: isLoadingWord } = useQuery(wordleQueries.word());
 
-  // 2. Estados locais do jogo
-  const [guesses, setGuesses] = useState<string[]>([]);
-  const [results, setResults] = useState<LetterStatus[][]>([]);
-  const [currentGuess, setCurrentGuess] = useState('');
-  const [isGameOver, setIsGameOver] = useState(false);
+  // Memoize the storage key to keep it consistent
+  const storageKey = useMemo(() => {
+    const today = new Date().toISOString().split('T')[0];
+    return `wordle_game_${user.id}_${today}`;
+  }, [user.id]);
+
+  const getDefaultGameState = () => ({
+    guesses: [] as string[],
+    results: [] as LetterStatus[][],
+    currentGuess: '',
+    isGameOver: false,
+  });
+
+  const loadGameState = () => {
+    try {
+      const stored = localStorage.getItem(storageKey);
+      return stored ? JSON.parse(stored) : getDefaultGameState();
+    } catch {
+      return getDefaultGameState();
+    }
+  };
+
+  const saveGameState = (state: any) => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(state));
+    } catch {
+      // Silently fail if localStorage is unavailable
+    }
+  };
+
+  // 2. Estados locais do jogo - initialize from localStorage
+  const [guesses, setGuesses] = useState<string[]>(() => loadGameState().guesses);
+  const [results, setResults] = useState<LetterStatus[][]>(() => loadGameState().results);
+  const [currentGuess, setCurrentGuess] = useState<string>(() => loadGameState().currentGuess);
+  const [isGameOver, setIsGameOver] = useState<boolean>(() => loadGameState().isGameOver);
 
   const wordLength = wordMetadata?.length || 5;
   const maxTries = WORDLE_CONFIG.MAX_TRIES;
 
-  // Reset game state when word changes (e.g., new day)
+  // Save game state whenever it changes
   useEffect(() => {
-    setGuesses([]);
-    setResults([]);
-    setCurrentGuess('');
-    setIsGameOver(false);
-  }, [wordMetadata]);
+    saveGameState({
+      guesses,
+      results,
+      currentGuess,
+      isGameOver,
+    });
+  }, [guesses, results, currentGuess, isGameOver]);
 
   // 3. Mutação para submeter o palpite ao backend
   const { mutate: guess, isPending: isSubmitting } = useMutation({
