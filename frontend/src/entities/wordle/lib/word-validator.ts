@@ -1,4 +1,4 @@
-export function checkLength(str: string, length: number) {
+function checkLength(str: string, length: number) {
   if (!(str.length == length)) {
     return `The word must have ${length} letters`;
   }
