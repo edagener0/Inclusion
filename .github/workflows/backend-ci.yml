@@ -32,6 +32,7 @@ jobs:
     - name: Run tests
       env:
         SECRET_KEY: "insecure-test-key-for-ci-only"
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: |
         cd backend/src
         python manage.py test
