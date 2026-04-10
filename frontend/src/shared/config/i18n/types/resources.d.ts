@@ -150,7 +150,7 @@ interface Resources {
       "title": "Notifications"
     },
     "sideBar": {
-      "games": "common:sideBar.games",
+      "games": "Games",
       "incs": "Incs",
       "messages": "Messages",
       "newContent": "New Content",
@@ -195,6 +195,27 @@ interface Resources {
         "error": "Error while sending friend request.",
         "success": "Friend request successfully sent."
       }
+    }
+  },
+  "games": {
+    "best": "best",
+    "current": "current",
+    "emptyState": "emptyState",
+    "games": {
+      "title": "Games",
+      "wordle": "Wordle",
+      "wordleDescription": "Guess the word in 6 tries. A new challenge every day!"
+    },
+    "wordle": {
+      "comeBackTomorrow": "Come back tomorrow for a new word.",
+      "loadingGame": "Loading game...",
+      "title": "Wordle",
+      "viewLeaderboard": "View Leaderboard"
+    },
+    "wordleLeaderboard": {
+      "bestPlayers": "The best players based on their win streaks!",
+      "loading": "Loading leaderboard...",
+      "title": "Wordle Leaderboard"
     }
   },
   "inc": {

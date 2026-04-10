@@ -30,7 +30,7 @@ export function WordleGame() {
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center">
         <Spinner className="h-12 w-12" />
-        <p className="text-muted-foreground mt-4">{}</p>
+        <p className="text-muted-foreground mt-4">{t('wordle.loadingGame')}</p>
       </div>
     );
   }

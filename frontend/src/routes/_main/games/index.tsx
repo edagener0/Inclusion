@@ -16,7 +16,7 @@ function GamesList() {
     <div className="container mx-auto py-8">
       <div className="mb-8 flex items-center gap-3">
         <Gamepad2 className="text-primary h-8 w-8" />
-        <h1 className="text-3xl font-bold">{t('games.title')}</h1>
+        <h1 className="text-3xl font-bold">{t('games:games.title')}</h1>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -26,8 +26,8 @@ function GamesList() {
               <div className="bg-primary/10 group-hover:bg-primary/20 mb-2 flex h-12 w-12 items-center justify-center rounded-lg transition-colors">
                 <span className="text-primary text-2xl font-bold">W</span>
               </div>
-              <CardTitle>{t('games.wordle')}</CardTitle>
-              <CardDescription>{t('games.wordleDescription')}</CardDescription>
+              <CardTitle>{t('games:games.wordle')}</CardTitle>
+              <CardDescription>{t('games:games.wordleDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex gap-1">

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useQuery } from '@tanstack/react-query';
 import { Medal, Trophy, Users } from 'lucide-react';
 
@@ -10,12 +12,13 @@ import { Spinner } from '@/shared/ui/spinner';
 
 export function WordleLeaderboard() {
   const { data: leaderboard, isLoading } = useQuery(wordleQueries.leaderboard());
+  const { t } = useTranslation(['games']);
 
   if (isLoading) {
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center">
         <Spinner className="h-12 w-12" />
-        <p className="text-muted-foreground mt-4">Loading leaderboard...</p>
+        <p className="text-muted-foreground mt-4">{t('wordleLeaderboard.loading')}</p>
       </div>
     );
   }
@@ -25,9 +28,9 @@ export function WordleLeaderboard() {
       <CardHeader className="px-0 text-center">
         <div className="mb-2 flex items-center justify-center gap-2">
           <Trophy className="h-8 w-8 text-yellow-500" />
-          <CardTitle className="text-3xl font-bold">Wordle Leaderboard</CardTitle>
+          <CardTitle className="text-3xl font-bold">{t('wordleLeaderboard.title')}</CardTitle>
         </div>
-        <CardDescription>The best players based on their win streaks!</CardDescription>
+        <CardDescription>{t('wordleLeaderboard.bestPlayers')}</CardDescription>
       </CardHeader>
       <CardContent className="px-0">
         <div className="grid gap-4">
@@ -60,7 +63,7 @@ export function WordleLeaderboard() {
               <div className="flex items-center gap-6">
                 <div className="flex flex-col items-center">
                   <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
-                    Current
+                    {t('current')}
                   </span>
                   <Badge variant="secondary" className="mt-1 px-3 font-mono text-lg">
                     {user.currentWordleStreak}
@@ -68,7 +71,7 @@ export function WordleLeaderboard() {
                 </div>
                 <div className="flex flex-col items-center">
                   <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
-                    Best
+                    {t('best')}
                   </span>
                   <Badge variant="outline" className="mt-1 px-3 font-mono text-lg">
                     {user.maxWordleStreak}
@@ -81,9 +84,7 @@ export function WordleLeaderboard() {
           {(!leaderboard || leaderboard.length === 0) && (
             <div className="bg-muted/30 rounded-xl border-2 border-dashed py-12 text-center">
               <Users className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-              <p className="text-muted-foreground font-medium">
-                No one has entered the leaderboard yet. Be the first!
-              </p>
+              <p className="text-muted-foreground font-medium">{t('emptyState')}</p>
             </div>
           )}
         </div>

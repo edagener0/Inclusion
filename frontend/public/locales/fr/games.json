@@ -1,4 +1,7 @@
 {
+  "best": "",
+  "current": "",
+  "emptyState": "",
   "games": {
     "title": "",
     "wordle": "",
@@ -6,7 +9,13 @@
   },
   "wordle": {
     "comeBackTomorrow": "",
+    "loadingGame": "",
     "title": "",
     "viewLeaderboard": ""
+  },
+  "wordleLeaderboard": {
+    "bestPlayers": "",
+    "loading": "",
+    "title": ""
   }
 }
