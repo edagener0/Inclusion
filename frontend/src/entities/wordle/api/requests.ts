@@ -21,5 +21,5 @@ export async function submitGuess(word: string): Promise<WordleGuessResponse> {
 
 export async function getWordleLeaderboard(): Promise<WordleLeaderboard> {
   const res = await api.get('/wordle/leaderboard');
-  return wordleLeaderboardSchema.parse(res.data);
+  return wordleLeaderboardSchema.parse(res.data.results ?? res.data);
 }

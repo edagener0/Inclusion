@@ -29,11 +29,11 @@ export type WordleGuessError = z.infer<typeof wordleGuessErrorSchema>;
 export const wordleLeaderboardUserSchema = z.object({
   id: z.number(),
   username: z.string(),
-  first_name: z.string(),
-  last_name: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
   avatar: z.string().url(),
-  current_wordle_streak: z.number(),
-  max_wordle_streak: z.number(),
+  currentWordleStreak: z.number(),
+  maxWordleStreak: z.number(),
 });
 
 export type WordleLeaderboardUser = z.infer<typeof wordleLeaderboardUserSchema>;

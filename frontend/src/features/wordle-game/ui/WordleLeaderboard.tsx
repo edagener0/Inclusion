@@ -15,7 +15,7 @@ export function WordleLeaderboard() {
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center">
         <Spinner className="h-12 w-12" />
-        <p className="text-muted-foreground mt-4">A carregar o leaderboard...</p>
+        <p className="text-muted-foreground mt-4">Loading leaderboard...</p>
       </div>
     );
   }
@@ -27,9 +27,7 @@ export function WordleLeaderboard() {
           <Trophy className="h-8 w-8 text-yellow-500" />
           <CardTitle className="text-3xl font-bold">Wordle Leaderboard</CardTitle>
         </div>
-        <CardDescription>
-          Os melhores jogadores baseados na sua sequência de vitórias!
-        </CardDescription>
+        <CardDescription>The best players based on their win streaks!</CardDescription>
       </CardHeader>
       <CardContent className="px-0">
         <div className="grid gap-4">
@@ -54,7 +52,7 @@ export function WordleLeaderboard() {
                 <div className="flex flex-col text-left">
                   <span className="text-foreground font-semibold">{user.username}</span>
                   <span className="text-muted-foreground text-xs">
-                    {user.first_name} {user.last_name}
+                    {user.firstName} {user.lastName}
                   </span>
                 </div>
               </div>
@@ -62,18 +60,18 @@ export function WordleLeaderboard() {
               <div className="flex items-center gap-6">
                 <div className="flex flex-col items-center">
                   <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
-                    Atual
+                    Current
                   </span>
                   <Badge variant="secondary" className="mt-1 px-3 font-mono text-lg">
-                    {user.current_wordle_streak}
+                    {user.currentWordleStreak}
                   </Badge>
                 </div>
                 <div className="flex flex-col items-center">
                   <span className="text-muted-foreground text-[10px] font-bold tracking-wider uppercase">
-                    Recorde
+                    Best
                   </span>
                   <Badge variant="outline" className="mt-1 px-3 font-mono text-lg">
-                    {user.max_wordle_streak}
+                    {user.maxWordleStreak}
                   </Badge>
                 </div>
               </div>
@@ -84,7 +82,7 @@ export function WordleLeaderboard() {
             <div className="bg-muted/30 rounded-xl border-2 border-dashed py-12 text-center">
               <Users className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
               <p className="text-muted-foreground font-medium">
-                Ninguém entrou no leaderboard ainda. Sê o primeiro!
+                No one has entered the leaderboard yet. Be the first!
               </p>
             </div>
           )}

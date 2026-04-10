@@ -117,7 +117,3 @@ class WordleLeaderboardView(ListAPIView):
     serializer_class = WordleLeaderboardUserSerializer
     queryset = User.objects.order_by("-max_wordle_streak")
         
-
-
-
-        
