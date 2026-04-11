@@ -5,8 +5,7 @@ import { RouterProvider } from '@tanstack/react-router';
 
 import { router } from '@/app/router';
 
-import { QueryProvider } from './app/provider/QueryProvider';
-import { ThemeProvider } from './app/provider/ThemeProvider';
+import { QueryProvider, SocketProvider, ThemeProvider } from './app/providers';
 import './app/styles/index.css';
 import { queryClient } from './shared/api/';
 
@@ -14,7 +13,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
       <QueryProvider>
-        <RouterProvider router={router} context={{ queryClient }} />
+        <SocketProvider>
+          <RouterProvider router={router} context={{ queryClient }} />
+        </SocketProvider>
       </QueryProvider>
     </ThemeProvider>
   </StrictMode>,

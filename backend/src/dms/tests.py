@@ -77,8 +77,8 @@ class DMViewsTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["results"]), 2)
-        self.assertEqual(response.data["results"][0]["id"], first_dm.id)
-        self.assertEqual(response.data["results"][1]["id"], second_dm.id)
+        self.assertEqual(response.data["results"][0]["id"], second_dm.id)
+        self.assertEqual(response.data["results"][1]["id"], first_dm.id)
 
     def test_conversation_messages_post_uses_user_from_url_as_receiver(self):
         with patch("dms.views.schedule_dm_message_created_broadcast") as mocked_broadcast:

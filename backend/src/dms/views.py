@@ -141,7 +141,7 @@ class DMConversationMessagesView(DMBroadcastCreateMixin, ListCreateAPIView):
             )
             .select_related("sender", "receiver")
             # Para o ecrã de chat, a ordem natural é cronológica.
-            .order_by("created_at")
+            .order_by("-created_at")
         )
 
     def perform_create(self, serializer):
