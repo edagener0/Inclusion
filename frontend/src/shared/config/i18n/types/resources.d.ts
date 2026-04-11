@@ -78,9 +78,6 @@ interface Resources {
       "success": "Comment deleted successfully!"
     },
     "empty": "There are no comments yet. Be the first!",
-    "send": {
-      "placeholder": "placeholder"
-    },
     "title": "Comments"
   },
   "common": {
@@ -222,8 +219,17 @@ interface Resources {
     }
   },
   "message": {
-    "first": {
-      "description": "description",
+    "delete": {
+      "dialog": {
+        "confirm": "dialog.confirm",
+        "description": "dialog.description",
+        "title": "dialog.title",
+        "trigger": "dialog.trigger"
+      },
+      "error": "error",
+      "success": "success"
+    },
+    "send": {
       "error": "error",
       "placeholder": "placeholder",
       "success": "success"

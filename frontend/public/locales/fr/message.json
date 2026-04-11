@@ -1,6 +1,15 @@
 {
-  "first": {
-    "description": "",
+  "delete": {
+    "dialog": {
+      "confirm": "",
+      "description": "",
+      "title": "",
+      "trigger": ""
+    },
+    "error": "",
+    "success": ""
+  },
+  "send": {
     "error": "",
     "placeholder": "",
     "success": ""

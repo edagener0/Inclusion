@@ -1,9 +1,18 @@
 {
-  "first": {
-    "description": "description",
-    "error": "error",
-    "placeholder": "placeholder",
-    "success": "success"
+  "delete": {
+    "dialog": {
+      "confirm": "Delete",
+      "description": "This action cannot be undone.",
+      "title": "Delete message",
+      "trigger": "Delete"
+    },
+    "error": "Failed to delete the message.",
+    "success": "Message deleted successfully."
+  },
+  "send": {
+    "error": "Failed to send the message.",
+    "placeholder": "Type your message...",
+    "success": "Message sent successfully."
   },
   "title": "Messages"
 }
