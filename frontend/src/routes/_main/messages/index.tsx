@@ -5,11 +5,11 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ConversationList } from '@/widgets/conversation/conversation-list';
 import { NotesSection } from '@/widgets/notes-section';
 
-import { SelectFriendDialog } from '@/features/conversation/create-conversation';
+import { SelectFriendDialog } from '@/features/conversation/select-friend';
 
 import { loadNamespace } from '@/shared/config';
 
-export const Route = createFileRoute('/_main/messages')({
+export const Route = createFileRoute('/_main/messages/')({
   component: Messages,
   loader: async () => {
     await loadNamespace(['note', 'message']);

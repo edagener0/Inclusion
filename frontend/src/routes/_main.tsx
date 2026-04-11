@@ -29,15 +29,15 @@ export const Route = createFileRoute('/_main')({
   },
   component: function () {
     return (
-      <div className="bg-background text-foreground flex min-h-screen w-full flex-col">
+      <div className="bg-background text-foreground flex h-dvh w-full flex-col overflow-hidden">
         <Header
           sideBarSlot={<SidebarNav mobile />}
           userMenuSlot={<UserDropDownMenu />}
           notificationSlot={<NotificationWidget />}
         />
 
-        <div className="mx-auto flex w-full items-start justify-center gap-x-8 px-4">
-          <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-50 shrink-0 flex-col border-r py-6 pr-4 md:flex">
+        <div className="mx-auto flex min-h-0 w-full flex-1 items-start justify-center gap-x-8 px-4">
+          <aside className="hidden h-full w-50 shrink-0 flex-col overflow-y-auto border-r py-6 pr-4 md:flex">
             <SidebarNav />
 
             <div className="mt-auto border-t pt-4">
@@ -47,7 +47,7 @@ export const Route = createFileRoute('/_main')({
             </div>
           </aside>
 
-          <main className="w-full max-w-2xl py-6">
+          <main className="flex h-full w-full max-w-2xl flex-col overflow-y-auto py-6">
             <Outlet />
           </main>
         </div>
