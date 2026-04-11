@@ -26,13 +26,13 @@ export function RouteComponent() {
   if (!user) throw notFound();
 
   return (
-    <>
+    <div className="pr-1 pl-1">
       <ProfileHeader username={username} />
       <ProfileContent
         incsSlot={<IncList queryOptions={incQueries.byUsername(username)} />}
         postsSlot={<PostList queryOptions={postQueries.byUsername(username)} />}
         friendsSlot={<FriendList queryOptions={friendQueries.friendsByUsername(username)} />}
       />
-    </>
+    </div>
   );
 }
