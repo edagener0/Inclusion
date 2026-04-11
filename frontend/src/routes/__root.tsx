@@ -3,8 +3,7 @@ import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import z from 'zod';
 
-import { ConfirmModalProvider } from '@/app/provider/ConfirmModalProvider';
-import { ModalProvider } from '@/app/provider/ModalProvider';
+import { ConfirmModalProvider, ModalProvider } from '@/app/providers';
 
 import { NotFoundWidget } from '@/widgets/not-found';
 
@@ -22,7 +21,6 @@ const modalEnum = z.enum([
   'create-post',
   'create-inc',
   'create-story',
-  'create-conversation',
 ]);
 const SearchSchema = z.object({
   modal: modalEnum.optional(),
