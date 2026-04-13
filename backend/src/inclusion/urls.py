@@ -23,11 +23,11 @@ urlpatterns = [
     path("comments", include("comments.urls")),
     path("friends", include("friends.urls")),
     path("groups", include("groups.urls")),
+    path("chatbot", include("chatbot.urls")),
     path("ws/dms/inbox", DMInboxWebSocketDocView.as_view(), name="dm-websocket-inbox-doc"),
     path("ws/dms/<int:user_id>", DMConversationWebSocketDocView.as_view(), name="dm-websocket-conversation-doc"),
     path("ws/groups/inbox", GroupInboxWebSocketDocView.as_view(), name="group-websocket-inbox-doc"),
     path("ws/groups/<int:group_id>", GroupConversationWebSocketDocView.as_view(), name="group-websocket-conversation-doc"),
-    path("api/schema", SpectacularAPIView.as_view(), name="schema"),
     path("wordle", include("wordle.urls")),
     path("schema", SpectacularAPIView.as_view(), name="schema"),
     path(
