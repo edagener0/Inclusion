@@ -13,13 +13,14 @@ import {
 
 type Props = {
   message: Message;
+  isMe: boolean;
 };
 
-export function MessageContextMenu({ message }: Props) {
+export function MessageContextMenu({ message, isMe }: Props) {
   return (
     <ContextMenu>
       <ContextMenuTrigger>
-        <MessageCard message={message} />
+        <MessageCard message={message} isMe={isMe} />
       </ContextMenuTrigger>
       <ContextMenuContent>
         <ContextMenuGroup>

@@ -1,18 +1,14 @@
 import { CheckCheck } from 'lucide-react';
 
-import { useSession } from '@/entities/session';
-
 import type { Message } from '../model/schema';
 import { useFormatDate } from '../model/use-format-date';
 
 type Props = {
   message: Message;
+  isMe: boolean;
 };
 
-export function MessageCard({ message }: Props) {
-  const session = useSession();
-  const isMe = message.user.id === session.id;
-
+export function MessageCard({ message, isMe }: Props) {
   return (
     <div className={`flex w-full ${isMe ? 'justify-end' : 'justify-start'}`}>
       <div

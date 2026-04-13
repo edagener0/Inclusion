@@ -65,13 +65,15 @@ export function ConversationWindow() {
 
       <div className="bg-muted/5 relative flex min-h-0 w-full flex-1 flex-col-reverse overflow-y-auto pr-5 pl-5">
         <div className="mx-auto flex w-full max-w-4xl flex-col-reverse gap-3 p-3 pb-8 sm:gap-4 sm:p-4">
-          {allMessages.map((msg) =>
-            session.id === msg.user.id ? (
-              <MessageContextMenu key={msg.id} message={msg} />
+          {allMessages.map((msg) => {
+            const isMe = session.id === msg.user.id;
+
+            return session.id === msg.user.id ? (
+              <MessageContextMenu key={msg.id} message={msg} isMe={isMe} />
             ) : (
-              <MessageCard message={msg} />
-            ),
-          )}
+              <MessageCard message={msg} isMe={isMe} />
+            );
+          })}
 
           <div ref={observerTarget} className="h-4 w-full shrink-0">
             {isFetchingNextPage && <Loader2 className="mx-auto h-4 w-4 animate-spin opacity-50" />}
