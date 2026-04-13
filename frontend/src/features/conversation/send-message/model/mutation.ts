@@ -4,12 +4,13 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { sendMessage } from '../api/requests';
+import type { SendMessage } from './schema';
 
-export function useSendMessageMutation() {
+export function useSendMessageMutation(userId: number) {
   const { t } = useTranslation('message', { keyPrefix: 'send' });
 
   return useMutation({
-    mutationFn: sendMessage,
+    mutationFn: (data: SendMessage) => sendMessage(userId, data),
     onSuccess: () => {
       toast.success(t('success'));
     },

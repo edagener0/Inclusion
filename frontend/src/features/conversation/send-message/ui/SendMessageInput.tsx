@@ -17,10 +17,10 @@ type Props = {
 
 export function SendMessageInput({ userId }: Props) {
   const { t } = useTranslation('message', { keyPrefix: 'send' });
-  const mutation = useSendMessageMutation();
+  const mutation = useSendMessageMutation(userId);
 
   const form = useForm({
-    defaultValues: { content: '', userId } as SendMessage,
+    defaultValues: { content: '' } as SendMessage,
     validators: { onChange: SendMessageSchema },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value);
