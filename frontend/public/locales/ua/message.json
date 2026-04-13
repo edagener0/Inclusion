@@ -14,5 +14,15 @@
     "placeholder": "",
     "success": ""
   },
-  "title": "Повідомлення"
+  "title": "Повідомлення",
+  "update": {
+    "error": "",
+    "fields": {
+      "content": {
+        "placeholder": ""
+      }
+    },
+    "success": "",
+    "title": ""
+  }
 }

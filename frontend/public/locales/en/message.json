@@ -14,5 +14,15 @@
     "placeholder": "Type your message...",
     "success": "Message sent successfully."
   },
-  "title": "Messages"
+  "title": "Messages",
+  "update": {
+    "error": "Error while updating message.",
+    "fields": {
+      "content": {
+        "placeholder": "Type your message.."
+      }
+    },
+    "success": "Message successfully updated.",
+    "title": "Update message"
+  }
 }

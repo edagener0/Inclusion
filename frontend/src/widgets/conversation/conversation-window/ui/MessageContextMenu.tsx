@@ -1,6 +1,5 @@
-import { PenLine } from 'lucide-react';
-
 import { DeleteMessageContextMenuItem } from '@/features/conversation/delete-message';
+import { UpdateMessageContextMenuItem } from '@/features/conversation/update-message';
 
 import { type Message, MessageCard } from '@/entities/conversation';
 
@@ -8,7 +7,6 @@ import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuGroup,
-  ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from '@/shared/ui/context-menu';
@@ -25,10 +23,7 @@ export function MessageContextMenu({ message }: Props) {
       </ContextMenuTrigger>
       <ContextMenuContent>
         <ContextMenuGroup>
-          <ContextMenuItem>
-            <PenLine />
-            Edit
-          </ContextMenuItem>
+          <UpdateMessageContextMenuItem message={message} />
         </ContextMenuGroup>
         <ContextMenuSeparator />
         <ContextMenuGroup>

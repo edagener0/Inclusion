@@ -14,5 +14,15 @@
     "placeholder": "",
     "success": ""
   },
-  "title": "Сообщения"
+  "title": "Сообщения",
+  "update": {
+    "error": "",
+    "fields": {
+      "content": {
+        "placeholder": ""
+      }
+    },
+    "success": "",
+    "title": ""
+  }
 }

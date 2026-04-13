@@ -14,5 +14,15 @@
     "placeholder": "",
     "success": ""
   },
-  "title": "メッセージ"
+  "title": "メッセージ",
+  "update": {
+    "error": "",
+    "fields": {
+      "content": {
+        "placeholder": ""
+      }
+    },
+    "success": "",
+    "title": ""
+  }
 }

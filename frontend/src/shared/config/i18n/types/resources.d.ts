@@ -221,20 +221,30 @@ interface Resources {
   "message": {
     "delete": {
       "dialog": {
-        "confirm": "dialog.confirm",
-        "description": "dialog.description",
-        "title": "dialog.title",
-        "trigger": "dialog.trigger"
+        "confirm": "Delete",
+        "description": "This action cannot be undone.",
+        "title": "Delete message",
+        "trigger": "Delete"
       },
-      "error": "error",
-      "success": "success"
+      "error": "Failed to delete the message.",
+      "success": "Message deleted successfully."
     },
     "send": {
-      "error": "error",
-      "placeholder": "placeholder",
-      "success": "success"
+      "error": "Failed to send the message.",
+      "placeholder": "Type your message...",
+      "success": "Message sent successfully."
     },
-    "title": "Messages"
+    "title": "Messages",
+    "update": {
+      "error": "error",
+      "fields": {
+        "content": {
+          "placeholder": "message:update.fields.content.placeholder"
+        }
+      },
+      "success": "success",
+      "title": "title"
+    }
   },
   "note": {
     "create": {

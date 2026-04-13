@@ -14,5 +14,15 @@
     "placeholder": "",
     "success": ""
   },
-  "title": "Messages"
+  "title": "Messages",
+  "update": {
+    "error": "",
+    "fields": {
+      "content": {
+        "placeholder": ""
+      }
+    },
+    "success": "",
+    "title": ""
+  }
 }
