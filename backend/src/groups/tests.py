@@ -185,7 +185,10 @@ class GroupViewsTests(APITestCase):
             group=group,
             content="new group message",
         ).exists())
-        self.assertEqual(response.data["sender"]["username"], self.user1.username)
+        self.assertEqual(response.data["user"]["username"], self.user1.username)
+        self.assertNotIn("sender", response.data)
+        self.assertNotIn("firstName", response.data["user"])
+        self.assertNotIn("lastName", response.data["user"])
 
     def test_sender_can_update_own_group_message(self):
         group = self.create_group(members=[self.user2])
@@ -207,6 +210,27 @@ class GroupViewsTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         message.refresh_from_db()
         self.assertEqual(message.content, "after")
+
+    def test_put_is_not_allowed_for_group_message_update(self):
+        group = self.create_group(members=[self.user2])
+        message = GroupMessage.objects.create(
+            sender=self.user1,
+            group=group,
+            content="before",
+        )
+
+        response = self.client.put(
+            reverse(
+                "group-message-retrieve-update-destroy",
+                kwargs={"group_id": group.id, "message_id": message.id},
+            ),
+            {"content": "after"},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        message.refresh_from_db()
+        self.assertEqual(message.content, "before")
 
     def test_other_member_cannot_update_group_message(self):
         group = self.create_group(members=[self.user2])
@@ -390,7 +414,9 @@ class GroupWebSocketTests(TransactionTestCase):
             payload = await communicator.receive_json_from(timeout=2)
             self.assertEqual(payload["type"], "group.message.created")
             self.assertEqual(payload["message"]["content"], "hello group realtime")
-            self.assertEqual(payload["message"]["groupId"], self.group.id)
+            self.assertEqual(payload["message"]["user"]["id"], self.user1.id)
+            self.assertNotIn("sender", payload["message"])
+            self.assertNotIn("groupId", payload["message"])
 
             await communicator.disconnect()
 
@@ -482,6 +508,7 @@ class GroupWebSocketTests(TransactionTestCase):
             payload = await communicator.receive_json_from(timeout=2)
             self.assertEqual(payload["type"], "group.message.deleted")
             self.assertEqual(payload["message"]["id"], message.id)
+            self.assertEqual(list(payload["message"].keys()), ["id"])
 
             await communicator.disconnect()
 

@@ -1,3 +1,28 @@
 {
-  "title": "Повідомлення"
+  "delete": {
+    "dialog": {
+      "confirm": "",
+      "description": "",
+      "title": "",
+      "trigger": ""
+    },
+    "error": "",
+    "success": ""
+  },
+  "send": {
+    "error": "",
+    "placeholder": "",
+    "success": ""
+  },
+  "title": "Повідомлення",
+  "update": {
+    "error": "",
+    "fields": {
+      "content": {
+        "placeholder": ""
+      }
+    },
+    "success": "",
+    "title": ""
+  }
 }

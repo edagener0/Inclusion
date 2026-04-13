@@ -241,7 +241,32 @@ interface Resources {
     }
   },
   "message": {
-    "title": "Messages"
+    "delete": {
+      "dialog": {
+        "confirm": "Delete",
+        "description": "This action cannot be undone.",
+        "title": "Delete message",
+        "trigger": "Delete"
+      },
+      "error": "Failed to delete the message.",
+      "success": "Message deleted successfully."
+    },
+    "send": {
+      "error": "Failed to send the message.",
+      "placeholder": "Type your message...",
+      "success": "Message sent successfully."
+    },
+    "title": "Messages",
+    "update": {
+      "error": "error",
+      "fields": {
+        "content": {
+          "placeholder": "message:update.fields.content.placeholder"
+        }
+      },
+      "success": "success",
+      "title": "title"
+    }
   },
   "note": {
     "create": {

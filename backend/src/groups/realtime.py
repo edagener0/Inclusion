@@ -41,19 +41,17 @@ def _normalize_group_payload(group_payload):
 def serialize_group_realtime_message(message):
     serializer = GroupRealtimeMessageSerializer(message)
     payload = camelize(serializer.data)
-    payload["sender"] = _normalize_user_payload(payload["sender"])
+    payload["user"] = _normalize_user_payload(payload["user"])
     return payload
 
 
 def serialize_group_deleted_message(message):
     return camelize({
         "id": message.id,
-        "group_id": message.group_id,
-        "sender_id": message.sender_id,
     })
 
 
-def serialize_group_inbox_item(group, current_user):
+def serialize_group_inbox_item(group):
     serializer = GroupInboxSerializer(group)
     payload = camelize(serializer.data)
     return _normalize_group_payload(payload)
@@ -74,18 +72,18 @@ def _broadcast_group_message_event(event_type, payload, group_id):
     )
 
 
-def _broadcast_group_inbox_updated(group_id, member_user_id):
+def _broadcast_group_inbox_updated(group_id, member_user):
     channel_layer = get_channel_layer()
 
     if channel_layer is None:
         return
 
-    group = build_group_queryset_for_user(member_user_id).get(id=group_id)
+    group = build_group_queryset_for_user(member_user).get(id=group_id)
     async_to_sync(channel_layer.group_send)(
-        build_group_user_group(member_user_id.id),
+        build_group_user_group(member_user.id),
         {
             "type": "group.inbox.updated",
-            "group_item": serialize_group_inbox_item(group, member_user_id),
+            "group_item": serialize_group_inbox_item(group),
         },
     )
 

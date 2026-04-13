@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "tauri": "tauri",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
@@ -41,6 +42,7 @@
     "@eslint/js": "^9.39.4",
     "@feature-sliced/steiger-plugin": "^0.5.7",
     "@tanstack/router-vite-plugin": "^1.166.24",
+    "@tauri-apps/cli": "^2.10.1",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",

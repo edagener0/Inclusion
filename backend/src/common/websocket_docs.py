@@ -36,8 +36,11 @@ websocket_upgrade_serializer = inline_serializer(
                 "message": {
                     "id": 1,
                     "content": "Hello",
-                    "senderId": 10,
-                    "receiverId": 20,
+                    "user": {
+                        "id": 10,
+                        "username": "alice",
+                        "avatar": "http://localhost:8000/media/avatars/default.webp",
+                    },
                     "createdAt": "2026-03-19T10:00:00Z",
                     "updatedAt": "2026-03-19T10:00:00Z",
                 },
@@ -78,7 +81,13 @@ class DMConversationWebSocketDocView(APIView):
                 "type": "dm.inbox.updated",
                 "inboxItem": {
                     "id": 1,
+                    "user": {
+                        "id": 20,
+                        "username": "bob",
+                        "avatar": "http://localhost:8000/media/avatars/default.webp",
+                    },
                     "lastMessage": "Hello",
+                    "createdAt": "2026-03-19T10:00:00Z",
                 },
             },
             response_only=True,
@@ -118,9 +127,12 @@ class DMInboxWebSocketDocView(APIView):
                 "type": "group.message.created",
                 "message": {
                     "id": 1,
-                    "groupId": 99,
                     "content": "Hello group",
-                    "senderId": 10,
+                    "user": {
+                        "id": 10,
+                        "username": "alice",
+                        "avatar": "http://localhost:8000/media/avatars/default.webp",
+                    },
                     "createdAt": "2026-03-19T10:00:00Z",
                     "updatedAt": "2026-03-19T10:00:00Z",
                 },

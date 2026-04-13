@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import PermissionDenied, ValidationError
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
@@ -18,7 +18,6 @@ from .serializers import (
     DMConversationCreateSerializer,
     DMConversationMessageSerializer,
     DMConversationUpdateSerializer,
-    DMCreateSerializer,
     DMInboxSerializer,
 )
 
@@ -57,20 +56,9 @@ class DMUpdateResponseMixin:
 
 
 @extend_schema(tags=["DMs"])
-class DMListCreateView(DMBroadcastCreateMixin, ListCreateAPIView):
+class DMListView(ListAPIView):
     permission_classes = [IsAuthenticated]
-
-    @extend_schema(
-        request=DMCreateSerializer,
-        responses={201: DMConversationMessageSerializer},
-    )
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
-
-    def get_serializer_class(self):
-        if self.request.method == "POST":
-            return DMCreateSerializer
-        return DMInboxSerializer
+    serializer_class = DMInboxSerializer
 
     def get_queryset(self):
         if getattr(self, "swagger_fake_view", False):
@@ -108,11 +96,6 @@ class DMListCreateView(DMBroadcastCreateMixin, ListCreateAPIView):
 
         serializer = self.get_serializer(latest_dms, many=True)
         return Response(serializer.data)
-
-    def perform_create(self, serializer):
-        dm = serializer.save(sender=self.request.user)
-        schedule_dm_message_created_broadcast(dm)
-        return dm
 
 
 @extend_schema(tags=["DMs"])
@@ -158,7 +141,7 @@ class DMConversationMessagesView(DMBroadcastCreateMixin, ListCreateAPIView):
             )
             .select_related("sender", "receiver")
             # Para o ecrã de chat, a ordem natural é cronológica.
-            .order_by("created_at")
+            .order_by("-created_at")
         )
 
     def perform_create(self, serializer):
@@ -176,6 +159,7 @@ class DMRetrieveUpdateDestroyView(DMUpdateResponseMixin, RetrieveUpdateDestroyAP
     response_serializer_class = DMConversationMessageSerializer
     lookup_url_kwarg = "dm_id"
     lookup_field = "id"
+    http_method_names = ["get", "patch", "delete", "head", "options"]
 
     def get_queryset(self):
         if getattr(self, "swagger_fake_view", False):

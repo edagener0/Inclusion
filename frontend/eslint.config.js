@@ -8,7 +8,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  globalIgnores(['dist', 'src/routeTree.gen.ts', 'src/shared/config/i18n/types/**']),
+  globalIgnores(['dist', 'src/routeTree.gen.ts', 'src/shared/config/i18n/types/**', 'src-tauri']),
 
   js.configs.recommended,
   ...tseslint.configs.recommended,
