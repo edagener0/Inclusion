@@ -1,9 +1,9 @@
 import { createContext, useContext } from 'react';
 
-export interface SocketContextType {
+type SocketContextType = {
   connect: (url: string) => WebSocket;
   disconnect: (url: string) => void;
-}
+};
 
 export const SocketContext = createContext<SocketContextType | null>(null);
 

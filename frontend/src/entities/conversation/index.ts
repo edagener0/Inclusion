@@ -1,4 +1,3 @@
-export { formatConversationDate } from './lib/format-date';
 export { conversationbQueries } from './api/queries';
 export { useConversationSocket } from './model/use-conversations-socket';
 export { MessageCard } from './ui/MessageCard';
