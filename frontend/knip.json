@@ -5,7 +5,8 @@
     "steiger.config.ts",
     "src/shared/config/i18n/types/**/*.d.ts",
     "src/shared/config/i18n/extract-dummy.ts",
-    "src/shared/ui/**"
+    "src/shared/ui/**",
+    "src-tauri/**"
   ],
   "ignoreDependencies": ["@feature-sliced/steiger-plugin"]
 }

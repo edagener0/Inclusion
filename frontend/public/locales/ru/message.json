@@ -1,3 +1,28 @@
 {
-  "title": "Сообщения"
+  "delete": {
+    "dialog": {
+      "confirm": "",
+      "description": "",
+      "title": "",
+      "trigger": ""
+    },
+    "error": "",
+    "success": ""
+  },
+  "send": {
+    "error": "",
+    "placeholder": "",
+    "success": ""
+  },
+  "title": "Сообщения",
+  "update": {
+    "error": "",
+    "fields": {
+      "content": {
+        "placeholder": ""
+      }
+    },
+    "success": "",
+    "title": ""
+  }
 }

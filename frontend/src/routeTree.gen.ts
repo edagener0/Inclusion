@@ -14,16 +14,17 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as MainProfileRouteImport } from './routes/_main/profile'
 import { Route as MainPostsRouteImport } from './routes/_main/posts'
-import { Route as MainMessagesRouteImport } from './routes/_main/messages'
 import { Route as MainIncsRouteImport } from './routes/_main/incs'
 import { Route as MainUsernameRouteImport } from './routes/_main/$username'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as MainStoriesIndexRouteImport } from './routes/_main/stories/index'
 import { Route as MainPostsIndexRouteImport } from './routes/_main/posts/index'
+import { Route as MainMessagesIndexRouteImport } from './routes/_main/messages/index'
 import { Route as MainIncsIndexRouteImport } from './routes/_main/incs/index'
 import { Route as MainStoriesIdRouteImport } from './routes/_main/stories/$id'
 import { Route as MainPostsIdRouteImport } from './routes/_main/posts/$id'
+import { Route as MainMessagesIdRouteImport } from './routes/_main/messages/$id'
 import { Route as MainIncsIdRouteImport } from './routes/_main/incs/$id'
 
 const MainRoute = MainRouteImport.update({
@@ -47,11 +48,6 @@ const MainProfileRoute = MainProfileRouteImport.update({
 const MainPostsRoute = MainPostsRouteImport.update({
   id: '/posts',
   path: '/posts',
-  getParentRoute: () => MainRoute,
-} as any)
-const MainMessagesRoute = MainMessagesRouteImport.update({
-  id: '/messages',
-  path: '/messages',
   getParentRoute: () => MainRoute,
 } as any)
 const MainIncsRoute = MainIncsRouteImport.update({
@@ -86,6 +82,11 @@ const MainPostsIndexRoute = MainPostsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => MainPostsRoute,
 } as any)
+const MainMessagesIndexRoute = MainMessagesIndexRouteImport.update({
+  id: '/messages/',
+  path: '/messages/',
+  getParentRoute: () => MainRoute,
+} as any)
 const MainIncsIndexRoute = MainIncsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -105,6 +106,13 @@ const MainPostsIdRoute = MainPostsIdRouteImport.update({
 } as any).lazy(() =>
   import('./routes/_main/posts/$id.lazy').then((d) => d.Route),
 )
+const MainMessagesIdRoute = MainMessagesIdRouteImport.update({
+  id: '/messages/$id',
+  path: '/messages/$id',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/messages/$id.lazy').then((d) => d.Route),
+)
 const MainIncsIdRoute = MainIncsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -119,13 +127,14 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof AuthSignUpRoute
   '/$username': typeof MainUsernameRoute
   '/incs': typeof MainIncsRouteWithChildren
-  '/messages': typeof MainMessagesRoute
   '/posts': typeof MainPostsRouteWithChildren
   '/profile': typeof MainProfileRoute
   '/incs/$id': typeof MainIncsIdRoute
+  '/messages/$id': typeof MainMessagesIdRoute
   '/posts/$id': typeof MainPostsIdRoute
   '/stories/$id': typeof MainStoriesIdRoute
   '/incs/': typeof MainIncsIndexRoute
+  '/messages/': typeof MainMessagesIndexRoute
   '/posts/': typeof MainPostsIndexRoute
   '/stories/': typeof MainStoriesIndexRoute
 }
@@ -134,12 +143,13 @@ export interface FileRoutesByTo {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/$username': typeof MainUsernameRoute
-  '/messages': typeof MainMessagesRoute
   '/profile': typeof MainProfileRoute
   '/incs/$id': typeof MainIncsIdRoute
+  '/messages/$id': typeof MainMessagesIdRoute
   '/posts/$id': typeof MainPostsIdRoute
   '/stories/$id': typeof MainStoriesIdRoute
   '/incs': typeof MainIncsIndexRoute
+  '/messages': typeof MainMessagesIndexRoute
   '/posts': typeof MainPostsIndexRoute
   '/stories': typeof MainStoriesIndexRoute
 }
@@ -151,14 +161,15 @@ export interface FileRoutesById {
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_main/$username': typeof MainUsernameRoute
   '/_main/incs': typeof MainIncsRouteWithChildren
-  '/_main/messages': typeof MainMessagesRoute
   '/_main/posts': typeof MainPostsRouteWithChildren
   '/_main/profile': typeof MainProfileRoute
   '/_main/': typeof MainIndexRoute
   '/_main/incs/$id': typeof MainIncsIdRoute
+  '/_main/messages/$id': typeof MainMessagesIdRoute
   '/_main/posts/$id': typeof MainPostsIdRoute
   '/_main/stories/$id': typeof MainStoriesIdRoute
   '/_main/incs/': typeof MainIncsIndexRoute
+  '/_main/messages/': typeof MainMessagesIndexRoute
   '/_main/posts/': typeof MainPostsIndexRoute
   '/_main/stories/': typeof MainStoriesIndexRoute
 }
@@ -170,13 +181,14 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/$username'
     | '/incs'
-    | '/messages'
     | '/posts'
     | '/profile'
     | '/incs/$id'
+    | '/messages/$id'
     | '/posts/$id'
     | '/stories/$id'
     | '/incs/'
+    | '/messages/'
     | '/posts/'
     | '/stories/'
   fileRoutesByTo: FileRoutesByTo
@@ -185,12 +197,13 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/$username'
-    | '/messages'
     | '/profile'
     | '/incs/$id'
+    | '/messages/$id'
     | '/posts/$id'
     | '/stories/$id'
     | '/incs'
+    | '/messages'
     | '/posts'
     | '/stories'
   id:
@@ -201,14 +214,15 @@ export interface FileRouteTypes {
     | '/_auth/sign-up'
     | '/_main/$username'
     | '/_main/incs'
-    | '/_main/messages'
     | '/_main/posts'
     | '/_main/profile'
     | '/_main/'
     | '/_main/incs/$id'
+    | '/_main/messages/$id'
     | '/_main/posts/$id'
     | '/_main/stories/$id'
     | '/_main/incs/'
+    | '/_main/messages/'
     | '/_main/posts/'
     | '/_main/stories/'
   fileRoutesById: FileRoutesById
@@ -255,13 +269,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainPostsRouteImport
       parentRoute: typeof MainRoute
     }
-    '/_main/messages': {
-      id: '/_main/messages'
-      path: '/messages'
-      fullPath: '/messages'
-      preLoaderRoute: typeof MainMessagesRouteImport
-      parentRoute: typeof MainRoute
-    }
     '/_main/incs': {
       id: '/_main/incs'
       path: '/incs'
@@ -304,6 +311,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainPostsIndexRouteImport
       parentRoute: typeof MainPostsRoute
     }
+    '/_main/messages/': {
+      id: '/_main/messages/'
+      path: '/messages'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof MainMessagesIndexRouteImport
+      parentRoute: typeof MainRoute
+    }
     '/_main/incs/': {
       id: '/_main/incs/'
       path: '/'
@@ -324,6 +338,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/posts/$id'
       preLoaderRoute: typeof MainPostsIdRouteImport
       parentRoute: typeof MainPostsRoute
+    }
+    '/_main/messages/$id': {
+      id: '/_main/messages/$id'
+      path: '/messages/$id'
+      fullPath: '/messages/$id'
+      preLoaderRoute: typeof MainMessagesIdRouteImport
+      parentRoute: typeof MainRoute
     }
     '/_main/incs/$id': {
       id: '/_main/incs/$id'
@@ -378,22 +399,24 @@ const MainPostsRouteWithChildren = MainPostsRoute._addFileChildren(
 interface MainRouteChildren {
   MainUsernameRoute: typeof MainUsernameRoute
   MainIncsRoute: typeof MainIncsRouteWithChildren
-  MainMessagesRoute: typeof MainMessagesRoute
   MainPostsRoute: typeof MainPostsRouteWithChildren
   MainProfileRoute: typeof MainProfileRoute
   MainIndexRoute: typeof MainIndexRoute
+  MainMessagesIdRoute: typeof MainMessagesIdRoute
   MainStoriesIdRoute: typeof MainStoriesIdRoute
+  MainMessagesIndexRoute: typeof MainMessagesIndexRoute
   MainStoriesIndexRoute: typeof MainStoriesIndexRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainUsernameRoute: MainUsernameRoute,
   MainIncsRoute: MainIncsRouteWithChildren,
-  MainMessagesRoute: MainMessagesRoute,
   MainPostsRoute: MainPostsRouteWithChildren,
   MainProfileRoute: MainProfileRoute,
   MainIndexRoute: MainIndexRoute,
+  MainMessagesIdRoute: MainMessagesIdRoute,
   MainStoriesIdRoute: MainStoriesIdRoute,
+  MainMessagesIndexRoute: MainMessagesIndexRoute,
   MainStoriesIndexRoute: MainStoriesIndexRoute,
 }
 

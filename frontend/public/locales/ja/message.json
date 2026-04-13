@@ -1,3 +1,28 @@
 {
-  "title": "メッセージ"
+  "delete": {
+    "dialog": {
+      "confirm": "",
+      "description": "",
+      "title": "",
+      "trigger": ""
+    },
+    "error": "",
+    "success": ""
+  },
+  "send": {
+    "error": "",
+    "placeholder": "",
+    "success": ""
+  },
+  "title": "メッセージ",
+  "update": {
+    "error": "",
+    "fields": {
+      "content": {
+        "placeholder": ""
+      }
+    },
+    "success": "",
+    "title": ""
+  }
 }
