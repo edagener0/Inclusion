@@ -5,6 +5,7 @@ import { MessageCircle } from 'lucide-react';
 
 import { useTimeAgo } from '@/shared/lib/hooks';
 import { isVideo } from '@/shared/lib/utils';
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/shared/ui/card';
 
@@ -12,12 +13,12 @@ import { type Post } from '../model/schema';
 
 type Props = {
   post: Post;
-  userAvatarSlot: ReactNode;
+  nameSlot: ReactNode;
   likeSlot: ReactNode;
   actionsSlot?: ReactNode;
 };
 
-export function PostCard({ userAvatarSlot, likeSlot, actionsSlot, post }: Props) {
+export function PostCard({ nameSlot, likeSlot, actionsSlot, post }: Props) {
   const isMediaVideo = isVideo(post.file);
 
   return (
@@ -27,20 +28,19 @@ export function PostCard({ userAvatarSlot, likeSlot, actionsSlot, post }: Props)
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 border-none px-3 pt-2 pb-2">
         <div className="flex items-center gap-3">
-          {userAvatarSlot}
+          <BaseAvatar src={post.user.avatar} alt={post.user.username} />
+
           <div className="flex flex-col">
-            <Link to="/$username" params={{ username: post.user.username }}>
-              <span className="text-foreground cursor-pointer text-[14px] font-semibold hover:underline">
-                {post.user.username}
-              </span>
-            </Link>
+            {nameSlot}
+
             <Link to="/posts/$id" params={{ id: String(post.id) }} resetScroll={false}>
-              <span className="text-muted-foreground text-[12px]">
+              <span className="text-muted-foreground text-[12px] hover:underline">
                 {useTimeAgo(post.createdAt)}
               </span>
             </Link>
           </div>
         </div>
+
         <div>{actionsSlot}</div>
       </CardHeader>
       <CardContent className="border-border/50 border-y p-0">

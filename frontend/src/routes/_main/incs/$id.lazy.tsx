@@ -5,7 +5,7 @@ import { CommentSection } from '@/widgets/comment-section';
 import { IncLikeButton } from '@/widgets/inc-list';
 
 import { IncDetail, incQueries } from '@/entities/inc';
-import { UserAvatar } from '@/entities/user';
+import { UserSnippet } from '@/entities/user';
 
 import {
   Dialog,
@@ -45,13 +45,7 @@ export function RouteComponent() {
         <div className="flex-1 overflow-hidden">
           <IncDetail
             inc={inc}
-            userAvatarSlot={
-              <UserAvatar
-                avatar={inc.user.avatar}
-                username={inc.user.username}
-                className="h-10 w-10"
-              />
-            }
+            userSlot={<UserSnippet user={inc.user} />}
             likeSlot={
               <IncLikeButton incId={inc.id} isLiked={inc.isLiked} likesCount={inc.likesCount} />
             }

@@ -4,7 +4,7 @@ import { DeleteIncMenuItem } from '@/features/inc/delete-inc';
 
 import { type Inc, IncCard } from '@/entities/inc';
 import { useSession } from '@/entities/session';
-import { UserAvatar } from '@/entities/user';
+import { UserSnippet } from '@/entities/user';
 
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
@@ -19,11 +19,9 @@ export function IncListItem({ inc }: { inc: Inc }) {
     <IncLikeButton isLiked={inc.isLiked} likesCount={inc.likesCount} incId={inc.id} />
   );
 
-  const userAvatar = (
-    <UserAvatar avatar={inc.user.avatar} username={inc.user.username} className="h-9 w-9" />
-  );
+  const author = <UserSnippet user={inc.user} />;
 
-  if (!isAuthor) return <IncCard inc={inc} likeSlot={likeButton} userAvatarSlot={userAvatar} />;
+  if (!isAuthor) return <IncCard inc={inc} likeSlot={likeButton} authorSlot={author} />;
 
   const actionSlot = (
     <DropdownMenu>
@@ -41,7 +39,5 @@ export function IncListItem({ inc }: { inc: Inc }) {
     </DropdownMenu>
   );
 
-  return (
-    <IncCard inc={inc} actionsSlot={actionSlot} likeSlot={likeButton} userAvatarSlot={userAvatar} />
-  );
+  return <IncCard inc={inc} actionsSlot={actionSlot} likeSlot={likeButton} authorSlot={author} />;
 }

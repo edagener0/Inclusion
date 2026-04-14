@@ -56,7 +56,7 @@ export function SignInForm() {
                   aria-invalid={isInvalid}
                   autoComplete="off"
                 />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                <FieldError errors={field.state.meta.errors} className="text-xs" />
               </Field>
             );
           }}
@@ -78,7 +78,7 @@ export function SignInForm() {
                   aria-invalid={isInvalid}
                   autoComplete="off"
                 />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                <FieldError errors={field.state.meta.errors} className="text-xs" />
               </Field>
             );
           }}

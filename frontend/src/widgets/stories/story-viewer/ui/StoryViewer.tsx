@@ -4,7 +4,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { X } from 'lucide-react';
 
 import { StoryHeader, StoryMedia, StoryProgress, storyQueries } from '@/entities/story';
-import { UserAvatar } from '@/entities/user';
+import { UserSnippet } from '@/entities/user';
 
 import { Button } from '@/shared/ui/button';
 
@@ -38,14 +38,8 @@ export function StoryViewer({ initialId, onClose }: Props) {
         <div className="flex w-full items-center justify-between">
           <div className="pointer-events-auto">
             <StoryHeader
-              user={currentUserGroup.user}
               createdAt={currentStory.createdAt}
-              userAvatarSlot={
-                <UserAvatar
-                  avatar={currentUserGroup.user.avatar}
-                  username={currentUserGroup.user.username}
-                />
-              }
+              userSlot={<UserSnippet user={currentUserGroup.user} />}
             />
           </div>
 

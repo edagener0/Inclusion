@@ -4,8 +4,9 @@ import { notFound } from '@tanstack/react-router';
 import { FriendshipManageButton } from '@/features/friend/frindship-manage';
 
 import { useSession } from '@/entities/session';
-import { ProfileInfo, UserAvatar, profileQueries } from '@/entities/user';
+import { ProfileInfo, profileQueries } from '@/entities/user';
 
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { Card, CardContent } from '@/shared/ui/card';
 import { CenterSpinner } from '@/shared/ui/spinner';
 
@@ -21,9 +22,9 @@ export function ProfileHeader({ username }: { username: string }) {
       <CardContent className="p-5 sm:p-7">
         <div className="flex flex-col items-center gap-5 sm:flex-row sm:gap-6">
           <div className="relative">
-            <UserAvatar
-              username={profile.username}
-              avatar={profile.avatar}
+            <BaseAvatar
+              alt={profile.username}
+              src={profile.avatar}
               className="h-24 w-24 ring-2 ring-white ring-offset-2 ring-offset-zinc-50 sm:h-28 sm:w-28 dark:ring-zinc-800 dark:ring-offset-zinc-950"
             />
           </div>

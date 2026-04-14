@@ -7,7 +7,7 @@ import { Edit } from 'lucide-react';
 
 import { FriendCard, FriendCardSkeleton, friendQueries } from '@/entities/friend';
 import { useSession } from '@/entities/session';
-import { UserAvatar } from '@/entities/user';
+import { UserSnippet } from '@/entities/user';
 
 import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { Button } from '@/shared/ui/button';
@@ -74,10 +74,7 @@ export function SelectFriendDialog() {
                     }}
                   >
                     <FriendCard
-                      user={{ username: friend.username, avatar: friend.avatar, id: friend.id }}
-                      userAvatarSlot={
-                        <UserAvatar avatar={friend.avatar} username={friend.username} />
-                      }
+                      friendSlot={<UserSnippet user={friend} />}
                       friendshipManageSlot={null}
                     />
                   </div>

@@ -5,14 +5,14 @@ import { Card } from '@/shared/ui/card';
 
 type Props = {
   user: UserPreview;
-  userAvatarSlot: ReactNode;
+  userSnippetSlot: ReactNode;
   acceptButtonSlot: ReactNode;
   declineButtonSlot: ReactNode;
 };
 
 export function FriendRequestCard({
   user,
-  userAvatarSlot,
+  userSnippetSlot,
   acceptButtonSlot,
   declineButtonSlot,
 }: Props) {
@@ -23,10 +23,7 @@ export function FriendRequestCard({
     >
       <div className="flex items-center gap-3 overflow-hidden">
         <div className="bg-muted flex h-9 w-9 shrink-0 items-center justify-center rounded-full">
-          {userAvatarSlot}
-        </div>
-        <div className="flex flex-col truncate">
-          <span className="truncate text-sm font-medium">{user.username}</span>
+          {userSnippetSlot}
         </div>
       </div>
 
