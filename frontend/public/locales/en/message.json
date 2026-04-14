@@ -12,7 +12,8 @@
   "send": {
     "error": "Failed to send the message.",
     "placeholder": "Type your message...",
-    "success": "Message sent successfully."
+    "success": "Message sent successfully.",
+    "title": "New Message"
   },
   "title": "Messages",
   "update": {
@@ -23,6 +24,7 @@
       }
     },
     "success": "Message successfully updated.",
-    "title": "Update message"
+    "title": "Update message",
+    "trigger": "Edit"
   }
 }
