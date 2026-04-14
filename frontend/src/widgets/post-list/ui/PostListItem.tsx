@@ -4,8 +4,8 @@ import { DeletePostMenuItem } from '@/features/post/delete-post';
 
 import { type Post, PostCard } from '@/entities/post';
 import { useSession } from '@/entities/session';
+import { LinkedUsername } from '@/entities/user';
 
-import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 
@@ -23,11 +23,14 @@ export function PostListItem({ post }: Props) {
     <PostLikeButton isLiked={post.isLiked} likesCount={post.likesCount} postId={post.id} />
   );
 
-  const userAvatar = (
-    <BaseAvatar src={post.user.avatar} alt={post.user.username} className="h-9 w-9" />
+  const nameSlot = (
+    <LinkedUsername
+      username={post.user.username}
+      className="text-foreground cursor-pointer text-[14px] font-semibold hover:underline"
+    />
   );
 
-  if (!isAuthor) return <PostCard post={post} likeSlot={likeButton} userAvatarSlot={userAvatar} />;
+  if (!isAuthor) return <PostCard post={post} likeSlot={likeButton} nameSlot={nameSlot} />;
 
   const actionSlot = (
     <DropdownMenu>
@@ -46,11 +49,6 @@ export function PostListItem({ post }: Props) {
   );
 
   return (
-    <PostCard
-      post={post}
-      actionsSlot={actionSlot}
-      likeSlot={likeButton}
-      userAvatarSlot={userAvatar}
-    />
+    <PostCard post={post} actionsSlot={actionSlot} likeSlot={likeButton} nameSlot={nameSlot} />
   );
 }
