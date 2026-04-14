@@ -6,8 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import { NoteCard, noteQueries } from '@/entities/note';
 import { useSession } from '@/entities/session';
-import { UserAvatar } from '@/entities/user';
 
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { Button } from '@/shared/ui/button';
 import {
   Dialog,
@@ -60,9 +60,7 @@ export function NoteManageDialog() {
       <DialogTrigger asChild>
         <NoteCard
           note={note ?? { ...emptyNote(user), content: t(emptyNote(user).content) }}
-          avatar={
-            <UserAvatar className="h-16 w-16" avatar={user.avatar} username={user.username} />
-          }
+          avatar={<BaseAvatar className="h-16 w-16" src={user.avatar} alt={user.username} />}
         />
       </DialogTrigger>
 

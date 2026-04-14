@@ -8,8 +8,8 @@ import { LanguageSwitcherDropDownMenuSub } from '@/features/language-switcher';
 import { ThemeSwitcherDropDownMenuSub } from '@/features/theme-switcher';
 
 import { useSession } from '@/entities/session';
-import { UserAvatar } from '@/entities/user';
 
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { Button } from '@/shared/ui/button';
 import {
   DropdownMenu,
@@ -21,7 +21,7 @@ import {
 } from '@/shared/ui/dropdown-menu';
 
 export function UserDropDownMenu() {
-  const user = useSession();
+  const session = useSession();
   const navigate = useNavigate();
   const mutation = useSignOutMutation();
   const { t } = useTranslation('user', { keyPrefix: 'menu' });
@@ -30,21 +30,21 @@ export function UserDropDownMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-          <UserAvatar avatar={user.avatar} username={user.username} className="h-10 w-10" />
+          <BaseAvatar src={session.avatar} alt={session.username} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm leading-none font-medium">{user?.username}</p>
+            <p className="text-sm leading-none font-medium">{session.username}</p>
             <p className="text-muted-foreground text-xs leading-none">
-              {user.firstName} {user.lastName}
+              {session.firstName} {session.lastName}
             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => navigate({ to: `/$username`, params: { username: user.username } })}
+          onClick={() => navigate({ to: `/$username`, params: { username: session.username } })}
         >
           <User className="mr-2 h-4 w-4" />
           {t('profile')}

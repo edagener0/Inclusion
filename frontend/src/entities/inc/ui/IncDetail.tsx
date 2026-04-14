@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 
-import { Link } from '@tanstack/react-router';
 import { MessageCircle } from 'lucide-react';
 
 import { useTimeAgo } from '@/shared/lib/hooks';
@@ -10,30 +9,16 @@ import type { Inc } from '../model/schema';
 
 type Props = {
   inc: Inc;
-  userAvatarSlot: ReactNode;
+  userSlot: ReactNode;
   likeSlot: ReactNode;
   commentsSlot: ReactNode;
 };
 
-export function IncDetail({ inc, userAvatarSlot, likeSlot, commentsSlot }: Props) {
+export function IncDetail({ inc, userSlot, likeSlot, commentsSlot }: Props) {
   return (
     <div className="bg-background text-foreground flex h-full w-full flex-col overflow-hidden">
       <div className="shrink-0">
-        <div className="flex items-center gap-3 px-4 pt-4">
-          <div className="shrink-0">{userAvatarSlot}</div>
-          <div className="flex flex-col justify-center overflow-hidden">
-            <Link
-              to="/$username"
-              params={{ username: inc.user.username }}
-              className="truncate text-[15px] font-bold hover:underline"
-            >
-              {inc.user.username}
-            </Link>
-            <span className="text-muted-foreground truncate text-[15px] leading-tight">
-              @{inc.user.username}
-            </span>
-          </div>
-        </div>
+        <div className="flex items-center gap-3 px-4 pt-4">{userSlot}</div>
 
         <div className="mt-3 px-4 text-[15px] leading-relaxed wrap-break-word whitespace-pre-wrap">
           {inc.content}

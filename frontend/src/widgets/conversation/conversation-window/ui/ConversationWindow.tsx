@@ -8,7 +8,7 @@ import { SendMessageInput } from '@/features/conversation/send-message';
 
 import { MessageCard, conversationbQueries, useConversationSocket } from '@/entities/conversation';
 import { useSession } from '@/entities/session';
-import { UserAvatar, profileQueries } from '@/entities/user';
+import { UserSnippet, profileQueries } from '@/entities/user';
 
 import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { CenterSpinner } from '@/shared/ui/spinner';
@@ -56,10 +56,7 @@ export function ConversationWindow() {
     <div className="bg-background flex h-full w-full flex-col overflow-hidden">
       <div className="bg-background/95 z-10 flex shrink-0 items-center justify-between gap-2 border-b px-2 py-2 backdrop-blur sm:px-4 sm:py-3">
         <div className="flex min-w-0 flex-1 items-center gap-1 sm:gap-3">
-          <UserAvatar avatar={profile.avatar} username={profile.username} />
-          <div className="flex min-w-0 flex-col">
-            <h2 className="truncate text-sm font-semibold">{username}</h2>
-          </div>
+          <UserSnippet user={profile} />
         </div>
       </div>
 
@@ -71,7 +68,7 @@ export function ConversationWindow() {
             return session.id === msg.user.id ? (
               <MessageContextMenu key={msg.id} message={msg} isMe={isMe} />
             ) : (
-              <MessageCard message={msg} isMe={isMe} />
+              <MessageCard key={msg.id} message={msg} isMe={isMe} />
             );
           })}
 

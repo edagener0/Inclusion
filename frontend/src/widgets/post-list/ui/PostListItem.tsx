@@ -4,8 +4,8 @@ import { DeletePostMenuItem } from '@/features/post/delete-post';
 
 import { type Post, PostCard } from '@/entities/post';
 import { useSession } from '@/entities/session';
-import { UserAvatar } from '@/entities/user';
 
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { Button } from '@/shared/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/ui/dropdown-menu';
 
@@ -24,7 +24,7 @@ export function PostListItem({ post }: Props) {
   );
 
   const userAvatar = (
-    <UserAvatar avatar={post.user.avatar} username={post.user.username} className="h-9 w-9" />
+    <BaseAvatar src={post.user.avatar} alt={post.user.username} className="h-9 w-9" />
   );
 
   if (!isAuthor) return <PostCard post={post} likeSlot={likeButton} userAvatarSlot={userAvatar} />;

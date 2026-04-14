@@ -6,10 +6,10 @@ import { CreateComment } from '@/features/comment/create-comment';
 
 import { CommentCard, CommentCardSkeleton, commentQueries } from '@/entities/comment';
 import { useSession } from '@/entities/session';
-import { UserAvatar } from '@/entities/user';
 
 import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { cn } from '@/shared/lib/utils';
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 
 import { CommentActions } from './CommentActions';
 import { CommentLikeButton } from './CommentLikeButton';
@@ -57,6 +57,7 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
             <CommentCard
               key={comment.id}
               comment={comment}
+              userAvatarSlot={<BaseAvatar src={comment.user.avatar} alt={comment.user.username} />}
               likeSlot={
                 <CommentLikeButton
                   entityType={entityType}
@@ -64,13 +65,6 @@ export function CommentSection({ entityType, entityId, className }: CommentSecti
                   commentId={comment.id}
                   isLiked={comment.isLiked}
                   likesCount={comment.likesCount}
-                />
-              }
-              userAvatarSlot={
-                <UserAvatar
-                  avatar={comment.user.avatar}
-                  username={comment.user.username}
-                  className="h-8 w-8 shrink-0"
                 />
               }
               actionSlot={

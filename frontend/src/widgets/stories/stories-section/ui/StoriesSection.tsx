@@ -4,8 +4,8 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { Link, useLocation } from '@tanstack/react-router';
 
 import { StoryCard, StoryCardSkeleton, storyQueries } from '@/entities/story';
-import { UserAvatar } from '@/entities/user';
 
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { ScrollArea, ScrollBar } from '@/shared/ui/scroll-area';
 
 export function StoriesSection() {
@@ -40,10 +40,10 @@ export function StoriesSection() {
                   <StoryCard
                     username={story.user.username}
                     userAvatarSlot={
-                      <UserAvatar
+                      <BaseAvatar
                         className="h-16 w-16"
-                        username={story.user.username}
-                        avatar={story.user.avatar}
+                        src={story.user.avatar}
+                        alt={story.user.username}
                       />
                     }
                   />

@@ -1,13 +1,14 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { Link } from '@tanstack/react-router';
 
 import {
   ConversationCard,
   ConversationCardSkeleton,
   conversationbQueries,
 } from '@/entities/conversation';
-import { UserAvatar } from '@/entities/user';
 
 import { useInfiniteScroll } from '@/shared/lib/hooks';
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { ScrollArea } from '@/shared/ui/scroll-area';
 import { CenterSpinner } from '@/shared/ui/spinner';
 
@@ -26,16 +27,19 @@ export function ConversationList() {
           {isLoading
             ? Array.from({ length: 8 }).map((_, i) => <ConversationCardSkeleton key={i} />)
             : conversations.map((conversation) => (
-                <ConversationCard
+                <Link
                   key={conversation.id}
-                  conversation={conversation}
-                  avatarSlot={
-                    <UserAvatar
-                      avatar={conversation.user.avatar}
-                      username={conversation.user.username}
-                    />
-                  }
-                />
+                  to="/messages/$id"
+                  params={{ id: conversation.user.username }}
+                  className="hover:bg-muted/50 block cursor-pointer"
+                >
+                  <ConversationCard
+                    conversation={conversation}
+                    avatarSlot={
+                      <BaseAvatar src={conversation.user.avatar} alt={conversation.user.username} />
+                    }
+                  />
+                </Link>
               ))}
 
           <div
