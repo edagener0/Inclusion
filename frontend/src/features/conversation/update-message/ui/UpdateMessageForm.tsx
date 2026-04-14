@@ -55,7 +55,7 @@ export function UpdateMessageForm({ message, onSuccess }: Props) {
                 onFocus={moveCursorToEnd}
               />
 
-              <FieldError errors={field.state.meta.errors} />
+              <FieldError errors={field.state.meta.errors} className="text-xs" />
             </div>
           )}
         />

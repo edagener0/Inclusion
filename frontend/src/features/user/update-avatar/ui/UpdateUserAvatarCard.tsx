@@ -94,7 +94,7 @@ export function UpdateUserAvatarCard({
                   />
                   <p className="text-muted-foreground text-xs">{tU('form.image.size')}</p>
 
-                  <FieldError errors={field.state.meta.errors} />
+                  <FieldError errors={field.state.meta.errors} className="text-xs" />
                 </>
               )}
             />

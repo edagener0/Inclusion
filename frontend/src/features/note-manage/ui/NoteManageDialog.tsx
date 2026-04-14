@@ -8,7 +8,6 @@ import { NoteCard, noteQueries } from '@/entities/note';
 import { useSession } from '@/entities/session';
 import { UserAvatar } from '@/entities/user';
 
-import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import {
   Dialog,
@@ -17,6 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog';
+import { FieldError } from '@/shared/ui/field';
 import { Textarea } from '@/shared/ui/textarea';
 
 import { useDeleteNoteMutation } from '../model/delete-mutations';
@@ -87,21 +87,12 @@ export function NoteManageDialog() {
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
-                  className={cn(
-                    'resize-none pr-10 break-all transition-all',
-                    (field.state.meta.isTouched || field.state.meta.errors.length > 0) &&
-                      field.state.meta.errors.length > 0 &&
-                      'border-destructive focus-visible:ring-destructive',
-                  )}
+                  className="resize-none pr-10 break-all transition-all"
                   disabled={isPending}
                   rows={3}
                 />
 
-                {field.state.meta.errors.length > 0 && (
-                  <p className="text-destructive animate-in fade-in slide-in-from-top-1 absolute -bottom-5 left-0 text-[10px] font-medium">
-                    {field.state.meta.errors[0]?.message?.toString()}
-                  </p>
-                )}
+                <FieldError errors={field.state.meta.errors} className="text-xs" />
               </div>
             )}
           />
