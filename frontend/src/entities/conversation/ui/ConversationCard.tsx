@@ -19,12 +19,10 @@ export function ConversationCard({ conversation, avatarSlot, className }: Props)
         className,
       )}
     >
-      {/* Слот для чистой аватарки */}
       <div className="shrink-0">{avatarSlot}</div>
 
       <div className="min-w-0 flex-1">
         <div className="mb-1 flex items-baseline justify-between gap-2">
-          {/* Имя просто текст, так как кликабельной будет вся карточка снаружи */}
           <h3 className="text-foreground truncate text-sm font-medium">
             {conversation.user.username}
           </h3>
