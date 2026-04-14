@@ -36,7 +36,7 @@ export function UpdateMessageContextMenuItem({ message }: Props) {
           }}
         >
           <PenLine />
-          Edit
+          {t('trigger')}
         </ContextMenuItem>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">

@@ -232,18 +232,20 @@ interface Resources {
     "send": {
       "error": "Failed to send the message.",
       "placeholder": "Type your message...",
-      "success": "Message sent successfully."
+      "success": "Message sent successfully.",
+      "title": "title"
     },
     "title": "Messages",
     "update": {
-      "error": "error",
+      "error": "Error while updating message.",
       "fields": {
         "content": {
-          "placeholder": "message:update.fields.content.placeholder"
+          "placeholder": "Type your message.."
         }
       },
-      "success": "success",
-      "title": "title"
+      "success": "Message successfully updated.",
+      "title": "Update message",
+      "trigger": "Edit"
     }
   },
   "note": {
