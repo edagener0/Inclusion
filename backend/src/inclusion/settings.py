@@ -106,7 +106,6 @@ INSTALLED_APPS = [
     "friends",
     "messaging",
     "dms",
-    "groups",
     "wordle",
 ]
 
