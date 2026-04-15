@@ -1,6 +1,6 @@
-import { cn } from '@/shared/lib/utils';
+import { type WordleTileProps } from '@/features/wordle-game';
 
-import { type WordleTileProps } from '../../../features/wordle-game/model/types';
+import { cn } from '@/shared/lib/utils';
 
 export function WordleTile({ letter, status = 'empty' }: WordleTileProps) {
   return (

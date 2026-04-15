@@ -2,10 +2,11 @@ import { useTranslation } from 'react-i18next';
 
 import { useNavigate } from '@tanstack/react-router';
 
+import { useWordleGame } from '@/features/wordle-game';
+
 import { Button } from '@/shared/ui/button';
 import { Spinner } from '@/shared/ui/spinner';
 
-import { useWordleGame } from '../../../features/wordle-game/model/hook';
 import { WordleBoard } from './WordleBoard';
 import { WordleKeyboard } from './WordleKeyBoard';
 

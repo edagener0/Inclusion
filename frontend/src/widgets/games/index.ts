@@ -1,1 +1,1 @@
-export { GamesList } from './ui/games-list';
+export { GamesList } from './ui/GamesList';

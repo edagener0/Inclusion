@@ -1,7 +1,7 @@
+import { type WordleKeyProps } from '@/features/wordle-game';
+
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
-
-import { type WordleKeyProps } from '../../../features/wordle-game/model/types';
 
 export function WordleKey({ value, status = 'unused', onClick, disabled }: WordleKeyProps) {
   const isSpecialKey = value.length > 1;

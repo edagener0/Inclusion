@@ -79,7 +79,7 @@ export function useWordleGame() {
         }
       }
     },
-    [currentGuess, wordLength, isGameOver, isSubmitting, guess, setCurrentGuess],
+    [currentGuess, wordLength, isGameOver, isSubmitting, guess, setCurrentGuess, t],
   );
 
   useEffect(() => {
