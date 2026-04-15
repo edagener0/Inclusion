@@ -1,12 +1,11 @@
 import { z } from 'zod';
 
-// Schema para metadados da palavra (GET /wordle/word)
-export const wordleWordSchema = z.object({
+export const WordleWordSchema = z.object({
   length: z.number(),
   difficulty: z.enum(['easy', 'medium', 'hard']),
 });
 
-export type WordleWord = z.infer<typeof wordleWordSchema>;
+export type WordleWord = z.infer<typeof WordleWordSchema>;
 
 // Schema para a resposta do palpite (POST /wordle/guess)
 export const wordleGuessResponseSchema = z.object({

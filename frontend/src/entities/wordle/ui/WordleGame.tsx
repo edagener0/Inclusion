@@ -5,7 +5,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { Button } from '@/shared/ui/button';
 import { Spinner } from '@/shared/ui/spinner';
 
-import { useWordleGame } from '../model/hook';
+import { useWordleGame } from '../../../features/wordle-game/model/hook';
 import { WordleBoard } from './WordleBoard';
 import { WordleKeyboard } from './WordleKeyBoard';
 

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -15,6 +16,7 @@ import {
 export function useWordleGame() {
   const queryClient = useQueryClient();
   const user = useSession();
+  const { t } = useTranslation('games', { keyPrefix: 'hook' });
 
   const { data: wordMetadata, isLoading: isLoadingWord } = useQuery(wordleQueries.word());
 
@@ -85,20 +87,19 @@ export function useWordleGame() {
 
       if (data.correct) {
         setIsGameOver(true);
-        toast.success('Incrível! Acertaste na palavra!');
+        toast.success(t('winMessage'));
         queryClient.invalidateQueries({ queryKey: wordleQueries.leaderboard().queryKey });
       } else if (newGuesses.length >= maxTries) {
         setIsGameOver(true);
-        toast.error('Game Over! Esgotaste as tuas tentativas.');
+        toast.error(t('loseMessage'));
       }
     },
     onError: (error: unknown) => {
       if (typeof error === 'object' && error !== null && 'response' in error) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const apiError = error as any;
-        toast.error(apiError.response?.data?.detail || 'Erro ao submeter palpite.');
+        const apiError = error as { response?: { data?: { detail?: string } } };
+        toast.error(apiError.response?.data?.detail || t('error'));
       } else {
-        toast.error('Erro ao submeter palpite.');
+        toast.error(t('error'));
       }
     },
   });
@@ -111,7 +112,7 @@ export function useWordleGame() {
 
       if (upperKey === 'ENTER') {
         if (currentGuess.length !== wordLength) {
-          toast.warning(`A palavra deve ter ${wordLength} letras`);
+          toast.warning(t('notEnoughLetters'));
           return;
         }
         guess(currentGuess);

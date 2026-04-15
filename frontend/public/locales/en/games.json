@@ -17,5 +17,12 @@
     "bestPlayers": "The best players based on their win streaks!",
     "loading": "Loading leaderboard...",
     "title": "Wordle Leaderboard"
+  },
+  "hook": {
+    "notEnoughLetters": "Not enough letters",
+    "notInWordList": "Not in word list",
+    "winMessage": "Congratulations! You've guessed the word!",
+    "loseMessage": "Game Over! You've used all your attempts.",
+    "error": "An error occurred while submitting your guess. Please try again."
   }
 }

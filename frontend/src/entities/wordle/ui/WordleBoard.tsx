@@ -1,4 +1,4 @@
-import { type WordleBoardProps } from '../model/types';
+import { type WordleBoardProps } from '../../../features/wordle-game/model/types';
 import { WordleTile } from './WordleTile';
 
 export function WordleBoard({
