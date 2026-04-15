@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { Medal, Trophy, Users } from 'lucide-react';
 
-import { UserAvatar } from '@/entities/user';
 import { wordleQueries } from '@/entities/wordle';
 
 import { Badge } from '@/shared/ui/badge';
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Spinner } from '@/shared/ui/spinner';
 
@@ -51,7 +51,7 @@ export function WordleLeaderboard() {
                     <span className="text-muted-foreground">{index + 1}</span>
                   )}
                 </div>
-                <UserAvatar username={user.username} avatar={user.avatar} className="h-10 w-10" />
+                <BaseAvatar alt={user.username} src={user.avatar} className="h-10 w-10" />
                 <div className="flex flex-col text-left">
                   <span className="text-foreground font-semibold">{user.username}</span>
                   <span className="text-muted-foreground text-xs">
