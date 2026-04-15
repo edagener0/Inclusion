@@ -88,3 +88,4 @@ class GroupInboxConsumer(AuthenticatedGroupConsumer):
             "type": "group.inbox.removed",
             "groupItem": event["group_item"],
         })
+
