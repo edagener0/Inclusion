@@ -1,5 +1,7 @@
 import { CheckCheck } from 'lucide-react';
 
+import { MarkdownRenderer } from '@/shared/ui/markdown';
+
 import type { Message } from '../model/schema';
 import { useFormatDate } from '../model/use-format-date';
 
@@ -19,7 +21,7 @@ export function MessageCard({ message, isMe }: Props) {
         }`}
       >
         <span className="leading-relaxed wrap-break-word whitespace-pre-wrap">
-          {message.content}
+          <MarkdownRenderer content={message.content} />
         </span>
         <div className={`flex items-center justify-end gap-1 text-[9px] opacity-70`}>
           {useFormatDate(message.createdAt)}

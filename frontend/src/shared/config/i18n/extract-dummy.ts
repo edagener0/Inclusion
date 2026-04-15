@@ -7,6 +7,7 @@ const _dummy = () => {
   t('common:sideBar.posts');
   t('common:sideBar.profile');
   t('common:sideBar.messages');
+  t('common:sideBar.chat-bot');
   t('common:sideBar.settings');
   t('common:sideBar.newContent');
   t('common:createContent.post.label');
