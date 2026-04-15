@@ -1,3 +1,4 @@
-export { WordleGame } from '../../entities/wordle/ui/WordleGame';
 export * from './model/hook';
-export { WordleLeaderboard } from '../../entities/wordle/ui/WordleLeaderboard';
+export * from './model/store';
+export * from './model/types';
+export { WordleGame, WordleLeaderboard } from '@/entities/wordle';

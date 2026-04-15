@@ -5,7 +5,13 @@
   "games": {
     "title": "Games",
     "wordle": "Wordle",
-    "wordleDescription": "Guess the word in 6 tries. A new challenge every day!"
+    "wordleDescription": "Guess the word in 6 tries. After each guess, the color of the tiles will change to show how close your guess was to the word."
+  },
+  "hook": {
+    "error": "An error occurred while submitting your guess. Please try again.",
+    "loseMessage": "Game Over! You've used all your attempts.",
+    "notEnoughLetters": "Not enough letters",
+    "winMessage": "Congratulations! You've guessed the word!"
   },
   "wordle": {
     "comeBackTomorrow": "Come back tomorrow for a new word.",
@@ -17,12 +23,5 @@
     "bestPlayers": "The best players based on their win streaks!",
     "loading": "Loading leaderboard...",
     "title": "Wordle Leaderboard"
-  },
-  "hook": {
-    "notEnoughLetters": "Not enough letters",
-    "notInWordList": "Not in word list",
-    "winMessage": "Congratulations! You've guessed the word!",
-    "loseMessage": "Game Over! You've used all your attempts.",
-    "error": "An error occurred while submitting your guess. Please try again."
   }
 }

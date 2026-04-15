@@ -204,7 +204,13 @@ interface Resources {
     "games": {
       "title": "Games",
       "wordle": "Wordle",
-      "wordleDescription": "Guess the word in 6 tries. A new challenge every day!"
+      "wordleDescription": "Guess the word in 6 tries. After each guess, the color of the tiles will change to show how close your guess was to the word."
+    },
+    "hook": {
+      "error": "An error occurred while submitting your guess. Please try again.",
+      "loseMessage": "Game Over! You've used all your attempts.",
+      "notEnoughLetters": "Not enough letters",
+      "winMessage": "Congratulations! You've guessed the word!"
     },
     "wordle": {
       "comeBackTomorrow": "Come back tomorrow for a new word.",
@@ -258,14 +264,14 @@ interface Resources {
     },
     "title": "Messages",
     "update": {
-      "error": "error",
+      "error": "Error while updating message.",
       "fields": {
         "content": {
-          "placeholder": "message:update.fields.content.placeholder"
+          "placeholder": "Type your message.."
         }
       },
-      "success": "success",
-      "title": "title"
+      "success": "Message successfully updated.",
+      "title": "Update message"
     }
   },
   "note": {

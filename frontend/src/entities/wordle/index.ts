@@ -3,3 +3,8 @@ export * from './model/schema';
 export { wordleQueries } from './api/queries';
 export { submitGuess } from './api/requests';
 export { WORDLE_CONFIG } from './lib/constants';
+export { WordleBoard } from './ui/WordleBoard';
+export { WordleGame } from './ui/WordleGame';
+export { WordleKey } from './ui/WordleKey';
+export { WordleKeyboard } from './ui/WordleKeyBoard';
+export { WordleLeaderboard } from './ui/WordleLeaderboard';

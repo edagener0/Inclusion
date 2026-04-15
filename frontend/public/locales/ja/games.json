@@ -7,6 +7,12 @@
     "wordle": "",
     "wordleDescription": ""
   },
+  "hook": {
+    "error": "",
+    "loseMessage": "",
+    "notEnoughLetters": "",
+    "winMessage": ""
+  },
   "wordle": {
     "comeBackTomorrow": "",
     "loadingGame": "",

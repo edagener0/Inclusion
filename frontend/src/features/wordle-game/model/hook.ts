@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -13,6 +13,8 @@ import {
   wordleQueries,
 } from '@/entities/wordle';
 
+import { createWordleStore } from './store';
+
 export function useWordleGame() {
   const queryClient = useQueryClient();
   const user = useSession();
@@ -25,72 +27,25 @@ export function useWordleGame() {
     return `wordle_game_${user.id}_${today}`;
   }, [user.id]);
 
-  type WordleGameState = {
-    guesses: string[];
-    results: LetterStatus[][];
-    currentGuess: string;
-    isGameOver: boolean;
-  };
+  const useWordleStore = useMemo(() => createWordleStore(storageKey), [storageKey]);
 
-  const getDefaultGameState = (): WordleGameState => ({
-    guesses: [] as string[],
-    results: [] as LetterStatus[][],
-    currentGuess: '',
-    isGameOver: false,
-  });
-
-  const loadGameState = (): WordleGameState => {
-    try {
-      const stored = localStorage.getItem(storageKey);
-      return stored ? (JSON.parse(stored) as WordleGameState) : getDefaultGameState();
-    } catch {
-      return getDefaultGameState();
-    }
-  };
-
-  const saveGameState = useCallback(
-    (state: WordleGameState) => {
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(state));
-      } catch {
-        // Silently fail if localStorage is unavailable
-      }
-    },
-    [storageKey],
-  );
-
-  const [guesses, setGuesses] = useState<string[]>(() => loadGameState().guesses);
-  const [results, setResults] = useState<LetterStatus[][]>(() => loadGameState().results);
-  const [currentGuess, setCurrentGuess] = useState<string>(() => loadGameState().currentGuess);
-  const [isGameOver, setIsGameOver] = useState<boolean>(() => loadGameState().isGameOver);
+  const { guesses, results, currentGuess, isGameOver, setCurrentGuess, addGuess, setGameOver } =
+    useWordleStore();
 
   const wordLength = wordMetadata?.length || 5;
   const maxTries = WORDLE_CONFIG.MAX_TRIES;
 
-  useEffect(() => {
-    saveGameState({
-      guesses,
-      results,
-      currentGuess,
-      isGameOver,
-    });
-  }, [guesses, results, currentGuess, isGameOver, saveGameState]);
-
   const { mutate: guess, isPending: isSubmitting } = useMutation({
     mutationFn: submitGuess,
     onSuccess: (data) => {
-      const newGuesses = [...guesses, currentGuess];
-      setGuesses(newGuesses);
-      const newResult = parseDiff(data.diff);
-      setResults([...results, newResult]);
-      setCurrentGuess('');
+      addGuess(currentGuess, parseDiff(data.diff));
 
       if (data.correct) {
-        setIsGameOver(true);
+        setGameOver(true);
         toast.success(t('winMessage'));
         queryClient.invalidateQueries({ queryKey: wordleQueries.leaderboard().queryKey });
-      } else if (newGuesses.length >= maxTries) {
-        setIsGameOver(true);
+      } else if (guesses.length + 1 >= maxTries) {
+        setGameOver(true);
         toast.error(t('loseMessage'));
       }
     },
@@ -117,14 +72,14 @@ export function useWordleGame() {
         }
         guess(currentGuess);
       } else if (upperKey === 'DELETE' || upperKey === 'BACKSPACE') {
-        setCurrentGuess((prev) => prev.slice(0, -1));
+        setCurrentGuess(currentGuess.slice(0, -1));
       } else if (/^[A-Z]$/.test(upperKey)) {
         if (currentGuess.length < wordLength) {
-          setCurrentGuess((prev) => (prev + upperKey).toLowerCase());
+          setCurrentGuess((currentGuess + upperKey).toLowerCase());
         }
       }
     },
-    [currentGuess, wordLength, isGameOver, isSubmitting, guess],
+    [currentGuess, wordLength, isGameOver, isSubmitting, guess, setCurrentGuess],
   );
 
   useEffect(() => {
