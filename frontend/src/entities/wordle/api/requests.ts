@@ -1,25 +1,32 @@
-import { api } from '@/shared/api';
+import { type PaginatedResponse, type PaginatedReturnData, api } from '@/shared/api';
 
 import {
   type WordleGuessResponse,
-  type WordleLeaderboard,
+  WordleGuessResponseSchema,
+  type WordleLeaderboardUser,
+  WordleLeaderboardUserSchema,
   type WordleWord,
   WordleWordSchema,
-  wordleGuessResponseSchema,
-  wordleLeaderboardSchema,
 } from '../model/schema';
 
 export async function getWordleWord(): Promise<WordleWord> {
-  const res = await api.get('/wordle/word');
-  return WordleWordSchema.parse(res.data);
+  const response = await api.get('/wordle/word');
+  return WordleWordSchema.parse(response.data);
 }
 
 export async function submitGuess(word: string): Promise<WordleGuessResponse> {
-  const res = await api.post('/wordle/guess', { word });
-  return wordleGuessResponseSchema.parse(res.data);
+  const response = await api.post('/wordle/guess', { word });
+  return WordleGuessResponseSchema.parse(response.data);
 }
 
-export async function getWordleLeaderboard(): Promise<WordleLeaderboard> {
-  const res = await api.get('/wordle/leaderboard');
-  return wordleLeaderboardSchema.parse(res.data.results ?? res.data);
+export async function getWordleLeaderboard(
+  page: number,
+): Promise<PaginatedReturnData<WordleLeaderboardUser>> {
+  const response = await api.get<PaginatedResponse<WordleLeaderboardUser>>('/wordle/leaderboard', {
+    params: { page },
+  });
+  return {
+    data: WordleLeaderboardUserSchema.array().parse(response.data.results),
+    hasNextPage: response.data.next !== null,
+  };
 }

@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query';
+import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
 import { getWordleLeaderboard, getWordleWord } from './requests';
 
@@ -13,9 +13,15 @@ export const wordleQueries = {
     }),
 
   leaderboard: () =>
-    queryOptions({
-      queryKey: [...wordleQueries.all(), 'leaderboard'],
-      queryFn: getWordleLeaderboard,
-      staleTime: 1 * 60 * 1000,
+    infiniteQueryOptions({
+      queryKey: [...wordleQueries.all(), 'leaderboard'] as const,
+      queryFn: ({ pageParam }) => getWordleLeaderboard(pageParam),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, allPages) => {
+        if (!lastPage.hasNextPage) return undefined;
+
+        return allPages.length + 1;
+      },
+      staleTime: 60 * 1000,
     }),
 };
