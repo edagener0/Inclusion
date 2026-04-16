@@ -7,7 +7,7 @@ import { useSession } from '@/entities/session';
 import { BaseAvatar } from '@/shared/ui/base-avatar';
 
 export function ChatBotConversation() {
-  const messages = useChatBotStore((state) => state.messages.toReversed());
+  const messages = useChatBotStore((state) => state.messages);
   const isThinking = useChatBotStore((s) => s.isBotThinking);
   const session = useSession();
 
@@ -33,6 +33,7 @@ export function ChatBotConversation() {
                 user: msg.isBot ? bot : session,
               }}
               isMe={!msg.isBot}
+              useMarkdown
             />
           ))}
         </div>
