@@ -10,6 +10,7 @@ type ChatBotStore = {
   addMessage: (message: ChatBotMessage) => void;
   removeMessage: (id: ChatBotMessage['id']) => void;
   clearOld: () => void;
+  clearAll: () => void;
 };
 
 const MS_IN_24_HOURS = 24 * 60 * 60 * 1000;
@@ -37,6 +38,9 @@ export const useChatBotStore = create<ChatBotStore>()(
             return now - msgDate < MS_IN_24_HOURS;
           }),
         }));
+      },
+      clearAll: () => {
+        set({ messages: [] });
       },
     }),
     {

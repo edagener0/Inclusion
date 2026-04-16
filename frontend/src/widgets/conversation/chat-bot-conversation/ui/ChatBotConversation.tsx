@@ -1,4 +1,5 @@
-import { AskChatBotInput } from '@/features/ask-chat-bot';
+import { AskChatBotInput } from '@/features/chat-bot/ask-chat-bot';
+import { ClearHistory } from '@/features/chat-bot/cleary-chat-bot-history';
 
 import { bot, useChatBotStore } from '@/entities/chat-bot';
 import { MessageCard } from '@/entities/conversation';
@@ -17,7 +18,11 @@ export function ChatBotConversation() {
       <div className="bg-background/95 z-10 flex shrink-0 items-center justify-between gap-2 border-b py-2 backdrop-blur sm:px-4 sm:py-3">
         <div className="flex min-w-0 flex-1 items-center gap-1 sm:gap-3">
           <BaseAvatar src={bot.avatar} alt={bot.username} />
-          <span>{bot.username}</span>
+          <span className="font-medium">{bot.username}</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <ClearHistory onClear={() => console.log('Очистить историю')} />
         </div>
       </div>
 
