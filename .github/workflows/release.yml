@@ -91,10 +91,23 @@ jobs:
         working-directory: ./frontend
         run: npm run tauri android build
 
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: frontend/src-tauri/gen/android/app/build/outputs/apk/universal/release
+          signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Rename APK
+        run: |
+          cp "${{steps.sign_app.outputs.signedReleaseFile}}" "Inclusion-${{ github.ref_type == 'tag' && github.ref_name || 'draft' }}.apk"
+
       - name: Upload APK to Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'v0.0.0-draft' }}
           files: |
-            frontend/src-tauri/gen/android/app/build/outputs/apk/universal/release/*.apk
-            frontend/src-tauri/gen/android/app/build/outputs/bundle/universal/release/*.aab
+            Inclusion-*.apk
