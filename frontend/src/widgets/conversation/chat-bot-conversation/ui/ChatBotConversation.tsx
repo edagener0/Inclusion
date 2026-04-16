@@ -7,7 +7,8 @@ import { useSession } from '@/entities/session';
 import { BaseAvatar } from '@/shared/ui/base-avatar';
 
 export function ChatBotConversation() {
-  const messages = useChatBotStore((state) => state.messages);
+  const rawMessages = useChatBotStore((state) => state.messages);
+  const messages = rawMessages.toReversed();
   const isThinking = useChatBotStore((s) => s.isBotThinking);
   const session = useSession();
 
