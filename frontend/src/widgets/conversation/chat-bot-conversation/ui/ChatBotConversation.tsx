@@ -22,7 +22,7 @@ export function ChatBotConversation() {
         </div>
 
         <div className="flex items-center gap-2">
-          <ClearHistory onClear={() => console.log('Очистить историю')} />
+          <ClearHistory />
         </div>
       </div>
 
