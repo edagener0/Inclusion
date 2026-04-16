@@ -1,18 +1,25 @@
 import { useTranslation } from 'react-i18next';
 
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { Medal, Trophy, Users } from 'lucide-react';
 
 import { wordleQueries } from '@/entities/wordle';
 
+import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { Badge } from '@/shared/ui/badge';
 import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
 import { Spinner } from '@/shared/ui/spinner';
 
 export function WordleLeaderboard() {
-  const { data: leaderboard, isLoading } = useQuery(wordleQueries.leaderboard());
   const { t } = useTranslation(['games']);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery(
+    wordleQueries.leaderboard(),
+  );
+
+  const { observerTarget } = useInfiniteScroll({ hasNextPage, isFetchingNextPage, fetchNextPage });
+
+  const leaderboard = data?.pages.flatMap((page) => page.data) ?? [];
 
   if (isLoading) {
     return (

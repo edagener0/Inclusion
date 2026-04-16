@@ -68,8 +68,8 @@
     "title": "Notifications"
   },
   "sideBar": {
-    "games": "Games",
     "chat-bot": "Chat Bot",
+    "games": "Games",
     "incs": "Incs",
     "messages": "Messages",
     "newContent": "New Content",

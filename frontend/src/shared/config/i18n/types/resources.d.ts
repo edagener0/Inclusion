@@ -64,9 +64,9 @@ interface Resources {
   },
   "chat-bot": {
     "ask": {
-      "error": "error",
-      "loading": "loading",
-      "success": "success"
+      "error": "Something went wrong while sending your request.",
+      "loading": "The bot is thinking...",
+      "success": "Response received successfully."
     }
   },
   "comment": {
@@ -157,8 +157,8 @@ interface Resources {
       "title": "Notifications"
     },
     "sideBar": {
-      "games": "Games",
       "chat-bot": "Chat Bot",
+      "games": "Games",
       "incs": "Incs",
       "messages": "Messages",
       "newContent": "New Content",
@@ -215,16 +215,15 @@ interface Resources {
       "wordleDescription": "Guess the word in 6 tries. After each guess, the color of the tiles will change to show how close your guess was to the word."
     },
     "hook": {
-      "error": "An error occurred while submitting your guess. Please try again.",
-      "loseMessage": "Game Over! You've used all your attempts.",
-      "notEnoughLetters": "Not enough letters",
-      "winMessage": "Congratulations! You've guessed the word!"
+      "notEnoughLetters": "Not enough letters"
     },
     "wordle": {
       "comeBackTomorrow": "Come back tomorrow for a new word.",
+      "error": "error",
       "loadingGame": "Loading game...",
       "title": "Wordle",
-      "viewLeaderboard": "View Leaderboard"
+      "viewLeaderboard": "View Leaderboard",
+      "winMessage": "winMessage"
     },
     "wordleLeaderboard": {
       "bestPlayers": "The best players based on their win streaks!",
@@ -280,7 +279,6 @@ interface Resources {
         }
       },
       "success": "Message successfully updated.",
-      "title": "Update message"
       "title": "Update message",
       "trigger": "Edit"
     }

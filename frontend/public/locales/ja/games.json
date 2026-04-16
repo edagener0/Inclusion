@@ -8,16 +8,15 @@
     "wordleDescription": ""
   },
   "hook": {
-    "error": "",
-    "loseMessage": "",
-    "notEnoughLetters": "",
-    "winMessage": ""
+    "notEnoughLetters": ""
   },
   "wordle": {
     "comeBackTomorrow": "",
+    "error": "",
     "loadingGame": "",
     "title": "",
-    "viewLeaderboard": ""
+    "viewLeaderboard": "",
+    "winMessage": ""
   },
   "wordleLeaderboard": {
     "bestPlayers": "",

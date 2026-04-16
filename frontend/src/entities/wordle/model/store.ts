@@ -10,7 +10,6 @@ type WordleState = {
   isGameOver: boolean;
   setCurrentGuess: (guess: string) => void;
   addGuess: (guess: string, result: LetterStatus[]) => void;
-  setGameOver: (over: boolean) => void;
   reset: () => void;
 };
 
@@ -28,7 +27,6 @@ export const useWordleStore = create<WordleState>()(
           results: [...state.results, result],
           currentGuess: '',
         })),
-      setGameOver: (over) => set({ isGameOver: over }),
       reset: () =>
         set({
           guesses: [],
@@ -37,8 +35,30 @@ export const useWordleStore = create<WordleState>()(
           isGameOver: false,
         }),
     }),
-    {
-      name: 'wordle-state',
-    },
+    { name: 'wordle-state' },
   ),
 );
+
+export const selectUsedLetters = (state: WordleState) => {
+  return state.results.reduce(
+    (acc, row, rowIndex) => {
+      const word = state.guesses[rowIndex];
+      if (!word) return acc;
+
+      row.forEach((status, i) => {
+        const letter = word[i]?.toUpperCase();
+        if (!letter) return;
+
+        if (status === 'correct') {
+          acc[letter] = 'correct';
+        } else if (status === 'present' && acc[letter] !== 'correct') {
+          acc[letter] = 'present';
+        } else if (status === 'absent' && !acc[letter]) {
+          acc[letter] = 'absent';
+        }
+      });
+      return acc;
+    },
+    {} as Record<string, LetterStatus>,
+  );
+};

@@ -1,31 +1,26 @@
 import { useTranslation } from 'react-i18next';
 
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 
 import { useWordleGame } from '@/features/wordle-game';
 
+import { wordleQueries } from '@/entities/wordle';
+import { WordleBoard } from '@/entities/wordle/ui/WordleBoard';
+import { WordleKeyboard } from '@/entities/wordle/ui/WordleKeyboard';
+
 import { Button } from '@/shared/ui/button';
 import { Spinner } from '@/shared/ui/spinner';
 
-import { WordleBoard } from './WordleBoard';
-import { WordleKeyboard } from './WordleKeyBoard';
-
 export function WordleGame() {
   const navigate = useNavigate();
-  const {
-    guesses,
-    results,
-    currentGuess,
-    wordLength,
-    maxTries,
-    isGameOver,
-    isSubmitting,
-    isLoading,
-    usedLetters,
-    onKeyPress,
-  } = useWordleGame();
-
   const { t } = useTranslation(['games']);
+  const { data, isLoading } = useQuery(wordleQueries.word());
+
+  const { guesses, results, currentGuess, wordLength, isSubmitting, usedLetters, onKeyPress } =
+    useWordleGame({ wordLength: data?.length ?? 0 });
+
+  console.log(usedLetters);
 
   if (isLoading) {
     return (
@@ -54,23 +49,18 @@ export function WordleGame() {
         results={results}
         currentGuess={currentGuess}
         wordLength={wordLength}
-        maxTries={maxTries}
       />
 
-      <WordleKeyboard
-        onKey={onKeyPress}
-        usedLetters={usedLetters}
-        disabled={isGameOver || isSubmitting}
-      />
+      <WordleKeyboard onKey={onKeyPress} usedLetters={usedLetters} disabled={isSubmitting} />
 
-      {isGameOver && (
-        <div className="animate-in fade-in zoom-in mt-8 text-center duration-300">
-          <p className="text-xl font-semibold">
-            {guesses.length < maxTries ? 'Congratulations!' : 'Game Over!'}
-          </p>
-          <p className="text-muted-foreground mt-1">{t('wordle.comeBackTomorrow')}</p>
-        </div>
-      )}
+      {/* {isGameOver && ( */}
+      {/*   <div className="animate-in fade-in zoom-in mt-8 text-center duration-300"> */}
+      {/*     <p className="text-xl font-semibold"> */}
+      {/*       {guesses.length < maxTries ? 'Congratulations!' : 'Game Over!'} */}
+      {/*     </p> */}
+      {/*     <p className="text-muted-foreground mt-1">{t('wordle.comeBackTomorrow')}</p> */}
+      {/*   </div> */}
+      {/* )} */}
     </div>
   );
 }
