@@ -65,6 +65,7 @@ interface Resources {
   "chat-bot": {
     "ask": {
       "error": "error",
+      "loading": "loading",
       "success": "success"
     }
   },
@@ -156,7 +157,7 @@ interface Resources {
       "title": "Notifications"
     },
     "sideBar": {
-      "chat-bot": "common:sideBar.chat-bot",
+      "chat-bot": "Chat Bot",
       "incs": "Incs",
       "messages": "Messages",
       "newContent": "New Content",

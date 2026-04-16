@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { AskChatBotInput } from '@/features/chat-bot/ask-chat-bot';
 import { ClearHistory } from '@/features/chat-bot/cleary-chat-bot-history';
 
@@ -12,6 +14,7 @@ export function ChatBotConversation() {
   const messages = rawMessages.toReversed();
   const isThinking = useChatBotStore((s) => s.isBotThinking);
   const session = useSession();
+  const { t } = useTranslation('chat-bot', { keyPrefix: 'ask' });
 
   return (
     <div className="bg-background flex h-full w-full flex-col overflow-hidden">
@@ -48,7 +51,7 @@ export function ChatBotConversation() {
       <div className="bg-background shrink-0 border-t p-2 sm:p-4">
         {isThinking && (
           <span className="text-muted-foreground mb-2 block animate-pulse px-1 text-xs italic">
-            Bot is thinking...
+            {t('loading')}
           </span>
         )}
         <AskChatBotInput />
