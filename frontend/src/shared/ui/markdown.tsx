@@ -1,7 +1,6 @@
 import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
+import { Highlight, themes } from 'prism-react-renderer';
 import remarkGfm from 'remark-gfm';
 
 interface MarkdownRendererProps {
@@ -15,18 +14,29 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       components={{
         code({ className, children, ...rest }) {
           const match = /language-(\w+)/.exec(className || '');
+          const language = match ? match[1] : '';
 
           return match ? (
-            <div className="my-3 overflow-hidden rounded-md text-[13px] shadow-sm">
-              <SyntaxHighlighter
-                PreTag="div"
-                language={match[1]}
-                style={vscDarkPlus}
-                customStyle={{ margin: 0, padding: '1rem', background: '#09090b' }}
-              >
-                {String(children).replace(/\n$/, '')}
-              </SyntaxHighlighter>
-            </div>
+            <Highlight
+              theme={themes.oneDark}
+              code={String(children).replace(/\n$/, '')}
+              language={language}
+            >
+              {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                <pre
+                  className={`my-3 overflow-auto rounded-md p-4 text-[13px] shadow-sm ${className}`}
+                  style={style}
+                >
+                  {tokens.map((line, i) => (
+                    <div key={i} {...getLineProps({ line })}>
+                      {line.map((token, key) => (
+                        <span key={key} {...getTokenProps({ token })} />
+                      ))}
+                    </div>
+                  ))}
+                </pre>
+              )}
+            </Highlight>
           ) : (
             <code
               className="rounded-md bg-zinc-200/50 px-1.5 py-0.5 font-mono text-[13px] dark:bg-zinc-800/50"
