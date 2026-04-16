@@ -7,20 +7,16 @@ import { Button } from '@/shared/ui/button';
 import { FieldError } from '@/shared/ui/field';
 import { Textarea } from '@/shared/ui/textarea';
 
-import { useSendMessageMutation } from '../model/mutation';
-import { type SendMessage, SendMessageSchema } from '../model/schema';
+import { useAskChatBotMutation } from '../model/mutation';
+import { type AskChatBot, AskChatBotSchema } from '../model/schema';
 
-type Props = {
-  userId: number;
-};
-
-export function SendMessageInput({ userId }: Props) {
+export function AskChatBotInput() {
   const { t } = useTranslation('message', { keyPrefix: 'send' });
-  const mutation = useSendMessageMutation(userId);
+  const mutation = useAskChatBotMutation();
 
   const form = useForm({
-    defaultValues: { content: '' } as SendMessage,
-    validators: { onChange: SendMessageSchema },
+    defaultValues: { prompt: '' } as AskChatBot,
+    validators: { onChange: AskChatBotSchema },
     onSubmit: async ({ value }) => {
       await mutation.mutateAsync(value);
       form.reset();
@@ -38,7 +34,7 @@ export function SendMessageInput({ userId }: Props) {
     >
       <div className="flex items-end gap-2">
         <form.Field
-          name="content"
+          name="prompt"
           children={(field) => (
             <div className="flex flex-1 flex-col gap-1">
               <FieldError errors={field.state.meta.errors} className="text-xs" />

@@ -1,14 +1,25 @@
+import { Suspense, lazy } from 'react';
+
 import { CheckCheck } from 'lucide-react';
+
+import { CenterSpinner } from '@/shared/ui/spinner';
 
 import type { Message } from '../model/schema';
 import { useFormatDate } from '../model/use-format-date';
 
+const MarkdownRendererLazy = lazy(() =>
+  import('@/shared/ui/markdown').then((module) => ({
+    default: module.MarkdownRenderer,
+  })),
+);
+
 type Props = {
   message: Message;
   isMe: boolean;
+  useMarkdown?: boolean;
 };
 
-export function MessageCard({ message, isMe }: Props) {
+export function MessageCard({ message, isMe, useMarkdown = false }: Props) {
   return (
     <div className={`flex w-full ${isMe ? 'justify-end' : 'justify-start'}`}>
       <div
@@ -19,7 +30,19 @@ export function MessageCard({ message, isMe }: Props) {
         }`}
       >
         <span className="leading-relaxed wrap-break-word whitespace-pre-wrap">
-          {message.content}
+          {useMarkdown ? (
+            <Suspense
+              fallback={
+                <span className="opacity-50">
+                  <CenterSpinner />
+                </span>
+              }
+            >
+              <MarkdownRendererLazy content={message.content} />
+            </Suspense>
+          ) : (
+            message.content
+          )}
         </span>
         <div className={`flex items-center justify-end gap-1 text-[9px] opacity-70`}>
           {useFormatDate(message.createdAt)}

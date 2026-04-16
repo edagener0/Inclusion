@@ -15,6 +15,7 @@ import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as MainProfileRouteImport } from './routes/_main/profile'
 import { Route as MainPostsRouteImport } from './routes/_main/posts'
 import { Route as MainIncsRouteImport } from './routes/_main/incs'
+import { Route as MainChatBotRouteImport } from './routes/_main/chat-bot'
 import { Route as MainUsernameRouteImport } from './routes/_main/$username'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
@@ -55,6 +56,13 @@ const MainIncsRoute = MainIncsRouteImport.update({
   path: '/incs',
   getParentRoute: () => MainRoute,
 } as any)
+const MainChatBotRoute = MainChatBotRouteImport.update({
+  id: '/chat-bot',
+  path: '/chat-bot',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/chat-bot.lazy').then((d) => d.Route),
+)
 const MainUsernameRoute = MainUsernameRouteImport.update({
   id: '/$username',
   path: '/$username',
@@ -126,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/$username': typeof MainUsernameRoute
+  '/chat-bot': typeof MainChatBotRoute
   '/incs': typeof MainIncsRouteWithChildren
   '/posts': typeof MainPostsRouteWithChildren
   '/profile': typeof MainProfileRoute
@@ -143,6 +152,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/$username': typeof MainUsernameRoute
+  '/chat-bot': typeof MainChatBotRoute
   '/profile': typeof MainProfileRoute
   '/incs/$id': typeof MainIncsIdRoute
   '/messages/$id': typeof MainMessagesIdRoute
@@ -160,6 +170,7 @@ export interface FileRoutesById {
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_main/$username': typeof MainUsernameRoute
+  '/_main/chat-bot': typeof MainChatBotRoute
   '/_main/incs': typeof MainIncsRouteWithChildren
   '/_main/posts': typeof MainPostsRouteWithChildren
   '/_main/profile': typeof MainProfileRoute
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/$username'
+    | '/chat-bot'
     | '/incs'
     | '/posts'
     | '/profile'
@@ -197,6 +209,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/$username'
+    | '/chat-bot'
     | '/profile'
     | '/incs/$id'
     | '/messages/$id'
@@ -213,6 +226,7 @@ export interface FileRouteTypes {
     | '/_auth/sign-in'
     | '/_auth/sign-up'
     | '/_main/$username'
+    | '/_main/chat-bot'
     | '/_main/incs'
     | '/_main/posts'
     | '/_main/profile'
@@ -274,6 +288,13 @@ declare module '@tanstack/react-router' {
       path: '/incs'
       fullPath: '/incs'
       preLoaderRoute: typeof MainIncsRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/chat-bot': {
+      id: '/_main/chat-bot'
+      path: '/chat-bot'
+      fullPath: '/chat-bot'
+      preLoaderRoute: typeof MainChatBotRouteImport
       parentRoute: typeof MainRoute
     }
     '/_main/$username': {
@@ -398,6 +419,7 @@ const MainPostsRouteWithChildren = MainPostsRoute._addFileChildren(
 
 interface MainRouteChildren {
   MainUsernameRoute: typeof MainUsernameRoute
+  MainChatBotRoute: typeof MainChatBotRoute
   MainIncsRoute: typeof MainIncsRouteWithChildren
   MainPostsRoute: typeof MainPostsRouteWithChildren
   MainProfileRoute: typeof MainProfileRoute
@@ -410,6 +432,7 @@ interface MainRouteChildren {
 
 const MainRouteChildren: MainRouteChildren = {
   MainUsernameRoute: MainUsernameRoute,
+  MainChatBotRoute: MainChatBotRoute,
   MainIncsRoute: MainIncsRouteWithChildren,
   MainPostsRoute: MainPostsRouteWithChildren,
   MainProfileRoute: MainProfileRoute,

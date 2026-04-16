@@ -62,6 +62,13 @@ interface Resources {
       "title": "Create your account"
     }
   },
+  "chat-bot": {
+    "ask": {
+      "error": "error",
+      "loading": "loading",
+      "success": "success"
+    }
+  },
   "comment": {
     "create": {
       "error": "Error while creating comment.",
@@ -150,6 +157,7 @@ interface Resources {
       "title": "Notifications"
     },
     "sideBar": {
+      "chat-bot": "Chat Bot",
       "incs": "Incs",
       "messages": "Messages",
       "newContent": "New Content",
@@ -233,7 +241,7 @@ interface Resources {
       "error": "Failed to send the message.",
       "placeholder": "Type your message...",
       "success": "Message sent successfully.",
-      "title": "title"
+      "title": "New Message"
     },
     "title": "Messages",
     "update": {
