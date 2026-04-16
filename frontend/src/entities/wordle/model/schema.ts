@@ -3,8 +3,10 @@ import { z } from 'zod';
 import { UserPreviewSchema } from '@/shared/api';
 
 export const WordleWordSchema = z.object({
+  gameId: z.int().positive(),
   length: z.number(),
   difficulty: z.enum(['easy', 'medium', 'hard']),
+  hasWon: z.boolean(),
 });
 export type WordleWord = z.infer<typeof WordleWordSchema>;
 
