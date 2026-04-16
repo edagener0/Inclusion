@@ -61,7 +61,7 @@ export function SignUpForm() {
                   aria-invalid={isInvalid}
                   autoComplete="off"
                 />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                <FieldError errors={field.state.meta.errors} className="text-xs" />
               </Field>
             );
           }}
@@ -83,7 +83,7 @@ export function SignUpForm() {
                   aria-invalid={isInvalid}
                   autoComplete="off"
                 />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                <FieldError errors={field.state.meta.errors} className="text-xs" />
               </Field>
             );
           }}
@@ -106,7 +106,7 @@ export function SignUpForm() {
                     aria-invalid={isInvalid}
                     autoComplete="off"
                   />
-                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  <FieldError errors={field.state.meta.errors} className="text-xs" />
                 </Field>
               );
             }}
@@ -128,7 +128,7 @@ export function SignUpForm() {
                     aria-invalid={isInvalid}
                     autoComplete="off"
                   />
-                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  <FieldError errors={field.state.meta.errors} className="text-xs" />
                 </Field>
               );
             }}
@@ -153,7 +153,7 @@ export function SignUpForm() {
                     aria-invalid={isInvalid}
                     autoComplete="off"
                   />
-                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  <FieldError errors={field.state.meta.errors} className="text-xs" />
                 </Field>
               );
             }}
@@ -176,7 +176,7 @@ export function SignUpForm() {
                     aria-invalid={isInvalid}
                     autoComplete="off"
                   />
-                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  <FieldError errors={field.state.meta.errors} className="text-xs" />
                 </Field>
               );
             }}

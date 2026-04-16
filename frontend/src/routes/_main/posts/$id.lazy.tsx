@@ -6,8 +6,8 @@ import { PostLikeButton } from '@/widgets/post-list';
 
 import { postQueries } from '@/entities/post';
 import { PostDetail } from '@/entities/post/ui/PostDetail';
-import { UserAvatar } from '@/entities/user';
 
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 import {
   Dialog,
   DialogContent,
@@ -45,11 +45,7 @@ export function RouteComponent() {
         <PostDetail
           post={post}
           userAvatarSlot={
-            <UserAvatar
-              avatar={post.user.avatar}
-              username={post.user.username}
-              className="h-8 w-8"
-            />
+            <BaseAvatar src={post.user.avatar} alt={post.user.username} className="h-8 w-8" />
           }
           likeSlot={
             <PostLikeButton isLiked={post.isLiked} likesCount={post.likesCount} postId={post.id} />

@@ -69,6 +69,7 @@
   },
   "sideBar": {
     "games": "Games",
+    "chat-bot": "Chat Bot",
     "incs": "Incs",
     "messages": "Messages",
     "newContent": "New Content",

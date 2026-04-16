@@ -4,6 +4,7 @@ import { useForm } from '@tanstack/react-form';
 
 import { Button } from '@/shared/ui/button';
 import { DialogFooter } from '@/shared/ui/dialog';
+import { FieldError } from '@/shared/ui/field';
 import { Textarea } from '@/shared/ui/textarea';
 
 import { useCreateIncMutation } from '../model/mutation';
@@ -44,11 +45,7 @@ export function CreateIncForm() {
                 autoFocus
               />
 
-              {field.state.meta.errors.length > 0 && (
-                <p className="text-destructive animate-in fade-in slide-in-from-top-1 pt-2 text-[10px] font-medium">
-                  {field.state.meta.errors[0]?.message?.toString()}
-                </p>
-              )}
+              <FieldError errors={field.state.meta.errors} className="text-xs" />
             </div>
           )}
         />

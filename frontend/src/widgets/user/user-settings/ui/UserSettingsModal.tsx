@@ -51,7 +51,7 @@ export function UserSettingsModal() {
 
           <div className="flex-1 overflow-y-auto p-6 pt-4">
             <TabsContent value="general" className="mt-0 flex flex-col gap-6">
-              <UpdateUserAvatarCard username={user.username} currentAvatar={user.avatar} />
+              <UpdateUserAvatarCard avatar={user.avatar} />
               <UserPrivacyToggle isPrivate={user.isPrivate} />
             </TabsContent>
 

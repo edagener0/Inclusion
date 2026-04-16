@@ -40,7 +40,7 @@ export function CreateStoryForm() {
               <SingleMediaUploader
                 onChange={(file) => field.handleChange(file as unknown as File)}
               />
-              <FieldError errors={field.state.meta.errors} />
+              <FieldError errors={field.state.meta.errors} className="text-xs" />
             </div>
           )}
         />

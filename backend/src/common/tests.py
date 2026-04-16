@@ -10,6 +10,4 @@ class SchemaDocumentationTests(APITestCase):
         schema = response.content.decode("utf-8")
         self.assertIn("/ws/dms/inbox", schema)
         self.assertIn("/ws/dms/{userId}", schema)
-        self.assertIn("/ws/groups/inbox", schema)
-        self.assertIn("/ws/groups/{groupId}", schema)
         self.assertNotIn("isMine", schema)

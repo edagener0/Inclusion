@@ -4,7 +4,7 @@ import { FriendshipManageButton } from '@/features/friend/frindship-manage';
 
 import { type Friend, FriendCard, FriendCardSkeleton } from '@/entities/friend';
 import { useSession } from '@/entities/session';
-import { UserAvatar } from '@/entities/user';
+import { UserSnippet } from '@/entities/user';
 
 import type { AnyInfiniteOptions, PaginatedReturnData } from '@/shared/api';
 import { useInfiniteScroll } from '@/shared/lib/hooks';
@@ -32,8 +32,7 @@ export function FriendList({ queryOptions }: Props) {
         : friends.map((f) => (
             <FriendCard
               key={f.id}
-              user={f}
-              userAvatarSlot={<UserAvatar avatar={f.avatar} username={f.username} />}
+              friendSlot={<UserSnippet user={f} />}
               friendshipManageSlot={
                 f.id === session.id ? null : (
                   <FriendshipManageButton

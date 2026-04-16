@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
@@ -6,7 +7,7 @@ import { Edit } from 'lucide-react';
 
 import { FriendCard, FriendCardSkeleton, friendQueries } from '@/entities/friend';
 import { useSession } from '@/entities/session';
-import { UserAvatar } from '@/entities/user';
+import { UserSnippet } from '@/entities/user';
 
 import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { Button } from '@/shared/ui/button';
@@ -21,6 +22,7 @@ import { ScrollArea } from '@/shared/ui/scroll-area';
 import { CenterSpinner } from '@/shared/ui/spinner';
 
 export function SelectFriendDialog() {
+  const { t } = useTranslation('message', { keyPrefix: 'send' });
   const [isOpen, setIsOpen] = useState(false);
   const session = useSession();
   const navigate = useNavigate();
@@ -51,7 +53,7 @@ export function SelectFriendDialog() {
 
       <DialogContent className="grid max-h-[90vh] grid-rows-[auto_minmax(0,1fr)] overflow-hidden p-0 sm:max-w-md">
         <DialogHeader className="border-b p-4">
-          <DialogTitle>Новое сообщение</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
         </DialogHeader>
 
         <ScrollArea className="h-full w-full">
@@ -72,10 +74,7 @@ export function SelectFriendDialog() {
                     }}
                   >
                     <FriendCard
-                      user={{ username: friend.username, avatar: friend.avatar, id: friend.id }}
-                      userAvatarSlot={
-                        <UserAvatar avatar={friend.avatar} username={friend.username} />
-                      }
+                      friendSlot={<UserSnippet user={friend} />}
                       friendshipManageSlot={null}
                     />
                   </div>

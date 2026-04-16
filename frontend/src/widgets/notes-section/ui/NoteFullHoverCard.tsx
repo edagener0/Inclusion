@@ -1,6 +1,6 @@
 import { type Note, NoteCard } from '@/entities/note';
-import { UserAvatar } from '@/entities/user';
 
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/shared/ui/hover-card';
 
 import { NoteLikeButton } from './NoteLikeButton';
@@ -16,11 +16,7 @@ export function NoteFullHoverCard({ note }: Props) {
         <NoteCard
           note={note}
           avatar={
-            <UserAvatar
-              className="h-16 w-16"
-              avatar={note.user.avatar}
-              username={note.user.username}
-            />
+            <BaseAvatar className="h-16 w-16" src={note.user.avatar} alt={note.user.username} />
           }
         />
       </HoverCardTrigger>

@@ -91,10 +91,24 @@ jobs:
         working-directory: ./frontend
         run: npm run tauri android build
 
+      - name: Sign and Rename APK manually
+        working-directory: ./frontend
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo $KEYSTORE_BASE64 | base64 --decode > release-key.jks
+          APK_PATH=$(find src-tauri/gen/android/app/build/outputs/apk/universal/release -name "*.apk" | head -n 1)
+          FINAL_APK="Inclusion-${{ github.ref_type == 'tag' && github.ref_name || 'draft' }}.apk"
+          BUILD_TOOLS="$ANDROID_SDK_ROOT/build-tools/34.0.0"
+          $BUILD_TOOLS/zipalign -v -p 4 "$APK_PATH" "aligned.apk"
+          $BUILD_TOOLS/apksigner sign --ks release-key.jks --ks-key-alias "$KEY_ALIAS" --ks-pass "pass:$KEYSTORE_PASSWORD" --key-pass "pass:$KEY_PASSWORD" --out "$FINAL_APK" "aligned.apk"
+          rm release-key.jks aligned.apk
+
       - name: Upload APK to Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'v0.0.0-draft' }}
-          files: |
-            frontend/src-tauri/gen/android/app/build/outputs/apk/universal/release/*.apk
-            frontend/src-tauri/gen/android/app/build/outputs/bundle/universal/release/*.aab
+          files: frontend/Inclusion-*.apk

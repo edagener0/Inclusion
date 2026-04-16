@@ -1,0 +1,7 @@
+{
+  "ask": {
+    "error": "Something went wrong while sending your request.",
+    "loading": "The bot is thinking...",
+    "success": "Response received successfully."
+  }
+}

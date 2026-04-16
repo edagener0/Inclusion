@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useForm } from '@tanstack/react-form';
 
-import { UserAvatar } from '@/entities/user';
-
+import { BaseAvatar } from '@/shared/ui/base-avatar';
 import { Button } from '@/shared/ui/button';
 import {
   Card,
@@ -21,13 +20,11 @@ import { Label } from '@/shared/ui/label';
 import { useUpdateAvatar } from '../model/mutation';
 import { type UpdateAvatar, createUpdateAvatarSchema } from '../model/schema';
 
-export function UpdateUserAvatarCard({
-  currentAvatar,
-  username,
-}: {
-  currentAvatar: string;
-  username: string;
-}) {
+type Props = {
+  avatar: string;
+};
+
+export function UpdateUserAvatarCard({ avatar }: Props) {
   const mutation = useUpdateAvatar();
   const { t } = useTranslation('common');
   const { t: tU } = useTranslation('user', { keyPrefix: 'avatar' });
@@ -64,9 +61,8 @@ export function UpdateUserAvatarCard({
         </CardHeader>
 
         <CardContent className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
-          <UserAvatar
-            avatar={previewUrl || currentAvatar}
-            username={username}
+          <BaseAvatar
+            src={previewUrl || avatar}
             className="border-border size-24 shrink-0 rounded-full border shadow-sm sm:size-32"
           />
 
@@ -94,7 +90,7 @@ export function UpdateUserAvatarCard({
                   />
                   <p className="text-muted-foreground text-xs">{tU('form.image.size')}</p>
 
-                  <FieldError errors={field.state.meta.errors} />
+                  <FieldError errors={field.state.meta.errors} className="text-xs" />
                 </>
               )}
             />

@@ -35,7 +35,12 @@ class WordleWordView(APIView):
 
         wordle = get_object_or_404(Wordle, date=today)
 
-        serializer = WordSerializer(wordle.word)
+        has_won = WordleResult.objects.filter(
+            wordle=wordle, 
+            user=self.request.user, 
+            status=WordleResult.StatusChoices.SUCCESS).exists()
+        
+        serializer = WordSerializer(wordle.word, context={"has_won": has_won})
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 

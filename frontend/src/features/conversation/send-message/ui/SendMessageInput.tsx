@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useForm } from '@tanstack/react-form';
 import { Send } from 'lucide-react';
 
-import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { FieldError } from '@/shared/ui/field';
 import { Textarea } from '@/shared/ui/textarea';
@@ -42,6 +41,8 @@ export function SendMessageInput({ userId }: Props) {
           name="content"
           children={(field) => (
             <div className="flex flex-1 flex-col gap-1">
+              <FieldError errors={field.state.meta.errors} className="text-xs" />
+
               <div className="relative">
                 <Textarea
                   id={field.name}
@@ -50,11 +51,7 @@ export function SendMessageInput({ userId }: Props) {
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
                   placeholder={t('placeholder')}
-                  className={cn(
-                    'max-h-30 min-h-11 resize-none rounded-2xl pr-12',
-                    field.state.meta.errors.length > 0 &&
-                      'border-destructive focus-visible:ring-destructive',
-                  )}
+                  className="max-h-30 min-h-11 resize-none rounded-2xl pr-12"
                   rows={1}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -64,8 +61,6 @@ export function SendMessageInput({ userId }: Props) {
                   }}
                 />
               </div>
-
-              <FieldError errors={field.state.meta.errors} className="px-2 text-[10px]" />
             </div>
           )}
         />

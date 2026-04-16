@@ -12,7 +12,8 @@
   "send": {
     "error": "",
     "placeholder": "",
-    "success": ""
+    "success": "",
+    "title": ""
   },
   "title": "Повідомлення",
   "update": {
@@ -23,6 +24,7 @@
       }
     },
     "success": "",
-    "title": ""
+    "title": "",
+    "trigger": ""
   }
 }

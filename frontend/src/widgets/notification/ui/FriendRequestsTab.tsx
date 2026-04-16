@@ -6,7 +6,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { AcceptRequestButton, DeclineRequestButton } from '@/features/friend/frindship-manage';
 
 import { FriendRequestCard, friendQueries } from '@/entities/friend';
-import { UserAvatar } from '@/entities/user';
+import { UserSnippet } from '@/entities/user';
 
 import { useInfiniteScroll } from '@/shared/lib/hooks';
 import { ScrollArea } from '@/shared/ui/scroll-area';
@@ -54,7 +54,7 @@ export function FriendRequestsTab() {
                 <FriendRequestCard
                   key={req.id}
                   user={req}
-                  userAvatarSlot={<UserAvatar username={req.username} avatar={req.avatar} />}
+                  userSnippetSlot={<UserSnippet user={req} />}
                   acceptButtonSlot={<AcceptRequestButton userId={req.id} username={req.username} />}
                   declineButtonSlot={<DeclineRequestButton userId={req.id} />}
                 />

@@ -1,14 +1,18 @@
 from rest_framework import serializers
 from .models import Word
 from django.contrib.auth import get_user_model
-from drf_spectacular.utils import extend_schema_field
 
 User = get_user_model()
 
 class WordSerializer(serializers.ModelSerializer):
+    has_won = serializers.SerializerMethodField()
+
     class Meta:
         model = Word
-        fields = ["length", "difficulty"]
+        fields = ["length", "difficulty", "has_won"]
+
+    def get_has_won(self, obj):
+        return self.context.get("has_won")
 
 
 class WordleGuessSerializer(serializers.Serializer):
