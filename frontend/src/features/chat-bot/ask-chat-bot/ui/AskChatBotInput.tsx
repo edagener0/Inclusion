@@ -37,6 +37,8 @@ export function AskChatBotInput() {
           name="prompt"
           children={(field) => (
             <div className="flex flex-1 flex-col gap-1">
+              <FieldError errors={field.state.meta.errors} className="text-xs" />
+
               <div className="relative">
                 <Textarea
                   id={field.name}
@@ -55,8 +57,6 @@ export function AskChatBotInput() {
                   }}
                 />
               </div>
-
-              <FieldError errors={field.state.meta.errors} className="text-xs" />
             </div>
           )}
         />
