@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from .models import Word
 from django.contrib.auth import get_user_model
-from drf_spectacular.utils import extend_schema_field
-from .models import WordleResult
 
 User = get_user_model()
 
