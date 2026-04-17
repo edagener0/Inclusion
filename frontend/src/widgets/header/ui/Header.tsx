@@ -1,12 +1,11 @@
 import { type ReactNode, useState } from 'react';
 
 import { Link } from '@tanstack/react-router';
-import { Menu, Search } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 import { AppLogo } from '@/shared/assets';
 import { APP_NAME } from '@/shared/config';
 import { Button } from '@/shared/ui/button';
-import { Input } from '@/shared/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/shared/ui/sheet';
 
 type Props = {
@@ -45,19 +44,11 @@ export function Header({ sideBarSlot, userMenuSlot, notificationSlot }: Props) {
         </div>
 
         <div className="flex w-full max-w-2xl items-center justify-between">
-          {/* Title */}
           <div className="flex flex-1 items-center md:px-0">
             <h1 className="truncate text-sm font-bold md:text-lg"></h1>
           </div>
 
           <div className="flex shrink-0 items-center gap-2 md:gap-4">
-            <div className="relative hidden w-40 sm:block md:w-50">
-              <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-              <Input
-                placeholder="Search..."
-                className="bg-muted/50 h-9 rounded-full border-none pl-9 focus-visible:ring-1"
-              />
-            </div>
             {notificationSlot}
             {userMenuSlot}
           </div>
