@@ -4,6 +4,7 @@
     "close": "Закрыть",
     "delete": "Удалить",
     "deleting": "Удаление...",
+    "loading": "",
     "publish": "Опубликовать",
     "publishing": "Публикация...",
     "remove": "Убрать",
@@ -69,6 +70,7 @@
   },
   "sideBar": {
     "chat-bot": "",
+    "games": "",
     "incs": "Инки",
     "messages": "Сообщения",
     "newContent": "Новый Контент",

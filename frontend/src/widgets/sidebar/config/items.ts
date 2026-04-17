@@ -1,5 +1,6 @@
 import {
   BotIcon,
+  Gamepad2Icon,
   ImagesIcon,
   Mail,
   PlusIcon,
@@ -15,6 +16,7 @@ export const navItems = [
   { icon: ImagesIcon, label: 'sideBar.posts', path: '/posts', modal: undefined },
   { icon: UserIcon, label: 'sideBar.profile', path: '/profile', modal: undefined },
   { icon: Mail, label: 'sideBar.messages', path: '/messages', modal: undefined },
+  { icon: Gamepad2Icon, label: 'sideBar.games', path: '/games', modal: undefined },
   { icon: BotIcon, label: 'sideBar.chat-bot', path: '/chat-bot', modal: undefined },
   { icon: Settings, label: 'sideBar.settings', modal: 'user-settings', path: '.' },
   { icon: PlusIcon, label: 'sideBar.newContent', modal: 'create-content', path: '.' },

@@ -4,6 +4,7 @@
     "close": "Fechar",
     "delete": "Eliminar",
     "deleting": "A eliminar...",
+    "loading": "",
     "publish": "Publicar",
     "publishing": "A publicar...",
     "remove": "Remover",
@@ -69,6 +70,7 @@
   },
   "sideBar": {
     "chat-bot": "",
+    "games": "",
     "incs": "Incs",
     "messages": "Mensagens",
     "newContent": "Novo Conteúdo",

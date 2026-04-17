@@ -15,6 +15,7 @@ import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as MainProfileRouteImport } from './routes/_main/profile'
 import { Route as MainPostsRouteImport } from './routes/_main/posts'
 import { Route as MainIncsRouteImport } from './routes/_main/incs'
+import { Route as MainGamesRouteImport } from './routes/_main/games'
 import { Route as MainChatBotRouteImport } from './routes/_main/chat-bot'
 import { Route as MainUsernameRouteImport } from './routes/_main/$username'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
@@ -23,10 +24,13 @@ import { Route as MainStoriesIndexRouteImport } from './routes/_main/stories/ind
 import { Route as MainPostsIndexRouteImport } from './routes/_main/posts/index'
 import { Route as MainMessagesIndexRouteImport } from './routes/_main/messages/index'
 import { Route as MainIncsIndexRouteImport } from './routes/_main/incs/index'
+import { Route as MainGamesIndexRouteImport } from './routes/_main/games/index'
 import { Route as MainStoriesIdRouteImport } from './routes/_main/stories/$id'
 import { Route as MainPostsIdRouteImport } from './routes/_main/posts/$id'
 import { Route as MainMessagesIdRouteImport } from './routes/_main/messages/$id'
 import { Route as MainIncsIdRouteImport } from './routes/_main/incs/$id'
+import { Route as MainGamesWordleIndexRouteImport } from './routes/_main/games/wordle/index'
+import { Route as MainGamesWordleLeaderboardRouteImport } from './routes/_main/games/wordle/leaderboard'
 
 const MainRoute = MainRouteImport.update({
   id: '/_main',
@@ -54,6 +58,11 @@ const MainPostsRoute = MainPostsRouteImport.update({
 const MainIncsRoute = MainIncsRouteImport.update({
   id: '/incs',
   path: '/incs',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainGamesRoute = MainGamesRouteImport.update({
+  id: '/games',
+  path: '/games',
   getParentRoute: () => MainRoute,
 } as any)
 const MainChatBotRoute = MainChatBotRouteImport.update({
@@ -100,6 +109,11 @@ const MainIncsIndexRoute = MainIncsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => MainIncsRoute,
 } as any)
+const MainGamesIndexRoute = MainGamesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainGamesRoute,
+} as any)
 const MainStoriesIdRoute = MainStoriesIdRouteImport.update({
   id: '/stories/$id',
   path: '/stories/$id',
@@ -128,6 +142,17 @@ const MainIncsIdRoute = MainIncsIdRouteImport.update({
 } as any).lazy(() =>
   import('./routes/_main/incs/$id.lazy').then((d) => d.Route),
 )
+const MainGamesWordleIndexRoute = MainGamesWordleIndexRouteImport.update({
+  id: '/wordle/',
+  path: '/wordle/',
+  getParentRoute: () => MainGamesRoute,
+} as any)
+const MainGamesWordleLeaderboardRoute =
+  MainGamesWordleLeaderboardRouteImport.update({
+    id: '/wordle/leaderboard',
+    path: '/wordle/leaderboard',
+    getParentRoute: () => MainGamesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
@@ -135,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof AuthSignUpRoute
   '/$username': typeof MainUsernameRoute
   '/chat-bot': typeof MainChatBotRoute
+  '/games': typeof MainGamesRouteWithChildren
   '/incs': typeof MainIncsRouteWithChildren
   '/posts': typeof MainPostsRouteWithChildren
   '/profile': typeof MainProfileRoute
@@ -142,10 +168,13 @@ export interface FileRoutesByFullPath {
   '/messages/$id': typeof MainMessagesIdRoute
   '/posts/$id': typeof MainPostsIdRoute
   '/stories/$id': typeof MainStoriesIdRoute
+  '/games/': typeof MainGamesIndexRoute
   '/incs/': typeof MainIncsIndexRoute
   '/messages/': typeof MainMessagesIndexRoute
   '/posts/': typeof MainPostsIndexRoute
   '/stories/': typeof MainStoriesIndexRoute
+  '/games/wordle/leaderboard': typeof MainGamesWordleLeaderboardRoute
+  '/games/wordle/': typeof MainGamesWordleIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
@@ -158,10 +187,13 @@ export interface FileRoutesByTo {
   '/messages/$id': typeof MainMessagesIdRoute
   '/posts/$id': typeof MainPostsIdRoute
   '/stories/$id': typeof MainStoriesIdRoute
+  '/games': typeof MainGamesIndexRoute
   '/incs': typeof MainIncsIndexRoute
   '/messages': typeof MainMessagesIndexRoute
   '/posts': typeof MainPostsIndexRoute
   '/stories': typeof MainStoriesIndexRoute
+  '/games/wordle/leaderboard': typeof MainGamesWordleLeaderboardRoute
+  '/games/wordle': typeof MainGamesWordleIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -171,6 +203,7 @@ export interface FileRoutesById {
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_main/$username': typeof MainUsernameRoute
   '/_main/chat-bot': typeof MainChatBotRoute
+  '/_main/games': typeof MainGamesRouteWithChildren
   '/_main/incs': typeof MainIncsRouteWithChildren
   '/_main/posts': typeof MainPostsRouteWithChildren
   '/_main/profile': typeof MainProfileRoute
@@ -179,10 +212,13 @@ export interface FileRoutesById {
   '/_main/messages/$id': typeof MainMessagesIdRoute
   '/_main/posts/$id': typeof MainPostsIdRoute
   '/_main/stories/$id': typeof MainStoriesIdRoute
+  '/_main/games/': typeof MainGamesIndexRoute
   '/_main/incs/': typeof MainIncsIndexRoute
   '/_main/messages/': typeof MainMessagesIndexRoute
   '/_main/posts/': typeof MainPostsIndexRoute
   '/_main/stories/': typeof MainStoriesIndexRoute
+  '/_main/games/wordle/leaderboard': typeof MainGamesWordleLeaderboardRoute
+  '/_main/games/wordle/': typeof MainGamesWordleIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -192,6 +228,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/$username'
     | '/chat-bot'
+    | '/games'
     | '/incs'
     | '/posts'
     | '/profile'
@@ -199,10 +236,13 @@ export interface FileRouteTypes {
     | '/messages/$id'
     | '/posts/$id'
     | '/stories/$id'
+    | '/games/'
     | '/incs/'
     | '/messages/'
     | '/posts/'
     | '/stories/'
+    | '/games/wordle/leaderboard'
+    | '/games/wordle/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -215,10 +255,13 @@ export interface FileRouteTypes {
     | '/messages/$id'
     | '/posts/$id'
     | '/stories/$id'
+    | '/games'
     | '/incs'
     | '/messages'
     | '/posts'
     | '/stories'
+    | '/games/wordle/leaderboard'
+    | '/games/wordle'
   id:
     | '__root__'
     | '/_auth'
@@ -227,6 +270,7 @@ export interface FileRouteTypes {
     | '/_auth/sign-up'
     | '/_main/$username'
     | '/_main/chat-bot'
+    | '/_main/games'
     | '/_main/incs'
     | '/_main/posts'
     | '/_main/profile'
@@ -235,10 +279,13 @@ export interface FileRouteTypes {
     | '/_main/messages/$id'
     | '/_main/posts/$id'
     | '/_main/stories/$id'
+    | '/_main/games/'
     | '/_main/incs/'
     | '/_main/messages/'
     | '/_main/posts/'
     | '/_main/stories/'
+    | '/_main/games/wordle/leaderboard'
+    | '/_main/games/wordle/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -288,6 +335,13 @@ declare module '@tanstack/react-router' {
       path: '/incs'
       fullPath: '/incs'
       preLoaderRoute: typeof MainIncsRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/games': {
+      id: '/_main/games'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof MainGamesRouteImport
       parentRoute: typeof MainRoute
     }
     '/_main/chat-bot': {
@@ -346,6 +400,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIncsIndexRouteImport
       parentRoute: typeof MainIncsRoute
     }
+    '/_main/games/': {
+      id: '/_main/games/'
+      path: '/'
+      fullPath: '/games/'
+      preLoaderRoute: typeof MainGamesIndexRouteImport
+      parentRoute: typeof MainGamesRoute
+    }
     '/_main/stories/$id': {
       id: '/_main/stories/$id'
       path: '/stories/$id'
@@ -374,6 +435,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIncsIdRouteImport
       parentRoute: typeof MainIncsRoute
     }
+    '/_main/games/wordle/': {
+      id: '/_main/games/wordle/'
+      path: '/wordle'
+      fullPath: '/games/wordle/'
+      preLoaderRoute: typeof MainGamesWordleIndexRouteImport
+      parentRoute: typeof MainGamesRoute
+    }
+    '/_main/games/wordle/leaderboard': {
+      id: '/_main/games/wordle/leaderboard'
+      path: '/wordle/leaderboard'
+      fullPath: '/games/wordle/leaderboard'
+      preLoaderRoute: typeof MainGamesWordleLeaderboardRouteImport
+      parentRoute: typeof MainGamesRoute
+    }
   }
 }
 
@@ -388,6 +463,22 @@ const AuthRouteChildren: AuthRouteChildren = {
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface MainGamesRouteChildren {
+  MainGamesIndexRoute: typeof MainGamesIndexRoute
+  MainGamesWordleLeaderboardRoute: typeof MainGamesWordleLeaderboardRoute
+  MainGamesWordleIndexRoute: typeof MainGamesWordleIndexRoute
+}
+
+const MainGamesRouteChildren: MainGamesRouteChildren = {
+  MainGamesIndexRoute: MainGamesIndexRoute,
+  MainGamesWordleLeaderboardRoute: MainGamesWordleLeaderboardRoute,
+  MainGamesWordleIndexRoute: MainGamesWordleIndexRoute,
+}
+
+const MainGamesRouteWithChildren = MainGamesRoute._addFileChildren(
+  MainGamesRouteChildren,
+)
 
 interface MainIncsRouteChildren {
   MainIncsIdRoute: typeof MainIncsIdRoute
@@ -420,6 +511,7 @@ const MainPostsRouteWithChildren = MainPostsRoute._addFileChildren(
 interface MainRouteChildren {
   MainUsernameRoute: typeof MainUsernameRoute
   MainChatBotRoute: typeof MainChatBotRoute
+  MainGamesRoute: typeof MainGamesRouteWithChildren
   MainIncsRoute: typeof MainIncsRouteWithChildren
   MainPostsRoute: typeof MainPostsRouteWithChildren
   MainProfileRoute: typeof MainProfileRoute
@@ -433,6 +525,7 @@ interface MainRouteChildren {
 const MainRouteChildren: MainRouteChildren = {
   MainUsernameRoute: MainUsernameRoute,
   MainChatBotRoute: MainChatBotRoute,
+  MainGamesRoute: MainGamesRouteWithChildren,
   MainIncsRoute: MainIncsRouteWithChildren,
   MainPostsRoute: MainPostsRouteWithChildren,
   MainProfileRoute: MainProfileRoute,

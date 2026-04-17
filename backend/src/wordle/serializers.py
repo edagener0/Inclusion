@@ -4,15 +4,20 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class WordSerializer(serializers.ModelSerializer):
     has_won = serializers.SerializerMethodField()
+    game_id = serializers.SerializerMethodField()  # Добавляем поле для ID игры
 
     class Meta:
         model = Word
-        fields = ["length", "difficulty", "has_won"]
+        fields = ["length", "difficulty", "has_won", "game_id"]
 
     def get_has_won(self, obj):
-        return self.context.get("has_won")
+        return bool(self.context.get("has_won", False))
+
+    def get_game_id(self, obj):
+        return self.context.get("game_id")
 
 
 class WordleGuessSerializer(serializers.Serializer):
@@ -29,12 +34,22 @@ class WordleGuessResponseSerializer(serializers.Serializer):
 class WordleGuessErrorSerializer(serializers.Serializer):
     detail = serializers.CharField()
 
+
 class StreaksSerializer(serializers.Serializer):
     current_streak = serializers.IntegerField()
     max_streak = serializers.IntegerField()
 
-class WordleLeaderboardUserSerializer(serializers.ModelSerializer):
 
+class WordleLeaderboardUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "first_name", "last_name", "avatar", "current_wordle_streak", "max_wordle_streak"]
+        fields = [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "avatar",
+            "current_wordle_streak",
+            "max_wordle_streak",
+        ]
+
