@@ -17,7 +17,7 @@ const _dummy = () => {
   t('common:createContent.inc.description');
   t('common:createContent.story.label');
   t('common:createContent.story.description');
-  t('games:games.title');
-  t('games:games.wordle');
-  t('games:games.wordleDescription');
+  t('games:title');
+  t('games:wordle.title');
+  t('games:wordle.description');
 };

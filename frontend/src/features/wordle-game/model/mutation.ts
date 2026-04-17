@@ -20,6 +20,7 @@ export function useWordleSubmitMutation() {
       if (response.correct) {
         toast.success(t('winMessage'));
         queryClient.invalidateQueries({ queryKey: wordleQueries.leaderboard().queryKey });
+        queryClient.invalidateQueries({ queryKey: wordleQueries.word().queryKey });
       }
     },
     onError: (error) => {

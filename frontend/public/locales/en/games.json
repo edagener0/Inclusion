@@ -1,26 +1,20 @@
 {
   "best": "best",
   "current": "current",
-  "emptyState": "emptyState",
-  "games": {
-    "title": "Games",
-    "wordle": "Wordle",
-    "wordleDescription": "Guess the word in 6 tries. After each guess, the color of the tiles will change to show how close your guess was to the word."
-  },
   "hook": {
-    "notEnoughLetters": "Not enough letters"
+    "notEnoughLetters": "You have not entered enough words."
   },
+  "title": "Games",
   "wordle": {
     "comeBackTomorrow": "Come back tomorrow for a new word.",
-    "error": "error",
-    "loadingGame": "Loading game...",
+    "description": "Guess the word in 6 tries. After each guess, the color of the tiles will change to show how close your guess was to the word.",
+    "error": "An error occurred while submitting your guess. Please try again.",
+    "leaderboard": {
+      "bestPlayers": "The best players based on their win streaks!",
+      "title": "Wordle Leaderboard"
+    },
     "title": "Wordle",
     "viewLeaderboard": "View Leaderboard",
-    "winMessage": "winMessage"
-  },
-  "wordleLeaderboard": {
-    "bestPlayers": "The best players based on their win streaks!",
-    "loading": "Loading leaderboard...",
-    "title": "Wordle Leaderboard"
+    "winMessage": "Congratulations! You've guessed the word!"
   }
 }

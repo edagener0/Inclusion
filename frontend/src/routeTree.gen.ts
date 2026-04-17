@@ -29,7 +29,7 @@ import { Route as MainStoriesIdRouteImport } from './routes/_main/stories/$id'
 import { Route as MainPostsIdRouteImport } from './routes/_main/posts/$id'
 import { Route as MainMessagesIdRouteImport } from './routes/_main/messages/$id'
 import { Route as MainIncsIdRouteImport } from './routes/_main/incs/$id'
-import { Route as MainGamesWordleWordleRouteImport } from './routes/_main/games/wordle/wordle'
+import { Route as MainGamesWordleIndexRouteImport } from './routes/_main/games/wordle/index'
 import { Route as MainGamesWordleLeaderboardRouteImport } from './routes/_main/games/wordle/leaderboard'
 
 const MainRoute = MainRouteImport.update({
@@ -142,9 +142,9 @@ const MainIncsIdRoute = MainIncsIdRouteImport.update({
 } as any).lazy(() =>
   import('./routes/_main/incs/$id.lazy').then((d) => d.Route),
 )
-const MainGamesWordleWordleRoute = MainGamesWordleWordleRouteImport.update({
-  id: '/wordle/wordle',
-  path: '/wordle/wordle',
+const MainGamesWordleIndexRoute = MainGamesWordleIndexRouteImport.update({
+  id: '/wordle/',
+  path: '/wordle/',
   getParentRoute: () => MainGamesRoute,
 } as any)
 const MainGamesWordleLeaderboardRoute =
@@ -174,7 +174,7 @@ export interface FileRoutesByFullPath {
   '/posts/': typeof MainPostsIndexRoute
   '/stories/': typeof MainStoriesIndexRoute
   '/games/wordle/leaderboard': typeof MainGamesWordleLeaderboardRoute
-  '/games/wordle/wordle': typeof MainGamesWordleWordleRoute
+  '/games/wordle/': typeof MainGamesWordleIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
@@ -193,7 +193,7 @@ export interface FileRoutesByTo {
   '/posts': typeof MainPostsIndexRoute
   '/stories': typeof MainStoriesIndexRoute
   '/games/wordle/leaderboard': typeof MainGamesWordleLeaderboardRoute
-  '/games/wordle/wordle': typeof MainGamesWordleWordleRoute
+  '/games/wordle': typeof MainGamesWordleIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -218,7 +218,7 @@ export interface FileRoutesById {
   '/_main/posts/': typeof MainPostsIndexRoute
   '/_main/stories/': typeof MainStoriesIndexRoute
   '/_main/games/wordle/leaderboard': typeof MainGamesWordleLeaderboardRoute
-  '/_main/games/wordle/wordle': typeof MainGamesWordleWordleRoute
+  '/_main/games/wordle/': typeof MainGamesWordleIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -242,7 +242,7 @@ export interface FileRouteTypes {
     | '/posts/'
     | '/stories/'
     | '/games/wordle/leaderboard'
-    | '/games/wordle/wordle'
+    | '/games/wordle/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -261,7 +261,7 @@ export interface FileRouteTypes {
     | '/posts'
     | '/stories'
     | '/games/wordle/leaderboard'
-    | '/games/wordle/wordle'
+    | '/games/wordle'
   id:
     | '__root__'
     | '/_auth'
@@ -285,7 +285,7 @@ export interface FileRouteTypes {
     | '/_main/posts/'
     | '/_main/stories/'
     | '/_main/games/wordle/leaderboard'
-    | '/_main/games/wordle/wordle'
+    | '/_main/games/wordle/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -435,11 +435,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIncsIdRouteImport
       parentRoute: typeof MainIncsRoute
     }
-    '/_main/games/wordle/wordle': {
-      id: '/_main/games/wordle/wordle'
-      path: '/wordle/wordle'
-      fullPath: '/games/wordle/wordle'
-      preLoaderRoute: typeof MainGamesWordleWordleRouteImport
+    '/_main/games/wordle/': {
+      id: '/_main/games/wordle/'
+      path: '/wordle'
+      fullPath: '/games/wordle/'
+      preLoaderRoute: typeof MainGamesWordleIndexRouteImport
       parentRoute: typeof MainGamesRoute
     }
     '/_main/games/wordle/leaderboard': {
@@ -467,13 +467,13 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 interface MainGamesRouteChildren {
   MainGamesIndexRoute: typeof MainGamesIndexRoute
   MainGamesWordleLeaderboardRoute: typeof MainGamesWordleLeaderboardRoute
-  MainGamesWordleWordleRoute: typeof MainGamesWordleWordleRoute
+  MainGamesWordleIndexRoute: typeof MainGamesWordleIndexRoute
 }
 
 const MainGamesRouteChildren: MainGamesRouteChildren = {
   MainGamesIndexRoute: MainGamesIndexRoute,
   MainGamesWordleLeaderboardRoute: MainGamesWordleLeaderboardRoute,
-  MainGamesWordleWordleRoute: MainGamesWordleWordleRoute,
+  MainGamesWordleIndexRoute: MainGamesWordleIndexRoute,
 }
 
 const MainGamesRouteWithChildren = MainGamesRoute._addFileChildren(

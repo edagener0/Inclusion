@@ -3,7 +3,3 @@ export const WORDLE_SYMBOLS = {
   '*': 'present',
   '-': 'absent',
 } as const;
-
-export const WORDLE_CONFIG = {
-  MAX_TRIES: 6,
-} as const;

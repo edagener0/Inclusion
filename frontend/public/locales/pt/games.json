@@ -1,26 +1,20 @@
 {
   "best": "",
   "current": "",
-  "emptyState": "",
-  "games": {
-    "title": "",
-    "wordle": "",
-    "wordleDescription": ""
-  },
   "hook": {
     "notEnoughLetters": ""
   },
+  "title": "",
   "wordle": {
     "comeBackTomorrow": "",
+    "description": "",
     "error": "",
-    "loadingGame": "",
+    "leaderboard": {
+      "bestPlayers": "",
+      "title": ""
+    },
     "title": "",
     "viewLeaderboard": "",
     "winMessage": ""
-  },
-  "wordleLeaderboard": {
-    "bestPlayers": "",
-    "loading": "",
-    "title": ""
   }
 }

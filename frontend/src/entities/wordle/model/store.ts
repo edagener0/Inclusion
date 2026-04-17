@@ -4,18 +4,19 @@ import { persist } from 'zustand/middleware';
 import type { LetterStatus } from '../lib/parse-diff';
 
 type WordleState = {
+  gameId: number | null;
   guesses: string[];
   results: LetterStatus[][];
   currentGuess: string;
-  isGameOver: boolean;
   setCurrentGuess: (guess: string) => void;
   addGuess: (guess: string, result: LetterStatus[]) => void;
-  reset: () => void;
+  reset: (gameId: number) => void;
 };
 
 export const useWordleStore = create<WordleState>()(
   persist(
     (set) => ({
+      gameId: null,
       guesses: [],
       results: [],
       currentGuess: '',
@@ -27,12 +28,12 @@ export const useWordleStore = create<WordleState>()(
           results: [...state.results, result],
           currentGuess: '',
         })),
-      reset: () =>
+      reset: (gameId) =>
         set({
+          gameId,
           guesses: [],
           results: [],
           currentGuess: '',
-          isGameOver: false,
         }),
     }),
     { name: 'wordle-state' },

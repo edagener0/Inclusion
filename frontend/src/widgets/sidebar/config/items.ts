@@ -1,6 +1,6 @@
 import {
-  Gamepad2Icon,
   BotIcon,
+  Gamepad2Icon,
   ImagesIcon,
   Mail,
   PlusIcon,

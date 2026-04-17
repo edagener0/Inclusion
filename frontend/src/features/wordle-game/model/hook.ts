@@ -4,21 +4,25 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useShallow } from 'zustand/react/shallow';
 
-import { selectUsedLetters, useWordleStore } from '@/entities/wordle';
+import { type WordleWord, selectUsedLetters, useWordleStore } from '@/entities/wordle';
 
 import { useWordleSubmitMutation } from './mutation';
 
 type Props = {
-  wordLength: number;
+  word: WordleWord;
 };
 
-export function useWordleGame({ wordLength }: Props) {
+export function useWordleGame({ word }: Props) {
   const { t } = useTranslation('games', { keyPrefix: 'hook' });
 
   const currentGuess = useWordleStore((state) => state.currentGuess);
   const guesses = useWordleStore((state) => state.guesses);
   const results = useWordleStore((state) => state.results);
   const setCurrentGuess = useWordleStore((state) => state.setCurrentGuess);
+  const gameId = useWordleStore((state) => state.gameId);
+  const reset = useWordleStore((state) => state.reset);
+
+  if (word.gameId !== gameId) reset(word.gameId);
 
   const usedLetters = useWordleStore(useShallow(selectUsedLetters));
   const { mutate, isPending } = useWordleSubmitMutation();
@@ -30,7 +34,7 @@ export function useWordleGame({ wordLength }: Props) {
       const upperKey = key.toUpperCase();
 
       if (upperKey === 'ENTER') {
-        if (currentGuess.length !== wordLength) {
+        if (currentGuess.length !== word.length) {
           toast.warning(t('notEnoughLetters'));
           return;
         }
@@ -38,12 +42,12 @@ export function useWordleGame({ wordLength }: Props) {
       } else if (upperKey === 'DELETE' || upperKey === 'BACKSPACE') {
         setCurrentGuess(currentGuess.slice(0, -1));
       } else if (/^[A-Z]$/.test(upperKey)) {
-        if (currentGuess.length < wordLength) {
+        if (currentGuess.length < word.length) {
           setCurrentGuess((currentGuess + upperKey).toLowerCase());
         }
       }
     },
-    [currentGuess, wordLength, isPending, mutate, setCurrentGuess, t],
+    [currentGuess, word.length, isPending, mutate, setCurrentGuess, t],
   );
 
   useEffect(() => {
@@ -60,8 +64,9 @@ export function useWordleGame({ wordLength }: Props) {
     guesses,
     results,
     currentGuess,
-    wordLength,
+    wordLength: word.length,
     isSubmitting: isPending,
+    idGameEnd: word.hasWon,
     usedLetters,
     onKeyPress,
   };
