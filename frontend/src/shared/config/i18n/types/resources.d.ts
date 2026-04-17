@@ -147,10 +147,6 @@ export default interface Resources {
       "title": "404 Not Found"
     },
     "notification": {
-      "all": {
-        "empty": "There is no notifications.",
-        "title": "All"
-      },
       "requests": {
         "empty": "There is no friend requests.",
         "title": "Requests"
