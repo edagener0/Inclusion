@@ -1,20 +1,20 @@
 services:
-  web:
+  backend:
     build: ./backend
     container_name: inclusion_backend
     env_file:
-      - .env
+      - ./backend/.env
     depends_on:
       - db
       - redis
     ports:
       - "8000:8000"
 
-  db:
+  database:
     image: postgres:16
     container_name: postgres_db
     env_file:
-      - .env
+      - ./backend/.env
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -30,6 +30,6 @@ services:
     ports:
       - "6379:6379"
 
-
 volumes:
   postgres_data:
+
