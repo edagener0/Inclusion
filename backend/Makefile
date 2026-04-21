@@ -24,3 +24,5 @@ test: migrate gen_wordle_4_today
 	cd src && python3 manage.py test
 
 init: migrate scrape
+deploy:
+	uvicorn inclusion.asgi:application --app-dir src --host 0.0.0.0 --port 8000

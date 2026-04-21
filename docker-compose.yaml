@@ -1,0 +1,49 @@
+services:
+  database:
+    image: postgres:16
+    container_name: postgres_db
+    env_file:
+      - ./backend/.env
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:latest
+    container_name: redis_db
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    container_name: inclusion_backend
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - database
+      - redis
+    volumes:
+      - media_data:/app/src/media
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ./frontend/.env.production
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  media_data:

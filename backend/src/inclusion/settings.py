@@ -16,6 +16,13 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
+
+
+def get_list_from_env(var_name, default_value=""):
+    env_string = os.environ.get(var_name, default_value)
+    return [item.strip() for item in env_string.split(",") if item.strip()]
+
+
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,15 +36,15 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 # SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = get_list_from_env("ALLOWED_HOSTS", default_value="127.0.0.1,localhost")
 
 AUTH_USER_MODEL = "authentication.User"
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-]
+CORS_ALLOWED_ORIGINS = get_list_from_env(
+    "CORS_ALLOWED_ORIGINS", default_value="http://localhost:5173"
+)
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -63,12 +70,9 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
-        "rest_framework.throttling.UserRateThrottle"
+        "rest_framework.throttling.UserRateThrottle",
     ],
-    "DEFAULT_THROTTLE_RATES": {
-        "anon": "100/minute",
-        "user": "150/minute"
-    }
+    "DEFAULT_THROTTLE_RATES": {"anon": "100/minute", "user": "150/minute"},
 }
 
 APPEND_SLASH = False
