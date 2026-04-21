@@ -20,7 +20,11 @@ from .utils import update_user_wordle_streak
 
 User = get_user_model()
 
-
+@extend_schema(
+    tags=["Wordle"],
+    summary="Get today's Wordle",
+    description="Return metadata for today's Wordle game, including difficulty and whether the user has already won.",
+)
 class WordleWordView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -56,6 +60,8 @@ class WordleGuessView(APIView):
             400: WordleGuessErrorSerializer,
             404: WordleGuessErrorSerializer,
         },
+        tags=["Wordle"],
+        summary="Submit Wordle guess",
         description="Submit your guess for today's Wordle. Returns whether the guess is correct, the number of guesses, or errors if invalid.",
     )
     def post(self, request, *args, **kwargs):
@@ -113,9 +119,12 @@ class WordleGuessView(APIView):
             status=status.HTTP_200_OK,
         )
 
-
+@extend_schema(
+    tags=["Wordle"],
+    summary="Get Wordle leaderboard",
+    description="List users ordered by their maximum Wordle streak.",
+)
 class WordleLeaderboardView(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = WordleLeaderboardUserSerializer
     queryset = User.objects.order_by("-max_wordle_streak")
-

@@ -1,8 +1,10 @@
+from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view
 from rest_framework.generics import RetrieveDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from .serializers import CommentSerializer
 from .models import Comment
 from common.permissions import IsOwnerOrReadOnly
+from common.serializers import DetailResponseSerializer, LikeToggleResponseSerializer
 from rest_framework.views import APIView
 from django.db.models import Q
 from content.utils import (
@@ -12,6 +14,9 @@ from content.utils import (
 
 
 def get_visible_comments_queryset(user):
+    if not getattr(user, "is_authenticated", False):
+        return Comment.objects.none()
+
     return (
         Comment.objects
         .with_likes_data(user)
@@ -24,6 +29,18 @@ def get_visible_comments_queryset(user):
     )
 
 
+@extend_schema(tags=["Comments"])
+@extend_schema_view(
+    get=extend_schema(
+        summary="Get comment",
+        description="Retrieve a visible comment by id.",
+    ),
+    delete=extend_schema(
+        summary="Delete comment",
+        description="Delete a comment owned by the authenticated user.",
+        responses={204: OpenApiResponse(description="Comment deleted.")},
+    ),
+)
 class CommentRetrieveDestroyView(RetrieveDestroyAPIView):
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
@@ -39,6 +56,17 @@ class CommentRetrieveDestroyView(RetrieveDestroyAPIView):
 class CommentLikeView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        request=None,
+        responses={
+            200: LikeToggleResponseSerializer,
+            201: LikeToggleResponseSerializer,
+            404: DetailResponseSerializer,
+        },
+        tags=["Comments"],
+        summary="Like comment",
+        description="Add a like to a visible comment.",
+    )
     def post(self, request, comment_id):
         return create_like_for_content(
             request,
@@ -46,6 +74,16 @@ class CommentLikeView(APIView):
             queryset=get_visible_comments_queryset(request.user),
         )
 
+    @extend_schema(
+        request=None,
+        responses={
+            200: LikeToggleResponseSerializer,
+            404: DetailResponseSerializer,
+        },
+        tags=["Comments"],
+        summary="Unlike comment",
+        description="Remove a like from a visible comment.",
+    )
     def delete(self, request, comment_id):
         return remove_like_from_content(
             request,

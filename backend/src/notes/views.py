@@ -2,9 +2,11 @@ from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveDestroyAPIView
 )
+from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from common.serializers import DetailResponseSerializer, LikeToggleResponseSerializer
 from .serializers import NoteSerializer
 from .models import Note
 from django.utils import timezone
@@ -16,9 +18,21 @@ from content.utils import (
     remove_like_from_content,
 )
 
+@extend_schema(tags=["Notes"])
+@extend_schema_view(
+    get=extend_schema(
+        summary="List notes",
+        description="List the notes from the last 24 hours that are visible to the authenticated user.",
+    ),
+    post=extend_schema(
+        summary="Create or update note",
+        description="Create a new note for the authenticated user or update the most recent note from the last 24 hours.",
+    ),
+)
 class NoteCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = NoteSerializer
+    queryset = Note.objects.none()
 
     def create(self, request, *args, **kwargs):
         existing_note = self.get_recent_user_note()
@@ -55,6 +69,18 @@ class NoteCreateListView(ListCreateAPIView):
             .filter(created_at__gte=last_24h)
             .order_by("-created_at"))
 
+@extend_schema(tags=["Notes"])
+@extend_schema_view(
+    get=extend_schema(
+        summary="Get note",
+        description="Retrieve a visible note from the last 24 hours by id.",
+    ),
+    delete=extend_schema(
+        summary="Delete note",
+        description="Delete a note owned by the authenticated user.",
+        responses={204: OpenApiResponse(description="Note deleted.")},
+    ),
+)
 class NoteRetrieveDestroyView(RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = NoteSerializer
@@ -74,6 +100,17 @@ class NoteRetrieveDestroyView(RetrieveDestroyAPIView):
 class NoteLikeView(APIView):
     permission_classes = [IsAuthenticated]
     
+    @extend_schema(
+        request=None,
+        responses={
+            200: LikeToggleResponseSerializer,
+            201: LikeToggleResponseSerializer,
+            404: DetailResponseSerializer,
+        },
+        tags=["Notes"],
+        summary="Like note",
+        description="Add a like to a visible note.",
+    )
     def post(self, request, note_id):
         return create_like_for_content(
             request,
@@ -81,6 +118,16 @@ class NoteLikeView(APIView):
             queryset=Note.objects.visible_to_friends(request.user),
         )
 
+    @extend_schema(
+        request=None,
+        responses={
+            200: LikeToggleResponseSerializer,
+            404: DetailResponseSerializer,
+        },
+        tags=["Notes"],
+        summary="Unlike note",
+        description="Remove a like from a visible note.",
+    )
     def delete(self, request, note_id):
         return remove_like_from_content(
             request,

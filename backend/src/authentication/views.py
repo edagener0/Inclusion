@@ -9,20 +9,29 @@ from django.conf import settings
 from django.middleware import csrf
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
-from drf_spectacular.utils import extend_schema, OpenApiResponse
+from drf_spectacular.utils import extend_schema
 
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserMeSerializer
 from .utils import get_tokens_for_user, set_cookies_for_response
+from common.serializers import MessageResponseSerializer
 
 User = get_user_model()
 
 
-@extend_schema(tags=["Auth"], description="Register a user")
+@extend_schema(
+    tags=["Auth"],
+    summary="Register user",
+    description="Create a new user account.",
+)
 class UserRegisterView(CreateAPIView):
     serializer_class = UserRegisterSerializer
 
 
-@extend_schema(tags=["Auth"], description="Login a user.")
+@extend_schema(
+    tags=["Auth"],
+    summary="Log in",
+    description="Authenticate a user and issue access and refresh cookies.",
+)
 class UserLoginView(APIView):
     authentication_classes = []
     permission_classes = []
@@ -30,9 +39,9 @@ class UserLoginView(APIView):
     @extend_schema(
         request=UserLoginSerializer,
         responses={
-            200: OpenApiResponse(description="Login Successful"),
-            401: OpenApiResponse(description="Invalid credentials"),
-            403: OpenApiResponse(description="Account inactive"),
+            200: MessageResponseSerializer,
+            401: MessageResponseSerializer,
+            403: MessageResponseSerializer,
         },
     )
     def post(self, request):
@@ -63,12 +72,17 @@ class UserLoginView(APIView):
         return response
 
 
-@extend_schema(tags=["Auth"], description="Logout a user.")
+@extend_schema(
+    tags=["Auth"],
+    summary="Log out",
+    description="Invalidate the refresh token cookie and clear authentication cookies.",
+)
 class UserLogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     @extend_schema(
-        request=None, responses={200: OpenApiResponse(description="Logout successful")}
+        request=None,
+        responses={200: MessageResponseSerializer},
     )
     def post(self, request):
         refresh_token = request.COOKIES.get(settings.SIMPLE_JWT["REFRESH_COOKIE"])
@@ -86,15 +100,19 @@ class UserLogoutView(APIView):
         return response
 
 
-@extend_schema(tags=["Auth"], description="Refreshes a user's authentication token.")
+@extend_schema(
+    tags=["Auth"],
+    summary="Refresh token",
+    description="Rotate the refresh token and issue a new access token through cookies.",
+)
 class UserTokenRefreshView(APIView):
     authentication_classes = []
 
     @extend_schema(
         request=None,
         responses={
-            200: OpenApiResponse(description="Token refreshed"),
-            401: OpenApiResponse(description="Refresh token required/invalid"),
+            200: MessageResponseSerializer,
+            401: MessageResponseSerializer,
         },
     )
     def post(self, request):
@@ -128,7 +146,11 @@ class UserTokenRefreshView(APIView):
         return response
 
 
-@extend_schema(tags=["Auth"], description="Get current user info.")
+@extend_schema(
+    tags=["Auth"],
+    summary="Get current user",
+    description="Return the authenticated user's basic profile information.",
+)
 class UserMeView(APIView):
     permission_classes = [IsAuthenticated]
 

@@ -2,6 +2,7 @@ from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveDestroyAPIView
 )
+from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view
 from rest_framework.permissions import IsAuthenticated
 from common.permissions import IsOwnerOrReadOnly
 from .serializers import StoryFeedSerializer, StorySerializer
@@ -9,6 +10,7 @@ from .models import Story
 from django.utils import timezone
 from datetime import timedelta
 from rest_framework.views import APIView
+from common.serializers import DetailResponseSerializer, LikeToggleResponseSerializer
 from content.utils import (
     create_like_for_content,
     remove_like_from_content,
@@ -16,9 +18,22 @@ from content.utils import (
 from collections import OrderedDict
 from rest_framework.response import Response
 
+@extend_schema(tags=["Stories"])
+@extend_schema_view(
+    get=extend_schema(
+        summary="List stories",
+        description="List the last 24 hours of visible stories grouped by user.",
+        responses=StoryFeedSerializer(many=True),
+    ),
+    post=extend_schema(
+        summary="Create story",
+        description="Create a new story for the authenticated user.",
+    ),
+)
 class StoryCreateListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = StorySerializer
+    queryset = Story.objects.none()
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
@@ -67,6 +82,18 @@ class StoryCreateListView(ListCreateAPIView):
         )
         return Response(serializer.data)
     
+@extend_schema(tags=["Stories"])
+@extend_schema_view(
+    get=extend_schema(
+        summary="Get story",
+        description="Retrieve a visible story from the last 24 hours by id.",
+    ),
+    delete=extend_schema(
+        summary="Delete story",
+        description="Delete a story owned by the authenticated user.",
+        responses={204: OpenApiResponse(description="Story deleted.")},
+    ),
+)
 class StoryRetrieveDestroyView(RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = StorySerializer
@@ -90,8 +117,37 @@ class StoryRetrieveDestroyView(RetrieveDestroyAPIView):
 class StoryLikeView(APIView):
     permission_classes = [IsAuthenticated]
     
+    @extend_schema(
+        request=None,
+        responses={
+            200: LikeToggleResponseSerializer,
+            201: LikeToggleResponseSerializer,
+            404: DetailResponseSerializer,
+        },
+        tags=["Stories"],
+        summary="Like story",
+        description="Add a like to a visible story.",
+    )
     def post(self, request, story_id):
-        return create_like_for_content(request, story_id)
+        return create_like_for_content(
+            request,
+            story_id,
+            queryset=Story.objects.visible_to(request.user),
+        )
 
+    @extend_schema(
+        request=None,
+        responses={
+            200: LikeToggleResponseSerializer,
+            404: DetailResponseSerializer,
+        },
+        tags=["Stories"],
+        summary="Unlike story",
+        description="Remove a like from a visible story.",
+    )
     def delete(self, request, story_id):
-        return remove_like_from_content(request, story_id)
+        return remove_like_from_content(
+            request,
+            story_id,
+            queryset=Story.objects.visible_to(request.user),
+        )
