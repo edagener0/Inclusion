@@ -22,3 +22,5 @@ run: migrate gen_wordle_4_today
 
 test: migrate gen_wordle_4_today
 	cd src && python3 manage.py test
+
+init: migrate scrape
