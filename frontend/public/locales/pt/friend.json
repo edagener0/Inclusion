@@ -1,29 +1,29 @@
 {
   "request": {
     "accept": {
-      "button": "",
-      "error": "",
-      "success": ""
+      "button": "Aceitar pedido de amizade",
+      "error": "Erro ao aceitar o pedido de amizade.",
+      "success": "Pedido de amizade aceite com sucesso."
     },
     "cancel": {
-      "button": "",
-      "error": "",
-      "success": ""
+      "button": "Cancelar pedido de amizade",
+      "error": "Erro ao cancelar o pedido de amizade.",
+      "success": "Pedido de amizade cancelado com sucesso."
     },
     "decline": {
-      "button": "",
-      "error": "",
-      "success": ""
+      "button": "Recusar pedido de amizade",
+      "error": "Erro ao recusar o pedido de amizade.",
+      "success": "Pedido de amizade recusado com sucesso."
     },
     "remove": {
-      "button": "",
-      "error": "",
-      "success": ""
+      "button": "Remover amigo",
+      "error": "Erro ao remover o amigo.",
+      "success": "Amigo removido com sucesso."
     },
     "send": {
-      "button": "",
-      "error": "",
-      "success": ""
+      "button": "Enviar pedido de amizade",
+      "error": "Erro ao enviar o pedido de amizade.",
+      "success": "Pedido de amizade enviado com sucesso."
     }
   }
 }

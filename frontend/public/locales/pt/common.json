@@ -3,15 +3,15 @@
     "cancel": "Cancelar",
     "close": "Fechar",
     "delete": "Eliminar",
-    "deleting": "A eliminar...",
-    "loading": "",
+    "deleting": "A eliminar",
+    "loading": "A carregar...",
     "publish": "Publicar",
     "publishing": "A publicar...",
     "remove": "Remover",
     "save": "Guardar",
     "saving": "A guardar...",
-    "submit": "Submeter",
-    "submitting": "A submeter...",
+    "submit": "Enviar",
+    "submitting": "A enviar",
     "update": "Atualizar"
   },
   "confirm-dialog": {
@@ -21,13 +21,13 @@
     "title": "Tem a certeza?"
   },
   "createContent": {
-    "description": "Selecione abaixo um tipo de conteúdo para continuar.",
+    "description": "Selecione um tipo de conteúdo abaixo para continuar.",
     "inc": {
-      "description": "Partilhe um pensamento rápido ou uma atualização breve com os seus amigos.",
+      "description": "Partilhe um pensamento rápido ou uma breve atualização com os seus amigos.",
       "label": "Criar um inc"
     },
     "post": {
-      "description": "Redija uma nova publicação, carregue imagens e partilhe atualizações com os seus amigos.",
+      "description": "Escreva uma nova publicação, carregue imagens e partilhe atualizações com os seus amigos.",
       "label": "Criar uma publicação"
     },
     "story": {
@@ -44,7 +44,7 @@
       "tooLarge": "Tamanho máximo do ficheiro - {{max}}."
     }
   },
-  "friends": "",
+  "friends": "Amigos",
   "language": "Idioma",
   "mediaUploader": {
     "changeFile": "Alterar ficheiro",
@@ -53,23 +53,23 @@
     "select": "Clique ou arraste e solte"
   },
   "notFound": {
-    "button": "",
-    "description": "",
-    "title": ""
+    "button": "Voltar à página inicial",
+    "description": "A página que procura não existe ou foi movida.",
+    "title": "404 Não encontrado"
   },
   "notification": {
     "requests": {
-      "empty": "",
-      "title": ""
+      "empty": "Não há pedidos de amizade.",
+      "title": "Pedidos"
     },
-    "title": ""
+    "title": "Notificações"
   },
   "sideBar": {
-    "chat-bot": "",
-    "games": "",
+    "chat-bot": "Chat Bot",
+    "games": "Jogos",
     "incs": "Incs",
     "messages": "Mensagens",
-    "newContent": "Novo Conteúdo",
+    "newContent": "Novo conteúdo",
     "posts": "Publicações",
     "profile": "Perfil",
     "settings": "Definições"

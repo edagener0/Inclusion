@@ -1,7 +1,7 @@
 {
   "ask": {
-    "error": "",
-    "loading": "",
-    "success": ""
+    "error": "Ocorreu um erro ao enviar o seu pedido.",
+    "loading": "O bot está a pensar...",
+    "success": "Resposta recebida com sucesso."
   }
 }
