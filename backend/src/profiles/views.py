@@ -17,7 +17,8 @@ User = get_user_model()
 
 @extend_schema(
     tags=["Profiles"],
-    description="Get a user's profile."
+    summary="Get profile",
+    description="Retrieve a public or permitted profile by username."
 )
 class ProfileRetrieveView(FriendAnnotationMixin, RetrieveAPIView):
     queryset = User.objects.all()
@@ -29,7 +30,8 @@ class ProfileRetrieveView(FriendAnnotationMixin, RetrieveAPIView):
 
 @extend_schema(
     tags=["Profiles"],
-    description="Returns a list of paginated users' profiles."
+    summary="List profiles",
+    description="Return a paginated list of user profiles filtered by the configured profile filters."
 )
 class ProfileListView(FriendAnnotationMixin, ListAPIView):
     queryset = User.objects.all().order_by("first_name")
@@ -39,14 +41,21 @@ class ProfileListView(FriendAnnotationMixin, ListAPIView):
 
 @extend_schema(
     tags=["Profiles"],
-    description="Returns a list of paginated user posts."
+    summary="List user posts",
+    description="Return the posts that the authenticated user is allowed to see for the selected profile."
 )
 class ProfilePostListView(ListAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
+    queryset = Post.objects.none()
 
     def get_queryset(self):
-        username = self.kwargs["username"]
+        if getattr(self, "swagger_fake_view", False):
+            return Post.objects.none()
+
+        username = self.kwargs.get("username")
+        if username is None:
+            return Post.objects.none()
         
         try:
             target_user = User.objects.get(username=username)
@@ -62,14 +71,21 @@ class ProfilePostListView(ListAPIView):
     
 @extend_schema(
     tags=["Profiles"],
-    description="Returns a list of paginated user incs."
+    summary="List user incs",
+    description="Return the incs that the authenticated user is allowed to see for the selected profile."
 )
 class ProfileIncListVIew(ListAPIView):
     serializer_class = IncSerializer
     permission_classes = [IsAuthenticated]
+    queryset = Inc.objects.none()
 
     def get_queryset(self):
-        username = self.kwargs["username"]
+        if getattr(self, "swagger_fake_view", False):
+            return Inc.objects.none()
+
+        username = self.kwargs.get("username")
+        if username is None:
+            return Inc.objects.none()
 
         try:
             target_user = User.objects.get(username=username)

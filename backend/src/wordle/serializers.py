@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from .models import Word
 from django.contrib.auth import get_user_model
@@ -13,9 +14,11 @@ class WordSerializer(serializers.ModelSerializer):
         model = Word
         fields = ["length", "difficulty", "has_won", "game_id"]
 
+    @extend_schema_field(serializers.BooleanField())
     def get_has_won(self, obj):
         return bool(self.context.get("has_won", False))
 
+    @extend_schema_field(serializers.IntegerField(allow_null=True))
     def get_game_id(self, obj):
         return self.context.get("game_id")
 
@@ -52,4 +55,3 @@ class WordleLeaderboardUserSerializer(serializers.ModelSerializer):
             "current_wordle_streak",
             "max_wordle_streak",
         ]
-

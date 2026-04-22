@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -55,7 +55,11 @@ class DMUpdateResponseMixin:
         return Response(response_serializer.data)
 
 
-@extend_schema(tags=["DMs"])
+@extend_schema(
+    tags=["DMs"],
+    summary="List DM inbox",
+    description="Return the authenticated user's DM inbox with the latest message for each conversation.",
+)
 class DMListView(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = DMInboxSerializer
@@ -99,13 +103,24 @@ class DMListView(ListAPIView):
 
 
 @extend_schema(tags=["DMs"])
+@extend_schema_view(
+    get=extend_schema(
+        summary="List conversation messages",
+        description="Return the direct messages exchanged with the selected user, ordered from newest to oldest.",
+    ),
+    post=extend_schema(
+        summary="Send direct message",
+        description="Create a new direct message addressed to the selected user.",
+    ),
+)
 class DMConversationMessagesView(DMBroadcastCreateMixin, ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     @extend_schema(
         request=DMConversationCreateSerializer,
         responses={201: DMConversationMessageSerializer},
-    )
+        tags=["DMs"],
+        )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
@@ -154,6 +169,21 @@ class DMConversationMessagesView(DMBroadcastCreateMixin, ListCreateAPIView):
 
 
 @extend_schema(tags=["DMs"])
+@extend_schema_view(
+    get=extend_schema(
+        summary="Get DM message",
+        description="Retrieve a single DM message visible to the authenticated user.",
+    ),
+    patch=extend_schema(
+        summary="Update DM message",
+        description="Update the content of a DM message sent by the authenticated user.",
+    ),
+    delete=extend_schema(
+        summary="Delete DM message",
+        description="Delete a DM message sent by the authenticated user.",
+        responses={204: OpenApiResponse(description="DM message deleted.")},
+    ),
+)
 class DMRetrieveUpdateDestroyView(DMUpdateResponseMixin, RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     response_serializer_class = DMConversationMessageSerializer

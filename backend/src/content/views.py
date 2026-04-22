@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from .utils import (
@@ -9,9 +10,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import OuterRef, Subquery
 from .models import Favorite
+from common.serializers import (
+    DetailResponseSerializer,
+    FavoriteToggleResponseSerializer,
+)
 
 class BaseFavoriteListView(ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -20,6 +24,9 @@ class BaseFavoriteListView(ListAPIView):
     serializer_class = None
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False) or self.model is None:
+            return Favorite.objects.none()
+
         content_type = ContentType.objects.get_for_model(self.model)
 
         favorite_subquery = Favorite.objects.filter(
@@ -46,6 +53,16 @@ class FavoriteToggleView(APIView):
     permission_classes = [IsAuthenticated]
     model = None
 
+    @extend_schema(
+        request=None,
+        responses={
+            200: FavoriteToggleResponseSerializer,
+            201: FavoriteToggleResponseSerializer,
+            404: DetailResponseSerializer,
+        },
+        summary="Add favorite",
+        description="Add the selected item to the authenticated user's favorites.",
+    )
     def post(self, request, **kwargs):
         obj = self._get_object(request, **kwargs)
         _, created = toggle_favorite(request.user, obj)
@@ -58,6 +75,15 @@ class FavoriteToggleView(APIView):
             status=status.HTTP_201_CREATED if created else status.HTTP_200_OK
         )
 
+    @extend_schema(
+        request=None,
+        responses={
+            200: FavoriteToggleResponseSerializer,
+            404: DetailResponseSerializer,
+        },
+        summary="Remove favorite",
+        description="Remove the selected item from the authenticated user's favorites.",
+    )
     def delete(self, request, **kwargs):
         obj = self._get_object(request, **kwargs)
         remove_favorite(request.user, obj)

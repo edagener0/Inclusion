@@ -6,6 +6,11 @@ from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 from .serializers import ChatBotSerializer, ChatBotResponseSerializer
 
+@extend_schema(
+    tags=["Chatbot"],
+    summary="Send chatbot message",
+    description="Send a text prompt to the chatbot service and receive a text-only reply.",
+)
 class ChatBotView(APIView):
     permission_classes = [IsAuthenticated]
     
