@@ -3,15 +3,15 @@
     "cancel": "Cancelar",
     "close": "Cerrar",
     "delete": "Eliminar",
-    "deleting": "Eliminando...",
-    "loading": "",
+    "deleting": "Eliminando",
+    "loading": "Cargando...",
     "publish": "Publicar",
     "publishing": "Publicando...",
     "remove": "Quitar",
     "save": "Guardar",
     "saving": "Guardando...",
     "submit": "Enviar",
-    "submitting": "Enviando...",
+    "submitting": "Enviando",
     "update": "Actualizar"
   },
   "confirm-dialog": {
@@ -23,7 +23,7 @@
   "createContent": {
     "description": "Selecciona un tipo de contenido a continuación para continuar.",
     "inc": {
-      "description": "Comparte un pensamiento rápido o una actualización corta con tus amigos.",
+      "description": "Comparte un pensamiento rápido o una breve actualización con tus amigos.",
       "label": "Crear un inc"
     },
     "post": {
@@ -39,12 +39,12 @@
   "errors": {
     "file": {
       "empty": "El archivo no puede estar vacío.",
-      "invalidFormat": "Formatos admitidos: {{formats}}.",
+      "invalidFormat": "Formatos compatibles: {{formats}}.",
       "required": "Por favor, selecciona un archivo.",
       "tooLarge": "Tamaño máximo de archivo - {{max}}."
     }
   },
-  "friends": "",
+  "friends": "Amigos",
   "language": "Idioma",
   "mediaUploader": {
     "changeFile": "Cambiar archivo",
@@ -53,20 +53,20 @@
     "select": "Haz clic o arrastra y suelta"
   },
   "notFound": {
-    "button": "",
-    "description": "",
-    "title": ""
+    "button": "Volver al inicio",
+    "description": "La página que buscas no existe o ha sido movida.",
+    "title": "404 No encontrado"
   },
   "notification": {
     "requests": {
-      "empty": "",
-      "title": ""
+      "empty": "No hay solicitudes de amistad.",
+      "title": "Solicitudes"
     },
-    "title": ""
+    "title": "Notificaciones"
   },
   "sideBar": {
-    "chat-bot": "",
-    "games": "",
+    "chat-bot": "Chat Bot",
+    "games": "Juegos",
     "incs": "Incs",
     "messages": "Mensajes",
     "newContent": "Nuevo contenido",

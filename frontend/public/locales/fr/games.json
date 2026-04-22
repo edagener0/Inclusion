@@ -1,20 +1,20 @@
 {
-  "best": "",
-  "current": "",
+  "best": "meilleur",
+  "current": "actuel",
   "hook": {
-    "notEnoughLetters": ""
+    "notEnoughLetters": "Vous n'avez pas entré assez de lettres."
   },
-  "title": "",
+  "title": "Jeux",
   "wordle": {
-    "comeBackTomorrow": "",
-    "description": "",
-    "error": "",
+    "comeBackTomorrow": "Revenez demain pour un nouveau mot.",
+    "description": "Devinez le mot en 6 essais. Après chaque essai, la couleur des cases changera pour montrer à quel point votre supposition était proche du mot.",
+    "error": "Une erreur s'est produite lors de l'envoi de votre proposition. Veuillez réessayer.",
     "leaderboard": {
-      "bestPlayers": "",
-      "title": ""
+      "bestPlayers": "Les meilleurs joueurs selon leur série de victoires !",
+      "title": "Classement Wordle"
     },
-    "title": "",
-    "viewLeaderboard": "",
-    "winMessage": ""
+    "title": "Wordle",
+    "viewLeaderboard": "Voir le classement",
+    "winMessage": "Félicitations ! Vous avez deviné le mot !"
   }
 }

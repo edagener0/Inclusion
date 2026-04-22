@@ -4,20 +4,20 @@
     "close": "Fermer",
     "delete": "Supprimer",
     "deleting": "Suppression...",
-    "loading": "",
+    "loading": "Chargement...",
     "publish": "Publier",
     "publishing": "Publication...",
     "remove": "Retirer",
     "save": "Enregistrer",
     "saving": "Enregistrement...",
-    "submit": "Envoyer",
-    "submitting": "Envoi...",
+    "submit": "Soumettre",
+    "submitting": "Envoi en cours",
     "update": "Mettre à jour"
   },
   "confirm-dialog": {
     "cancel": "Annuler",
     "confirm": "Confirmer",
-    "description": "Cette action ne peut pas être annulée.",
+    "description": "Cette action est irréversible.",
     "title": "Êtes-vous sûr ?"
   },
   "createContent": {
@@ -41,10 +41,10 @@
       "empty": "Le fichier ne peut pas être vide.",
       "invalidFormat": "Formats pris en charge : {{formats}}.",
       "required": "Veuillez sélectionner un fichier.",
-      "tooLarge": "Taille maximale du fichier - {{max}}."
+      "tooLarge": "Taille de fichier maximale - {{max}}."
     }
   },
-  "friends": "",
+  "friends": "Amis",
   "language": "Langue",
   "mediaUploader": {
     "changeFile": "Changer de fichier",
@@ -53,20 +53,20 @@
     "select": "Cliquez ou glissez-déposez"
   },
   "notFound": {
-    "button": "",
-    "description": "",
-    "title": ""
+    "button": "Retour à l'accueil",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "title": "404 Introuvable"
   },
   "notification": {
     "requests": {
-      "empty": "",
-      "title": ""
+      "empty": "Il n'y a aucune demande d'ami.",
+      "title": "Demandes"
     },
-    "title": ""
+    "title": "Notifications"
   },
   "sideBar": {
-    "chat-bot": "",
-    "games": "",
+    "chat-bot": "Chat Bot",
+    "games": "Jeux",
     "incs": "Incs",
     "messages": "Messages",
     "newContent": "Nouveau contenu",
