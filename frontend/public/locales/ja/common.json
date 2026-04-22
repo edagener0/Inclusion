@@ -3,73 +3,73 @@
     "cancel": "キャンセル",
     "close": "閉じる",
     "delete": "削除",
-    "deleting": "削除中...",
-    "loading": "",
+    "deleting": "削除中",
+    "loading": "読み込み中...",
     "publish": "公開",
     "publishing": "公開中...",
-    "remove": "削除",
+    "remove": "取り除く",
     "save": "保存",
     "saving": "保存中...",
     "submit": "送信",
-    "submitting": "送信中...",
+    "submitting": "送信中",
     "update": "更新"
   },
   "confirm-dialog": {
     "cancel": "キャンセル",
     "confirm": "確認",
-    "description": "この操作は元に戻せません。",
+    "description": "この操作は取り消すことができません。",
     "title": "よろしいですか？"
   },
   "createContent": {
     "description": "続行するには、以下のコンテンツタイプを選択してください。",
     "inc": {
-      "description": "簡単な思いつきや短い近況を友達とシェアしましょう。",
-      "label": "Incを作成"
+      "description": "友達とちょっとした考えや短い近況をシェアしましょう。",
+      "label": "incを作成"
     },
     "post": {
       "description": "新しい投稿を作成し、画像をアップロードして、友達と近況をシェアしましょう。",
       "label": "投稿を作成"
     },
     "story": {
-      "description": "24時間で消える日常の瞬間をシェアしましょう。",
+      "description": "24時間で消える瞬間をシェアしましょう。",
       "label": "ストーリーを作成"
     },
     "title": "新しいコンテンツを作成"
   },
   "errors": {
     "file": {
-      "empty": "ファイルが空です。",
-      "invalidFormat": "サポートされている形式: {{formats}}。",
+      "empty": "ファイルを空にすることはできません。",
+      "invalidFormat": "サポートされているフォーマット: {{formats}}。",
       "required": "ファイルを選択してください。",
       "tooLarge": "最大ファイルサイズ - {{max}}。"
     }
   },
-  "friends": "",
+  "friends": "友達",
   "language": "言語",
   "mediaUploader": {
     "changeFile": "ファイルを変更",
-    "fullscreen": "フルスクリーン",
+    "fullscreen": "全画面表示",
     "preview": "プレビュー",
     "select": "クリックまたはドラッグ＆ドロップ"
   },
   "notFound": {
-    "button": "",
-    "description": "",
-    "title": ""
+    "button": "ホームに戻る",
+    "description": "お探しのページは存在しないか、移動した可能性があります。",
+    "title": "404 見つかりません"
   },
   "notification": {
     "requests": {
-      "empty": "",
-      "title": ""
+      "empty": "友達リクエストはありません。",
+      "title": "リクエスト"
     },
-    "title": ""
+    "title": "通知"
   },
   "sideBar": {
-    "chat-bot": "",
-    "games": "",
+    "chat-bot": "チャットボット",
+    "games": "ゲーム",
     "incs": "Incs",
     "messages": "メッセージ",
-    "newContent": "新規作成",
+    "newContent": "新規コンテンツ",
     "posts": "投稿",
     "profile": "プロフィール",
     "settings": "設定"

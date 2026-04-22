@@ -1,30 +1,30 @@
 {
   "delete": {
     "dialog": {
-      "confirm": "",
-      "description": "",
-      "title": "",
-      "trigger": ""
+      "confirm": "Удалить",
+      "description": "Это действие нельзя отменить.",
+      "title": "Удалить сообщение",
+      "trigger": "Удалить"
     },
-    "error": "",
-    "success": ""
+    "error": "Не удалось удалить сообщение.",
+    "success": "Сообщение успешно удалено."
   },
   "send": {
-    "error": "",
-    "placeholder": "",
-    "success": "",
-    "title": ""
+    "error": "Не удалось отправить сообщение.",
+    "placeholder": "Введите ваше сообщение...",
+    "success": "Сообщение успешно отправлено.",
+    "title": "Новое сообщение"
   },
   "title": "Сообщения",
   "update": {
-    "error": "",
+    "error": "Ошибка при обновлении сообщения.",
     "fields": {
       "content": {
-        "placeholder": ""
+        "placeholder": "Введите ваше сообщение..."
       }
     },
-    "success": "",
-    "title": "",
-    "trigger": ""
+    "success": "Сообщение успешно обновлено.",
+    "title": "Обновить сообщение",
+    "trigger": "Редактировать"
   }
 }
