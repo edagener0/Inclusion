@@ -20,7 +20,7 @@ remove_all_cron:
 run: migrate gen_wordle_4_today 
 	python3 src/manage.py runserver
 
-test: migrate gen_wordle_4_today
+test: 
 	cd src && python3 manage.py test
 
 deploy: migrate scrape gen_wordle_4_today
