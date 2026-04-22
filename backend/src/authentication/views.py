@@ -135,7 +135,7 @@ class UserTokenRefreshView(APIView):
                 "refresh": str(new_refresh),
                 "access": str(new_refresh.access_token),
             }
-        except TokenError:
+        except Exception:
             return Response(
                 {"message": "Invalid or expired refresh token"},
                 status=status.HTTP_401_UNAUTHORIZED,
