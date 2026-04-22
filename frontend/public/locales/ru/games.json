@@ -1,20 +1,20 @@
 {
-  "best": "",
-  "current": "",
+  "best": "лучший",
+  "current": "текущий",
   "hook": {
-    "notEnoughLetters": ""
+    "notEnoughLetters": "Вы ввели недостаточно букв."
   },
-  "title": "",
+  "title": "Игры",
   "wordle": {
-    "comeBackTomorrow": "",
-    "description": "",
-    "error": "",
+    "comeBackTomorrow": "Возвращайтесь завтра за новым словом.",
+    "description": "Отгадайте слово за 6 попыток. После каждой попытки цвет плиток будет меняться, чтобы показать, насколько вы близки к разгадке.",
+    "error": "Произошла ошибка при отправке вашего варианта. Пожалуйста, попробуйте еще раз.",
     "leaderboard": {
-      "bestPlayers": "",
-      "title": ""
+      "bestPlayers": "Лучшие игроки по количеству побед подряд!",
+      "title": "Таблица лидеров Wordle"
     },
-    "title": "",
-    "viewLeaderboard": "",
-    "winMessage": ""
+    "title": "Wordle",
+    "viewLeaderboard": "Посмотреть таблицу лидеров",
+    "winMessage": "Поздравляем! Вы отгадали слово!"
   }
 }

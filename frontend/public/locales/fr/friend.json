@@ -1,29 +1,29 @@
 {
   "request": {
     "accept": {
-      "button": "",
-      "error": "",
-      "success": ""
+      "button": "Accepter la demande d'ami",
+      "error": "Erreur lors de l'acceptation de la demande d'ami.",
+      "success": "Demande d'ami acceptée avec succès."
     },
     "cancel": {
-      "button": "",
-      "error": "",
-      "success": ""
+      "button": "Annuler la demande d'ami",
+      "error": "Erreur lors de l'annulation de la demande d'ami.",
+      "success": "Demande d'ami annulée avec succès."
     },
     "decline": {
-      "button": "",
-      "error": "",
-      "success": ""
+      "button": "Refuser la demande d'ami",
+      "error": "Erreur lors du refus de la demande d'ami.",
+      "success": "Demande d'ami refusée avec succès."
     },
     "remove": {
-      "button": "",
-      "error": "",
-      "success": ""
+      "button": "Retirer l'ami",
+      "error": "Erreur lors de la suppression de l'ami.",
+      "success": "Ami retiré avec succès."
     },
     "send": {
-      "button": "",
-      "error": "",
-      "success": ""
+      "button": "Envoyer une demande d'ami",
+      "error": "Erreur lors de l'envoi de la demande d'ami.",
+      "success": "Demande d'ami envoyée avec succès."
     }
   }
 }

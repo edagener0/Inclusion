@@ -1,20 +1,20 @@
 {
-  "best": "",
-  "current": "",
+  "best": "ベスト",
+  "current": "現在",
   "hook": {
-    "notEnoughLetters": ""
+    "notEnoughLetters": "入力された文字数が足りません。"
   },
-  "title": "",
+  "title": "ゲーム",
   "wordle": {
-    "comeBackTomorrow": "",
-    "description": "",
-    "error": "",
+    "comeBackTomorrow": "新しい単語に挑戦するには、明日また来てください。",
+    "description": "6回の試行で単語を当ててください。推測するごとにタイルの色が変わり、入力した単語が正解にどれだけ近いかを示します。",
+    "error": "回答の送信中にエラーが発生しました。もう一度お試しください。",
     "leaderboard": {
-      "bestPlayers": "",
-      "title": ""
+      "bestPlayers": "連勝記録に基づくトッププレイヤー！",
+      "title": "Wordle リーダーボード"
     },
-    "title": "",
-    "viewLeaderboard": "",
-    "winMessage": ""
+    "title": "Wordle",
+    "viewLeaderboard": "リーダーボードを表示",
+    "winMessage": "おめでとうございます！単語を当てました！"
   }
 }

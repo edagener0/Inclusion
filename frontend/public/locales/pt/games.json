@@ -1,20 +1,20 @@
 {
-  "best": "",
-  "current": "",
+  "best": "melhor",
+  "current": "atual",
   "hook": {
-    "notEnoughLetters": ""
+    "notEnoughLetters": "Não introduziu letras suficientes."
   },
-  "title": "",
+  "title": "Jogos",
   "wordle": {
-    "comeBackTomorrow": "",
-    "description": "",
-    "error": "",
+    "comeBackTomorrow": "Volte amanhã para uma nova palavra.",
+    "description": "Adivinhe a palavra em 6 tentativas. Após cada tentativa, a cor dos quadrados mudará para mostrar o quão perto a sua tentativa estava da palavra.",
+    "error": "Ocorreu um erro ao submeter a sua tentativa. Por favor, tente novamente.",
     "leaderboard": {
-      "bestPlayers": "",
-      "title": ""
+      "bestPlayers": "Os melhores jogadores com base nas suas sequências de vitórias!",
+      "title": "Tabela de Classificação do Wordle"
     },
-    "title": "",
-    "viewLeaderboard": "",
-    "winMessage": ""
+    "title": "Wordle",
+    "viewLeaderboard": "Ver Tabela de Classificação",
+    "winMessage": "Parabéns! Adivinhou a palavra!"
   }
 }

@@ -1,30 +1,30 @@
 {
   "delete": {
     "dialog": {
-      "confirm": "",
-      "description": "",
-      "title": "",
-      "trigger": ""
+      "confirm": "削除",
+      "description": "この操作は取り消すことができません。",
+      "title": "メッセージを削除",
+      "trigger": "削除"
     },
-    "error": "",
-    "success": ""
+    "error": "メッセージの削除に失敗しました。",
+    "success": "メッセージが正常に削除されました。"
   },
   "send": {
-    "error": "",
-    "placeholder": "",
-    "success": "",
-    "title": ""
+    "error": "メッセージの送信に失敗しました。",
+    "placeholder": "メッセージを入力...",
+    "success": "メッセージが正常に送信されました。",
+    "title": "新規メッセージ"
   },
   "title": "メッセージ",
   "update": {
-    "error": "",
+    "error": "メッセージの更新中にエラーが発生しました。",
     "fields": {
       "content": {
-        "placeholder": ""
+        "placeholder": "メッセージを入力..."
       }
     },
-    "success": "",
-    "title": "",
-    "trigger": ""
+    "success": "メッセージが正常に更新されました。",
+    "title": "メッセージを更新",
+    "trigger": "編集"
   }
 }

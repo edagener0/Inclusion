@@ -1,30 +1,30 @@
 {
   "delete": {
     "dialog": {
-      "confirm": "",
-      "description": "",
-      "title": "",
-      "trigger": ""
+      "confirm": "Eliminar",
+      "description": "Esta acción no se puede deshacer.",
+      "title": "Eliminar mensaje",
+      "trigger": "Eliminar"
     },
-    "error": "",
-    "success": ""
+    "error": "Error al eliminar el mensaje.",
+    "success": "Mensaje eliminado con éxito."
   },
   "send": {
-    "error": "",
-    "placeholder": "",
-    "success": "",
-    "title": ""
+    "error": "Error al enviar el mensaje.",
+    "placeholder": "Escribe tu mensaje...",
+    "success": "Mensaje enviado con éxito.",
+    "title": "Nuevo mensaje"
   },
   "title": "Mensajes",
   "update": {
-    "error": "",
+    "error": "Error al actualizar el mensaje.",
     "fields": {
       "content": {
-        "placeholder": ""
+        "placeholder": "Escribe tu mensaje..."
       }
     },
-    "success": "",
-    "title": "",
-    "trigger": ""
+    "success": "Mensaje actualizado con éxito.",
+    "title": "Actualizar mensaje",
+    "trigger": "Editar"
   }
 }
