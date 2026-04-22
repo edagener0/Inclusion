@@ -7,14 +7,10 @@ services:
         required: false
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
 
   redis:
     image: redis:latest
     container_name: redis_db
-    ports:
-      - "6379:6379"
 
   backend:
     build: ./backend
@@ -27,8 +23,6 @@ services:
       - redis
     volumes:
       - media_data:/app/src/media
-    ports:
-      - "8000:8000"
 
   frontend:
     build:
@@ -39,8 +33,6 @@ services:
         required: false
     depends_on:
       - backend
-    ports:
-      - "80:80"
     restart: unless-stopped
 
 volumes:
