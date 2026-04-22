@@ -3,45 +3,56 @@ services:
     image: postgres:16
     container_name: postgres_db
     env_file:
-      - ./backend/.env
+      - path: ./backend/.env
+        required: false
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
 
   redis:
     image: redis:latest
     container_name: redis_db
-    ports:
-      - "6379:6379"
 
   backend:
     build: ./backend
     container_name: inclusion_backend
     env_file:
-      - ./backend/.env
+      - path: ./backend/.env
+        required: false
+    environment:
+      - DEBUG
+      - ALLOWED_HOSTS
+      - CORS_ALLOWED_ORIGINS
+      - SECRET_KEY
+      - GEMINI_API_KEY
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - REDIS_URL
     depends_on:
       - database
       - redis
     volumes:
       - media_data:/app/src/media
-    ports:
-      - "8000:8000"
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL}
     env_file:
-      - ./frontend/.env.production
+      - path: ./frontend/.env.production
+        required: false
+    environment:
+      - VITE_API_URL
     depends_on:
       - backend
-    ports:
-      - "80:80"
     restart: unless-stopped
 
 volumes:
