@@ -3,7 +3,8 @@ services:
     image: postgres:16
     container_name: postgres_db
     env_file:
-      - ./backend/.env
+      - path: ./backend/.env
+        required: false
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -19,7 +20,8 @@ services:
     build: ./backend
     container_name: inclusion_backend
     env_file:
-      - ./backend/.env
+      - path: ./backend/.env
+        required: false
     depends_on:
       - database
       - redis
@@ -33,7 +35,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     env_file:
-      - ./frontend/.env.production
+      - path: ./frontend/.env.production
+        required: false
     depends_on:
       - backend
     ports:
