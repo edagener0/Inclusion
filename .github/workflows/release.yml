@@ -47,6 +47,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
         with:
           projectPath: frontend
           tagName: ${{ github.ref_type == 'tag' && github.ref_name || 'v0.0.0-draft' }}
@@ -89,6 +90,8 @@ jobs:
 
       - name: Build Android APK
         working-directory: ./frontend
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
         run: npm run tauri android build
 
       - name: Sign and Rename APK manually
