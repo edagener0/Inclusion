@@ -1,9 +1,16 @@
-import { isTauri } from '@tauri-apps/api/core';
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
 import { API_URL, IS_AUTH_MARKER } from '@/shared/config';
 
 import { axiosTauriAdapter } from './axios-tauri-adapter';
+
+declare global {
+  interface Window {
+    __TAURI_INTERNALS__?: Record<string, unknown>;
+  }
+}
+
+const isTauri = typeof window !== 'undefined' && window.__TAURI_INTERNALS__ !== undefined;
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -11,7 +18,7 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  adapter: isTauri() ? axiosTauriAdapter : undefined,
+  adapter: isTauri ? axiosTauriAdapter : undefined,
 });
 
 let refreshPromise: Promise<void> | null = null;
