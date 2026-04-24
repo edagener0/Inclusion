@@ -2,12 +2,23 @@ import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
 import { API_URL, IS_AUTH_MARKER } from '@/shared/config';
 
+import { axiosTauriAdapter } from './axios-tauri-adapter';
+
+declare global {
+  interface Window {
+    __TAURI_INTERNALS__?: Record<string, unknown>;
+  }
+}
+
+const isTauri = typeof window !== 'undefined' && window.__TAURI_INTERNALS__ !== undefined;
+
 export const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
+  adapter: isTauri ? axiosTauriAdapter : undefined,
 });
 
 let refreshPromise: Promise<void> | null = null;
@@ -25,16 +36,23 @@ api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
-    const isAuthRequest = originalRequest.url?.includes('/auth/sign-in');
 
-    if (error.response?.status === 401 && !isAuthRequest && !originalRequest._retry) {
+    const isAuthRequest = originalRequest.url?.includes('/auth/sign-in');
+    const isRefreshRequest = originalRequest.url?.includes('/auth/refresh');
+
+    if (
+      error.response?.status === 401 &&
+      !isAuthRequest &&
+      !isRefreshRequest &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
       try {
         if (!refreshPromise) {
           refreshPromise = (async () => {
             try {
-              await axios.post(`${API_URL}/auth/refresh`, {}, { withCredentials: true });
+              await api.post('/auth/refresh');
             } catch (refreshError) {
               clearAuth();
               localStorage.removeItem(IS_AUTH_MARKER);
@@ -46,7 +64,6 @@ api.interceptors.response.use(
         }
 
         await refreshPromise;
-
         return api(originalRequest);
       } catch (refreshError) {
         return Promise.reject(refreshError);

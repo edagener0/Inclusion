@@ -16,10 +16,11 @@ export const Route = createFileRoute('/_main')({
     const isPublic = publicPaths.some((path) => location.pathname.startsWith(path));
 
     const hasAuthMarker = localStorage.getItem(IS_AUTH_MARKER) === 'true';
+
     if (isPublic && !hasAuthMarker) return;
 
     try {
-      await context.queryClient.fetchQuery(sessionQueries.me());
+      await context.queryClient.fetchQuery({ ...sessionQueries.me(), retry: false });
 
       if (isPublic) throw redirect({ to: '/' });
     } catch (err: unknown) {
