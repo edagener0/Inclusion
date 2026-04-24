@@ -1,22 +1,48 @@
+import { isTauri } from '@tauri-apps/api/core';
 import { fetch } from '@tauri-apps/plugin-http';
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
 import { API_URL, IS_AUTH_MARKER } from '@/shared/config';
 
+const isDesktop = isTauri();
+
 export const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
-  adapter: 'fetch',
-  fetchOptions: { fetch },
+  ...(isDesktop && {
+    adapter: 'fetch',
+    fetchOptions: { fetch },
+  }),
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
+let tauriCookies = '';
+
+if (isDesktop) {
+  api.interceptors.request.use((config) => {
+    if (tauriCookies) {
+      config.headers['Cookie'] = tauriCookies;
+    }
+    return config;
+  });
+
+  api.interceptors.response.use((response) => {
+    const setCookie = response.headers['set-cookie'];
+    if (setCookie) {
+      tauriCookies = Array.isArray(setCookie) ? setCookie.join('; ') : setCookie;
+    }
+    return response;
+  });
+}
+// =======================================================================
+
 let refreshPromise: Promise<void> | null = null;
 
 const clearAuth = () => {
   refreshPromise = null;
+  if (isDesktop) tauriCookies = ''; // Не забываем сбрасывать куки при логауте
 };
 
 // This interceptor implements a "Silent Refresh" strategy: when a request fails with a 401 Unauthorized error,
@@ -37,11 +63,7 @@ api.interceptors.response.use(
         if (!refreshPromise) {
           refreshPromise = (async () => {
             try {
-              await axios.post(
-                `${API_URL}/auth/refresh`,
-                {},
-                { withCredentials: true, adapter: 'fetch', fetchOptions: { fetch } },
-              );
+              await api.post('/auth/refresh');
             } catch (refreshError) {
               clearAuth();
               localStorage.removeItem(IS_AUTH_MARKER);
