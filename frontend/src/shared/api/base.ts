@@ -1,12 +1,13 @@
+import { fetch } from '@tauri-apps/plugin-http';
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
-import axiosTauriApiAdapter from 'axios-tauri-api-adapter';
 
 import { API_URL, IS_AUTH_MARKER } from '@/shared/config';
 
 export const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
-  adapter: axiosTauriApiAdapter,
+  adapter: 'fetch',
+  fetchOptions: { fetch },
   headers: {
     'Content-Type': 'application/json',
   },
