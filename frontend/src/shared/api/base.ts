@@ -37,7 +37,11 @@ api.interceptors.response.use(
         if (!refreshPromise) {
           refreshPromise = (async () => {
             try {
-              await axios.post(`${API_URL}/auth/refresh`, {}, { withCredentials: true });
+              await axios.post(
+                `${API_URL}/auth/refresh`,
+                {},
+                { withCredentials: true, adapter: 'fetch', fetchOptions: { fetch } },
+              );
             } catch (refreshError) {
               clearAuth();
               localStorage.removeItem(IS_AUTH_MARKER);
