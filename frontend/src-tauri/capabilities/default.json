@@ -6,6 +6,20 @@
     "main"
   ],
   "permissions": [
-    "core:default"
+    "core:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "https://api.вашего-сервера.com/*"
+        }
+      ],
+      "deny": [
+        {
+          "url": "https://private.вашего-сервера.com/*"
+        }
+      ]
+    },
+    "http:default"
   ]
 }
