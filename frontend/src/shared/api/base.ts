@@ -1,6 +1,9 @@
+import { isTauri } from '@tauri-apps/api/core';
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
 import { API_URL, IS_AUTH_MARKER } from '@/shared/config';
+
+import { axiosTauriAdapter } from './axios-tauri-adapter';
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -8,6 +11,7 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  adapter: isTauri() ? axiosTauriAdapter : undefined,
 });
 
 let refreshPromise: Promise<void> | null = null;
@@ -32,7 +36,7 @@ api.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !isAuthRequest &&
-      !isRefreshRequest && // Важно!
+      !isRefreshRequest &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
