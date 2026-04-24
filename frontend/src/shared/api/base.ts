@@ -25,9 +25,16 @@ api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
-    const isAuthRequest = originalRequest.url?.includes('/auth/sign-in');
 
-    if (error.response?.status === 401 && !isAuthRequest && !originalRequest._retry) {
+    const isAuthRequest = originalRequest.url?.includes('/auth/sign-in');
+    const isRefreshRequest = originalRequest.url?.includes('/auth/refresh');
+
+    if (
+      error.response?.status === 401 &&
+      !isAuthRequest &&
+      !isRefreshRequest && // Важно!
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
       try {
@@ -46,7 +53,6 @@ api.interceptors.response.use(
         }
 
         await refreshPromise;
-
         return api(originalRequest);
       } catch (refreshError) {
         return Promise.reject(refreshError);
