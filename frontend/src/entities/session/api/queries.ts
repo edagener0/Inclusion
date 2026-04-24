@@ -10,5 +10,6 @@ export const sessionQueries = {
       queryFn: fetchMe,
       retry: false,
       staleTime: 60 * 1000,
+      networkMode: 'always',
     }),
 };
