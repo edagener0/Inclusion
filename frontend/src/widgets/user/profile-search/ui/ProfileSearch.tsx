@@ -57,7 +57,7 @@ export function ProfileSearch() {
     <>
       <Button
         variant="outline"
-        className="text-muted-foreground relative h-9 w-full justify-start text-sm font-normal shadow-none sm:pr-12 md:w-64 lg:w-60"
+        className="text-muted-foreground relative h-9 w-full max-w-45 justify-start text-sm font-normal shadow-none sm:max-w-none sm:pr-12 md:w-64 lg:w-60"
         onClick={() => setOpen(true)}
       >
         <Search className="mr-2 h-4 w-4" />
@@ -68,8 +68,8 @@ export function ProfileSearch() {
         </kbd>
       </Button>
 
-      <Command shouldFilter={false}>
-        <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <Command shouldFilter={false}>
           <CommandInput
             placeholder={t('placeholder')}
             value={searchValue}
@@ -131,8 +131,8 @@ export function ProfileSearch() {
               </>
             )}
           </CommandList>
-        </CommandDialog>
-      </Command>
+        </Command>
+      </CommandDialog>
     </>
   );
 }
