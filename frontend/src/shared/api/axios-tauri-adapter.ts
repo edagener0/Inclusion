@@ -164,9 +164,30 @@ export const axiosTauriAdapter: AxiosAdapter = async (
 
   let body: BodyInit | null | undefined = config.data;
 
-  if (body instanceof FormData) {
+  const isFormData =
+    body instanceof FormData ||
+    (body && Object.prototype.toString.call(body) === '[object FormData]');
+
+  if (isFormData) {
     headers.delete('Content-Type');
     headers.delete('content-type');
+
+    const mobileSafeFormData = new FormData();
+    const originalFormData = body as FormData;
+
+    for (const [key, value] of originalFormData.entries()) {
+      if (typeof value !== 'string') {
+        const buffer = await value.arrayBuffer();
+        const cleanBlob = new Blob([buffer], { type: value.type });
+
+        const fileName = value instanceof File ? value.name : 'upload';
+        mobileSafeFormData.append(key, cleanBlob, fileName);
+      } else {
+        mobileSafeFormData.append(key, value);
+      }
+    }
+
+    body = mobileSafeFormData;
   } else if (body !== undefined && body !== null) {
     if (typeof body === 'object') {
       body = JSON.stringify(body);
