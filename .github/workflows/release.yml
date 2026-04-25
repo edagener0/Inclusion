@@ -50,6 +50,14 @@ jobs:
         working-directory: ./frontend
         run: npm ci
 
+      - name: Sync version from tag
+        if: github.ref_type == 'tag'
+        shell: bash
+        working-directory: ./frontend/src-tauri
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          jq ".version = \"$VERSION\"" tauri.conf.json > tmp.json && mv tmp.json tauri.conf.json
+
       - name: Build and Release Desktop
         uses: tauri-apps/tauri-action@v0
         env:
