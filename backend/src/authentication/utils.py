@@ -8,6 +8,14 @@ def get_tokens_for_user(user):
         "access": str(refresh.access_token),
     }
 
+def build_auth_response_payload(request, message, data):
+    payload = {"message": message}
+
+    if request.headers.get("X-Tauri-Client") == "1":
+        payload.update(data)
+
+    return payload
+
 def set_cookies_for_response(response, data):
     response.set_cookie(
         key = settings.SIMPLE_JWT["AUTH_COOKIE"],
