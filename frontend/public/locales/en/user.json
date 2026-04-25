@@ -42,6 +42,10 @@
     },
     "success": "Account privacy updated successfully"
   },
+  "query": {
+    "notFound": "Users not found.",
+    "placeholder": "Search users..."
+  },
   "settings": {
     "description": "Manage your account, security, and other information.",
     "general": "General",

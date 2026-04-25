@@ -374,6 +374,10 @@ export default interface Resources {
       },
       "success": "Account privacy updated successfully"
     },
+    "query": {
+      "notFound": ":",
+      "placeholder": "Search users..."
+    },
     "settings": {
       "description": "Manage your account, security, and other information.",
       "general": "General",

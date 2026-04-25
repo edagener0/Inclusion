@@ -42,6 +42,10 @@
     },
     "success": "Privacidade da conta atualizada com sucesso"
   },
+  "query": {
+    "notFound": "Utilizadores não encontrados.",
+    "placeholder": "Pesquisar utilizadores..."
+  },
   "settings": {
     "description": "Gerir a sua conta, segurança e outras informações.",
     "general": "Geral",
