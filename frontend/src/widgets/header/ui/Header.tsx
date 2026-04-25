@@ -12,9 +12,10 @@ type Props = {
   sideBarSlot: ReactNode;
   userMenuSlot: ReactNode;
   notificationSlot: ReactNode;
+  searchSlot: ReactNode;
 };
 
-export function Header({ sideBarSlot, userMenuSlot, notificationSlot }: Props) {
+export function Header({ sideBarSlot, userMenuSlot, notificationSlot, searchSlot }: Props) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -49,6 +50,7 @@ export function Header({ sideBarSlot, userMenuSlot, notificationSlot }: Props) {
           </div>
 
           <div className="flex shrink-0 items-center gap-2 md:gap-4">
+            {searchSlot}
             {notificationSlot}
             {userMenuSlot}
           </div>
