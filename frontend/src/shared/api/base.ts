@@ -1,4 +1,5 @@
-import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import { isTauri as isTauriApp } from '@tauri-apps/api/core';
+import axios, { type AxiosAdapter, AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
 import { API_URL, IS_AUTH_MARKER } from '@/shared/config';
 
@@ -7,10 +8,29 @@ import { axiosTauriAdapter } from './axios-tauri-adapter';
 declare global {
   interface Window {
     __TAURI_INTERNALS__?: Record<string, unknown>;
+    isTauri?: boolean;
   }
 }
 
-const isTauri = typeof window !== 'undefined' && window.__TAURI_INTERNALS__ !== undefined;
+const defaultAdapter = axios.getAdapter(axios.defaults.adapter);
+
+const isTauriRuntime = () => {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  return (
+    isTauriApp() ||
+    window.isTauri === true ||
+    window.__TAURI_INTERNALS__ !== undefined ||
+    window.location.protocol === 'tauri:' ||
+    window.location.protocol === 'asset:' ||
+    window.location.origin === 'https://tauri.localhost'
+  );
+};
+
+const runtimeAdapter: AxiosAdapter = (config) =>
+  (isTauriRuntime() ? axiosTauriAdapter : defaultAdapter)(config);
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -18,7 +38,7 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  adapter: isTauri ? axiosTauriAdapter : undefined,
+  adapter: runtimeAdapter,
 });
 
 let refreshPromise: Promise<void> | null = null;

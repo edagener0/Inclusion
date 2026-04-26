@@ -12,7 +12,9 @@ export const SidebarNav = ({ mobile = false }: { mobile?: boolean }) => {
   const { t } = useTranslation('common');
 
   return (
-    <nav className={`flex flex-col ${mobile ? 'gap-1 px-2' : 'gap-1.5'}`}>
+    <nav
+      className={`flex flex-col ${mobile ? 'gap-1 px-2' : 'gap-1.5'} pt-[env(safe-area-inset-top)]`}
+    >
       {navItems.map((item) => {
         const linkContent = (
           <Link
