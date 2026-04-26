@@ -74,6 +74,7 @@ export function ProfileSearch() {
             placeholder={t('placeholder')}
             value={searchValue}
             onValueChange={setSearchValue}
+            className="min-w-0 truncate placeholder:truncate"
           />
 
           <CommandList className="max-h-100">
