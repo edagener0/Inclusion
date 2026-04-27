@@ -1,0 +1,8 @@
+.venv/
+.env
+.git/
+.gitignore
+__pycache__/
+src/media/**/*
+!src/media/avatars/default.webp
+src/db.sqlite3

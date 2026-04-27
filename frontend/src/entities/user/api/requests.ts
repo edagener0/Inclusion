@@ -1,4 +1,4 @@
-import { api } from '@/shared/api';
+import { type PaginatedResponse, type PaginatedReturnData, api } from '@/shared/api';
 
 import { type Profile, ProfileSchema, type User, UserSchema } from '../model/schema';
 
@@ -10,4 +10,17 @@ export async function getProfileByUsername(username: string): Promise<Profile> {
 export async function fetchMe(): Promise<User> {
   const response = await api.get('/users/me');
   return UserSchema.parse(response.data);
+}
+
+export async function searchProfiles(
+  query: string,
+  page: number,
+): Promise<PaginatedReturnData<Profile>> {
+  const response = await api.get<PaginatedResponse<unknown>>('/profiles', {
+    params: { name: query, page },
+  });
+  return {
+    data: ProfileSchema.array().parse(response.data.results),
+    hasNextPage: !!response.data.next,
+  };
 }

@@ -1,20 +1,20 @@
 {
-  "best": "",
-  "current": "",
+  "best": "найкращий",
+  "current": "поточний",
   "hook": {
-    "notEnoughLetters": ""
+    "notEnoughLetters": "Ви ввели недостатньо літер."
   },
-  "title": "",
+  "title": "Ігри",
   "wordle": {
-    "comeBackTomorrow": "",
-    "description": "",
-    "error": "",
+    "comeBackTomorrow": "Повертайтеся завтра за новим словом.",
+    "description": "Відгадайте слово за 6 спроб. Після кожної спроби колір плиток змінюватиметься, щоб показати, наскільки ваша здогадка була близькою до слова.",
+    "error": "Сталася помилка під час надсилання вашої спроби. Будь ласка, спробуйте ще раз.",
     "leaderboard": {
-      "bestPlayers": "",
-      "title": ""
+      "bestPlayers": "Найкращі гравці за кількістю перемог поспіль!",
+      "title": "Таблиця лідерів Wordle"
     },
-    "title": "",
-    "viewLeaderboard": "",
-    "winMessage": ""
+    "title": "Wordle",
+    "viewLeaderboard": "Переглянути таблицю лідерів",
+    "winMessage": "Вітаємо! Ви відгадали слово!"
   }
 }

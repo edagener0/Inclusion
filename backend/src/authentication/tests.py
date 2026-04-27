@@ -37,6 +37,19 @@ class LoginTests(BaseAuthTestCase):
         self.assertIsNotNone(access_cookie)
         self.assertIsNotNone(refresh_cookie)
 
+    def test_login_with_tauri_header_returns_tokens_in_body(self):
+        data = {"username": "tester", "password": "password123"}
+        response = self.client.post(
+            self.login_url,
+            data,
+            format="json",
+            HTTP_X_TAURI_CLIENT="1",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("access", response.data)
+        self.assertIn("refresh", response.data)
+
     def test_login_invalid_credentials(self):
         data = {"username": "tester", "password": "wrong-password"}
         response = self.client.post(self.login_url, data, format="json")
@@ -49,6 +62,8 @@ class TokenRefreshTests(BaseAuthTestCase):
     def _login_and_get_tokens(self):
         data = {"username": "tester", "password": "password123"}
         response = self.client.post(self.login_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        return response
 
     def test_refresh_with_body_rotates_refresh_token_and_sets_cookies(self):
         self._login_and_get_tokens()
@@ -69,6 +84,21 @@ class TokenRefreshTests(BaseAuthTestCase):
         refresh_cookie = response.cookies.get(self.refresh_cookie_name)
         self.assertIsNotNone(access_cookie)
         self.assertIsNotNone(refresh_cookie)
+
+    def test_refresh_accepts_header_token_for_tauri_clients(self):
+        login_response = self._login_and_get_tokens()
+        refresh_token = login_response.cookies.get(self.refresh_cookie_name)
+
+        response = self.client.post(
+            self.refresh_url,
+            format="json",
+            HTTP_X_TAURI_CLIENT="1",
+            HTTP_X_REFRESH_TOKEN=refresh_token.value,
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("access", response.data)
+        self.assertIn("refresh", response.data)
 
     def test_refresh_without_refresh_token_returns_401(self):
         response = self.client.post(self.refresh_url, {}, format="json")

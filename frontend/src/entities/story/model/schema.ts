@@ -2,7 +2,7 @@ import z from 'zod';
 
 import { UserPreviewSchema } from '@/shared/api';
 
-export const StorySchema = z.object({
+const StorySchema = z.object({
   id: z.int(),
   user: UserPreviewSchema,
   file: z.url(),

@@ -29,9 +29,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "24.x"
+          cache: "npm"
+          cache-dependency-path: "./frontend/package-lock.json"
 
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "./frontend/src-tauri -> target"
 
       - name: Install dependencies (Ubuntu only)
         if: matrix.platform == 'ubuntu-22.04'
@@ -43,10 +50,19 @@ jobs:
         working-directory: ./frontend
         run: npm ci
 
+      - name: Sync version from tag
+        if: github.ref_type == 'tag'
+        shell: bash
+        working-directory: ./frontend/src-tauri
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          jq ".version = \"$VERSION\"" tauri.conf.json > tmp.json && mv tmp.json tauri.conf.json
+
       - name: Build and Release Desktop
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
         with:
           projectPath: frontend
           tagName: ${{ github.ref_type == 'tag' && github.ref_name || 'v0.0.0-draft' }}
@@ -57,7 +73,6 @@ jobs:
           args: ${{ matrix.args }}
 
   build-android:
-    needs: build-desktop
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -68,17 +83,25 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "24.x"
+          cache: "npm"
+          cache-dependency-path: "./frontend/package-lock.json"
 
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
 
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "./frontend/src-tauri -> target"
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: "zulu"
           java-version: "17"
+          cache: "gradle"
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -89,6 +112,8 @@ jobs:
 
       - name: Build Android APK
         working-directory: ./frontend
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
         run: npm run tauri android build
 
       - name: Sign and Rename APK manually

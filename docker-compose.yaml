@@ -1,0 +1,60 @@
+services:
+  database:
+    image: postgres:16
+    container_name: postgres_db
+    env_file:
+      - path: ./backend/.env
+        required: false
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    container_name: redis_db
+
+  backend:
+    build: ./backend
+    container_name: inclusion_backend
+    env_file:
+      - path: ./backend/.env
+        required: false
+    environment:
+      - DEBUG
+      - ALLOWED_HOSTS
+      - CORS_ALLOWED_ORIGINS
+      - SECRET_KEY
+      - GEMINI_API_KEY
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - REDIS_URL
+    depends_on:
+      - database
+      - redis
+    volumes:
+      - media_data:/app/src/media
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL}
+    env_file:
+      - path: ./frontend/.env.production
+        required: false
+    environment:
+      - VITE_API_URL
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  media_data:

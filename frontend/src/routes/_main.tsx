@@ -4,6 +4,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { Header } from '@/widgets/header';
 import { NotificationWidget } from '@/widgets/notification';
 import { SidebarNav } from '@/widgets/sidebar';
+import { ProfileSearch } from '@/widgets/user/profile-search';
 import { UserDropDownMenu } from '@/widgets/user/user-menu';
 
 import { sessionQueries } from '@/entities/session';
@@ -16,10 +17,11 @@ export const Route = createFileRoute('/_main')({
     const isPublic = publicPaths.some((path) => location.pathname.startsWith(path));
 
     const hasAuthMarker = localStorage.getItem(IS_AUTH_MARKER) === 'true';
+
     if (isPublic && !hasAuthMarker) return;
 
     try {
-      await context.queryClient.fetchQuery(sessionQueries.me());
+      await context.queryClient.fetchQuery({ ...sessionQueries.me(), retry: false });
 
       if (isPublic) throw redirect({ to: '/' });
     } catch (err: unknown) {
@@ -34,6 +36,7 @@ export const Route = createFileRoute('/_main')({
           sideBarSlot={<SidebarNav mobile />}
           userMenuSlot={<UserDropDownMenu />}
           notificationSlot={<NotificationWidget />}
+          searchSlot={<ProfileSearch />}
         />
 
         <div className="mx-auto flex min-h-0 w-full flex-1 items-start justify-center gap-x-8 px-4">

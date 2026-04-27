@@ -42,6 +42,10 @@
     },
     "success": "Confidentialité du compte mise à jour avec succès"
   },
+  "query": {
+    "notFound": "Utilisateurs introuvables.",
+    "placeholder": "Rechercher des utilisateurs..."
+  },
   "settings": {
     "description": "Gérez votre compte, la sécurité et d'autres informations.",
     "general": "Général",

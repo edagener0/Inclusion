@@ -12,10 +12,22 @@ from rest_framework_simplejwt.exceptions import TokenError
 from drf_spectacular.utils import extend_schema
 
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserMeSerializer
-from .utils import get_tokens_for_user, set_cookies_for_response
+from .utils import (
+    build_auth_response_payload,
+    get_tokens_for_user,
+    set_cookies_for_response,
+)
 from common.serializers import MessageResponseSerializer
 
 User = get_user_model()
+
+
+def get_refresh_token_from_request(request):
+    return (
+        request.COOKIES.get(settings.SIMPLE_JWT["REFRESH_COOKIE"])
+        or request.data.get("refresh")
+        or request.headers.get("X-Refresh-Token")
+    )
 
 
 @extend_schema(
@@ -65,7 +77,7 @@ class UserLoginView(APIView):
             )
 
         data = get_tokens_for_user(user)
-        response = Response({"message": "Login Successfully"})
+        response = Response(build_auth_response_payload(request, "Login Successfully", data))
         set_cookies_for_response(response, data)
         csrf.get_token(request)
 
@@ -85,7 +97,7 @@ class UserLogoutView(APIView):
         responses={200: MessageResponseSerializer},
     )
     def post(self, request):
-        refresh_token = request.COOKIES.get(settings.SIMPLE_JWT["REFRESH_COOKIE"])
+        refresh_token = get_refresh_token_from_request(request)
 
         if refresh_token:
             try:
@@ -116,7 +128,7 @@ class UserTokenRefreshView(APIView):
         },
     )
     def post(self, request):
-        refresh_token = request.COOKIES.get(settings.SIMPLE_JWT["REFRESH_COOKIE"])
+        refresh_token = get_refresh_token_from_request(request)
 
         if not refresh_token:
             return Response(
@@ -135,13 +147,15 @@ class UserTokenRefreshView(APIView):
                 "refresh": str(new_refresh),
                 "access": str(new_refresh.access_token),
             }
-        except TokenError:
+        except Exception:
             return Response(
                 {"message": "Invalid or expired refresh token"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
-        response = Response({"message": "Token refreshed successfully"})
+        response = Response(
+            build_auth_response_payload(request, "Token refreshed successfully", data)
+        )
         set_cookies_for_response(response, data)
         return response
 
