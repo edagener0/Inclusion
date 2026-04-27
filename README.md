@@ -38,7 +38,7 @@
 
 ## Tech Stack
 
-- Se pretender obter uma lista mais aprofundada das dependências utilizadas no nosso projeto pode consultar [aqui]()
+- Se pretender obter uma lista mais aprofundada das dependências utilizadas no nosso projeto pode consultar [aqui](/docs/plan/Inclusion.pdf)
 
 # Equipa
 
@@ -207,7 +207,7 @@
 
 # Diagrama de arquitetura de alto nível de componentes
 
-![diagrama_arq_comp]()
+![](/docs/Diagram/Components/DiagramaComponentesLES_Final.png)
 
 # Contexto
 
