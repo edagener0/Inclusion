@@ -652,6 +652,9 @@ nano ./frontend/.env.production # Preencher as variáveis ambientais adequadamen
 docker compose up --detach
 ```
 
+- site: <http://localhost>
+- docs: <http://localhost:8000>
+
 # Conclusão
 
 Ao longo do desenvolvimento do projeto desenvolvemos competências transversais à Engenharia de Software, em concreto, no desenvolvimento de REST APIs e base de dados escaláveis, bem como um frontend responsivo que integra os endpoints da REST API.
